@@ -1,5 +1,139 @@
 \name{fields internal }
-\alias{fields internal}
+\alias{COR}
+\alias{D4transform.image}
+\alias{FIELDS.version}
+\alias{Krig.coef}
+\alias{Krig.df.to.lambda}
+\alias{Krig.discretize}
+\alias{Krig.fdf}
+\alias{Krig.fgcv}
+\alias{Krig.fgcv.model}
+\alias{Krig.fgcv.one}
+\alias{Krig.find.gcvmin}
+\alias{Krig.fs2hat}
+\alias{Krig.ftrace}
+\alias{Krig.newy}
+\alias{Krig.replicates}
+\alias{Krig.updateY}
+\alias{Krig.ynew}
+\alias{US}
+\alias{W.image.cov}
+\alias{WD4}
+\alias{WD42d}
+\alias{WD42di}
+\alias{WD4i}
+\alias{WQS}
+\alias{WQS.T}
+\alias{WQS.basis}
+\alias{WQS2d}
+\alias{WQS2di}
+\alias{WQSdi}
+\alias{WQSi}
+\alias{WQSi.T}
+\alias{Wtransform.D}
+\alias{bisection.search}
+\alias{bplot.obj}
+\alias{cat.matrix}
+\alias{cat.to.list}
+\alias{ceiling2}
+\alias{conjugate.gradient}
+\alias{cover.design.S}
+\alias{describe}
+\alias{describe.bplot}
+\alias{draw.bplot}
+\alias{draw.bplot.obj}
+\alias{dup}
+\alias{dup.matrix}
+\alias{dyn.load.fields}
+\alias{exp.cov.F}
+\alias{exp.cov.S}
+\alias{exp.earth.cov}
+\alias{fast.1way}
+\alias{find.upcross}
+\alias{gauss.cov}
+\alias{gcv.Krig}
+\alias{gcv.sreg}
+\alias{golden.section.search}
+\alias{grey.level}
+\alias{image.plot.info}
+\alias{image.plot.plt}
+\alias{image.smooth.setup}
+\alias{in.poly}
+\alias{krig.image.parameters}
+\alias{lonlat2xy}
+\alias{make.Amatrix.Krig}
+\alias{make.surface.grid}
+\alias{make.tmatrix}
+\alias{make.tmatrix.F}
+\alias{make.tmatrix.S}
+\alias{matern}
+\alias{minimax.crit}
+\alias{nkden}
+\alias{periodic.cov.1d}
+\alias{periodic.cov.cyl}
+\alias{periodic.plane.3d}
+\alias{plot.coef}
+\alias{plot.krig.image}
+\alias{plot.qsreg}
+\alias{plot.sim.krig.image}
+\alias{plot.spatial.design}
+\alias{predict.interp.surface}
+\alias{predict.krig.image}
+\alias{predict.qsreg}
+\alias{predict.sreg}
+\alias{predict.Tps}
+\alias{print.krig.image}
+\alias{print.qsreg}
+\alias{print.spatial.design}
+\alias{print.sreg}
+\alias{print.summary.Krig}
+\alias{print.summary.krig.image}
+\alias{print.summary.spatial.design}
+\alias{print.summary.sreg}
+\alias{qr.q2ty}
+\alias{qr.yq2}
+\alias{qsreg.trace}
+\alias{rad.cov}
+\alias{rad.cov.F}
+\alias{rad.cov.S}
+\alias{rad.covC}
+\alias{rad.image.cov}
+\alias{radbas.constant}
+\alias{rdist.F}
+\alias{rdist.S}
+\alias{replace.args.function}
+\alias{setup.W.image.cov}
+\alias{setup.Wtransform.cov}
+\alias{sim.krig.image}
+\alias{sim.rf.W}
+\alias{sim.rf.default}
+\alias{sreg.df.to.lambda}
+\alias{sreg.fdf}
+\alias{sreg.fgcv}
+\alias{sreg.fgcv.model}
+\alias{sreg.fgcv.one}
+\alias{sreg.fit}
+\alias{sreg.fs2hat}
+\alias{sreg.trace}
+\alias{stats.bplot}
+\alias{stats.sim.krig.image}
+\alias{summary.Krig}
+\alias{summary.gcv.Krig}
+\alias{summary.gcv.sreg}
+\alias{summary.krig.image}
+\alias{summary.qsreg}
+\alias{summary.spatial.design}
+\alias{summary.sreg}
+\alias{surface}
+\alias{surface.default}
+\alias{surface.krig.image}
+\alias{surface.surface}
+\alias{test.data}
+\alias{test.data2}
+\alias{unique.matrix}
+\alias{unscale}
+\alias{variogram.matrix}
+\alias{world.dat}
 \title{
   Fields internal and secondary functions 
 }
@@ -10,9 +144,6 @@ Listed below are supporting fucntions for the major methods in fields.
 
 COR (dat) 
  
-D4.cov (m, n, x1 = m/2, x2 = n/2, weights = c(1, 0.1, 0.01, 
-    0.001, 5e-04, 1e-04), cut.min = 8, max.m = m, max.n = n, 
-    setup = F, reg.obj = NULL, grid = NULL) 
 D4transform.image (x, inv = F, transpose = F, cut.min = 8) 
  
 FIELDS.version  
@@ -205,7 +336,7 @@ sreg.trace (h, info)
 stats.bplot (x, by, style = "tukey", outlier = T) 
 stats.sim.krig.image (obj) 
  
-summary.Krig (x, digits = 4, ...) 
+summary.Krig (x, digits = 4) 
 summary.gcv.Krig (out, lambda, cost = 1, verbose = F, offset = 
     0, y = NULL) 
 summary.gcv.sreg (out, lambda, cost = 1, nstep.cv = 20, offset = 
@@ -237,6 +368,6 @@ variogram.matrix (dat, R = 5)
  
 world.dat 
 }
-\keyword{misc}
+\keyword{internal}
 % docclass is function
 % Converted by Sd2Rd version 1.21.

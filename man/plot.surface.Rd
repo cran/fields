@@ -45,6 +45,8 @@ Vector of levels to be passed to contour function.
 Reset to original graphics parameters after function plotting. 
 Default is to reset if type ="b" but not for the single plot options.  
 }
+\item{zlim}{
+Sets z limits on perspective plot. }
 \item{\dots}{
 Other graphical parameters that are passed along to either persp, contour
 or image. 

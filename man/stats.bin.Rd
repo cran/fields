@@ -10,7 +10,6 @@ stats function to each group
 }
 \usage{
 stats.bin(x, y, N = 10, breaks = NULL)
-{
 }
 \arguments{
 \item{x}{

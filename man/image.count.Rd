@@ -24,7 +24,7 @@ ranges of the data locations (x)  to construct a grid.
 Number of rows for the image. Note that nrows equals the number of x
 values and corresponds to the horizontal dimension.  
 }
-\item{nrow}{
+\item{ncol}{
 Number of columns for the image. Note that  
 ncol= number of y values and will 
 be the vertical dimension.  

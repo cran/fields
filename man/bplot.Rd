@@ -74,9 +74,6 @@ Label for the x-axis
 \item{ylab}{
 Label for the y-axis 
 }
-\item{ylab}{
-Label for the y-axis 
-}
 \item{label.cex}{
 Boxplot label  size where 1.0 is  normal size characters.
 If zero labels will not be added.  
@@ -85,11 +82,7 @@ If zero labels will not be added.
 Plotting parameter for x-axis generation. Default is not to produce
 an x-axis. 
 }
-\item{outlier}{
-If true add outliers as plotted points. 
-}
 \item{horizontal}{
- 
 If true draw boxplots horizontally the default is false, produce
 veritcal box plots. 
 }

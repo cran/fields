@@ -23,6 +23,9 @@ A matrix image with missing values are indicated by NA.
 FFT of smoothing kernel. If this is NULL the default is to compute this
 object. 
 }
+\item{grid}{
+A list with x and y components. Each are equally spaced and define the rectangular. ( see grid.list)
+}
 \item{dx}{
 Grid spacing in x direction 
 }
@@ -30,14 +33,15 @@ Grid spacing in x direction
 Grid spacing in x direction 
 }
 \item{Nwidth}{
-Half the width of the kernel in the y direction.  
-Default is the maximum 
-needed the number of columns of Y 
+Half the width of the kernel in the y direction in numbers of grid 
+points.  
+Default is half the number of columns of Y 
 }
+
 \item{Mwidth}{
-Half the width of the kernel in the x direction 
-Default is the maximum 
-needed the number of rows of Y 
+Half the width of the kernel in the x direction in numbers of grid 
+points.
+Default is half the number of columns of Y 
 }
 \item{kernel.function}{
 An S function that takes as its argument the squared distance between two 
@@ -50,6 +54,22 @@ The bandwidth
 \item{\dots}{
 Other arguments to be passed to the kernel function 
 }
+\item{xwidth}{
+This has the same function as Mwidth but is in the scale of the x grid.
+If specified  then  Mwidth = xwidth/ ( grid$x[2]- grid$x[1])
+}
+\item{ywidth}{
+This has the same function as Nwidth but is in the scale of the x grid.
+If specified  then  Nwidth = xwidth/ ( grid$x[2]- grid$x[1])
+}
+\item{weights}{
+Weights to apply when smoothing.}
+\item{tol} {
+Tolerance for the weights of the N-W kernel. This avoids kernel estimates that are "far" away from data.
+Grid points with weights less than tol are set to NA.
+ }
+
+
 }
 \value{
 The smoothed matrix. 
@@ -57,8 +77,9 @@ The smoothed matrix.
 \details{
 The function works by taking convolutions using an FFT. The missing pixels 
 are taken into account and the kernel smoothing is correctly normalized
-following the classical Nadaraya-Watson estimator.   
-}
+following the classical Nadaraya-Watson estimator. If the kernel has 
+limited support then the width arguments can be set to reduce the amount 
+of computation. (See example below.) }
 \seealso{
 image.smooth.setup, as.image  
 }

@@ -3,6 +3,7 @@ BD                       Data frame of the effect of buffer compositions
                          regression data set with with replication. This
                          is a useful test data set for exercising
                          function fitting methods.
+US.dat                   Outline of coterminous US and states.
 flame                    Response surface experiment ionizing a reagent
 lennon                   Gray image of John Lennon.
 minitri                  Mini triathlon results

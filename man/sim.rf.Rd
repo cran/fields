@@ -15,6 +15,9 @@ A covariance object that includes information about the covariance function
 and the grid for evaluation. Usually this created by a setup call to 
 exp.image.cov. (See details below.) 
 }
+\item{\dots}{
+Additional arguments passed to a particular method.}
+
 }
 \value{
 A matrix with the random field values 

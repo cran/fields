@@ -12,12 +12,12 @@ among all pairings.
 rdist.earth(loc1, loc2, miles = T, R = NULL)
 }
 \arguments{
-\item{x1}{
+\item{loc1}{
 Matrix of first set of lon/lat coordinates first column is the
 longitudes
 and second is the latitudes. 
 }
-\item{x2}{
+\item{loc2}{
 Matrix of second  set of lon/lat coordinates first column is the
 longitudes
 and second is the latitudes. If missing x1 is used. 

@@ -1,8 +1,8 @@
 "plot.sim.krig.image" <-
 function (obj) 
 {
-    par.old <- par()
-    on.exit(par(old.par))
+    par.old <- par(read.only=T)
+    on.exit(par(par.old))
     M <- length(obj$out)
     n <- round(sqrt(M))
     m <- round(M/n)

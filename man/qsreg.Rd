@@ -20,6 +20,10 @@ nstep.cv=100, hmin=NA, hmax=NA, trmin=2 * 1.05, trmax=0.95 *
 length(unique(x)))
 }
 \arguments{
+\item{x}{
+Vector of the independent variable in  y = f(x) + e}
+\item{y}{
+Vector of the dependent variable}
 \item{lam}{
 Values of the smoothing parameter. If omitted is found by GCV based on the  
 the quantile criterion 
@@ -65,6 +69,15 @@ Minimum value of log( lambda) used for GCV grid search.
 \item{hmax}{
 Maximum value of log( lambda) used for GCV grid search. 
 }
+\item{trmin}{
+Minimum value of effective degrees of freedom in model used 
+for specifying the range of lambda in the GCV grid search. 
+}
+\item{trmax}{
+Maximum value of effective degrees of freedom in model used 
+for specifying the range of lambda in the GCV grid search. 
+}
+
 }
 \value{
 

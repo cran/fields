@@ -40,6 +40,18 @@ plots. "I" image plot with legend strip (image.plot). "C" image plot
 with contours overlaid.  Both perspective and contour is the default.
   
 }
+\item{main}{
+Title of plot}
+\item{xlab}{
+x axis label}
+\item{ylab}{
+y axis label}
+\item{zlab}{
+z axis label if "p" or "b" type is used.}
+\item{zlim}{
+Z limits passed to persp}
+\item{levels}{
+Contour levels passed to contour. }
 \item{\dots}{
 Any other plotting options. 
 }
