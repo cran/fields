@@ -13,7 +13,7 @@ for the problem.
 cover.design(R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL, 
     scale.type = "unscaled", R.center, R.scale, P = -20, Q = 20,
     start = NULL, DIST = NULL, return.grid = TRUE, return.transform = 
-TRUE, max.loop=20)
+TRUE, max.loop=20, verbose=FALSE)
 }
 \arguments{
 \item{R}{
@@ -120,6 +120,10 @@ of candidate set. The default is return.transform=T.
 Maximum number of outer loops in algorithm. This is the maximum number of 
 passes through the design testing for swaps. 
 }
+\item{verbose}{
+If TRUE prints out debugging information.
+}
+
 }
 \value{
 Returns a design object of class "spatial.design".

@@ -11,7 +11,7 @@ ranges.
 \usage{
 surface.Krig(obj, grid.list=NA, extrap=FALSE, graphics.reset=TRUE, 
  xlab = NULL, ylab = NULL, main = NULL, zlab = NULL, zlim = NULL, 
-    levels = NULL, type = "b", ...)
+    levels = NULL, type = "b",  nx=30, ny=30,...)
 }
 \arguments{
 \item{obj}{
@@ -52,6 +52,14 @@ z axis label if "p" or "b" type is used.}
 Z limits passed to persp}
 \item{levels}{
 Contour levels passed to contour. }
+\item{nx}{
+ Number of grid points to evaluate surface on the horizontal 
+axis (the x-axis). }
+
+\item{ny}{
+ Number of grid points to evaluate surface on the vertical  
+axis (the y-axis). }
+
 \item{\dots}{
 Any other plotting options. 
 }
@@ -70,7 +78,9 @@ predict.surface, plot.surface, image.plot
 \examples{
 fit<- Krig(ozone$x,ozone$y, theta=30)  # krig fit 
 
-surface(fit, type="C") #Image plot with  contours 
+#Image plot of surface with nice, smooth  contours and shading
+
+surface(fit, type="C", nx=128, ny=128) 
  
 }
 \keyword{spatial}

@@ -8,7 +8,7 @@ function (dat, R = 5,dx)
             shift.x^2))
         shift.y <- shift.y[indices]
         shift.x <- shift.x[indices]
-        return(shift.x, shift.y)
+        return(list(x=shift.x, y=shift.y))
     }
     n <- ncol(dat)
     m <- nrow(dat)
@@ -39,11 +39,9 @@ function (dat, R = 5,dx)
         sum.temp <- 0
         l.temp <- 0
         shift <- shift.fct(d[i])
-        shift.x <- shift$shift.x
-        shift.y <- shift$shift.y
-        for (j in 1:length(shift.x)) {
-            h.x <- shift.x[j]
-            h.y <- shift.y[j]
+        for (j in 1:length(shift$x)) {
+            h.x <- shift$x[j]
+            h.y <- shift$y[j]
             sum.temp <- sum.temp + sum((dat[1:(m - h.x), 1:(n - 
                 h.y)] - dat[(1:(m - h.x) + h.x), (1:(n - h.y) + 
                 h.y)])^2)
