@@ -5,7 +5,7 @@
 }
 \description{
 Cuts up a numeric vector based on binning by a covariate and applies the
-FIELDS/FUNFITS
+fields 
 stats function to each group 
 }
 \usage{

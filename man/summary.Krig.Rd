@@ -1,5 +1,5 @@
-\name{summary.krig}
-\alias{summary.krig}
+\name{summary.Krig}
+\alias{summary.Krig}
 \title{
   Summary for Krig spatial process estimate 
 }

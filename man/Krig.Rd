@@ -303,13 +303,21 @@ the observations.
 
 The GCV function has several alternative definitions when replicate
 observations are present or if one uses a reduced set knots.  Here are the
-choices based on the method argument:  GCV: leave-one-out GCV. But if
+choices based on the method argument:  
+
+GCV: leave-one-out GCV. But if
 there are replicates it is leave one group out. (Wendy and Doug prefer
-this one.)  GCV.one: Really leave-one-out GCV even if there are replicate
-points.  This what the tps function uses in FUNFITS versions > 2.2
+this one.)  
+
+GCV.one: Really leave-one-out GCV even if there are replicate
+points.  This what the old tps function used in FUNFITS.
+ 
 rmse: Match the estimate of sigma**2 to a external value ( called rmse)  
+
 pure error: Match the estimate of sigma**2 to the estimate based on
-replicated data (pure error estimate in ANOVA language).  GCV.model:
+replicated data (pure error estimate in ANOVA language).  
+
+GCV.model:
 Only considers the residual sums of squares explained by the basis
 functions.  
 

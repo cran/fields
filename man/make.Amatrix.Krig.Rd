@@ -1,5 +1,5 @@
-\name{make.Amatrix.krig}
-\alias{make.Amatrix.krig}
+\name{make.Amatrix.Krig}
+\alias{make.Amatrix.Krig}
 \title{
   Computes the  prediction matrix for a Krig fit. 
 }

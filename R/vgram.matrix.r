@@ -1,16 +1,19 @@
 "vgram.matrix" <-
-function (dat, R = 5, nsum = 1:8, collapse = TRUE) 
+function (dat, R = 5, nsum = 1:8, collapse = TRUE, dx=1,dy=1) 
 {
-    if (collapse) {
-        variogram.matrix(dat, R)
+
+    if (collapse& (dx==dy)) {
+        variogram.matrix(dat, round(R/dx),dx)
     }
     else {
         N <- ncol(dat)
         M <- nrow(dat)
-        m <- n <- round(R)
+        m <- round(R/dx)
+        n <- round(R/dy)
+
         ind <- cbind(rep(0:m, n + 1), rep(0:n, rep(m + 1, n + 
             1)))
-        d <- sqrt(ind[, 1]^2 + ind[, 2]^2)
+        d <- sqrt((dx*ind[, 1])^2 + (dy*ind[, 2])^2)
         ind <- ind[(d > 0) & (d <= R), ]
         d <- d[(d > 0) & (d <= R)]
         ind <- ind[order(d), ]

@@ -10,9 +10,8 @@ are handled using the Nadaraya/Watson normalization of the kernel.
 \usage{
 image.smooth
  (Y, wght = NULL, dx = 1, dy = 1, Nwidth = nrow(Y), Mwidth = ncol(Y),
-    kernel.function = function(x) {
-        exp(-abs(x))
-    }, theta = 1, grid = NULL, tol = 1e-08, xwidth = NULL, ywidth = NULL,
+    kernel.function = double.exp,
+ theta = 1, grid = NULL, tol = 1e-08, xwidth = NULL, ywidth = NULL,
     weights = NULL)
 }
 \arguments{
@@ -44,7 +43,8 @@ points.
 Default is half the number of columns of Y 
 }
 \item{kernel.function}{
-An S function that takes as its argument the squared distance between two 
+An S function that takes as its argument the \emph{squared} distance 
+between two 
 points divided by the bandwidth. The default is exp( -x) yielding a normal 
 kernel 
 }

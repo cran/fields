@@ -27,7 +27,7 @@ krig.image              Spatial process estimate for large irregular
                         2-d dats sets.
 Krig                    Kriging surface estimate
 lennon                  Gray image of John Lennon.
-make.Amatrix.krig       Computes the prediction matrix for a Krig fit.
+make.Amatrix.Krig       Computes the prediction matrix for a Krig fit.
 make.Amatrix            Matrix relating predicted values to the
                         dependent (Y) values
 matern.cov              Matern covariance function
@@ -64,8 +64,9 @@ splint                  Cubic spline interpolation
 sreg                    Smoothing spline regression
 stats.bin               Bins data and finds some summary statistics.
 stats                   Calculate summary statistics
-summary.krig            Summary for Krig spatial process estimate
+summary.Krig            Summary for Krig spatial process estimate
 surface.Krig            Plots a surface and contours
+tim.colors              Tim's useful color table
 Tps                     Thin plate spline regression
 transformx              Linear transformation
 US.dat                  Outline of coterminous US and states.
@@ -74,7 +75,8 @@ vgram.matrix            Computes a variogram from an image
 vgram                   Finds a traditional or robust variogram for
                         spatial data.
 world                   Plot of the world
-Wtransform.image        Quadratic W wavelet transform for an image
+Wtransform              Quadratic W wavelet transform for 1-d vectors
+                        or rectangular or cylindrical images
 Wtransform.sim          Simulates a 2-d random wavelet field
 xline                   Draw a vertical line
 yline                   Draw horizontal lines

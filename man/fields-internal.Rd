@@ -29,6 +29,13 @@
 \alias{WQSdi}
 \alias{WQSi}
 \alias{WQSi.T}
+\alias{WQS2d.cylinder}
+\alias{WQS2di.cylinder}
+\alias{WQSi.periodic} 
+\alias{WQSi.periodic.T} 
+\alias{WQS.periodic} 
+\alias{WQS.periodic.basis}
+\alias{WQS.periodic.T} 
 \alias{Wtransform.D}
 \alias{bisection.search}
 \alias{bplot.obj}
@@ -37,7 +44,10 @@
 \alias{ceiling2}
 \alias{conjugate.gradient}
 \alias{describe}
+\alias{dyadic.2check}
+\alias{dyadic.check}
 \alias{describe.bplot}
+\alias{double.exp}
 \alias{draw.bplot}
 \alias{draw.bplot.obj}
 \alias{exp.cov.F}
@@ -56,7 +66,6 @@
 \alias{in.poly}
 \alias{krig.image.parameters}
 \alias{lonlat2xy}
-\alias{make.Amatrix.Krig}
 \alias{make.surface.grid}
 \alias{make.tmatrix}
 \alias{make.tmatrix.F}
@@ -116,7 +125,6 @@
 \alias{sreg.trace}
 \alias{stats.bplot}
 \alias{stats.sim.krig.image}
-\alias{summary.Krig}
 \alias{summary.gcv.Krig}
 \alias{summary.gcv.sreg}
 \alias{summary.krig.image}
@@ -178,8 +186,18 @@ WQS2di (x, transpose = FALSE)
 WQSdi (x, transpose = FALSE) 
 WQSi (x) 
 WQSi.T (x) 
+WQS.periodic(x)
+WQS.periodic.T(x)
+WQS.periodic.basis(N, cut.n = 8)
+WQS.periodic.T(x)
+WQS2d.cylinder(x, transpose = FALSE, byX=T)
+WQS2di.cylinder(x, transpose = FALSE, byX=T)
+WQSi.periodic(x)
+WQSi.periodic.T(x)
+
+
 Wtransform.D (nx, ny, weights = c(1), cut.min = 8, details = FALSE) 
- 
+
 bisection.search (x1, x2, f, tol = 1e-07, niter = 25, f.extra = 
         NA, upcross.level = 0) 
  
@@ -198,7 +216,12 @@ conjugate.gradient (b, multAx, start = NULL, tol = 1e-05, kmax =
  
 describe (x) 
 describe.bplot (temp, style = "tukey", outlier = TRUE) 
- 
+
+double.exp(x)
+
+dyadic.2check( m,n,cut.p=2)
+dyadic.check( n,cut.p=2) 
+
 draw.bplot (temp, width, xpos, outlier = TRUE, style = "tukey") 
 draw.bplot.obj (obj, width, xpos, outlier = TRUE, horizontal = FALSE) 
  
@@ -239,7 +262,6 @@ krig.image.parameters (out)
  
 lonlat2xy (lnlt, miles = FALSE) 
  
-make.Amatrix.Krig (out, x0 = out$x, lambda) 
 make.surface.grid (grid.list, X, nx = 30, ny = 30, 
       info.list = FALSE, FUN = median) 
 make.tmatrix (x, m = 2) 
@@ -326,7 +348,6 @@ sreg.trace (h, info)
 stats.bplot (x, by, style = "tukey", outlier = TRUE) 
 stats.sim.krig.image (obj) 
  
-summary.Krig (x, digits = 4) 
 summary.gcv.Krig (out, lambda, cost = 1, verbose = FALSE, offset = 
     0, y = NULL) 
 summary.gcv.sreg (out, lambda, cost = 1, nstep.cv = 20, offset = 
@@ -351,7 +372,7 @@ test.data2
 
 unscale (x, x.center, x.scale) 
  
-variogram.matrix (dat, R = 5) 
+variogram.matrix (dat, R = 5, dx) 
  
 world.dat 
 }

@@ -16,8 +16,8 @@ data(BD)
 }
 \format{
 This data frame contains the following columns: 
-}
-\arguments{
+
+\describe{
 \item{KCl}{
 Buffer component. 
 }
@@ -35,8 +35,10 @@ Exponential amplification rate on a log scale, i.e. the actual amplification
 rate. 
 }
 }
+}
+
 \source{
-This is also a FUNFITS data set. 
+Thanks to Perry Haaland and Michael OConnell.
 
 Becton Dickinson Research Center 
 Research Triangle Park, NC 
