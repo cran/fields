@@ -54,10 +54,13 @@ distance between boxes and is set by the space argument.
 Labels under each boxplot. If missing the columns names or components of  
 x are used.  
 }
-\item{srt}{
-Rotate the labels (srt=90 makes them vertical). Default is to put them
-horizontal. Sometimes long
-labels run into each if they are horizontal.   
+\item{las}{
+Orient the axis labels for bplot groups. 
+ Default is to 
+put them
+horizontal (las=1) if number of groups is less than 7 otherwise make them 
+perpendicular (las=2) to keep the labels from running into each other. See help  
+on par for more about this option.    
 }
 \item{add}{
 If true, do not create a new plots just add the boxplots to a current

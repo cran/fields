@@ -147,7 +147,7 @@ function(x, y, lam = NA, df = NA, offset = 0, wt = rep(1, length(x)), cost = 1,
 			yg = as.double(rep(0, NG)),
 			job = as.integer(job),
 			ideriv = as.integer(0),
-			ierr = as.integer(0))
+			ierr = as.integer(0), PACKAGE="fields")
 		#
 		if(verbose) {
 			print(c(b$lambda, b$trace))

@@ -9,7 +9,7 @@ for covariances among all pairings.
 }
 \usage{
 matern.cov
-(x1, x2, theta = rep(1, ncol(x1)), smoothness = 0.5, scale=1)
+(x1, x2, theta = diag(1, ncol(x1)), smoothness = 0.5, scale=1)
 }
 \arguments{
 \item{x1}{
@@ -22,8 +22,9 @@ Matrix of second set of locations where each row gives the coordinates of
 a particular point. If this is missing x1 is used. 
 }
 \item{theta}{
-Range (or scale) parameter. This can be a scalar or a vector that is the
-same length as the dimension of the locations. Default is theta=1.
+Range (or scale) parameter matrix. This can be a scalar, a vector or matrix. 
+Default is theta=1. The locations are scaled by the inverse of theta before the 
+distances are found. Off diagonal elements of theta build in anisotrophy.
 }
 \item{smoothness}{
 The shape parameter for the Matern family. The exponential
@@ -86,16 +87,18 @@ the cross
 distance matrix ( D defined above) for two sets of locations. Thus in
 compact S code we have  
 
-u <- t(t(x1)/theta)
-v <- t(t(x2)/theta)
+u <- t(solve(theta)%*%t(x1))
+v <- t(solve(theta)%*%t(x2))
 H(-rdist(u, v))
+
+where \code{solve(theta)} is the (matrix) inverse for theta. 
 
 A simple modification of this function for the user would be to substitute
 rdist.earth for rdist to give a distance metric that makes sense for
-lon/lat coordinates. 
+a small region in lon/lat coordinates. 
 }
 \seealso{
- Krig, matern, rdist, rdist.earth, gauss.cov, exp.image.cov 
+ Krig, matern, rdist, rdist.earth, gauss.cov, exp.image.cov, matern.imag.cov 
 }
 \examples{
 #

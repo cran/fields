@@ -40,7 +40,7 @@ not been supplied.
 image.smooth, image.plot, Krig.discretize, Krig.replicates  
 }
 \examples{
-look<- image.count( precip$x, nrow=32, ncol=32)
+look<- image.count( RMprecip$x, nrow=32, ncol=32)
 image.plot( look) 
 }
 \keyword{smooth}

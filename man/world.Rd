@@ -6,9 +6,9 @@ Plots quickly, medium resolution outlines of large land masses and
 bodies of water.  
 }
 \usage{
-world(ylim=c(-90, 90), xlim=c(-180, 180), add=FALSE, asp = 1,
-      xlab = "", ylab = "",  xaxt = "n", yaxt = "n", 
-eps=.1,shift=FALSE,...)
+world(ylim = c(-90, 90), xlim = NULL, add = FALSE, asp = 1,
+                 xlab = "", ylab = "", xaxt = "n", yaxt = "n", eps =
+                 0.1, shift = FALSE, ...)
 }
 \arguments{
   \item{ylim}{range of latitudes}

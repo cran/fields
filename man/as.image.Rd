@@ -67,7 +67,7 @@ image.smooth, image.plot, Krig.discretize, Krig.replicates, image.count
 }
 \examples{
 # convert precip data to 50X50 image  
-look<- as.image( precip$y, x= precip$x, nrow=50, ncol=50)
+look<- as.image( RMprecip$y, x= RMprecip$x, nrow=50, ncol=50)
 image.plot( look) 
 
 # number of obs in each cell.

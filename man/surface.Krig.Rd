@@ -9,9 +9,10 @@ quick way to look at the fitted function over reasonable default
 ranges.  
 }
 \usage{
-surface.Krig(obj, grid.list=NA, extrap=FALSE, graphics.reset=TRUE, 
- xlab = NULL, ylab = NULL, main = NULL, zlab = NULL, zlim = NULL, 
-    levels = NULL, type = "b",  nx=30, ny=30,...)
+surface.Krig(obj, grid.list = NA, extrap = FALSE, graphics.reset =
+                 NULL, xlab = NULL, ylab = NULL, main = NULL, zlab =
+                 NULL, zlim = NULL, levels = NULL, type = "b", nx =
+                 30, ny = 30, ...)
 }
 \arguments{
 \item{obj}{

@@ -87,7 +87,7 @@ image.smooth.setup, as.image
 # first convert precip data to the 128X128 discretized image format ( with 
 # missing  values to indicate where data is not observed) 
 # 
-out<- as.image( precip$y, x= precip$x, nrow=128, ncol=128) 
+out<- as.image( RMprecip$y, x= RMprecip$x, nrow=128, ncol=128) 
 # out$z is the image matrix 
 
 dx<- out$x[2]- out$x[1] 
@@ -97,7 +97,7 @@ look<- image.smooth( out$z, dx=dx, dy=dy, theta= .25)
 
 # grid scale in degree and so kernel bandwidth is .25 degrees. 
 image.plot( x= out$x, y=out$y, z= look) 
-points( precip$x)
+points( RMprecip$x)
 
 # to save on computation, decrease the padding with zeroes 
 

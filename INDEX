@@ -12,42 +12,44 @@ cover.design            Computes Space-Filling "Coverage" designs
                         using Swapping Algorithm
 exp.cov                 Exponential, Gaussian and "power" covariance
                         family
+exp.image.cov           Exponential,Gaussian, "power" and Matern
+                        covariance functions for 2-d gridded locations
 fields                  fields - tools for spatial data
 flame                   Response surface experiment ionizing a reagent
+gcv.Krig                Finds profile likelihood and GCV estimates of
+                        smoothing parameters
 grid list               Grid list for describing equally spaced grids
 image.count             Creates image for a 2-d histogram from
                         irregular locations
-image.cov               Exponential,Gaussian, "power" and Matern
-                        covariance functions for 2-d gridded locations
 image.plot              Draws image plot with a legend strip for the
                         color scale.
 image.smooth            Kernel smoother for irregular 2-d data
 interp.surface          Fast bilinear interpolator from a grid.
+Krig                    Kriging surface estimate
 krig.image              Spatial process estimate for large irregular
                         2-d dats sets.
-Krig                    Kriging surface estimate
 lennon                  Gray image of John Lennon.
-make.Amatrix.Krig       Computes the prediction matrix for a Krig fit.
 make.Amatrix            Matrix relating predicted values to the
                         dependent (Y) values
+make.Amatrix.Krig       Computes the prediction matrix for a Krig fit.
 matern.cov              Matern covariance function
 minitri                 Mini triathlon results
-nkreg                   Normal kernel regression estimate
-ozone2                  Daily 8-hour ozone averages for sites in the
-                        Midwest
 ozone                   Data set of ozone measurements at 20 Chicago
                         monitoring stations.
+ozone2                  Daily 8-hour ozone averages for sites in the
+                        Midwest
 plot.Krig               Diagnostic and summary plots of the Krig
                         object
 plot.sreg               Plots smoothing spline regression object
 plot.surface            Plots a surface
+plot.Wimage             Plots 2-d wavelet coefficents by level and
+                        type
+plot.Wimage.info        plot to check 2-d multiresolution indexing.
 poisson.cov             Poisson spherical covariance function
-precip                  Standardized monthly precipitation for August
-                        1963 inteh Rocky Mountain Region
 predict.Krig            Evaluation of Krig spatial process estimate.
+predict.se              Standard errors of predictions
 predict.se.Krig         Standard errors of predictions for Krig
                         spatial process estimate
-predict.se              Standard errors of predictions
 predict.surface         Evaluates a fitted function as a surface
                         object
 predict.surface.se      Standard errors of predictions
@@ -55,28 +57,35 @@ print.Krig              Print kriging fit results.
 qsreg                   Quantile or Robust spline regression
 rat.diet                Experiment studying an appetite supressant in
                         rats.
-rdist.earth             Great circle distance matrix
 rdist                   Euclidean distance matrix
+rdist.earth             Great circle distance matrix
+RMprecip                Standardized monthly precipitation for August
+                        1963 inteh Rocky Mountain Region
 set.panel               Specify a panel of plots
 sim.rf                  Simulates a random field
 smooth.2d               Kernel smoother for irregular 2-d data
 splint                  Cubic spline interpolation
 sreg                    Smoothing spline regression
-stats.bin               Bins data and finds some summary statistics.
 stats                   Calculate summary statistics
+stats.bin               Bins data and finds some summary statistics.
 summary.Krig            Summary for Krig spatial process estimate
 surface.Krig            Plots a surface and contours
 tim.colors              Tim's useful color table
 Tps                     Thin plate spline regression
 transformx              Linear transformation
-US.dat                  Outline of coterminous US and states.
 US                      Plot of the US with state boundaries
-vgram.matrix            Computes a variogram from an image
+US.dat                  Outline of coterminous US and states.
 vgram                   Finds a traditional or robust variogram for
                         spatial data.
+vgram.matrix            Computes a variogram from an image
+Wimage.cov              Functions for W-transform based covariance
+                        models
+Wimage.info             Finds key indices related to a 2-d
+                        multiresolution
+W.info                  Gives indexing imfomration for a wavelet
+                        decompostion
 world                   Plot of the world
 Wtransform              Quadratic W wavelet transform for 1-d vectors
                         or rectangular or cylindrical images
-Wtransform.sim          Simulates a 2-d random wavelet field
 xline                   Draw a vertical line
 yline                   Draw horizontal lines

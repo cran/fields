@@ -30,7 +30,7 @@ function(lam, info)
 	}
 	#print(np)
 	#	NOTE h <- log(lam)
-	temp <- (.Fortran("css",
+	temp <- .Fortran("css",
 		h = as.double(log(lam)),
 		npoint = as.integer(np),
 		x = as.double(info$x),
@@ -45,7 +45,8 @@ function(lam, info)
 		yg = as.double(0),
 		job = as.integer(c(3, 0, 0)),
 		ideriv = as.integer(0),
-		ierr = as.integer(0)))
+		ierr = as.integer(0),
+                PACKAGE="fields")
 	rss <- sum((temp$sy - info$y)^2 * info$wt)
 	MSE <- rss/np
 	if((N - np) > 0) {

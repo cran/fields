@@ -1,108 +1,153 @@
 "gcv.Krig" <-
 function (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA, 
-    verbose = FALSE, tol = 1e-05, offset = 0, y = NULL, lambda = NA) 
+    verbose = FALSE, tol = 1e-05, offset = 0, y = NULL, 
+give.warnings=TRUE) 
 {
+# set up some temporary variables. 
     nt <- out$nt
     np <- out$np
     N <- out$N
+
+# D are the eigenvalues of the "covariance" matrix form which most 
+# gnarly things are compuated. 
+
     D <- out$matrices$D
-    if (is.null(y)) {
+
+# are obs supplied? if not use object 
 #
-# use the data from the Krig object. 
+    if (is.null(y)) {
         u <- out$matrices$u
         shat.pure.error <- out$shat.pure.error
         pure.ss <- out$pure.ss
     }
     else {
-#
-#recompute the fit for new y data 
         out2 <- Krig.updateY(out, y)
         u <- out2$u
         shat.pure.error <- out2$shat.pure.error
         pure.ss <- out2$pure.ss
     }
 #
-# If lambda grid is not specified find a resaonable grid of lambda's for
-# the grid search
+# figure out a good range for lambda
+# the most rational is to base it on the model effective degrees of freedom
+#
     if (is.na(lambda.grid[1])) {
-        l1 <- Krig.df.to.lambda(nt+.001, D)
-        l2 <- Krig.df.to.lambda((np - offset) * 0.95, D)
-        lambda.grid <- exp(seq(log(l2), log(l1), , nstep.cv))
+#
+# create some pretty values for the lambda grid
+#
+# set up grid initially in terms of effective degrees of freedom 
+        temp.df<- seq(nt, (np - offset) * 0.95,,nstep.cv)
+#
+# offset the first value because this is infinity!
+# 
+        temp.df[1] <- temp.df[1] + .001
+        for( k in 1: nstep.cv){
+                   lambda.grid[k] <- Krig.df.to.lambda(temp.df[k], D)
+        }
     }
+
+#
+# sort lambda.grid to be consistent with old versions of Krig
+#
+
+lambda.grid<- sort( lambda.grid) 
+
+# set up some variables for the coarse grid search
 
     nl <- length(lambda.grid)
     nd <- length(D)
-    trA <- MSE <- RSS.model <- rep(NA, nl)
+    V<- V.model<- V.one<-lplike<-trA<-shat<- rep(NA, nl)
     Dl <- rep(NA, nd)
+ 
 #
-# loop through grid of lambdas and find MSE and traces
-    for (k in 1:nl) {
-        Dl <- lambda.grid[k] * D
-        RSS.model[k] <- sum(((u * Dl)/(1 + Dl))^2)
-        trA[k] <- sum(1/(1 + Dl))
-    }
-
-#
-    RSS <- pure.ss + RSS.model
-    MSE <- RSS.model/length(D)
-    if((N - length(D)) > 0) {
-        MSE <- MSE + pure.ss/(N - length(D))
-    }
-    MSE.one <- (pure.ss + RSS.model)/N
-# denominator for grid of lambda values for the GCV function 
-    den <- 1 - (cost * (trA - nt - offset) + nt)/length(D)
-    den.one <- 1 - (cost * (trA - nt - offset) + nt)/N
-# different versions of GCV function based on how replicate data is 
-# handled
-    V <- ifelse(den > 0, (MSE)/den^2, NA)
-    V.one <- ifelse(den.one > 0, MSE.one/den.one^2, NA)
-    V.model <- ifelse(den > 0, ((RSS.model/length(D))/den^2), 
-        NA)
-# GCV type estimate of sigma
-    shat <- sqrt(RSS/(N - trA))
-# grid used for subsequent refinements.    
-    gcv.grid <- cbind(lambda.grid, trA, V, V.one, V.model, shat)
-    gcv.grid <- as.data.frame(gcv.grid)
-    names(gcv.grid) <- c("lambda", "trA", "GCV", "GCV.one", "GCV.model", 
-        "shat")
-#
-# list with information to pass to subsequent refinements
+# this is a small "Krig" object to make it easier to pass these pieces to 
+# different gcv functions. See f.extra in golden.section search.
 #
     info <- list(matrices = list(D = D, u = u), N = N, nt = nt, 
         cost = cost, pure.ss = pure.ss, shat.pure.error = shat.pure.error, 
         offset = offset)
+#
+# this loop is a bit inefficient because many quantities are being 
+# recalculated but it makes it clear from where these different
+# versions are coming. 
+#
+   for (k in 1:nl) {
+        V[k] <- Krig.fgcv(lambda.grid[k], info)
+        V.one[k] <- Krig.fgcv.one(lambda.grid[k], info)
+        V.model[k]<- Krig.fgcv.model(lambda.grid[k], info)
+        lplike[k]<- Krig.flplike(lambda.grid[k], info)
+        shat[k]<-  sqrt(Krig.fs2hat(lambda.grid[k], info))
+        trA[k] <- Krig.ftrace(lambda.grid[k],D)
+    }
+ 
+# combine these values into a data frame. This is the information 
+# used in the 3rd plot in the plot.Krig figure. 
+
+    gcv.grid <- cbind(lambda.grid, trA, V, V.one, V.model, shat, lplike)
+    gcv.grid <- as.data.frame(gcv.grid)
+    names(gcv.grid) <- c("lambda", "trA", "GCV", "GCV.one", "GCV.model", 
+        "shat","-Log Profile")
     if (verbose) 
         print(info)
+    if (verbose) 
+        print(gcv.grid)
 #
-# setup output matrix of results 
-   lambda.est <- matrix(ncol = 4, nrow = 5, dimnames = list(c("GCV", 
-        "GCV.model", "GCV.one", "RMSE", "pure error"), c("lambda", 
-        "trA", "GCV", "shat")))
+# at this point one could simply interpolate the coarse search 
+#( using sreg of course!) over the lambda
+# grid and find the minimum. A more deliberate way to do is a refined 
+# optimization using a godlen section search. 
 #
-# refined estimate for GCV  
-   lambda.est[1, 1] <- Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV, 
+
+# create the output summary matrix
+
+lambda.est <- matrix(ncol =4 , nrow = 6, 
+dimnames = list(
+  c("GCV", "GCV.model", "GCV.one", "RMSE", "pure error", "-Log Profile" ), 
+   c("lambda", "trA", "GCV", "shat"))
+)
+#
+# Now start filling in lamnda.est with the refined estimates
+# using various versions of GCV and other approaches. 
+#
+# refine the traditional GCV estimate
+# If there are replicates it is leave-one-replicate-group- out. 
+#
+    lambda.est[1, 1] <- Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV, 
         Krig.fgcv, tol = tol, verbose = verbose)
 #
-# If there are replicates find refined estimates for the "model" 
-# only  GCV
-    if (!is.na(shat.pure.error)) {
+# Next find lambda so that the estimate of sigma**2 matches the 
+# the estimate based on the replicated points. 
+
+   if (!is.na(shat.pure.error)) {
         temp <- gcv.grid$GCV.model
         lambda.est[2, 1] <- Krig.find.gcvmin(info, lambda.grid, 
             temp, Krig.fgcv.model, tol = tol, verbose = verbose)
     }
 #
-# GCV based on really leaving just one observation out this will 
-# agree with  lambda.est[1, 1] if there are no replicates
+# GCV using really leave-one-out. 
 #
     lambda.est[3, 1] <- Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, 
         Krig.fgcv.one, tol = tol, verbose = verbose)
+
+# Profile likelihood
+lambda.est[6, 1] <- Krig.find.gcvmin(info, lambda.grid, 
+ gcv.grid$"-Log Profile",
+        Krig.flplike, tol = tol, verbose = verbose)
+if( verbose){
+cat( " mle estimate", lambda.est[6, 1], fill=TRUE)}
+
+
+
+#
+# If rmse or if shat.pure.error can is available find the lambda that 
+# yeilds an esimate that mathces this value. 
+# This is a zero-finding task so we use a simple algorithm that 
+# determines zero crossing. 
 #
     lambda.rmse <- NA
     lambda.pure.error <- NA
 # 
-# If  RMSE supplied find lambda to match this  value
-
-   if (!is.na(rmse)) {
+# work on matching the passed rmse value
+    if (!is.na(rmse)) {
         if (all(gcv.grid$shat < rmse) | all(gcv.grid$shat > rmse)) {
             guess <- NA
         }
@@ -119,12 +164,14 @@ function (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA,
             lambda.est[4, 1] <- lambda.rmse
         }
         else {
-            warning("Value of rmse is outside possible range")
+            if( give.warnings){
+             warning("Value of rmse is outside possible range")}
         }
     }
-# 
-# If  replicates find lambda to match this  value
-    if (!is.na(shat.pure.error)) {
+#
+# work on matching shat.pure.error
+
+   if (!is.na(shat.pure.error)) {
         if (all(gcv.grid$shat < shat.pure.error) | all(gcv.grid$shat > 
             shat.pure.error)) {
             guess <- NA
@@ -139,11 +186,17 @@ function (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA,
             lambda.est[5, 1] <- lambda.pure.error
         }
         else {
-            warning("Value of pure error estimate  is outside possible range")
+            if( give.warnings){
+             warning("Value of pure error estimate  is outside possible range")}
         }
     }
-# 
-# fix up output table adding in GCV minimum values
+if( verbose) {
+cat( " Done with refining", fill=TRUE)}
+
+#
+# fill in the rest of the lambda.est summary matrix
+# This is reporting the values of various criterion at the 
+# lambda found by GCV traditional ( leave-one/group-out)
 #
     for (k in 1:5) {
         lam <- lambda.est[k, 1]
@@ -158,9 +211,20 @@ function (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA,
             if (k == 3) {
                 lambda.est[k, 3] <- Krig.fgcv.one(lam, info)
             }
+            
             lambda.est[k, 4] <- sqrt(Krig.fs2hat(lam, info))
         }
     }
-    list(gcv.grid = gcv.grid, lambda.est = lambda.est, lambda.best = lambda.est[1, 
-        1])
+#
+# fill in some information about ML estimate of lambda
+
+      lam.ml<-  lambda.est[6,1]
+      lambda.est[6,2] <-  Krig.ftrace(lam.ml, D)
+      lambda.est[6,3] <-  Krig.fgcv(lam.ml, info)
+      lambda.est[6,4] <- sqrt(Krig.fs2hat(lam.ml, info))
+#
+# and now the output list
+#
+    list(gcv.grid = gcv.grid, lambda.est = lambda.est, 
+            lambda.best = lambda.est[1,1])
 }

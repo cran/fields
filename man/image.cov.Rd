@@ -146,8 +146,8 @@ image( matrix( result, 100,100))
 
 # generate a grid and set of indices based on discretizing the locations
 # in the precip dataset
-data(precip)
-out<-as.image( precip$y, x= precip$x)
+data(RMprecip)
+out<-as.image( RMprecip$y, x= RMprecip$x)
 ind1<- out$ind
 grid<- list( x= out$x, y=out$y)
 # there are 750 gridded locations 
@@ -161,7 +161,7 @@ junk<-  rnorm(750)
 result<- exp.image.cov( ind1, ind1, Y= junk,cov.obj=cov.obj)
 
 # The brute force way would be  
-# result<- exp.cov( precip$x, precip$x,theta=1.25, C=junk)
+# result<- exp.cov( RMprecip$x, RMprecip$x,theta=1.25, C=junk)
 
 
 # evaluate the covariance between all grid points and the center grid point

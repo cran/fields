@@ -150,6 +150,8 @@ title("Mother scaled by 2")
 matplot( 1:256, Wbasis[,33:64], type="l", lty=c(1,2), col=2)
 title("Mother scaled by 4")
 
+set.panel( 1,1)
+
 # test that the transform works
 
 
@@ -220,7 +222,8 @@ image( Wtransform.cylinder.image( temp , inv=TRUE, cut.min=4))
 # now along Y-axis
 image( Wtransform.cylinder.image( temp , inv=TRUE, cut.min=4, byX=FALSE))
 
-
+# reset panel 
+set.panel( 1,1)
 }
 \keyword{spatial}
 % docclass is function

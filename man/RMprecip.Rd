@@ -1,5 +1,5 @@
-\name{precip}
-\alias{precip}
+\name{RMprecip}
+\alias{RMprecip}
 \title{
   Standardized monthly precipitation for August 1963 inteh Rocky Mountain 
 Region
@@ -10,7 +10,7 @@ locations The list has
 components:
 }
 \usage{
-data(precip)
+data(RMprecip)
 }
 \format{
 This data set is a list containing the following components: 

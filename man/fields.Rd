@@ -59,7 +59,9 @@ this package. Any changes to the software should not be made without the
 authors permission.
 }
 \examples{
-fit<- Tps(ozone$x, ozone$y)  # fits a surface to ozone measurements.
+set.panel()
+fit<- Tps(ozone$x, ozone$y)  # fits a thin plate spline surface to ozone 
+#                               measurements.
 summary(fit) #summary of the fit 
 plot(fit) # diagnostic plots of  fit and residuals.
 surface( fit, type="I") # image and contour plot of the fitted surface

@@ -120,7 +120,7 @@ wt.old<- wt
             xg = as.double(xgrid), yg = as.double(rep(0, NG)), 
             job = as.integer(c(3, 3, 0)), ideriv = as.integer(0), 
             din = as.double(c(cost, offset, maxit, tol, sc, alpha)), 
-            dout = as.double(rep(0, 4)), ierr = as.integer(0))
+            dout = as.double(rep(0, 4)), ierr = as.integer(0), PACKAGE="fields")
         residuals[, k] <- y - b$sy
         diagA[, k] <- b$diag
         cv[k] <- b$dout[4]
@@ -149,7 +149,7 @@ diag = as.double(rep(0, N)), cv = as.double(0), ngrid = as.integer(NG),
             xg = as.double(xgrid), yg = as.double(rep(0, NG)),
             job = as.integer(c(3, 3, 0)), ideriv = as.integer(0),
             din = as.double(c(cost, offset, maxit, tol, sqrt( var( y))*10, alpha)),
-            dout = as.double(rep(0, 4)), ierr = as.integer(0))
+            dout = as.double(rep(0, 4)), ierr = as.integer(0), PACKAGE="fields")
 #
 # CV residuals based on pseudo-data)
 # Use the linear approximation  Y_k - f.cv_k = (Y_k- f_k)/( 1- A_kk)
@@ -200,13 +200,13 @@ function (x, y, lam, maxit = 50, maxit.cv = 10, tol = 1e-04,
     if (length(x) != length(y)) 
         stop(" X and Y do not match")
     h <- log(lam)
-    temp <- (.Fortran("rcss", h = as.double(log(lam)), npoint = as.integer(N), 
+    temp <- .Fortran("rcss", h = as.double(log(lam)), npoint = as.integer(N), 
         x = as.double(x), y = as.double(y), wt = as.double(wt), 
         sy = as.double(rep(0, N)), trace = as.double(0), diag = as.double(rep(0, 
             N)), cv = as.double(0), ngrid = as.integer(0), xg = as.double(0), 
         yg = as.double(0), job = as.integer(c(3, 0, 0)), ideriv = as.integer(0), 
         din = as.double(c(cost, offset, maxit, tol, sc, alpha)), 
-        dout = as.double(rep(0, 4)), ierr = as.integer(0))$dout)
+        dout = as.double(rep(0, 4)), ierr = as.integer(0), PACKAGE="fields")$dout
     return(temp)
 }
 

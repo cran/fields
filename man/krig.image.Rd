@@ -237,7 +237,7 @@ plot.krig.image, predict.krig.image, exp.image.cov, sim.krig.image
 # 
 # fit a monthly precipitation  field over the Rocky Mountains 
 # grid is 64X64 
-out<- krig.image( x= precip$x, Y = precip$y, m=64,n=64,cov.function= 
+out<- krig.image( x= RMprecip$x, Y = RMprecip$y, m=64,n=64,cov.function= 
 exp.image.cov,  
 lambda=.5, theta=1, kmax=100)  
 
@@ -245,10 +245,6 @@ lambda=.5, theta=1, kmax=100)
 # range parameter for exponential here is .5 degree in lon and lat.  
 #diagnostic plots.  
 plot( out)  
-
-# CV predictions and RMSE to judge adequacy of lambda choice 
-pred.cv<- predict( out, precip$x.cv) 
-sqrt(mean( ( pred.cv- precip$y.cv)^2, na.rm=TRUE)) 
 
 # look at the surface 
 image.plot( out$surface)  #or just      surface( out)
@@ -261,7 +257,7 @@ look<- sim.krig.image( out, nreps=4)
 # check out another values of lambda reusing some of the objects from the 
 # first fit 
 
-out2<- krig.image( precip$x, precip$y, cov.function= exp.image.cov, 
+out2<- krig.image( RMprecip$x, RMprecip$y, cov.function= exp.image.cov, 
 lambda=4, 
 start= out$omega2,cov.obj=out$cov.obj)
 #
@@ -282,7 +278,7 @@ res<- predict( out2, out2$xM) - out2$yM
 ##  you will just have to try different values of lambda vary them on  
 ##  log scale to 
  
-out<- krig.image( precip$x, precip$y, cov.function=rad.image.cov, 
+out<- krig.image( RMprecip$x, RMprecip$y, cov.function=rad.image.cov, 
 lambda=1, m=64, n=64, p=2, kmax=300) 
 
 # take a look: image.plot( out$surface) 
@@ -290,16 +286,16 @@ lambda=1, m=64, n=64, p=2, kmax=300)
 # check out  different values reuse some of the things to make it quicker 
 # note addition of kmax argument to increase teh number of iterations
 
-out2<- krig.image( precip$x, precip$y,cov.function=rad.image.cov,  
+out2<- krig.image( RMprecip$x, RMprecip$y,cov.function=rad.image.cov,  
 lambda=.5, start= out$omega2, cov.obj=out$cov.obj, kmax=400) 
 
 # here is something rougher  
-out3<- krig.image( precip$x, precip$y,cov.function=rad.image.cov, 
+out3<- krig.image( RMprecip$x, RMprecip$y,cov.function=rad.image.cov, 
 lambda=1e-2, start= out2$omega2, cov.obj=out$cov.obj,kmax=400,
 tol=1e-3) 
 
 # here is something close to an interpolation  
-out4<- krig.image( precip$x, precip$y,cov.function=rad.image.cov, 
+out4<- krig.image( RMprecip$x, RMprecip$y,cov.function=rad.image.cov, 
 lambda=1e-7, start= out3$omega2, cov.obj=out$cov.obj,kmax=500, tol=1e-3)
  
 #compare the the four surfaces: 

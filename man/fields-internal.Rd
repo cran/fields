@@ -11,12 +11,13 @@
 \alias{Krig.fgcv.model}
 \alias{Krig.fgcv.one}
 \alias{Krig.find.gcvmin}
+\alias{Krig.flplike}
 \alias{Krig.fs2hat}
 \alias{Krig.ftrace}
+\alias{Krig.parameters}
 \alias{Krig.replicates}
 \alias{Krig.updateY}
 \alias{Krig.ynew}
-\alias{W.image.cov}
 \alias{WD4}
 \alias{WD42d}
 \alias{WD42di}
@@ -36,7 +37,6 @@
 \alias{WQS.periodic} 
 \alias{WQS.periodic.basis}
 \alias{WQS.periodic.T} 
-\alias{Wtransform.D}
 \alias{bisection.search}
 \alias{bplot.obj}
 \alias{cat.matrix}
@@ -50,13 +50,11 @@
 \alias{double.exp}
 \alias{draw.bplot}
 \alias{draw.bplot.obj}
-\alias{exp.cov.F}
 \alias{exp.cov.S}
 \alias{exp.earth.cov}
 \alias{fast.1way}
 \alias{find.upcross}
 \alias{gauss.cov}
-\alias{gcv.Krig}
 \alias{gcv.sreg}
 \alias{golden.section.search}
 \alias{grey.level}
@@ -72,7 +70,6 @@
 \alias{make.tmatrix.S}
 \alias{matern}
 \alias{minimax.crit}
-\alias{nkden}
 \alias{periodic.cov.1d}
 \alias{periodic.cov.cyl}
 \alias{periodic.plane.3d}
@@ -110,10 +107,7 @@
 \alias{rdist.F}
 \alias{rdist.S}
 \alias{replace.args.function}
-\alias{setup.W.image.cov}
-\alias{setup.Wtransform.cov}
 \alias{sim.krig.image}
-\alias{sim.rf.W}
 \alias{sim.rf.default}
 \alias{sreg.df.to.lambda}
 \alias{sreg.fdf}
@@ -162,17 +156,16 @@ Krig.fdf (llam, info)
 Krig.fgcv (lam, obj) 
 Krig.fgcv.model (lam, obj) 
 Krig.fgcv.one (lam, obj) 
-Krig.find.gcvmin (info, lambda.grid, gcv, gcv.fun, tol, verbose = FALSE) 
+Krig.find.gcvmin (info, lambda.grid, gcv, gcv.fun, tol, verbose =FALSE, give.warnings = TRUE)
+Krig.flplike (lam, obj)
 Krig.fs2hat (lam, obj) 
 Krig.ftrace (lam, D) 
+Krig.parameters (obj, mle.calc=TRUE)
 Krig.replicates (out, verbose = FALSE) 
 Krig.updateY (out, Y, verbose = FALSE) 
 Krig.ynew (out, ynew, verbose = FALSE) 
  
 
-W.image.cov (ind1, ind2, Y, cov.obj = NULL, setup = FALSE, m = 64, 
-         n = 64, ...) 
- 
 WD4 (x) 
 WD42d (x) 
 WD42di (x) 
@@ -196,12 +189,10 @@ WQSi.periodic(x)
 WQSi.periodic.T(x)
 
 
-Wtransform.D (nx, ny, weights = c(1), cut.min = 8, details = FALSE) 
-
 bisection.search (x1, x2, f, tol = 1e-07, niter = 25, f.extra = 
         NA, upcross.level = 0) 
  
-bplot.obj (data, pos = NA, width = NULL, labels = NULL, srt = 
+bplot.obj (data, pos = NA, width = NULL, labels = NULL, las=NULL
             ,add = FALSE, space = 0.25, sort.names = FALSE, xlab = "", ylab = "", 
               label.cex = 1, xaxt = "n", outlier = TRUE, horizontal = FALSE, ...) 
  
@@ -225,7 +216,6 @@ dyadic.check( n,cut.p=2)
 draw.bplot (temp, width, xpos, outlier = TRUE, style = "tukey") 
 draw.bplot.obj (obj, width, xpos, outlier = TRUE, horizontal = FALSE) 
  
-exp.cov.F (x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA) 
 exp.cov.S (x1, x2, theta = 1) 
 exp.earth.cov (x1, x2, theta = 1) 
  
@@ -235,10 +225,8 @@ find.upcross (fun, fun.info, upcross.level = 0, guess = 1, tol =
 1e-05) 
  
 gauss.cov (...) 
- 
-gcv.Krig (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = 
-     NA,verbose = FALSE, tol = 1e-05, offset = 0, y = NULL, lambda = NA) 
- 
+
+
 gcv.sreg (out, lambda.grid = NA, cost = 1, nstep.cv = 20, rmse = 
      NA, offset = 0, trmin = NA, trmax = NA, verbose = TRUE, tol = 1e-05, 
      find.min = TRUE, method = "GCV") 
@@ -273,8 +261,6 @@ matern (t , scale = 1, range = 1,alpha=1/range,
 
 minimax.crit (obj, des = TRUE, R) 
  
-nkden (data, bandwidth, n.points, grid) 
- 
 periodic.cov.1d (x1, x2, a, b) 
 periodic.cov.cyl (x1, x2, a = 0, b = 365, theta = 1) 
 periodic.plane.3d (x1, x2, a = 0, b = 365, theta = 1) 
@@ -289,7 +275,7 @@ plot.vgram.matrix (obj, ...)
  
 predict.interp.surface (obj, loc) 
 predict.krig.image (obj, x, ...) 
-predict.qsreg (out, x, derivative = 0, model = 1) 
+predict.qsreg (out, x, derivative = 0, model = out$ind.cv.ps)
 predict.sreg (out, x, derivative = 0, model = 1) 
  
 print.krig.image (obj) 
@@ -326,14 +312,7 @@ rdist.S (x1, x2, lon.lat = FALSE)
  
 replace.args.function (fun, ...) 
  
-setup.W.image.cov (m, n, weights = 1, D = NULL, cut.min = 8, 
-     max.m = m,max.n = n, x = NULL, grid = NULL, normalize = TRUE, ...) 
- 
-setup.Wtransform.cov (m, n, weights = 1, cut.min = 8, max.m = m, 
-     max.n = n,x = NULL, grid = NULL, normalize = TRUE, ...) 
- 
 sim.krig.image (out, nreps = 10) 
-sim.rf.W (cov.obj) 
 sim.rf.default (obj) 
  
 sreg.df.to.lambda (df, x, wt, guess = 1, tol = 1e-05) 
