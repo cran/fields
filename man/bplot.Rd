@@ -5,14 +5,15 @@
 }
 \description{
 Plots boxplots of several groups of data
-and allows for placement at different horizontal or vertical positions. It
-is also flexible in the input object accepting either a list or matrix.
+and allows for placement at different horizontal or vertical positions or 
+colors. It
+is also flexible in the input object, accepting either a list or matrix.
 }
 \usage{
 bplot(x, by,style = "tukey", outlier = TRUE, plot = TRUE, ...)
 }
 \arguments{
-\item{x}{
+ \item{x}{
 Vector, matrix,  list or data frame. A vector may be divided according
 to the by argument. Matrices and data frames are separated by columns and
 lists by components.   
@@ -35,66 +36,63 @@ If false just returns a list with the statistics used for plotting the
 box plots. 
 }
 \item{\dots}{
-Other arguments controlling the boxplots ( passed to
-bplot.obj) these are
+Other arguments controlling the boxplots ( passed to bplot.obj) these are
 listed below. Other graphical plotting arguments not matched (e.g. yaxt)
 are used in the call to plot to set up the initial plot if add=T. 
+ 
  \describe{
-\item{pos}{
-The boxplots will be plotted vertically and pos gives the x or y locations
-for their centers. If omitted the boxes are equally spaced at integer  
-values.  
-}
-\item{width}{
-Width of boxplots (in user coordinates) if omitted then the width is a
-reasonable fraction of the  
-distance between boxes and is set by the space argument. 
-}
-\item{labels}{
-Labels under each boxplot. If missing the columns names or components of  
-x are used.  
-}
-\item{las}{
-Orient the axis labels for bplot groups. 
- Default is to 
-put them
-horizontal (las=1) if number of groups is less than 7 otherwise make them 
-perpendicular (las=2) to keep the labels from running into each other. See help  
-on par for more about this option.    
-}
-\item{add}{
-If true, do not create a new plots just add the boxplots to a current
-plot. Note  
-that the pos argument may be useful in this case and should be in the
-user coordinates of the parent plot.  
-}
-\item{space}{
-Space between boxplots.  
-}
-\item{sort.names}{
-If true plot the boxplot data set names are sorted in alphabetic order by
-their labels.  
-}
-\item{xlab}{
-Label for the x-axis 
-}
-\item{ylab}{
-Label for the y-axis 
-}
-\item{label.cex}{
-Boxplot label  size where 1.0 is  normal size characters.
-If zero labels will not be added.  
-}
-\item{xaxt}{
-Plotting parameter for x-axis generation. Default is not to produce
-an x-axis. 
-}
-\item{horizontal}{
-If true draw boxplots horizontally the default is false, produce
-vertical box plots. 
-}
-}
-}
+  \item{pos}{
+  The boxplots will be plotted vertically and pos gives the x or y locations
+  for their centers. If omitted the boxes are equally spaced at integer  
+  values.  
+  }
+  
+   \item{width}{
+   Width of boxplots (in user coordinates) if omitted then the width is a
+   reasonable fraction of the distance between boxes and is set by the 
+   space argument. }
+  
+  \item{labels}{
+  Labels under each boxplot. If missing the columns names or components of  
+  x are used.}
+  \item{las}{
+  Orient the axis labels for bplot groups. Default is to 
+  put them horizontal (las=1) if number of groups is less than 7 
+  otherwise make them 
+  perpendicular (las=2) to keep the labels from running into each other. 
+  See help(par) for more about this option.}
+
+  \item{add}{
+   If true, do not create a new plots just add the boxplots to a current
+   plot. Note that the pos argument may be useful in this case and should 
+   be in the user coordinates of the parent plot.}
+
+  \item{space}{Space between boxplots.}
+
+  \item{sort.names}{If true plot the boxplot data set names are sorted in 
+   alphabetic order by their labels.}
+
+  \item{xlab}{Label for the x-axis}
+
+  \item{ylab}{ Label for the y-axis}
+
+  \item{label.cex}{
+  Boxplot label  size where 1.0 is  normal size characters.
+  If zero labels will not be added. }
+
+  \item{xaxt}{
+  Plotting parameter for x-axis generation. Default is not to produce
+  an x-axis.}
+
+  \item{horizontal}{
+    If true draw boxplots horizontally the default is false, produce
+    vertical box plots. }
+
+  \item{lwd}{  Width(s) of lines in box plots. }
+
+  \item{col}{ Color(s) of bplots.} 
+  }
+ }
 }
 \details{
 This function was created as a complement to the usual S function for  
@@ -128,7 +126,8 @@ bplot(temp)
 #
 bplot( temp, pos=pos, labels=paste( "D",1:12), horizontal=TRUE)
 #
-bplot( temp, pos=pos, label.cex=0, horizontal=TRUE)
+# boxplots in red
+bplot( temp, pos=pos, label.cex=0, horizontal=TRUE, col="red")
 # add an axis
 axis( 2)
 }

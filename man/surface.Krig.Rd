@@ -12,7 +12,7 @@ ranges.
 surface.Krig(obj, grid.list = NA, extrap = FALSE, graphics.reset =
                  NULL, xlab = NULL, ylab = NULL, main = NULL, zlab =
                  NULL, zlim = NULL, levels = NULL, type = "b", nx =
-                 30, ny = 30, ...)
+                 80, ny = 80, ...)
 }
 \arguments{
 \item{obj}{

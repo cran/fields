@@ -40,17 +40,20 @@ range when finding REML estimate of lambda.}
 
 }
 \details{
- This function finds several estimates of the smoothing parameter using first a coarse grid search 
-followed by a refinement using a minimization ( in the case of GCV or maximum likelihood) or 
-bisection in the case of mathcing the rmse. Details of the estimators can be found in the
-help file for the Krig function. 
 
-The Krig object passed to this function has some matrix decompostions that facilitate rapid 
-computation of the GCV and ML functions and do not depend on the independent variable. This
-makes it possible to compute the Krig object once and to reuse the decompostions for multiple 
-data sets. (But keep in mind if the x values change then the object must be recalculated.)
-The example below show show this can be used for a simulation study on the variability for estimating 
-the smoothing parameter. 
+ This function finds several estimates of the smoothing parameter using
+first a coarse grid search followed by a refinement using a minimization (
+in the case of GCV or maximum likelihood) or bisection in the case of
+mathcing the rmse. Details of the estimators can be found in the help file
+for the Krig function. 
+
+The Krig object passed to this function has some matrix decompostions that
+facilitate rapid computation of the GCV and ML functions and do not depend
+on the independent variable. This makes it possible to compute the Krig
+object once and to reuse the decompostions for multiple data sets. (But
+keep in mind if the x values change then the object must be recalculated.)
+The example below show show this can be used for a simulation study on the
+variability for estimating the smoothing parameter. 
 
 
 }
@@ -63,7 +66,7 @@ trA=effective degrees of freedom,
 GCV=Usual GCV criterion, 
 GCV.one=GCV criterion leave-one-out, 
 GCV.model= GCV based on average response in the case of replicates, 
-shat= Impleid estimate of sigma ,
+shat= Implied estimate of sigma ,
 -Log Profile= negative log of profiel likelihood for the lambda. 
 }
   \item{lambda.est}{Summary table of all estimates

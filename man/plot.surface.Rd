@@ -10,7 +10,7 @@ information e.g. a contour plots, perspective plots.
 \usage{
 plot.surface(x, main = NULL, type = "b", zlab = NULL, xlab = NULL,
     ylab = NULL, levels = NULL, zlim = NULL, graphics.reset = NULL,
-     labcex = 0.6, ...)
+     labcex = 0.6, add.legend=TRUE, ...)
 }
 \arguments{
 \item{x}{
@@ -23,11 +23,10 @@ Title for plot.
  
 }
 \item{type}{
-type="p" for a perspective plot, type="c" for a contour plot  
-and type="b" for both (default). type="I" for an image plot with a legend
+type="p" for a perspective/drape plot, 
+type="I" for an image plot with a legend
 strip (see image.plot). type="C" is the "I" option with contours lines
-added. 
-}
+added. type="b" gives both  "p" and "C" as a 2X1 panel }
 \item{zlab}{
 z-axes label 
 }
@@ -49,14 +48,15 @@ Sets z limits on perspective plot. }
 \item{labcex}{
 Label sizes for axis labeling etc. 
 }
+\item{add.legend}{ If TRUE adds a legend to the draped perspective plot}
 \item{\dots}{
-Other graphical parameters that are passed along to either persp, contour
-or image. 
+Other graphical parameters that are passed along to either drape.persp 
+or image.plot 
 }
 
 }
 \seealso{
-surface, predict.surface, as.surface,   
+surface, predict.surface, as.surface, drape.plot, image.plot  
 }
 \examples{
 fit<- Tps( BD[,1:4], BD$lnya) # fit surface to data 

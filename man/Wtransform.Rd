@@ -126,7 +126,16 @@ columns of the matrix used to represent the image in R. (Compare
 Nychka,D. , C. Wikle and J.A. Royle, (2002)  Multi-resolution models for
 nonstationary spatial covariance functions Statistical Modelling 2
 315-332.
+
+See also the original report on W matrices:
+
+Man Kam Kwong and P. T. Peter Tang, "W-Matrices, Nonorthogonal 
+Multiresolution Analysis, and Finite Signals of Arbitrary Length," 
+Preprint MCS-P449-0794, September 1994 
+
+\url{ftp://info.mcs.anl.gov/pub/tech_reports/reports/P449.ps.Z}
 }
+
 \seealso{
 Wtransform.image, WQS, WQSi   
 }

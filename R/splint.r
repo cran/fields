@@ -2,9 +2,10 @@
 function (x, y, xgrid, derivative = 0) 
 {
     if (is.matrix(x)) {
+      if( ncol(x)>1){
         xgrid <- y
         y <- x[, 2]
-        x <- x[, 1]
+        x <- x[, 1]}
     }
     if (is.list(x)) {
         xgrid <- y

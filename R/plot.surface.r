@@ -1,10 +1,13 @@
 "plot.surface" <-
 function (x, main = NULL, type = "b", zlab = NULL, xlab = NULL, 
     ylab = NULL, levels = NULL, zlim = NULL, graphics.reset = NULL, 
-    labcex=.6,...) 
-{ 
-    obj <- x # hack S3
+    labcex = 0.6, add.legend = TRUE, ...) 
+{
+    obj <- x
     old.par <- par(no.readonly = TRUE)
+    if (is.null(zlim)) {
+        zlim = range(obj$z, na.rm = TRUE)
+    }
     if (is.null(graphics.reset) & (type == "b")) {
         graphics.reset <- TRUE
     }
@@ -33,39 +36,37 @@ function (x, main = NULL, type = "b", zlab = NULL, xlab = NULL,
         if (!is.null(obj$main)) 
             main <- obj$main
     if (type == "b") 
-        set.panel(2, 1, TRUE)
+        set.panel(1,2, TRUE)
     if (type == "p" | type == "b") {
-        if (is.null(zlim)) 
-            persp(obj$x, obj$y, obj$z, xlab = xlab, ylab = ylab, 
-                zlab = zlab, theta = 30, phi = 30, expand = 0.5, 
-                col = "LightGreen", ...)
-        else persp(obj, xlab = xlab, ylab = ylab, zlab = zlab, 
-            zlim = zlim, theta = 30, phi = 30, expand = 0.5, 
-            col = "LightGreen", ...)
+        if (type == "b") {
+            add.legend <- FALSE
+            old.mar <- par()$mar
+            par(mar = c(0, 5, 0, 0))
+        }
+        drape.plot(obj, xlab = xlab, ylab = ylab, zlab = zlab, 
+            zlim = zlim, add.legend = add.legend, ...)
         if (!is.null(main)) 
             title(main)
     }
-    if (type == "c" | type == "b") {
-        if (is.null(levels)) 
-            levels <- pretty(obj$z[!is.na(obj$z)], 5)
-        contour(obj$x, obj$y, obj$z, , xlab = xlab, ylab = ylab, 
-            levels = levels, labcex=labcex,...)
-    }
     if (type == "I") {
-        image.plot(obj$x, obj$y, obj$z, xlab = xlab, ylab = ylab)
+        image.plot(obj$x, obj$y, obj$z, xlab = xlab, ylab = ylab, 
+            zlim = zlim, ...)
         if ((!is.null(main)) & type != "b") 
             title(main)
     }
-    if (type == "C") {
+    if (type == "b" | type == "C") {
+        if (type == "b") {
+            par(mar = old.mar)
+        }
         image.plot(obj$x, obj$y, obj$z, xlab = xlab, ylab = ylab, 
-            graphics.reset = graphics.reset)
+            graphics.reset = graphics.reset, zlim = zlim, ...)
         if (is.null(levels)) 
             levels <- pretty(obj$z[!is.na(obj$z)], 5)
         contour(obj$x, obj$y, obj$z, add = TRUE, levels = levels, 
-labcex=labcex,
-            ...)
+            labcex = labcex, col = "black", lwd = 2)
         if ((!is.null(main)) & type != "b") 
             title(main)
     }
     invisible()
 }
+

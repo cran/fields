@@ -5,7 +5,7 @@
 }
 \description{
 Given two sets of longitude/latitude locations computes the Great circle
-(geogrpahic)  distance matrix
+(geographic)  distance matrix
 among all pairings. 
 }
 \usage{

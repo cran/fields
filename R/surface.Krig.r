@@ -1,7 +1,7 @@
 "surface.Krig" <-
 function(obj, grid.list = NA, extrap = FALSE, graphics.reset = NULL, xlab = NULL,
 	ylab = NULL, main = NULL, zlab = NULL, zlim = NULL, levels = NULL,
-	type = "b", nx=30, ny=30,...)
+	type = "b", nx=80, ny=80,...)
 {
 	## modified so that you can give main, and ylab as arguments
 	## in ... and have them passed correctly

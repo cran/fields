@@ -18,5 +18,6 @@ function (loc1, loc2, miles = TRUE, R = NULL)
     sinlon2 <- sin((loc2[, 1] * pi)/180)
     pp <- cbind(coslat1 * coslon1, coslat1 * sinlon1, sinlat1) %*% 
         t(cbind(coslat2 * coslon2, coslat2 * sinlon2, sinlat2))
-    R * acos(ifelse(pp > 1, 1, pp))
+    R * acos(ifelse(abs(pp) > 1, 1*sign( pp), pp))
 }
+
