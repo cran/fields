@@ -1,31 +1,24 @@
 "image.plot" <-
-function (..., add=F, nlevel = 32, legend.shrink = 0.9, legend.width = 
-0.04,  graphics.reset = F, horizontal = F, offset = 2 * legend.width, 
+function (..., add = F, nlevel = 32, legend.shrink = 0.9, legend.width = 0.04, 
+    graphics.reset = F, horizontal = F, offset = 2 * legend.width, 
     bigplot = NULL, smallplot = NULL, legend.only = F, col = topo.colors(64)) 
 {
     old.par <- par(no.readonly = T)
     info <- image.plot.info(...)
-#
-if( add) big.plot<- old.par$plt
-#
-# reset graphics if just drawing the legend. 
-#
-if( legend.only) graphics.reset<- T
-#
-#
-temp<-image.plot.plt( add=add,  legend.shrink = legend.shrink, 
-legend.width =legend.width, horizontal = horizontal, offset = offset,
-    bigplot = bigplot, smallplot = smallplot)    
-#
-#plotting regions for image and legend
-#
-smallplot<- temp$smallplot
-bigplot<- temp$bigplot
-#
-#
+    if (add) 
+        big.plot <- old.par$plt
+    if (legend.only) 
+        graphics.reset <- T
+    temp <- image.plot.plt(add = add, legend.shrink = legend.shrink, 
+        legend.width = legend.width, horizontal = horizontal, 
+        offset = offset, bigplot = bigplot, smallplot = smallplot)
+    smallplot <- temp$smallplot
+    bigplot <- temp$bigplot
     if (!legend.only) {
- if(!add) { par(plt = bigplot) }   
-        image(..., add=add,col = col)
+        if (!add) {
+            par(plt = bigplot)
+        }
+        image(..., add = add, col = col)
         big.par <- par(no.readonly = T)
     }
     if ((smallplot[2] < smallplot[1]) | (smallplot[4] < smallplot[3])) {
@@ -47,12 +40,15 @@ bigplot<- temp$bigplot
         image(iy, ix, t(iz), yaxt = "n", xlab = "", ylab = "", 
             col = col)
     }
-    if (graphics.reset|add) {
-        par( old.par)
+mfg.save<- par()$mfg
+    if (graphics.reset | add) {
+        par(old.par)
+par( mfg=mfg.save, new=F)
         invisible()
     }
     else {
         par(big.par)
+par( mfg=mfg.save, new=F)
         invisible()
     }
 }

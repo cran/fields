@@ -29,6 +29,10 @@ plot. Default is to plot all 4.
 \item{graphics.reset}{
 Reset to original graphics parameters after plotting. Default is TRUE.
 }
+\item{\dots}{
+Optional plotting arguments that are passed to the first two scatterplots. 
+e.g pch="."
+}
 }
 \details{
 This function creates four summary plots of the sreg object-- the results 

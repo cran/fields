@@ -34,6 +34,11 @@ Number of rows in image matrix ( x-axis direction)
 \item{ncol}{
 Number of columns in image matrix ( y-axis direction) 
 }
+\item{weights}{
+If two or more values fall into the same  
+pixel a weighted average is used to represent the pixel value. Default is 
+equal weights. 
+}
 }
 \value{
 An list in image format with a few more components. Components x and y are 

@@ -10,7 +10,7 @@ Adds  horizontal lines in the plot region.
 yline(y, ...)
 }
 \arguments{
-\item{x}{
+\item{y}{
 Values on y axis specifying location of vertical lines. 
 }
 \item{\dots}{

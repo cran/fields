@@ -30,8 +30,13 @@ Number of color levels used in legend strip
 of the plot.  
 }
 \item{legend.width}{
- Width in plot
-coordinates of the legend strip 
+Width in plotting 
+coordinates (the full size plot is [0,1]X[0,1]) of the legend strip. 
+}
+\item{offset}{
+Amount that the legend strip is set in from the left edge or the bottom 
+of the plotting region. Units are with respect to the plotting 
+coordinates.
 }
 \item{graphics.reset}{
  If

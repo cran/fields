@@ -15,6 +15,9 @@ predict.se(object, ...)
 \item{object}{
 A fitted model object of a certain class 
 }
+\item{\dots}{
+Additional arguments to be passed to 
+a particular method. e.g. a grid.list or model specification. }
 }
 \value{
 A vector of standard errors for the predicted values. 

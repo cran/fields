@@ -28,6 +28,10 @@ same length as the dimension of the locations. Default is theta=1.
 Exponent in the exponential form. p=1 gives an exponential and p=2 gives a
 Gaussian. Default is the exponential form.
 }
+\item{C}{
+A vector with the same length as the number of rows of x2. 
+If specified the covariance matrix will be multiplied by this vector.
+}
 }
 \value{
 If the argument C is NULL the cross covariance matrix. Moreover if x1 is

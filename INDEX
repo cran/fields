@@ -6,6 +6,7 @@ BD                       Data frame of the effect of buffer compositions
 Krig                     Kriging surface estimate
 Tps                      Thin plate spline regression
 US                       Plot of the US with state boundaries
+US.dat                   Outline of coterminous US and states.
 Wtransform.image         Quadratic W wavelet transform for an image
 Wtransform.sim           Simulates a 2-d random wavelet field
 arrow.plot               Adds arrows to a plot
