@@ -1,4 +1,4 @@
-"plot.Wimage.info" <-
+"Wimage.info.plot" <-
 function( m,n,cut.min){
 temp<- Wimage.info( m,n, cut.min)
 Nmax<- max( m,n)

@@ -9,7 +9,7 @@ number of
 occurrences for each grid box.  
 }
 \usage{
-image.count(x, grid=NULL, nrow=64, ncol=64)
+image.count(x, grid=NULL, nrow=64, ncol=64,...)
 }
 \arguments{
 \item{x}{
@@ -29,6 +29,7 @@ Number of columns for the image. Note that
 ncol= number of y values and will 
 be the vertical dimension.  
 }
+\item{\dots}{ Other possible arguments (not used)}
 }
 \value{
 An list in image format. Components x and y are the grid values , z is a 

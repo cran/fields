@@ -1,6 +1,7 @@
 "summary.spatial.design" <-
-function (x, digits = 4, ...) 
+function (object, digits = 4, ...) 
 {
+    x<- object
     class(x) <- ("summary.spatial.design")
     x
 }

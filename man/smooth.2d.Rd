@@ -10,8 +10,7 @@ and to apply the kernel weights. The main advantage of this function
 is a smoother that avoids explicit looping. 
 }
 \usage{
-smooth.2d
- (Y, ind = NULL, weight.obj = NULL, setup = FALSE, grid = NULL,
+smooth.2d(Y, ind = NULL, weight.obj = NULL, setup = FALSE, grid = NULL,
     x = NULL, nrow = 64, ncol = 64, surface = TRUE, cov.function =
 gauss.cov, Mwidth = NULL, Nwidth = NULL, ...)
 }
@@ -104,7 +103,8 @@ if nrow(x1)=m and nrow( x2)=n then this function should return a mXn
 matrix where the (i,j) element is K( x1[i,]- x2[j,]).  Optional arguments
 that are included in the ... arguments are passed to this function when it
 is used. The default kernel is the Gaussian and the argument theta is the
-bandwidth. It is easy to write other other kernels, just use exp.cov.S as
+bandwidth. It is easy to write other other kernels, just use 
+exp.cov.simple as
 a template. 
 }
 \examples{

@@ -1,2 +1,2 @@
 "plot.spatial.design" <-
-function( out){ pairs( out$design)}
+function( x,...){ pairs( x$design,...)}

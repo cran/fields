@@ -1,7 +1,9 @@
 "plot.krig.image" <-
-function (out, main = NA, digits = 4, which = rep(TRUE, 4), graphics.reset = TRUE, 
+function (x, main = NA, digits = 4, which = rep(TRUE, 4), 
+graphics.reset = TRUE, 
     ...) 
 {
+out<- x # hack S3
 old.par <- par(no.readonly=TRUE)
 
     if (graphics.reset) {

@@ -128,7 +128,7 @@ nonstationary spatial covariance functions Statistical Modelling 2
 315-332.
 }
 \seealso{
-plot.coef, WQS, WQSi, Wtransform.D  
+Wtransform.image, WQS, WQSi   
 }
 \examples{
 # W transform of a simple function

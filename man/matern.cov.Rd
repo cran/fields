@@ -8,8 +8,7 @@ Given two sets of locations computes the Matern cross covariance matrix
 for covariances among all pairings. 
 }
 \usage{
-matern.cov
-(x1, x2, theta = diag(1, ncol(x1)), smoothness = 0.5, scale=1)
+matern.cov(x1, x2, theta = 1.0, smoothness = 0.5, scale=1)
 }
 \arguments{
 \item{x1}{

@@ -10,8 +10,7 @@ model is additive  Y = f(X) +e  where f(X) is a d dimensional surface.
 This is a special case of the spatial process estimate.   
 }
 \usage{
-Tps
-(x, Y, m = NULL, p = NULL, decomp = "WBW", scale.type = "range", ...)
+Tps(x, Y, m = NULL, p = NULL, decomp = "WBW", scale.type = "range", ...)
 }
 \arguments{
 To be helpful, a more complete list of arguments are described that are the 
@@ -116,7 +115,7 @@ Name of y variable
 If true returns the big X matrix used for the estimate.  
 }
 \item{null.function}{
-An S function that creates the matrices for the null space model.  
+An R function that creates the matrices for the null space model.  
 The default is make.tmatrix, an S function that creates polynomial 
 null spaces.  
 }

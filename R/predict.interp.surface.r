@@ -1,6 +1,7 @@
 "predict.interp.surface" <-
-function (obj, loc) 
+function (object, loc,...) 
 {
+     obj<- object # hack S3
     xg <- (obj$x)
     yg <- (obj$y)
     nx <- length(xg)

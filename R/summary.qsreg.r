@@ -1,6 +1,7 @@
 "summary.qsreg" <-
-function (x, ...) 
+function (object, ...) 
 {
+    x<- object #hack S3
     digits <- 4
     c1 <- "Number of Observations:"
     c2 <- (x$N)

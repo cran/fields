@@ -9,15 +9,16 @@ variance (sigma) and the smoothing
 parameter (lambda). This list is usually printed using print.summary.Krig.
 }
 \usage{
-summary.Krig(x, digits=4)
+summary.Krig(object, digits=4,...)
 }
 \arguments{
-\item{x}{
+\item{object}{
 A Krig object. 
 }
 \item{digits}{
 Number of significant digits in summary. 
 }
+\item{\dots}{Other arguments to summary}
 }
 \value{
 Gives a summary of the Krig object. The components 

@@ -1,7 +1,9 @@
 "predict.se.Krig" <-
-function(out, x, cov.function=NULL, rho, sigma2, weights = NULL, cov = FALSE, stationary
+function(object, x, cov.function=NULL, rho, sigma2, weights = NULL, cov 
+= FALSE, stationary
 	 = TRUE, fixed.mean = TRUE, ...)
 {
+ out<-object # hack for S3 
 	# NOTE: to follow along 
 	# if lambda is an estimate of the random field at a point
 	# and lambda_hat is an estimate based on linear combination of the data
@@ -83,7 +85,7 @@ function(out, x, cov.function=NULL, rho, sigma2, weights = NULL, cov = FALSE, st
 	# wght.vec are the linear combinations of the data ( yM the averages
 	# if there are replicates) that give the 
 	# correpsonding estimates of the function at the points x
-	wght.vec <- t(make.Amatrix(out, xraw, lambda))
+	wght.vec <- t(Krig.Amatrix(out, xraw, lambda))
 	#
 	# modify weight.vec to give the weighted estimated 
 	#	

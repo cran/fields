@@ -1,6 +1,7 @@
 "summary.sreg" <-
-function(x, digits = 4, ...)
+function(object, digits = 4, ...)
 {
+        x<- object # hack S3
 	if(length(x$lambda) > 1) {
 		stop("Can't do a summary on an object with a grid of smoothing\nparameters"
 			)

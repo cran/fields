@@ -1,6 +1,8 @@
 "summary.gcv.sreg" <-
-function(out, lambda, cost = 1, nstep.cv = 20, offset = 0, verbose = TRUE)
+function(object, lambda, cost = 1, nstep.cv = 20, offset = 0, verbose = 
+TRUE,...)
 {
+        out<- object # hack S3
 	shat.pure.error <- out$shat.pure.error
 	pure.ss <- out$pure.ss
 	nt <- 2

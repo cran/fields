@@ -1,7 +1,9 @@
 "predict.surface" <-
-function (out, grid.list = NA, extrap = FALSE, chull.mask, model = NA, 
+function (object, grid.list = NA, extrap = FALSE, chull.mask, model = 
+NA, 
     nx = 30, ny = 30, ...) 
 {
+    out<- object # hack S3
     if ((length(grid.list) == 1) | (is.na(grid.list)[1])) {
         if (is.null(out$x)) 
             stop("Need a an X matrix in the\noutput object")

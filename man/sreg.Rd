@@ -9,8 +9,7 @@ smoothness can be specified or estimated from the data by GCV.
 <!--brief description-->
 }
 \usage{
-sreg
-(x, y, lam = NA, df = NA, offset = 0, wt = rep(1, length(x)), cost = 1, 
+sreg(x, y, lam = NA, df = NA, offset = 0, wt = rep(1, length(x)), cost = 1, 
 nstep.cv = 80, find.diagA = TRUE, trmin = 2.01,
 trmax = length(unique(x)) * 0.95, lammin = NA, lammax = NA, verbose = FALSE,
 do.cv = TRUE, method = "GCV", rmse = NA, lambda = NA)

@@ -1,6 +1,7 @@
 "predict.krig.image" <-
-function (obj, x, ...) 
+function (object, x, ...) 
 {
+    obj<- object # hack S3
     if (missing(x)) {
         temp1 <- c(obj$cov.function(obj$indexM, obj$indexM, Y = obj$delta, 
             cov.obj = obj$cov.obj))

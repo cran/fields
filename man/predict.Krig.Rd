@@ -9,12 +9,12 @@ points, new data (Y) or other values of the smoothing parameter (lambda)
 including a GCV estimate. 
 }
 \usage{
-predict.Krig
-(out, x = NULL, lambda = NA, df = NA, model = NA,
-        eval.correlation.model = TRUE, y = NULL, verbose = FALSE, gcv = FALSE)
+predict.Krig(object, x = NULL, lambda = NA, df = NA, model = NA,
+        eval.correlation.model = TRUE, y = NULL, 
+        verbose = FALSE, gcv = FALSE,...)
 }
 \arguments{
-\item{out}{
+\item{object}{
 Fit object from the Krig or Tps function. 
 }
 \item{x}{
@@ -54,6 +54,7 @@ Print out all kinds of intermediate stuff for debugging
 Default is false. Find lambda from the y vector using GCV. See the
 returned values for a side effect of setting equal to true. 
 }
+\item{\dots}{Other arguments for predict.}
 }
 \value{
 Vector of predicted responses if gcv=F ( the default)

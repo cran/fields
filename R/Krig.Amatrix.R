@@ -1,4 +1,4 @@
-"make.Amatrix.Krig" <-
+Krig.Amatrix <-
 function(out, x0 = out$x, lambda)
 {
 	if(missing(lambda)) {

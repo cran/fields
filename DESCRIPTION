@@ -1,6 +1,6 @@
 Package: fields
-Version: 1.7.2
-Date: Novemeber 12 2004
+Version: 2.0
+Date: November 12 2004
 Title: Tools for spatial data
 Author: Doug Nychka
 Maintainer: Doug Nychka <nychka@ucar.edu> 
@@ -14,4 +14,4 @@ Description: Fields is a collection of programs for curve and function
  smooth wavelet basis suitable for spatial models. 
 License: GPL Version 2 or later. 
 URL: http://www.cgd.ucar.edu/stats/Software/Fields
-Packaged: Sat Nov 20 12:32:00 2004; nychka
+Packaged: Tue May 17 15:39:08 2005; nychka

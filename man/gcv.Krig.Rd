@@ -14,10 +14,9 @@ with different data sets  (the y's) if the covariates ( the x's) are the same an
 thus reduce the computation. 
 }
 \usage{
-gcv.Krig
-(out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse
-                 = NA, verbose = FALSE, tol = 1e-05, offset = 0, y =
-                 NULL, give.warnings = TRUE)
+gcv.Krig(out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA, 
+                  verbose = FALSE, tol = 1e-05, offset = 0, 
+                  y = NULL, give.warnings = TRUE, give.warnings.REML = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,7 +33,11 @@ equally spaced on effective degree of freedom scale. }
   \item{y}{A new data vector to be used in place of the one associated with the
 Krig object (obj) }
   \item{give.warnings}{ If FALSE will suppress warnings about grid search being out of 
-range.}
+range for various estimates based on GCV.}
+  \item{give.warnings.REML}{ If FALSE will suppress warnings about grid search being 
+out of 
+range when finding REML estimate of lambda.}
+
 }
 \details{
  This function finds several estimates of the smoothing parameter using first a coarse grid search 

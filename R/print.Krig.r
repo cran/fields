@@ -1,5 +1,5 @@
 "print.Krig" <-
-function(x, digits=4)
+function(x, digits=4,...)
 {
 	c1 <- "Number of Observations:"
 	c2 <- length(x$residuals)

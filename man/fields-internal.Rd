@@ -11,6 +11,7 @@
 \alias{Krig.fgcv.model}
 \alias{Krig.fgcv.one}
 \alias{Krig.find.gcvmin}
+\alias{Krig.find.REML}
 \alias{Krig.flplike}
 \alias{Krig.fs2hat}
 \alias{Krig.ftrace}
@@ -50,7 +51,6 @@
 \alias{double.exp}
 \alias{draw.bplot}
 \alias{draw.bplot.obj}
-\alias{exp.cov.S}
 \alias{exp.earth.cov}
 \alias{fast.1way}
 \alias{find.upcross}
@@ -73,7 +73,6 @@
 \alias{periodic.cov.1d}
 \alias{periodic.cov.cyl}
 \alias{periodic.plane.3d}
-\alias{plot.coef}
 \alias{plot.krig.image}
 \alias{plot.qsreg}
 \alias{plot.sim.krig.image}
@@ -108,7 +107,6 @@
 \alias{rdist.S}
 \alias{replace.args.function}
 \alias{sim.krig.image}
-\alias{sim.rf.default}
 \alias{sreg.df.to.lambda}
 \alias{sreg.fdf}
 \alias{sreg.fgcv}
@@ -156,7 +154,10 @@ Krig.fdf (llam, info)
 Krig.fgcv (lam, obj) 
 Krig.fgcv.model (lam, obj) 
 Krig.fgcv.one (lam, obj) 
-Krig.find.gcvmin (info, lambda.grid, gcv, gcv.fun, tol, verbose =FALSE, give.warnings = TRUE)
+Krig.find.gcvmin (info, lambda.grid, gcv, gcv.fun, tol, verbose =FALSE, 
+give.warnings = TRUE)
+Krig.find.REML (info, lambda.grid, llike, llike.fun, tol, verbose = TRUE, 
+give.warnings = FALSE)
 Krig.flplike (lam, obj)
 Krig.fs2hat (lam, obj) 
 Krig.ftrace (lam, D) 
@@ -216,7 +217,6 @@ dyadic.check( n,cut.p=2)
 draw.bplot (temp, width, xpos, outlier = TRUE, style = "tukey") 
 draw.bplot.obj (obj, width, xpos, outlier = TRUE, horizontal = FALSE) 
  
-exp.cov.S (x1, x2, theta = 1) 
 exp.earth.cov (x1, x2, theta = 1) 
  
 fast.1way (lev, y, w = rep(1, length(y))) 
@@ -237,11 +237,12 @@ golden.section.search (ax, bx, cx, f, niter = 25, f.extra = NA,
 grey.level (n) 
  
 image.plot.info (...) 
-image.plot.plt ( add=FALSE,  legend.shrink = 0.9, legend.width = 0.04, 
-horizontal = FALSE, offset = 2 * legend.width, bigplot = NULL, smallplot = NULL)
+image.plot.plt(x, add=FALSE,  legend.shrink = 0.9, legend.width = 0.04, 
+horizontal = FALSE, offset = 2 * legend.width, bigplot = NULL, smallplot = 
+NULL,...)
 
-image.smooth.setup (nrow = 64, ncol = 64, dx = 1, dy = 1, 
-     kernel.function = function(x) {    exp(-abs(x))}, 
+image.smooth.setup (x,nrow = 64, ncol = 64, dx = 1, dy = 1, 
+     kernel.function = double.exp, 
      theta = 1, Mwidth = nrow, Nwidth = ncol, ...) 
  
 in.poly (xd, xp, convex.hull = FALSE, inflation=1e-7) 
@@ -265,26 +266,25 @@ periodic.cov.1d (x1, x2, a, b)
 periodic.cov.cyl (x1, x2, a = 0, b = 365, theta = 1) 
 periodic.plane.3d (x1, x2, a = 0, b = 365, theta = 1) 
  
-plot.coef (x, cut.min = 8, graphics.reset = TRUE, common.range = FALSE) 
-plot.krig.image (out, main = NA, digits = 4, which = rep(TRUE, 4), 
+plot.krig.image (x, main = NA, digits = 4, which = rep(TRUE, 4), 
       graphics.reset = TRUE, ...) 
-plot.qsreg (out, pch = "*", main = NA) 
-plot.sim.krig.image (obj) 
-plot.spatial.design (out) 
-plot.vgram.matrix (obj, ...)
+plot.qsreg (x, pch = "*", main = NA,...) 
+plot.sim.krig.image (x,...) 
+plot.spatial.design (x,...) 
+plot.vgram.matrix (x, ...)
  
-predict.interp.surface (obj, loc) 
-predict.krig.image (obj, x, ...) 
-predict.qsreg (out, x, derivative = 0, model = out$ind.cv.ps)
-predict.sreg (out, x, derivative = 0, model = 1) 
+predict.interp.surface (object, loc,...) 
+predict.krig.image (object, x, ...) 
+predict.qsreg (object, x, derivative = 0, model = object$ind.cv.ps,...)
+predict.sreg (object, x, derivative = 0, model = 1,...) 
  
-print.krig.image (obj) 
+print.krig.image(x,...) 
 print.qsreg (x, ...) 
-print.spatial.design (x) 
+print.spatial.design (x,...) 
 print.sreg (x, ...) 
 print.summary.Krig (x, ...) 
 print.summary.krig.image (x, ...) 
-print.summary.spatial.design (x, digits = 4) 
+print.summary.spatial.design (x, digits = 4,...) 
 print.summary.sreg (x, ...) 
  
 qr.q2ty (qr, y) 
@@ -313,7 +313,6 @@ rdist.S (x1, x2, lon.lat = FALSE)
 replace.args.function (fun, ...) 
  
 sim.krig.image (out, nreps = 10) 
-sim.rf.default (obj) 
  
 sreg.df.to.lambda (df, x, wt, guess = 1, tol = 1e-05) 
 sreg.fdf (h, info) 
@@ -327,23 +326,22 @@ sreg.trace (h, info)
 stats.bplot (x, by, style = "tukey", outlier = TRUE) 
 stats.sim.krig.image (obj) 
  
-summary.gcv.Krig (out, lambda, cost = 1, verbose = FALSE, offset = 
-    0, y = NULL) 
-summary.gcv.sreg (out, lambda, cost = 1, nstep.cv = 20, offset = 
-    0, verbose = TRUE) 
-summary.krig.image (x, digits = 4, ...) 
-summary.qsreg (x, ...) 
-summary.spatial.design (x, digits = 4, ...) 
-summary.sreg (x, digits = 4, ...) 
+summary.gcv.Krig (object, lambda, cost = 1, verbose = FALSE, offset = 
+    0, y = NULL,...) 
+summary.gcv.sreg (object, lambda, cost = 1, nstep.cv = 20, offset = 
+    0, verbose = TRUE,...) 
+summary.krig.image (object, digits = 4, ...) 
+summary.qsreg (object, ...) 
+summary.spatial.design (object, digits = 4, ...) 
+summary.sreg (object, digits = 4, ...) 
 
-surface (x, grid.list = NA, extrap = FALSE, xlab = NULL, ylab = 
-    ,zlab = NULL, main = NULL, levels = NULL, zlim = NULL, ...) 
-surface.default (...) 
+surface(obj , ...) 
+surface.default (obj, ...) 
 surface.krig.image (obj, grid.list = NA, extrap = TRUE, 
       graphics.reset = FALSE, xlab = NULL, ylab = NULL, main = NULL,
       zlab = NULL,zlim = NULL,levels = NULL, ptype = "I", ...) 
  
-surface.surface (...)
+surface.surface (obj, ...)
  
 test.data  
 

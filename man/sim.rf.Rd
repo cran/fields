@@ -7,7 +7,7 @@
 Simulates a random Gaussian field on a regular grid. 
 }
 \usage{
-sim.rf(obj,...)
+sim.rf(obj)
 }
 \arguments{
 \item{obj}{
@@ -25,8 +25,11 @@ A matrix with the random field values
 \details{
 This function takes an object that includes some preliminary calculations 
 and so is more efficient for simulating more than one field from the same 
-covariance. However, the algorithm using a 2-d FFT may not always if the
-correlation scale is large (See the FIELDS manual for more details.)
+covariance. However, the algorithm using a 2-d FFT may not always work if 
+the correlation scale is large (See the FIELDS manual for more details.)
+The simple fix is increase the size of the domain so that the correlation 
+sale becomes smaller relative to the extent of th domain. 
+
 For a stationary model the covariance object has the components: 
 
 names( obj) 
@@ -39,12 +42,15 @@ that is used for simulation ( usually M= 2*m and N=2*n) to minimize
 periodic effects. wght is a matrix from the FFT of the covariance 
 function.  The easiest way to create this object is to use for example 
 exp.image.cov with setup=T ( see below). 
-To create the object for the wavelet model see  
-W.image.cov with setup=T. The FIELDS manual has more information about
-this function. 
+
+The classic reference for this algorithm is 
+Wood, A.T.A. and Chan, G. (1994).
+    Simulation of Stationary Gaussian Processes in [0,1]d . Journal of
+Computational and Graphical Statistics, 3, 409-432. 
+
 }
 \seealso{
-W.image.cov, exp.image.cov, sim.rf.W  
+exp.image.cov, matern.image.cov  
 }
 \examples{
 #Simulate a Gaussian random field with an exponential covariance function,  
@@ -56,9 +62,11 @@ look<- sim.rf( obj)
 # Now simulate another ... 
 look2<- sim.rf( obj)
 # take a look 
-# set.panel(2,1)
-# image.plot( grid$x, grid$y, look) 
-# image.plot( grid$x, grid$y, look2) 
+set.panel(2,1)
+ image.plot( grid$x, grid$y, look) 
+ title("simulated gaussian field")
+ image.plot( grid$x, grid$y, look2) 
+ title("another (independent) realization ...")
 }
 \keyword{spatial}
 % docclass is function

@@ -8,15 +8,15 @@ Takes an image matrix and applies a kernel smoother to it. Missing values
 are handled using the Nadaraya/Watson normalization of the kernel. 
 }
 \usage{
-image.smooth
- (Y, wght = NULL, dx = 1, dy = 1, Nwidth = nrow(Y), Mwidth = ncol(Y),
+image.smooth(x, wght = NULL, dx = 1, dy = 1, Nwidth = nrow(Y), Mwidth = 
+ncol(Y),
     kernel.function = double.exp,
  theta = 1, grid = NULL, tol = 1e-08, xwidth = NULL, ywidth = NULL,
-    weights = NULL)
+    weights = NULL,...)
 }
 \arguments{
-\item{Y}{
-A matrix image with missing values are indicated by NA. 
+\item{x}{
+A matrix image. Missing values can be indicated by NAs. 
 }
 \item{wght}{
 FFT of smoothing kernel. If this is NULL the default is to compute this
@@ -43,10 +43,10 @@ points.
 Default is half the number of columns of Y 
 }
 \item{kernel.function}{
-An S function that takes as its argument the \emph{squared} distance 
+An R function that takes as its argument the \emph{squared} distance 
 between two 
-points divided by the bandwidth. The default is exp( -x) yielding a normal 
-kernel 
+points divided by the bandwidth. The default is exp( -abs(x)) yielding a 
+normal kernel 
 }
 \item{theta}{
 The bandwidth 

@@ -1,5 +1,5 @@
 "print.summary.spatial.design" <-
-function (x, digits = 4) 
+function (x, digits = 4,...) 
 {
     cat("Call:\n")
     dput(x$call)

@@ -1,7 +1,9 @@
 "predict.Krig" <-
-function(out, x = NULL, lambda = NA, df = NA, model = NA, 
-	eval.correlation.model = TRUE, y = NULL, verbose = FALSE, gcv = FALSE)
+function(object, x = NULL, lambda = NA, df = NA, model = NA, 
+	eval.correlation.model = TRUE, y = NULL, verbose = FALSE, 
+        gcv = FALSE, ...)
 {
+    out<- object # hack S3
 	#
 	# the key to computing the estimate are the coeffients c and d
 	# or if these need to be recomputed, the vector u

@@ -1,5 +1,6 @@
 \name{exp.cov}
 \alias{exp.cov}
+\alias{exp.cov.simple}
 \title{
   Exponential, Gaussian and "power" covariance family 
 }
@@ -9,6 +10,7 @@ covariances among all pairings.
 }
 \usage{
 exp.cov(x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA)
+exp.cov.simple(x1, x2, theta =1)
 }
 \arguments{
 \item{x1}{
@@ -71,10 +73,11 @@ exp(-rdist(u, v)**p)
 FORTRAN: The actual function calls FORTRAN to make the evaluation more
 efficient this is especially important when the C argument is supplied.  
 So unfortunately the actual code is not as crisp as the few lines given
-above. For purposes of illustration, the function exp.cov.S is provided as
-a simple example. (exp.cov.F does the heavy lifting and exp.cov is the
-same as exp.cov.F)
-}
+above. For purposes of illustration, the function 
+\code{exp.cov.simple} is provided as
+a simple example and implements the R code above. It can also serve as a 
+template for creating new covariance functions for the \code{Krig} 
+function. }
 \seealso{
  Krig, matern.cov, rdist, rdist.earth, gauss.cov, exp.image.cov 
 }

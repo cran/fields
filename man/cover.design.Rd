@@ -313,8 +313,8 @@ points( out$design, pch="x")
 points( out3$design, pch="o")    
 
 # here is a strange graph illustrating the swapping history for the
-# the first design. Arrows show the swapping 
-#at each pass through the design.
+# the first design. Arrows show the swap done  
+# at each pass through the design.
 
 h<- out$history
 cd<- candidates
@@ -360,8 +360,8 @@ candidates<- make.surface.grid( list( x=seq( -180,180,,20), y= seq( -85,
 out4<-cover.design( candidates, 15, DIST=rdist.earth)
 # this takes a while 
 
-plot( candidates, pch=".")
-points(out4$design, pch="o", col=3)
+plot( candidates, pch="+", cex=2)
+points(out4$design, pch="o", cex=2, col="blue")
 
 # covering based on correlation for 153 ozone stations
 #

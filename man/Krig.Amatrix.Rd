@@ -1,7 +1,8 @@
-\name{make.Amatrix}
-\alias{make.Amatrix}
+\name{Krig.Amatrix}
+\alias{Krig.Amatrix}
 \title{
-  Matrix relating predicted values to the dependent (Y) values 
+  Smoother (or "hat") matrix relating predicted values to the dependent 
+(Y) values. 
 }
 \description{
 For a fixed value of the smoothing parameter or the covariance 
@@ -15,19 +16,21 @@ linear smoothers the matrix A may depend on the smoothing parameter (
 or covariance function and the independent variables (X) but NOT on Y.    
 }
 \usage{
-make.Amatrix(object, ...)
+Krig.Amatrix(out, x0 = out$x, lambda)
 }
 \arguments{
 Output object from fitting a data set using a FIELD regression
 method. 
 Currently this is supported only for Krig ( and Tps) functions. 
 
-\item{object}{
-
+\item{out}{
+A Krig object produced by the Krig function. 
 }
-\item{\dots}{
-Additional arguments that indicate the value of the smoothing 
-parameter to use and the X values where predictions should be made.  
+\item{x0}{
+Locations for prediction default is the observation locations. 
+}
+\item{lambda}{
+Value of the smoothing parameter.
 }
 }
 \value{
@@ -45,7 +48,8 @@ referred to as the "hat" matrix and is useful for regression diagnostics.
 For smoothing problems the effective number of parameters in the fit is
 usually taken to be the trace of the A matrix. Note that while the A
 matrix is usually constructed to predict the estimated curve at the data
-point this S function does not have such restrictions. This is possible
+points Amatrix.Krig does not have such restrictions. This 
+is possible
 because any value of the estimated curve will be a linear function of Y.  
 }
 \section{References}{
@@ -58,7 +62,7 @@ Krig, Tps
 # Compute the A matrix or "hat" matrix for a thin plate spline 
 # check that this gives the same predicted values  
 tps.out<-Tps( ozone$x, ozone$y)
-A<-make.Amatrix( tps.out, ozone$x)
+A<-Krig.Amatrix( tps.out, ozone$x)
 test<- A\%*\%ozone$y 
 # now compare this to predict( tps.out) or tps.out$fitted.values 
 #                    they should be the same 

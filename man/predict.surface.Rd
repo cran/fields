@@ -9,11 +9,11 @@ The resulting object is suitable for use with functions for viewing 3-d
 surfaces.  
 }
 \usage{
-predict.surface(out, grid.list=NA, extrap=FALSE, chull.mask, model=NA,
-nx=30, ny=30,...)
+predict.surface(object, grid.list=NA, extrap=FALSE, 
+     chull.mask, model=NA, nx=30, ny=30,...)
 }
 \arguments{
-\item{out}{
+\item{object}{
 An object from fitting a function to data. In FIELDS this is usually a
 Krig object. 
 }
