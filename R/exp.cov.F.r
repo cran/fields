@@ -1,10 +1,6 @@
 "exp.cov.F" <-
 function (x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA) 
 {
-    if (!is.loaded(symbol.For("expbs"))) {
-        temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 
-            2)
-    }
     if (!is.matrix(x1)) 
         x1 <- as.matrix(x1)
     if (missing(x2)) 

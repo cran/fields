@@ -102,7 +102,7 @@ function(x, Y, cov.function = "exp.cov", lambda = NA, df = NA, cost = 1., knots,
 		out$pure.ss <- 0.
 		YM <- Y
 		weightsM <- weights
-		xM <- as.matrix(x[!dup(rep.info),  ])
+		xM <- as.matrix(x[!duplicated(rep.info),  ])
 	}
 	else {
 		##
@@ -113,7 +113,7 @@ function(x, Y, cov.function = "exp.cov", lambda = NA, df = NA, cost = 1., knots,
 		shat.rep <- shat.pure.error
 		YM <- rep.info.aov$means
 		weightsM <- rep.info.aov$w.means
-		xM <- as.matrix(x[!dup(rep.info),  ])
+		xM <- as.matrix(x[!duplicated(rep.info),  ])
 		out$pure.ss <- rep.info.aov$SSE
 		if(verbose) {
 			cat(" rep info", fill = TRUE)

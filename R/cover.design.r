@@ -5,7 +5,7 @@ function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL,
 {
 ########### S code version 
     if (!is.null(start) && is.matrix(start)) {
-        if (any(dup.matrix(start))) 
+        if (any(duplicated.array(start))) 
             stop("Error: start must not have duplicate rows")
         start <- rowmatch(start, R)
         if (any(is.na(start))) 
@@ -13,7 +13,7 @@ function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL,
     }
     R.orig <- R
     R <- as.matrix(R)
-    if (any(dup.matrix(R))) 
+    if (any(duplicated.array(R))) 
         stop("Error: R must not have duplicate rows")
     if (num.nn >= nrow(R)) 
         nn <- FALSE
@@ -24,18 +24,13 @@ function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL,
     id <- 1:nrow(R)
     if (!is.null(start)) 
         nd <- length(start)
+
     if (is.null(fixed)) 
         n <- nd
     else {
-        if (any(dup.matrix(fixed))) 
-            stop("Error: fixed must not have duplicate rows")
-        if (is.matrix(fixed)) {
-            fixed <- rowmatch(fixed, R)
-            if (any(is.na(fixed))) 
-                stop("Error: fixed points must be included in R")
-        }
         n <- nd + length(fixed)
     }
+
     R <- transformx(R, scale.type, R.center, R.scale)
     transform <- attributes(R)
     saved.crit <- rep(NA, nruns)

@@ -1,15 +1,18 @@
-\name{exp.image.cov}
+\name{image.cov}
 \alias{exp.image.cov}
+\alias{matern.image.cov}
 \title{
-  Exponential,Gaussian and "power" covariance family for 2-d gridded 
-locations 
+ Exponential,Gaussian, "power" and Matern covariance functions for 2-d 
+gridded locations 
 }
 \description{
-Given two sets of locations on a 2-d grid efficiently multiplies a cross
-covariance with a vector. 
+Given two sets of locations defined on a 2-d grid efficiently multiplies a 
+cross covariance with a vector. 
 }
 \usage{
-exp.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...)
+exp.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...) 
+matern.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid,
+M=NULL,N=NULL,...) 
 }
 \arguments{
 \item{ind1}{
@@ -38,9 +41,25 @@ required by this function.
 A grid list giving the X and Y grids for the image. (See example below.)
 This is only required if setup is true. 
 }
+\item{M} {
+Size of x-grid used to compute multiplication (see notes on image.smooth 
+for details) by the FFT. If NULL, the default for M is the largest power 
+of 2 
+greater than or equal to 2*m where m= length( grid$x). 
+This  will give an exact 
+result but  smaller values of M will yield an approximate, faster result. 
+}
+
+\item{N} {Size of y-grid used to compute multiplication by the FFT.}
+
 \item{\dots}{
-Any arguments ( e.g. theta and p) to pass to the exp.cov in setting up the
-covariance object. This is only required if setup is true.
+Any arguments to pass to the covariance in setting up the
+covariance object. This is only required if setup is TRUE.
+For the "exponential" the arguments are theta ( the range default=1), and 
+p (the 
+exponent default=1). For the matern  the arguments are theta 
+(the range default=1),   
+and smoothness (default=.5 giving the exponential).
 }
 }
 \value{
@@ -65,15 +84,20 @@ the indices.  e.g.  cbind( grid\$x[ ind1[,1]], grid\$y[ind1[,2])) will give
 the coordinates associated with ind1. Clearly it is better just to work
 with ind1!
   
-Functional Form: Following the same form as exp.cov for irregular
-locations, the covariance is defined as exp( -(D.ij **p)) where D.ij is
+Functional Form: Following the same form as exp.cov and matern.cov for 
+irregular
+locations, the covariance is defined as phi( D.ij) where D.ij is
 the Euclidean distance between x1[i,] and x2[j,] but having first been
 scaled by theta. Specifically,
 
 D.ij = sqrt(  sum.k (( x1[i,k] - x2[j,k]) /theta[k])**2 ).
 
+For the exponential phi(u) = exp( -u**p) and for the Matern
+phi(u)= matern( u, smoothness). (See the help file on matern.cov for 
+details.) 
+ 
 Note that if theta is a scalar then this defines an isotropic covariance
-function. 
+function.  
 
 Implementation: This function does the multiplication on the full
 grid efficiently by a 2-d FFT. The irregular pattern in Y is handled by
@@ -105,9 +129,21 @@ this distinction.
   
 }
 \seealso{
-  exp.cov, smooth.2d, as.image, krig.image 
+  exp.cov, matern.cov,smooth.2d, as.image, krig.image 
 }
 \examples{
+# multiply 2-d isotropic exponential with theta=4 by a random vector 
+junk<- matrix(rnorm(100*100), 100,100)
+cov.obj<- exp.image.cov( setup=TRUE, grid=list(x=1:100,y=1:100), theta=8)
+result<-  exp.image.cov(Y=junk,cov.obj=cov.obj)
+
+image( matrix( result, 100,100))
+# do it again, no setup needed 
+#  junk2<- matrix(rnorm(100**2, 100,10))
+#  result2<-  exp.image.cov(Y=junk2, cov.obj=cov.obj)
+
+
+
 # generate a grid and set of indices based on discretizing the locations
 # in the precip dataset
 data(precip)
@@ -116,22 +152,41 @@ ind1<- out$ind
 grid<- list( x= out$x, y=out$y)
 # there are 750 gridded locations 
 
-# setup to create cov.obj for exponential covariance with range= .25
-cov.obj<- exp.image.cov( setup=TRUE, grid=grid, theta=.25) 
+# setup to create cov.obj for exponential covariance with range= 1.25
+# p=1 is the default
+cov.obj<- exp.image.cov( setup=TRUE, grid=grid, theta=1.25) 
 
-result<- exp.image.cov( ind1, ind1, Y= rnorm(750),cov.obj=cov.obj)
+# multiply covariance matrix by an arbitrary vector
+junk<-  rnorm(750)
+result<- exp.image.cov( ind1, ind1, Y= junk,cov.obj=cov.obj)
 
 # The brute force way would be  
-# result<- exp.cov( precip$x, precip$x,theta=.25, C=rnorm(750))
+# result<- exp.cov( precip$x, precip$x,theta=1.25, C=junk)
 
-# evaluate the covariance between all grid points and the center of the
-#grid
 
-Y<- matrix(0,64,64)
+# evaluate the covariance between all grid points and the center grid point
+Y<- matrix(0,cov.obj$m, cov.obj$n)
 Y[32,32]<- 1
 result<- exp.image.cov( Y= Y,cov.obj=cov.obj)
-image.plot( matrix( result, 64,64 ))
+# covariance surface with respect to the grid point at (32,32)
+# 
+# reshape "vector" as an image
+temp<-  matrix( result, cov.obj$m,cov.obj$n)
+image.plot(cov.obj$grid$x,cov.obj$grid$y, temp)
+# or persp( cov.obj$grid$x,cov.obj$grid$y, temp) 
+
+# check out the Matern. 
+cov.obj<- matern.image.cov( setup=TRUE, grid=grid, theta=1.25, 
+smoothness=2)
+Y<- matrix(0,64,64)
+Y[16,16]<- 1
+result<- matern.image.cov( Y= Y,cov.obj=cov.obj)
+temp<-  matrix( result, cov.obj$m,cov.obj$n)
+image.plot( cov.obj$grid$x,cov.obj$grid$y, temp)
+# Note we have centered at the location (16,16) for this case
+
 }
+
 \keyword{spatial}
 % docclass is function
 % Converted by Sd2Rd version 1.21.

@@ -1,9 +1,6 @@
 "sreg.trace" <-
 function(h, info)
 {
-	if(!is.loaded(symbol.For("css"))) {
-		temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 2)
-	}
 	N <- length(info$x)
 	#	h <- log(lam)
 	temp <- (.Fortran("css",

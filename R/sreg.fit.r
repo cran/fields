@@ -1,9 +1,6 @@
 "sreg.fit" <-
 function(lam, info)
 {
-	if(!is.loaded(symbol.For("css"))) {
-		temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 2)
-	}
 	np <- info$np
 	N <- info$N
 	nt <- 2

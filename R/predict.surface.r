@@ -16,18 +16,26 @@ function (out, grid.list = NA, extrap = FALSE, chull.mask, model = NA,
         }
         names(grid.list) <- temp
     }
+
     if (is.null(out$x)) 
         xg <- make.surface.grid(grid.list, nx = nx, ny = ny)
     else xg <- make.surface.grid(grid.list, X = out$x, nx = nx, 
         ny = ny)
+
+# at this point xg is the grid for evaluation
+
     out2 <- as.surface(xg, predict(out, xg, model = model, ...))
+
     if (!extrap) {
-        if (missing(chull.mask)) {
+# columns of variables that are the grid
             ind <- c(attr(xg, "format")[, 1])
+        if (missing(chull.mask)) {
             chull.mask <- unique.matrix(out$x[, ind])
         }
-        chull.mask <- chull.mask[chull(chull.mask), ]
-        out2$z[in.poly(xg[,ind], xp = chull.mask) == 0] <- NA
+# set to NA any point in 2d grid that is outside convex hull        
+        out2$z[
+        in.poly(xg[,ind], xp = chull.mask,convex.hull=TRUE) == 0
+               ] <- NA
     }
     out2
 }

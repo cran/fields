@@ -56,10 +56,6 @@ function (x, y, lam = NA, maxit = 50, maxit.cv = 10, tol = 1e-07,
         length(x)), cost = 1, nstep.cv = 80, hmin = NA, hmax = NA, 
     trmin = 2 * 1.05, trmax = 0.95 * length(unique(x))) 
 {
-    if (!is.loaded(symbol.For("css"))) {
-        temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 
-            2)
-    }
     out <- list()
     class(out) <- c("qsreg")
     N <- length(y)
@@ -200,10 +196,6 @@ function (x, y, lam, maxit = 50, maxit.cv = 10, tol = 1e-04,
     offset = 0, sc = sqrt(var(y)) * 1e-07, alpha = 0.5, wt = rep(1, 
         length(x)), cost = 1) 
 {
-    if (!is.loaded(symbol.For("css"))) {
-        temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 
-            2)
-    }
     N <- length(y)
     if (length(x) != length(y)) 
         stop(" X and Y do not match")

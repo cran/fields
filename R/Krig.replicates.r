@@ -4,7 +4,7 @@ function(out, verbose = FALSE)
 	rep.info <- cat.matrix(out$x)
 	if(verbose)
 		print(rep.info)
-	uniquerows <- !dup(rep.info)
+	uniquerows <- !duplicated(rep.info)
 	if(sum(uniquerows) == out$N) {
 		shat.rep <- NA
 		shat.pure.error <- NA

@@ -1,10 +1,6 @@
 "rad.cov" <-
 function (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, C = NULL) 
 {
-    if (!is.loaded(symbol.For("radbas"))) {
-        temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 
-            2)
-    }
     if (is.null(C)) {
         if (!is.matrix(x1)) 
             x1 <- as.matrix(x1)

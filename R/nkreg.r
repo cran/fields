@@ -2,12 +2,7 @@
 function(data.x, data.y, bandwidth, n.points=50, grid=NULL,
 grid.list=NULL)
 {
-	if(!is.loaded(symbol.For("nkreg"))) {
-		temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep
-= ""),
-			2)
-	}
-	# who wants to keep typing bandwidth!]
+	# who wants to keep typing bandwidth!
 	h <- bandwidth
 	# reformat 1-d vector as column matrix
 	if(data.class(data.x) == "data.frame") data.x <- as.matrix(data.x)

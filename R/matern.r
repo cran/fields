@@ -2,9 +2,6 @@
 function (x = seq(0, 4 * range, , 100), scale = 1, range = 1, 
     smoothness = 0.5) 
 {
-    if (!is.loaded(symbol.For("rkmat"))) {
-        temp <- dyn.load(paste(FIELDS.BIN,"fields.o", sep=""), 2)
-    }
     y <- x
     n <- length(x)
     theta <- c(scale, range, smoothness)
