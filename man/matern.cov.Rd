@@ -32,10 +32,14 @@ recovers the Gaussian.
 }
 }
 \value{
-The cross covariance matrix. Moreover if x1 is
+The cross covariance matrix between locations x1 and x2. If x1 is
 equal to x2 then this is the covariance matrix for this set of locations. 
 In general if nrow(x1)=m and nrow(
-x2)=n then the returned matrix, Sigma will be mXn. 
+x2)=n then the returned matrix, Sigma will be mXn.
+Under some cases when the range is very small  
+calculation of the Bessel functions fails and if so an NA will be 
+returned. 
+
 }
 \details{
 In d dimensions a process with Matern smoothness parameter S
@@ -89,6 +93,7 @@ out2<- matern.cov( ozone$x[6:20,],ozone$x[1:2,], theta=100)
 # out2 is 15X2 matrix 
 # Kriging fit where the nugget variance is found by GCV 
 fit<- Krig( ozone$x, ozone$y, matern.cov, theta=100, smoothness=.8)
+
 }
 \keyword{spatial}
 % docclass is function

@@ -12,7 +12,7 @@ mean zero,
 Gaussian stochastic process with a  
 covariance that is unknown up to a scale constant. The main advantages of
 this function are the flexibility in specifying the covariance as an
-S-function and also the supporting functions plot, predict,
+R language function and also the supporting functions plot, predict,
 predict.se, surface for
 subsequent analysis. Krig also supports a correlation model where the mean
 and marginal variances are supplied. 
@@ -34,7 +34,8 @@ Matrix of independent variables.
 Vector of dependent variables. 
 }
 \item{cov.function}{
-Covariance function for data in the form of an S-PLUS function (see exp.cov).  
+Covariance function for data in the form of an R function (see 
+exp.cov).  
 Default assumes that correlation is an exponential function of distance.
 }
 \item{df}{
