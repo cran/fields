@@ -9,7 +9,7 @@ Given two sets of locations on a 2-d grid efficiently multiplies a cross
 covariance with a vector. 
 }
 \usage{
-exp.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = F, grid, ...)
+exp.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...)
 }
 \arguments{
 \item{ind1}{
@@ -117,7 +117,7 @@ grid<- list( x= out$x, y=out$y)
 # there are 750 gridded locations 
 
 # setup to create cov.obj for exponential covariance with range= .25
-cov.obj<- exp.image.cov( setup=T, grid=grid, theta=.25) 
+cov.obj<- exp.image.cov( setup=TRUE, grid=grid, theta=.25) 
 
 result<- exp.image.cov( ind1, ind1, Y= rnorm(750),cov.obj=cov.obj)
 

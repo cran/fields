@@ -1,5 +1,5 @@
 "gcv.Krig" <-
-function(out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA, verbose = F,
+function(out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA, verbose = FALSE,
 	tol = 1.0000000000000001e-05, offset = 0, y = NULL, lambda = NA)
 {
 	nt <- out$nt

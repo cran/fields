@@ -8,7 +8,7 @@ Computes pairwise squared differences as a function of distance.
 Returns either raw values or statistics from binning. 
 }
 \usage{
-vgram(loc, y, id=NULL, d=NULL, lon.lat=F, dmax=NULL, N=NULL, breaks=NULL)
+vgram(loc, y, id=NULL, d=NULL, lon.lat=FALSE, dmax=NULL, N=NULL, breaks=NULL)
 }
 \arguments{
 \item{loc}{
@@ -92,16 +92,19 @@ good<- !is.na(ozone2$y[16,])
 x<- ozone2$lon.lat[good,] 
 y<- ozone2$y[16,good]
 
-look<-vgram( x,y, N=15, lon.lat=T) # locations are in lon/lat so use right
+look<-vgram( x,y, N=15, lon.lat=TRUE) # locations are in lon/lat so use right
 #distance
-plot( look$d, look$vgram)
-lines(look$centers, look$stats["mean",], col=4)
+# take a look:
+#plot( look$d, look$vgram)
+#lines(look$centers, look$stats["mean",], col=4)
 
 brk<- seq( 0, 250,,25)
  
-## or 
-par( pch=".")
+## or some boxplot bin summaries
+
 bplot.xy( look$d, sqrt(look$vgram), breaks=brk,ylab="sqrt(VG)")
+lines(look$centers, look$stats["mean",], col=4)
+
 }
 \keyword{spatial}
 % docclass is function

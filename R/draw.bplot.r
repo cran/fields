@@ -1,6 +1,8 @@
 "draw.bplot" <-
-function (temp, width, xpos, outlier = T, style = "tukey") 
+function (temp, width, xpos, outlier = TRUE, style = "tukey") 
 {
+if( temp$N< 1) return()
+
     if (style == "quantile") {
         temp <- temp[!is.na(temp)]
         quant <- c(0.05, 0.25, 0.5, 0.75, 0.95)

@@ -1,8 +1,8 @@
 "sreg" <-
 function(x, y, lam = NA, df = NA, offset = 0, wt = rep(1, length(x)), cost = 1,
-	nstep.cv = 80, find.diagA = T, trmin = 2.0099999999999998, trmax = 
+	nstep.cv = 80, find.diagA = TRUE, trmin = 2.0099999999999998, trmax = 
 	length(unique(x)) * 0.94999999999999996, lammin = NA, lammax = NA,
-	verbose = F, do.cv = T, method = "GCV", rmse = NA, lambda = NA)
+	verbose = FALSE, do.cv = TRUE, method = "GCV", rmse = NA, lambda = NA)
 {
 	call <- match.call()
 	if(!is.loaded(symbol.For("css"))) {
@@ -32,12 +32,12 @@ function(x, y, lam = NA, df = NA, offset = 0, wt = rep(1, length(x)), cost = 1,
 	#
 	#
 	if(is.na(lam[1]) & is.na(df[1])) {
-		eval.cv <- T
-		find.min <- T
+		eval.cv <- TRUE
+		find.min <- TRUE
 	}
 	else {
-		find.min <- F
-		eval.cv <- F
+		find.min <- FALSE
+		eval.cv <- FALSE
 	}
 	#
 	## find duplicate rows of the x vector 
@@ -45,7 +45,7 @@ function(x, y, lam = NA, df = NA, offset = 0, wt = rep(1, length(x)), cost = 1,
 	rep.info <- cat.matrix(matrix(x, ncol = 1))
 	out$rep.info <- rep.info
 	if(verbose) {
-		cat("rep.info", fill = T)
+		cat("rep.info", fill = TRUE)
 		print(rep.info)
 	}
 	if(max(rep.info) == N) {
@@ -68,7 +68,7 @@ function(x, y, lam = NA, df = NA, offset = 0, wt = rep(1, length(x)), cost = 1,
 		xM <- as.matrix(x[!dup(rep.info)])
 		out$pure.ss <- rep.info.aov$SSE
 		if(verbose) {
-			cat(" rep info", fill = T)
+			cat(" rep info", fill = TRUE)
 			print(rep.info.aov)
 		}
 	}

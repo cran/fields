@@ -1,5 +1,5 @@
 "vgram.matrix" <-
-function (dat, R = 5, nsum = 1:8, collapse = T) 
+function (dat, R = 5, nsum = 1:8, collapse = TRUE) 
 {
     if (collapse) {
         variogram.matrix(dat, R)

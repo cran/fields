@@ -1,5 +1,5 @@
 "WQS2d" <-
-function (x, transpose = F) 
+function (x, transpose = FALSE) 
 {
     if (!transpose) 
         t(WQS(t(WQS(x))))

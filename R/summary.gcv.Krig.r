@@ -1,5 +1,5 @@
 "summary.gcv.Krig" <-
-function(out, lambda, cost = 1, verbose = F, offset = 0, y = NULL)
+function(out, lambda, cost = 1, verbose = FALSE, offset = 0, y = NULL)
 {
 	nt <- out$nt
 	np <- out$np

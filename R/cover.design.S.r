@@ -1,7 +1,7 @@
 "cover.design.S" <-
-function (R, nd, nruns = 1, nn = T, num.nn = 100, fixed = NULL, 
+function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL, 
     scale.type = "unscaled", R.center, R.scale, P = -20, Q = 20, 
-    start = NULL, DIST = NULL, return.grid = T, return.transform = T) 
+    start = NULL, DIST = NULL, return.grid = TRUE, return.transform = TRUE) 
 {
     if (!is.null(start) && is.matrix(start)) {
         if (any(dup.matrix(start))) 
@@ -15,7 +15,7 @@ function (R, nd, nruns = 1, nn = T, num.nn = 100, fixed = NULL,
     if (any(dup.matrix(R))) 
         stop("Error: R must not have duplicate rows")
     if (num.nn >= nrow(R)) 
-        nn <- F
+        nn <- FALSE
     if (is.null(DIST)) 
         DIST <- function(x, y) {
             rdist(x, y)

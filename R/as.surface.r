@@ -2,7 +2,7 @@
 function (grid.list, z, order.variables = "xy") 
 {
     if (is.null(class(grid.list)) | (class(grid.list) != "surface.grid")) {
-        hold <- make.surface.grid(grid.list, info.list = T)
+        hold <- make.surface.grid(grid.list, info.list = TRUE)
         hold2 <- grid.list
     }
     else {

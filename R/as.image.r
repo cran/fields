@@ -1,12 +1,19 @@
 "as.image" <-
-function (Z, ind = NULL, grid = NULL, x = NULL, nrow = 64, 
-    ncol = 64, weights = rep(1, length(Z))) 
+function (Z, ind = NULL, grid = NULL, x = NULL, nrow = 64, ncol = 64, 
+    weights = rep(1, length(Z)), na.rm=TRUE) 
 {
     if (!is.null(ind)) 
         x <- ind
     if (is.null(x) & is.null(grid)) {
         grid <- list(x = 1:nrow, y = 1:ncol)
     }
+
+if( na.rm){
+ind2<- !is.na( Z)
+Z<- Z[ind2] 
+x<- x[ind2,]
+weights<- weights[ind2]
+}
     if (!is.null(x) & is.null(grid)) {
         temp <- Krig.discretize(x, nrow, ncol)
         grid <- temp$grid

@@ -51,14 +51,14 @@ W.image.cov, exp.image.cov, sim.rf.W
 #range parameter = 2.0 and the domain is  [0,5]X [0,5] evaluating the 
 #field at a 100X100 grid.  
 grid<- list( x= seq( 0,5,,100), y= seq(0,5,,100)) 
-obj<-exp.image.cov( grid=grid, theta=.5, setup=T)
+obj<-exp.image.cov( grid=grid, theta=.5, setup=TRUE)
 look<- sim.rf( obj)
 # Now simulate another ... 
 look2<- sim.rf( obj)
 # take a look 
-set.panel(2,1)
-image.plot( grid$x, grid$y, look) 
-image.plot( grid$x, grid$y, look2) 
+# set.panel(2,1)
+# image.plot( grid$x, grid$y, look) 
+# image.plot( grid$x, grid$y, look2) 
 }
 \keyword{spatial}
 % docclass is function

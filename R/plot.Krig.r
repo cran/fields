@@ -1,13 +1,13 @@
-"plot.Krig"<-
-function(out, main = NA, digits = 4, which = c(T, T, T, T), graphics.reset = T, 
+"plot.Krig" <-
+function(out, main = NA, digits = 4, which = c(TRUE, TRUE, TRUE, TRUE), graphics.reset = TRUE, 
 	...)
 {
 	old.par <- par("mfrow", "oma")
 	if(graphics.reset) {
 		on.exit(par(old.par))
-		par(xpd = T)
+		par(xpd = TRUE)
 	}
-	set.panel(2, 2, T)
+	set.panel(2, 2, TRUE)
 	fitted.values <- predict(out)
 	std.residuals <- (out$residuals * sqrt(out$weights))/out$shat.GCV
 	if(which[1]) {
@@ -58,6 +58,6 @@ function(out, main = NA, digits = 4, which = c(T, T, T, T), graphics.reset = T,
 		hist(std.residuals)
 	}
 	if(is.na(main))
-		mtext(deparse(out$call), cex = 1.3, outer = T, line = -2)
-	else mtext(main, cex = 1.3, outer = T, line = -2)
+		mtext(deparse(out$call), cex = 1.3, outer = TRUE, line = -2)
+	else mtext(main, cex = 1.3, outer = TRUE, line = -2)
 }

@@ -1,5 +1,5 @@
 "make.surface.grid" <-
-function (grid.list, X, nx = 30, ny = 30, info.list = F, FUN = median) 
+function (grid.list, X, nx = 30, ny = 30, info.list = FALSE, FUN = median) 
 {
     what <- rep(NA, 2)
     if (!is.list(grid.list)) 

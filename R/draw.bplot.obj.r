@@ -1,5 +1,5 @@
 "draw.bplot.obj" <-
-function (obj, width, xpos, outlier = T, horizontal=F) 
+function (obj, width, xpos, outlier = TRUE, horizontal=FALSE) 
 {
     N <- obj$N
     bb <- obj$bb

@@ -1,5 +1,5 @@
 "minimax.crit" <-
-function (obj, des = T, R) 
+function (obj, des = TRUE, R) 
 {
     R <- as.matrix(R)
     id <- 1:nrow(R)

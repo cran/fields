@@ -37,18 +37,18 @@ resolution.
 Wtransfrom.image, W.image.cov  
 }
 \examples{
-# The function is currently defined as 
 # 
 #Fill to look like Gaussian. 
 # 
  wght <- c(1., 0.05, 1e-07, 1e-09, 1e-11, 1e-14) 
-D<- Wtransform.D(128,128, wght, cut.min=4)$D 
-set.panel( 3,3)
-for ( k in 1:9){
+D<- Wtransform.D(32,32, wght, cut.min=4)$D 
+set.panel( 2,2)
+for ( k in 1:4){
 look<- Wtransform.sim( D, cut.min=4) 
 image( look)
 }
- 
+set.panel( 1,1)
+
 }
 \keyword{spatial}
 % docclass is function

@@ -1,5 +1,5 @@
 "summary.gcv.sreg" <-
-function(out, lambda, cost = 1, nstep.cv = 20, offset = 0, verbose = T)
+function(out, lambda, cost = 1, nstep.cv = 20, offset = 0, verbose = TRUE)
 {
 	shat.pure.error <- out$shat.pure.error
 	pure.ss <- out$pure.ss

@@ -1,14 +1,14 @@
 "plot.krig.image" <-
-function (out, main = NA, digits = 4, which = rep(T, 4), graphics.reset = T, 
+function (out, main = NA, digits = 4, which = rep(TRUE, 4), graphics.reset = TRUE, 
     ...) 
 {
-old.par <- par(no.readonly=T)
+old.par <- par(no.readonly=TRUE)
 
     if (graphics.reset) {
         on.exit(par(old.par))
-        par(xpd = T)
+        par(xpd = TRUE)
     }
-    set.panel(2, 2, T)
+    set.panel(2, 2, TRUE)
     lims <- range(out$fitted.values, out$y)
     if (which[1]) {
         plot(out$fitted.values, out$y, xlim = lims, ylim = lims, 
@@ -29,13 +29,13 @@ old.par <- par(no.readonly=T)
         look <- list(x = out$grid$x, y = out$grid$y, z = matrix(NA, 
             out$m, out$n))
         look$z[out$indexM] <- out$yM - predict(out, out$xM)
-        image.plot(look, xlab = "x", ylab = "y", graphics.reset = F, 
+        image.plot(look, xlab = "x", ylab = "y", graphics.reset = FALSE, 
             offset = 0.1)
-        contour(out$surface, labex = 0, add = T)
+        contour(out$surface, labex = 0, add = TRUE)
         title("Residuals on surface ", cex = 0.8)
     }
     if (!is.na(main)) 
-   mtext(main, cex = 1, outer = T, line = -2)
-  #####else      mtext(deparse(out$call), cex = 1, outer = T, line = -2,adj=0)
+   mtext(main, cex = 1, outer = TRUE, line = -2)
+  #####else      mtext(deparse(out$call), cex = 1, outer = TRUE, line = -2,adj=0)
     invisible()
 }

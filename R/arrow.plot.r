@@ -1,6 +1,6 @@
 "arrow.plot" <-
 function (a1, a2, u = NA, v = NA, arrow.ex = 0.05, 
-     xpd = T, true.angle = F, ...) 
+     xpd = TRUE, true.angle = FALSE, ...) 
 {
     if (is.matrix(a1)) {
         x <- a1[, 1]

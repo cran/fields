@@ -1,6 +1,6 @@
-"smooth.2d" <-
-function (Y, ind = NULL, weight.obj = NULL, setup = F, grid = NULL, 
-    x = NULL, nrow = 64, ncol = 64, surface = T, cov.function = 
+ "smooth.2d" <-
+function (Y, ind = NULL, weight.obj = NULL, setup = FALSE, grid = NULL, 
+    x = NULL, nrow = 64, ncol = 64, surface = TRUE, cov.function = 
 gauss.cov, 
     Mwidth = NULL, Nwidth = NULL, ...) 
 {
@@ -41,12 +41,12 @@ gauss.cov,
     temp <- matrix(0, nrow = weight.obj$M, ncol = weight.obj$N)
     temp[1:m, 1:n] <- Y
     temp[is.na(temp)] <- 0
-    temp2 <- Re(fft(fft(temp) * weight.obj$wght, inverse = T))[1:weight.obj$m, 
+    temp2 <- Re(fft(fft(temp) * weight.obj$wght, inverse = TRUE))[1:weight.obj$m, 
         1:weight.obj$n]
     temp <- matrix(0, nrow = weight.obj$M, ncol = weight.obj$N)
     temp[1:m, 1:n] <- NN
     temp[is.na(temp)] <- 0
-    temp3 <- Re(fft(fft(temp) * weight.obj$wght, inverse = T))[1:weight.obj$m, 
+    temp3 <- Re(fft(fft(temp) * weight.obj$wght, inverse = TRUE))[1:weight.obj$m, 
         1:weight.obj$n]
     if (!surface) 
         (temp2/temp3)

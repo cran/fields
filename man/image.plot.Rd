@@ -9,9 +9,9 @@ placement of a legend. This is done by splitting the plotting region
 into two parts. Putting the image in one and the legend in the other.  
 }
 \usage{
-image.plot(..., add=T, nlevel=32, legend.shrink=0.9, legend.width=0.02,  
-graphics.reset=T, horizontal=F, offset=0.04,  
-bigplot=NULL, smallplot=NULL, legend.only=F, col=topo.colors(64))
+image.plot(..., add=TRUE, nlevel=32, legend.shrink=0.9, legend.width=0.02,  
+graphics.reset=TRUE, horizontal=FALSE, offset=0.04,  
+bigplot=NULL, smallplot=NULL, legend.only=FALSE, col=topo.colors(64))
 }
 \arguments{
 \item{\dots}{
@@ -115,13 +115,13 @@ image.plot(x,y,z)
 points( 5:10, 5:10)
 #
 #fat (5\% of figure) and short (50\% of figure)  legend strip on the bottom 
-image.plot( x,y,z,legend.width=.05, legend.shrink=.5, horizontal=T) 
+image.plot( x,y,z,legend.width=.05, legend.shrink=.5, horizontal=TRUE) 
 
 # add a legend on the bottom but first change margin for some room 
 par( mar=c(10,5,5,5))
 
 image( x,y,z)
-image.plot( zlim=c(0,25), legend.only=T, horizontal=T)
+image.plot( zlim=c(0,25), legend.only=TRUE, horizontal=TRUE)
 #
  
 }

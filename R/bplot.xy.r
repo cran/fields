@@ -1,6 +1,6 @@
 "bplot.xy" <-
-function (x, y, N = 10, breaks = pretty(x, N), style = "tukey", 
-    outlier = T, plot = T, xaxt = "s", ...) 
+function (x, y, N = 10, breaks = pretty(x, N,eps.correct=1), style = "tukey", 
+    outlier = TRUE, plot = TRUE, xaxt = "s", ...) 
 {
     out <- list()
     NBIN <- length(breaks) - 1

@@ -1,6 +1,6 @@
 "predict.Krig" <-
 function(out, x = NULL, lambda = NA, df = NA, model = NA, 
-	eval.correlation.model = T, y = NULL, verbose = F, gcv = F)
+	eval.correlation.model = TRUE, y = NULL, verbose = FALSE, gcv = FALSE)
 {
 	#
 	# the key to computing the estimate are the coeffients c and d
@@ -125,28 +125,14 @@ function(out, x = NULL, lambda = NA, df = NA, model = NA,
 	#
 	C.arg.missing <- is.null(formals(get(out$call.name))$C)
 	if(C.arg.missing) {
-		if(!out$cov.by.name) {
-			temp <- c(out$make.tmatrix(x, out$m) %*% temp.d + out$
-				cov.function(x, knots) %*% temp.c)
-		}
-		# end of if !out$cov.by.name
-		if(out$cov.by.name) {
 			temp <- c(out$make.tmatrix(x, out$m) %*% temp.d + 
 				do.call(out$call.name, c(out$args, list(x1 = x,
 				x2 = knots))) %*% temp.c)
-		}
 	}
 	else {
-		if(!out$cov.by.name) {
-			temp <- c(out$make.tmatrix(x, out$m) %*% temp.d + out$
-				cov.function(x, knots, C = temp.c))
-		}
-		# end of if !out$cov.by.name stmt
-		if(out$cov.by.name) {
 			temp <- c(out$make.tmatrix(x, out$m) %*% temp.d + 
 				do.call(out$call.name, c(out$args, list(x1 = x,
 				x2 = knots, C = temp.c))))
-		}
 	}
 	#
 	# if correlation model do the transformation

@@ -1,5 +1,5 @@
 "Krig.find.gcvmin" <-
-function(info, lambda.grid, gcv, gcv.fun, tol, verbose = F)
+function(info, lambda.grid, gcv, gcv.fun, tol, verbose = FALSE)
 {
 	# first take out NA from gcv
 	ind <- !is.na(gcv)

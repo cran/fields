@@ -1,18 +1,18 @@
 "Wtransform.image" <-
-function (x, inv = F, transpose = F, cut.min = 8) 
+function (x, inv = FALSE, transpose = FALSE, cut.min = 8) 
 {
     if (transpose) 
         inv <- !inv
     n <- dim(x)[1]
     m <- dim(x)[2]
     if (n > m) {
-        flip <- T
+        flip <- TRUE
         temp <- t(x)
         n <- dim(temp)[1]
         m <- dim(temp)[2]
     }
     else {
-        flip <- F
+        flip <- FALSE
         temp <- x
     }
     if (n > m) 
@@ -26,7 +26,7 @@ function (x, inv = F, transpose = F, cut.min = 8)
             }
             else {
                 temp[1:nn, 1:mm] <- WQS2di(temp[1:nn, 1:mm], 
-                  transpose = T)
+                  transpose = TRUE)
             }
             nn <- nn/2
             mm <- mm/2
@@ -46,7 +46,7 @@ function (x, inv = F, transpose = F, cut.min = 8)
                 temp[1:nn, 1:mm] <- WQS2di(temp[1:nn, 1:mm])
             }
             else {
-                temp[1:nn, 1:mm] <- WQS2d(temp[1:nn, 1:mm], transpose = T)
+                temp[1:nn, 1:mm] <- WQS2d(temp[1:nn, 1:mm], transpose = TRUE)
             }
             nn <- nn * 2
             mm <- mm * 2

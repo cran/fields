@@ -1,5 +1,5 @@
 "exp.image.cov" <-
-function (ind1, ind2, Y, cov.obj = NULL, setup = F, grid, ...) 
+function (ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...) 
 {
     if (is.null(cov.obj)) {
         dx <- grid$x[2] - grid$x[1]
@@ -25,7 +25,7 @@ function (ind1, ind2, Y, cov.obj = NULL, setup = F, grid, ...)
     temp <- matrix(0, nrow = cov.obj$M, ncol = cov.obj$N)
     if (missing(ind1)) {
         temp[1:cov.obj$m, 1:cov.obj$n] <- Y
-        Re(fft(fft(temp) * cov.obj$wght, inverse = T)[1:cov.obj$m, 
+        Re(fft(fft(temp) * cov.obj$wght, inverse = TRUE)[1:cov.obj$m, 
             1:cov.obj$n])
     }
     else {
@@ -35,6 +35,6 @@ function (ind1, ind2, Y, cov.obj = NULL, setup = F, grid, ...)
         else {
             temp[ind2] <- Y
         }
-        Re(fft(fft(temp) * cov.obj$wght, inverse = T)[ind1])
+        Re(fft(fft(temp) * cov.obj$wght, inverse = TRUE)[ind1])
     }
 }

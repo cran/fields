@@ -47,28 +47,14 @@ function(out, u = NULL, lambda = NULL, yM = NULL)
 		temp.c <- temp.c * sqrt(out$weightsM)
 		# end of if C.arg.missing stmt
 		if(C.arg.missing) {
-			if(!out$cov.by.name) {
-				temp <- temp.yM - lambda * temp.c - out$
-					cov.function(knots, knots) %*% temp.c
-			}
-			# end of if !out$cov.by.name stmt
-			if(out$cov.by.name) {
 				temp <- temp.yM - lambda * temp.c - do.call(
 					out$call.name, c(out$args, list(x1 = 
 					knots, x2 = knots))) %*% temp.c
-			}
 		}
 		else {
-			if(!out$cov.by.name) {
-				temp <- temp.yM - lambda * temp.c - out$
-					cov.function(knots, knots, C = temp.c)
-			}
-			# end of if !out$cov.by.name stmt
-			if(out$cov.by.name) {
 				temp <- temp.yM - lambda * temp.c - do.call(
 					out$call.name, c(out$args, list(x1 = 
 					knots, x2 = knots, C = temp.c)))
-			}
 		}
 		# end of if else C.arg.missing stmt
 		# multiply through by weights

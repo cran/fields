@@ -1,6 +1,6 @@
 "predict.se.Krig" <-
-function(out, x, cov.function, rho, sigma2, weights = NULL, cov = F, stationary
-	 = T, fixed.mean = T, ...)
+function(out, x, cov.function=NULL, rho, sigma2, weights = NULL, cov = FALSE, stationary
+	 = TRUE, fixed.mean = TRUE, ...)
 {
 	# NOTE: to follow along 
 	# if lambda is an estimate of the random field at a point
@@ -33,16 +33,15 @@ function(out, x, cov.function, rho, sigma2, weights = NULL, cov = F, stationary
 	########## extract them from the Krig object
 	##
 	## figure out what covariance function to use. 
-	if(!out$cov.by.name) {
-		if(missing(cov.function)) {
-			fun <- out$cov.function
-		}
-		else {
-			fun <- cov.function
-		}
-	}
-	# end of if !out$cov.by.name
-	if(missing(sigma2)) {
+
+        if(!is.null(cov.function)) {
+                if(is.function(cov.function))
+                        cov.function <- as.character(substitute(cov.function))
+        }
+        else{ cov.function<- out$call.name}
+        print( cov.function)
+
+        if(missing(sigma2)) {
 		sigma2 <- out$sigma2
 	}
 	#
@@ -53,24 +52,16 @@ function(out, x, cov.function, rho, sigma2, weights = NULL, cov = F, stationary
 	}
 	#
 	# set switch if the covariance is stationary
-	if(!out$cov.by.name) {
-		if(!is.null(fun$marginal))
-			stationary <- F
-	}
-	# end of if !out$cov.by.name stmt
-	if(out$cov.by.name) {
 		if(!is.null(formals(get(out$call.name))$marginal)) {
-			stationary <- F
+			stationary <- FALSE
 		}
-	}
-	# end of if out$cov.by.name stmt
 	#
 	lambda <- sigma2/rho
 	if(lambda != 0) {
 		if((lambda - out$lambda)/lambda > 1e-08) {
 			warning("lambda value used is different from the one in the Krig object"
 				)
-			cat(lambda, out$lambda, fill = T)
+			cat(lambda, out$lambda, fill = TRUE)
 		}
 	}
 	nx <- nrow(xM)
@@ -99,31 +90,19 @@ function(out, x, cov.function, rho, sigma2, weights = NULL, cov = F, stationary
 	#	
 	# Cy is the observed covariance matrix of the data vector
 	# xM should be in transformed scale and are the unique x values from
-	# the data
-	if(!out$cov.by.name) {
-		Cy <- rho * fun(xM, xM, ...) + sigma2 * diag(1/out$weightsM)
-	}
-	# end of if !out$cov.by.name stmt
-	if(out$cov.by.name) {
+	# the collapsed data means
+	# 
 		Cy <- rho * do.call(out$call.name, c(out$args, list(x1 = xM,
 			x2 = xM))) + sigma2 * diag(1/out$weightsM)
-	}
-	# end of if out$cov.by.name stmt
 	#
 	# see if the C argument is given, if so utilize it.
 	C.arg.missing <- is.null(formals(get(out$call.name))$C)
 	if(cov) {
 		# this block find the whole covariance matrix 
-		if(!out$cov.by.name) {
-			temp <- rho * fun(x, xM, ...) %*% wght.vec
-			temp <- (rho * fun(x, x, ...) - temp - t(temp))
-		}
-		# end of if !out$cov.by.name stmt
-		if(out$cov.by.name) {
 			if(C.arg.missing) {
 				temp <- rho * do.call(out$call.name, c(out$
 					args, list(x1 = x, x2 = xM))) %*% 
-					wght.vec
+				wght.vec
 			}
 			else {
 				temp <- rho * do.call(out$call.name, c(out$
@@ -133,22 +112,14 @@ function(out, x, cov.function, rho, sigma2, weights = NULL, cov = F, stationary
 			# end of if else C.arg.missing stmt
 			temp <- rho * do.call(out$call.name, c(out$args, list(
 				x1 = x, x2 = x))) - temp - t(temp)
-		}
-		# end of if out$cov.by.name stmt
+
 		temp <- temp + t(wght.vec) %*% Cy %*% wght.vec
 		return(temp.sd * t(t(temp * temp.sd)))
 	}
 	#
 	# this is the second term in the MSE
-	if(!out$cov.by.name) {
-		temp1 <- rho * c(t(wght.vec * fun(xM, x, ...)) %*% rep(1, nx))
-	}
-	# end of if !out$cov.by.name stmt
-	if(out$cov.by.name) {
 		temp1 <- rho * c(t(wght.vec * do.call(out$call.name, c(out$
 			args, list(x1 = xM, x2 = x)))) %*% rep(1, nx))
-	}
-	# end of if out$cov.by.name stmt
 	#
 	# this is the third term in the MSE 
 	temp2 <- c(t(wght.vec * (Cy %*% wght.vec)) %*% rep(1, nx))
@@ -158,15 +129,8 @@ function(out, x, cov.function, rho, sigma2, weights = NULL, cov = F, stationary
 	#
 	if(stationary) {
 		x0 <- matrix(0, ncol = ncol(x), nrow = 1)
-		if(!out$cov.by.name) {
-			temp <- (rho * fun(x0, x0, ...) - 2 * temp1 + temp2)
-		}
-		# end of if !out$cov.by.name stmt
-		if(out$cov.by.name) {
 			temp <- rho * do.call(out$call.name, c(out$args, list(
 				x1 = x0, x2 = x0))) - 2 * temp1 + temp2
-		}
-		# end of if out$cov.by.name stmt
 		return(sqrt(temp * temp.sd^2 + var.mean))
 	}
 	#
@@ -175,25 +139,6 @@ function(out, x, cov.function, rho, sigma2, weights = NULL, cov = F, stationary
 	# the variance of field at that point. 
 	#
 	#
-	if(!out$cov.by.name) {
-		if(is.null(fun$marginal)) {
-			temp <- rep(0, nrow(x))
-			for(k in 1:nrow(x)) {
-				x0 <- matrix(x[k,  ], nrow = 1)
-				temp[k] <- rho * fun(x0, x0, ...) - 2 * temp1[
-					k] + temp2[k]
-			}
-		}
-		else {
-			#
-			## marginal variances available by single call
-			#
-			temp <- rho * fun(x, marginal = T, ...) - 2 * temp1 +
-				temp2
-		}
-	}
-	# end of if !out$cov.by.name stmt
-	if(out$cov.by.name) {
 		if(is.null(formals(get(out$call.name))$marginal)) {
 			temp <- rep(0, nrow(x))
 			for(k in 1:nrow(x)) {
@@ -208,9 +153,7 @@ function(out, x, cov.function, rho, sigma2, weights = NULL, cov = F, stationary
 			## marginal variances available by single call
 			#
 			temp <- rho * do.call(out$call.name, c(out$args, list(
-				x, marginal = T))) - 2 * temp1 + temp2
+				x, marginal = TRUE))) - 2 * temp1 + temp2
 		}
-	}
-	# end of if out$cov.by.name stmt
 	return(sqrt((temp.sd^2) * temp + var.mean))
 }

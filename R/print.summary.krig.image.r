@@ -23,13 +23,13 @@ function (x, ...)
         "max")
     cat("Call:\n")
     dput(x$call)
-    print(sum, quote = F)
+    print(sum, quote = FALSE)
     if ((x$correlation.model)) {
         cat("Y is standardized before spatial estimate is found", 
-            fill = T)
+            fill = TRUE)
     }
     cat(" Residuals:", "\n")
     print(signif(res.quantile, digits))
-    cat("Covariance function name:", x$cov.function, fill = T)
+    cat("Covariance function name:", x$cov.function, fill = TRUE)
     invisible(x)
 }

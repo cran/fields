@@ -1,7 +1,7 @@
 "krig.image" <-
 function (x, Y, cov.function, m = NULL, n = NULL, lambda = 0, 
     start = NULL, tol = 1e-05, kmax = 25, cov.obj = NULL, grid = NULL, 
-    weights = rep(1, length(Y)), verbose = F, conv.verbose = F, 
+    weights = rep(1, length(Y)), verbose = FALSE, conv.verbose = FALSE, 
     expand = 1, ...) 
 {
     out <- list()
@@ -32,26 +32,26 @@ function (x, Y, cov.function, m = NULL, n = NULL, lambda = 0,
         print(out$grid)
     }
     if (is.null(cov.obj)) {
-        cov.obj <- cov.function(grid = out$grid, setup = T, ...)
+        cov.obj <- cov.function(grid = out$grid, setup = TRUE, ...)
     }
     out$cov.obj <- cov.obj
     out <- c(out, Krig.discretize(out$xraw, grid = out$grid, 
         expand = expand))
     if (verbose) {
-        cat("row and columns of grid", fill = T)
+        cat("row and columns of grid", fill = TRUE)
         print(c(out$m, out$n))
     }
     out <- c(out, list(x = cbind(out$grid$x[out$index[, 1]], 
         out$grid$y[out$index[, 2]])))
     if (verbose) {
         cat("results of finding indices X,y,weights, indices", 
-            fill = T)
+            fill = TRUE)
         print(cbind(out$x, out$y, out$weights, out$index))
     }
     out <- c(out, Krig.replicates(out, verbose = verbose))
     out$indexM <- out$index[out$uniquerows, ]
     if (verbose) {
-        cat("results of collapsing replicates", fill = T)
+        cat("results of collapsing replicates", fill = TRUE)
         print(cbind(out$xM, out$yM, out$weightsM, out$indexM))
     }
     out$qr.T <- qr(cbind(rep(1, nrow(out$indexM)), out$xM))
@@ -65,13 +65,13 @@ function (x, Y, cov.function, m = NULL, n = NULL, lambda = 0,
             D * temp)
     }
     Q2TY <- qr.q2ty(out$qr.T, out$yM)
-    cat(" iterative solution of linear system", fill = T)
+    cat(" iterative solution of linear system", fill = TRUE)
     out2 <- conjugate.gradient(b = Q2TY, out$multAx, start = start, 
         tol = tol, kmax = kmax, D = out$lambda * out$weightsM, 
         loc = out$indexM, cov.function = out$cov.function, cov.obj = out$cov.obj, 
         qr.T = out$qr.T, verbose = conv.verbose)
     if (verbose) {
-        cat("convergence info from conjugate gradient", fill = T)
+        cat("convergence info from conjugate gradient", fill = TRUE)
         print(out2$conv)
     }
     out$omega2 <- out2$x
@@ -82,12 +82,12 @@ function (x, Y, cov.function, m = NULL, n = NULL, lambda = 0,
     out <- c(out, krig.image.parameters(out))
     class(out) <- "krig.image"
     if (verbose) {
-        cat("estimated parameters delta, then beta", fill = T)
+        cat("estimated parameters delta, then beta", fill = TRUE)
         print(out$delta)
         print(out$beta)
     }
     if (verbose) {
-        cat("estimated parameters sigma2 and rho", fill = T)
+        cat("estimated parameters sigma2 and rho", fill = TRUE)
         print(out$sigma2)
         print(out$rho)
     }

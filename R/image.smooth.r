@@ -39,8 +39,8 @@ function (Y, wght = NULL, dx = 1, dy = 1, Nwidth = nrow(Y), Mwidth = ncol(Y),
         temp[is.na(temp)] <- 0
         temp2[1:m, 1:n] <- ifelse(!is.na(Y), 1, 0)
     }
-    temp <- Re(fft(fft(temp) * wght, inverse = T))[1:m, 1:n]
-    temp2 <- Re(fft(fft(temp2) * wght, inverse = T))[1:m,1:n]
+    temp <- Re(fft(fft(temp) * wght, inverse = TRUE))[1:m, 1:n]
+    temp2 <- Re(fft(fft(temp2) * wght, inverse = TRUE))[1:m,1:n]
     temp <- ifelse((temp2 > tol), (temp/temp2), NA)
     if (!is.null(grid)) {
         list(x = grid$x, y = grid$y, z = temp)

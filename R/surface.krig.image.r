@@ -1,5 +1,5 @@
 "surface.krig.image" <-
-function (obj, grid.list = NA, extrap = T, graphics.reset = F, 
+function (obj, grid.list = NA, extrap = TRUE, graphics.reset = FALSE, 
     xlab = NULL, ylab = NULL, main = NULL, zlab = NULL, zlim = NULL, 
     levels = NULL, ptype = "I", ...) 
 {

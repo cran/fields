@@ -1,14 +1,14 @@
 "plot.sreg" <-
-function(out, main = NA, digits = 4, which = c(T, T, T, T), graphics.reset 
-= T,
+function(out, main = NA, digits = 4, which = c(TRUE, TRUE, TRUE, TRUE), graphics.reset 
+= TRUE,
 	...)
 {
 	old.par <- par("mfrow", "oma")
 	if(graphics.reset) {
 		on.exit(par(old.par))
-		par(xpd = T)
+		par(xpd = TRUE)
 	}
-	set.panel(2, 2, T)
+	set.panel(2, 2, TRUE)
 	if(which[1]) {
 		plot(out$xraw, out$yraw, ylab = "predicted", xlab = " X", bty
 			 = "n", ...)
@@ -25,7 +25,7 @@ function(out, main = NA, digits = 4, which = c(T, T, T, T), graphics.reset
 			#with cost
 			ind <- out$gcv.grid[, 3] < 1e+19
 			out$gcv.grid <- out$gcv.grid[ind,  ]
-			yr <- range(unlist(out$gcv.grid[, 3:5]), na.rm=T)
+			yr <- range(unlist(out$gcv.grid[, 3:5]), na.rm=TRUE)
 	plot(out$gcv.grid[, 2], out$gcv.grid[, 3], xlab = 
 				"Eff. parameters", ylab = " GCV function",
 				bty = "n", ylim = yr, log = "y", ...)
@@ -49,6 +49,6 @@ format(round(out$trace,1)),
 		}
 	}
 	if(is.na(main))
-		mtext(deparse(out$call), cex = 1.3, outer = T, line = -2)
-	else mtext(main, cex = 1.3, outer = T, line = -2)
+		mtext(deparse(out$call), cex = 1.3, outer = TRUE, line = -2)
+	else mtext(main, cex = 1.3, outer = TRUE, line = -2)
 }

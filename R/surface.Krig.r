@@ -1,5 +1,5 @@
 "surface.Krig" <-
-function(obj, grid.list = NA, extrap = F, graphics.reset = NULL, xlab = NULL,
+function(obj, grid.list = NA, extrap = FALSE, graphics.reset = NULL, xlab = NULL,
 	ylab = NULL, main = NULL, zlab = NULL, zlim = NULL, levels = NULL,
 	type = "b", ...)
 {

@@ -1,5 +1,5 @@
 "rad.cov.F" <-
-function (x1, x2, p = 1, with.log = T, with.constant = T, C = NULL) 
+function (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, C = NULL) 
 {
     if (!is.loaded(symbol.For("radbas"))) {
         temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 

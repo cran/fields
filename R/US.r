@@ -1,5 +1,5 @@
 "US" <-
-function (xlim = c(-124.7,  -67.1), ylim = c(25.2, 49.4), add = F, ...) 
+function (xlim = c(-124.7,  -67.1), ylim = c(25.2, 49.4), add = FALSE, ...) 
 {
 if( !exists("US.dat"))data(US.dat)
     if (!add) {

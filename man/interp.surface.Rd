@@ -51,16 +51,13 @@ data( lennon)
 # create the surface object
 obj<- list( x= 1:20, y=1:20, z= lennon[ 201:220, 201:220])
 
-
-# make up a finer grid 
-temp<- seq( 1,20,,150)
+# sample at 50 equally spaced points 
+temp<- seq( 1,20,,50)
 make.surface.grid( list( temp,temp))-> loc
-
-set.panel(2,1)
 interp.surface( obj, loc)-> look
+# take a look
+image.plot( as.surface( loc, look))
 
-image( obj$z)
-image( as.surface( loc, look))
 }
 \keyword{spatial}
 % docclass is function

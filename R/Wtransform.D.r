@@ -1,5 +1,5 @@
 "Wtransform.D" <-
-function (nx, ny, weights = c(1), cut.min = 8, details = F) 
+function (nx, ny, weights = c(1), cut.min = 8, details = FALSE) 
 {
     NN <- ny
     MM <- nx
@@ -11,12 +11,12 @@ function (nx, ny, weights = c(1), cut.min = 8, details = F)
     nn <- NN
     mm <- MM
     temp[1:mm, 1:nn] <- weights[1]
-    cat(mm, nn, fill = T)
+    cat(mm, nn, fill = TRUE)
     jj <- 2
     nn <- nn * 2
     mm <- mm * 2
     while ((nn <= ny) & (mm <= nx) & (jj <= length(weights))) {
-        cat(mm, nn, fill = T)
+        cat(mm, nn, fill = TRUE)
         if (!details) {
             temp[(mm/2 + 1):mm, 1:(nn/2)] <- weights[jj]
             temp[(mm/2 + 1):mm, (nn/2 + 1):nn] <- weights[jj]

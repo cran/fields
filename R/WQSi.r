@@ -4,8 +4,8 @@ function (x)
     if (!is.matrix(x)) 
         x <- matrix(x, nrow = length(x), ncol = 1)
     D.smooth <- c(3, -3, 1, 1)/16
-    D.le <- matrix(c(4, 4), nrow = 1, ncol = 2, byrow = T)/16
-    D.re <- matrix(c(4, -4), nrow = 1, ncol = 2, byrow = T)/16
+    D.le <- matrix(c(4, 4), nrow = 1, ncol = 2, byrow = TRUE)/16
+    D.re <- matrix(c(4, -4), nrow = 1, ncol = 2, byrow = TRUE)/16
     D.rough <- c(1, -1, 3, 3)/16
     n <- dim(x)[1]
     m <- dim(x)[2]

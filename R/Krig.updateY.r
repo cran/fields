@@ -1,5 +1,5 @@
 "Krig.updateY" <-
-function(out, Y, verbose = F)
+function(out, Y, verbose = FALSE)
 {
 	#given new Y values but keeping everything else the same finds the 
 	#new u vector and pure error SS associated with the Kriging estimate
@@ -32,7 +32,7 @@ function(out, Y, verbose = F)
 	#
 	# Note how matrices are grabbed from the Krig object
 	#
-	if(verbose) cat("Type of decomposition", out$decomp, fill = T)
+	if(verbose) cat("Type of decomposition", out$decomp, fill = TRUE)
 	if(out$decomp == "DR") {
 		#
 		#
@@ -45,7 +45,7 @@ function(out, Y, verbose = F)
 		temp <- sum(out$weightsM * (out2$yM - temp)^2)
 		out2$pure.ss <- temp + out2$pure.ss
 		if(verbose) {
-			cat("pure.ss", fill = T)
+			cat("pure.ss", fill = TRUE)
 			print(temp)
 			print(out2$pure.ss)
 		}
@@ -61,12 +61,12 @@ function(out, Y, verbose = F)
 		u <- c(rep(0, out$nt), t(out$matrices$V) %*% qr.q2ty(out$
 			matrices$qr.T, sqrt(out$weightsM) * out2$yM))
 		if(verbose)
-			cat("u", u, fill = T)
+			cat("u", u, fill = TRUE)
 		#
 		# pure error in this case from 1way ANOVA 
 		#
 		if(verbose) {
-			cat("pure.ss", fill = T)
+			cat("pure.ss", fill = TRUE)
 			print(out2$pure.ss)
 		}
 	}

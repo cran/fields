@@ -20,7 +20,7 @@ The data list has components:
 a 89X153 matrix of ozone values. Rows are days and columns are the 
 sites. 
 </s-arg>
-<s-arg name="lon.lat"> 
+</s-arg name="lon.lat"> 
 Site locations in longitude and latitude as a 153X2 table
 </s-arg>
 <s-arg name="chicago.subset">

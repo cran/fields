@@ -1,5 +1,5 @@
 "in.poly" <-
-function(xd, xp, convex.hull = F)
+function(xd, xp, convex.hull = FALSE)
 {
 	if(!is.loaded(symbol.For("inpoly"))) {
 		temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 2)

@@ -7,7 +7,7 @@
 Divides up the graphics window into a matrix of plots. 
 }
 \usage{
-set.panel(m=1, n=1, relax=F)
+set.panel(m=1, n=1, relax=FALSE)
 }
 \arguments{
 \item{m}{

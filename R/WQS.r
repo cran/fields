@@ -5,9 +5,9 @@ function (x)
         x <- matrix(x, nrow = length(x), ncol = 1)
     D.smooth <- c(-1, 3, 3, -1)
     D.le <- matrix(c(2, 3, -1, 2, -3, 1), nrow = 2, ncol = 3, 
-        byrow = T)
+        byrow = TRUE)
     D.re <- matrix(c(-1, 3, 2, -1, 3, -2), nrow = 2, ncol = 3, 
-        byrow = T)
+        byrow = TRUE)
     D.rough <- c(-1, 3, -3, 1)
     n <- dim(x)[1]
     m <- dim(x)[2]

@@ -1,5 +1,5 @@
 "Krig.ynew" <-
-function(out, ynew, verbose = F)
+function(out, ynew, verbose = FALSE)
 {
 	#
 	# calculates the collapsed y (weighted) mean vector based on the

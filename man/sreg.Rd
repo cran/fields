@@ -11,9 +11,9 @@ smoothness can be specified or estimated from the data by GCV.
 \usage{
 sreg
 (x, y, lam = NA, df = NA, offset = 0, wt = rep(1, length(x)), cost = 1, 
-nstep.cv = 80, find.diagA = T, trmin = 2.01,
-trmax = length(unique(x)) * 0.95, lammin = NA, lammax = NA, verbose = F,
-do.cv = T, method = "GCV", rmse = NA, lambda = NA)
+nstep.cv = 80, find.diagA = TRUE, trmin = 2.01,
+trmax = length(unique(x)) * 0.95, lammin = NA, lammax = NA, verbose = FALSE,
+do.cv = TRUE, method = "GCV", rmse = NA, lambda = NA)
 }
 \arguments{
 \item{x}{
@@ -246,6 +246,8 @@ summary( fit.tps)
 # this is a simulated case. find lambda by matching rmse to be .2
 # and use this estimate of lambda
 sreg( test.data2$x, test.data2$y, rmse=.2, method="RMSE")-> fit
+
+set.panel( 1,1)
 }
 \keyword{smooth}
 % docclass is function

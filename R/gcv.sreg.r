@@ -1,7 +1,7 @@
 "gcv.sreg" <-
 function(out, lambda.grid = NA, cost = 1, nstep.cv = 20, rmse = NA, offset = 0,
-	trmin = NA, trmax = NA, verbose = T, tol = 1.0000000000000001e-05,
-	find.min = T, method = "GCV")
+	trmin = NA, trmax = NA, verbose = TRUE, tol = 1.0000000000000001e-05,
+	find.min = TRUE, method = "GCV")
 {
 	shat.pure.error <- out$shat.pure.error
 	pure.ss <- out$pure.ss
@@ -29,7 +29,7 @@ function(out, lambda.grid = NA, cost = 1, nstep.cv = 20, rmse = NA, offset = 0,
 	# begin grid evaluation over lambda
 	#
 	if(verbose) {
-		cat(l1, l2, fill = T)
+		cat(l1, l2, fill = TRUE)
 	}
 	nl <- length(lambda.grid)
 	V <- V.model <- V.one <- trA <- MSE <- RSS.model <- rep(NA, nl)
@@ -71,14 +71,14 @@ function(out, lambda.grid = NA, cost = 1, nstep.cv = 20, rmse = NA, offset = 0,
 	lambda.est[1, 1] <- Krig.find.gcvmin(out, lambda.grid, gcv.grid[, "GCV"
 		], sreg.fgcv, tol = tol, verbose = verbose)
 	if(verbose) {
-		cat(lambda.est[1, 1], fill = T)
+		cat(lambda.est[1, 1], fill = TRUE)
 	}
 	if(!is.na(shat.pure.error)) {
 		lambda.est[2, 1] <- Krig.find.gcvmin(out, lambda.grid, gcv.grid[
 			, "GCV.model"], sreg.fgcv.model, tol = tol, verbose = 
 			verbose)
 		if(verbose) {
-			cat(lambda.est[2, 1], fill = T)
+			cat(lambda.est[2, 1], fill = TRUE)
 		}
 	}
 	lambda.est[3, 1] <- Krig.find.gcvmin(out, lambda.grid, gcv.grid[, 

@@ -1,5 +1,5 @@
 "rdist.S" <-
-function (x1, x2, lon.lat = F) 
+function (x1, x2, lon.lat = FALSE) 
 {
     if (!is.matrix(x1)) {
         x1 <- as.matrix(x1)

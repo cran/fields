@@ -5,7 +5,7 @@ function (lev, y, w = rep(1, length(y)))
     tags <- lev[!dup(lev)]
     lev <- match(lev, tags)
     id <- order(lev)
-    brk <- c(diff(lev[id]) != 0, T)
+    brk <- c(diff(lev[id]) != 0, TRUE)
     w.means <- diff(c(0, cumsum(w[id])[brk]))
     means <- diff(c(0, cumsum(y[id] * w[id])[brk]))/w.means
     n <- diff(c(0, (1:N)[brk]))

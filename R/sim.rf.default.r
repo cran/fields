@@ -9,6 +9,6 @@ function (obj)
         stop("FFT of covariance has negative\nvalues")
     }
     z <- fft(matrix(rnorm(N * M), ncol = N, nrow = M))
-    Re(fft(sqrt(obj$wght) * z, inverse = T))[1:m, 1:n]/sqrt(M * 
+    Re(fft(sqrt(obj$wght) * z, inverse = TRUE))[1:m, 1:n]/sqrt(M * 
         N)
 }

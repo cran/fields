@@ -1,5 +1,5 @@
 "rdist.earth" <-
-function (loc1, loc2, miles = T, R = NULL) 
+function (loc1, loc2, miles = TRUE, R = NULL) 
 {
     if (is.null(R)) {
         if (miles) 

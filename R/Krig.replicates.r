@@ -1,5 +1,5 @@
 "Krig.replicates" <-
-function(out, verbose = F)
+function(out, verbose = FALSE)
 {
 	rep.info <- cat.matrix(out$x)
 	if(verbose)

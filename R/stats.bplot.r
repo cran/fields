@@ -1,5 +1,5 @@
 "stats.bplot" <-
-function (x, by, style = "tukey", outlier = T) 
+function (x, by, style = "tukey", outlier = TRUE) 
 {
     if (!missing(by)) {
         x <- cat.to.list(c(x), by)

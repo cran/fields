@@ -15,6 +15,6 @@ function (x, digits = 4, ...)
         x$eff.df)) * (1 - hold)
     summary$digits <- digits
     summary$cov.function <- as.character(x$call$cov.function)
-    summary$correlation.model <- F
+    summary$correlation.model <- FALSE
     summary
 }

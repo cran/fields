@@ -9,7 +9,7 @@ Given two sets of longitude/latitude locations computes the Great circle
 among all pairings. 
 }
 \usage{
-rdist.earth(loc1, loc2, miles = T, R = NULL)
+rdist.earth(loc1, loc2, miles = TRUE, R = NULL)
 }
 \arguments{
 \item{loc1}{

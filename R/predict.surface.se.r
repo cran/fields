@@ -1,5 +1,5 @@
 "predict.surface.se" <-
-function(out, grid.list = NA, extrap = F, chull.mask, ...)
+function(out, grid.list = NA, extrap = FALSE, chull.mask, ...)
 {
 	if((length(grid.list) == 1) | (is.na(grid.list)[1])) {
 		grid.list <- as.list(rep("c", ncol(out$x)))

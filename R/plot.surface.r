@@ -3,10 +3,10 @@ function (obj, main = NULL, type = "b", zlab = NULL, xlab = NULL,
     ylab = NULL, levels = NULL, zlim = NULL, graphics.reset = NULL, 
     ...) 
 {
-    old.par <- par(no.readonly=T)
+    old.par <- par(no.readonly=TRUE)
     if (is.null(graphics.reset)&( type == "b"))
-{ graphics.reset<- T}
-else{ graphics.reset<- F}
+{ graphics.reset<- TRUE}
+else{ graphics.reset<- FALSE}
     
     if (graphics.reset) {
         on.exit(par(old.par))
@@ -30,7 +30,7 @@ else{ graphics.reset<- F}
         if (!is.null(obj$main)) 
             main <- obj$main
     if (type == "b") 
-        set.panel(2, 1, T)
+        set.panel(2, 1, TRUE)
     if (type == "p" | type == "b") {
         if (is.null(zlim)) 
             persp(obj$x, obj$y, obj$z, xlab = xlab, ylab = ylab, 
@@ -56,7 +56,7 @@ else{ graphics.reset<- F}
             graphics.reset = graphics.reset)
         if (is.null(levels)) 
             levels <- pretty(obj$z[ !is.na(obj$z)] , 5)
-        contour(obj$x, obj$y, obj$z, add = T, levels = levels, 
+        contour(obj$x, obj$y, obj$z, add = TRUE, levels = levels, 
             ...)
         if ((!is.null(main)) & type != "b") 
             title(main)

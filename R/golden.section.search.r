@@ -18,7 +18,7 @@ function (ax, bx, cx, f, niter = 25, f.extra = NA, tol = 1e-05)
     f2 <- f(x2, f.extra)
     iter <- niter
     for (k in 1:niter) {
-#cat( x1,f1, x2,f2, fill=T)
+#cat( x1,f1, x2,f2, fill=TRUE)
         if (f2 < f1) {
             x0 <- x1
             x1 <- x2

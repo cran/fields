@@ -1,5 +1,5 @@
 "conjugate.gradient" <-
-function (b, multAx, start = NULL, tol = 1e-05, kmax = 25, verbose = T, 
+function (b, multAx, start = NULL, tol = 1e-05, kmax = 25, verbose = TRUE, 
     ...) 
 {
     call <- match.call()
@@ -30,7 +30,7 @@ function (b, multAx, start = NULL, tol = 1e-05, kmax = 25, verbose = T,
         rho[1 + k] <- sum(r^2)
         if (verbose) {
             cat("iter", k, " crit : ", signif(sqrt(rho[1 + k]), 
-                4), signif(test, 4), fill = T)
+                4), signif(test, 4), fill = TRUE)
         }
         if (sqrt(rho[1 + k]) < test) {
             niter <- k + 1

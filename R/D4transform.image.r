@@ -1,18 +1,18 @@
 "D4transform.image" <-
-function (x, inv = F, transpose = F, cut.min = 8) 
+function (x, inv = FALSE, transpose = FALSE, cut.min = 8) 
 {
     if (transpose) 
         inv <- !inv
     n <- dim(x)[1]
     m <- dim(x)[2]
     if (n > m) {
-        flip <- T
+        flip <- TRUE
         temp <- t(x)
         n <- dim(temp)[1]
         m <- dim(temp)[2]
     }
     else {
-        flip <- F
+        flip <- FALSE
         temp <- x
     }
     if (n > m) 

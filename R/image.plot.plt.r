@@ -1,12 +1,12 @@
 "image.plot.plt" <-
-function ( add=F,  legend.shrink = 0.9, legend.width = 
-0.04, horizontal = F, offset = 2 * legend.width, 
+function ( add=FALSE,  legend.shrink = 0.9, legend.width = 
+0.04, horizontal = FALSE, offset = 2 * legend.width, 
     bigplot = NULL, smallplot = NULL)
 {
-    old.par <- par(no.readonly = T)
+    old.par <- par(no.readonly = TRUE)
     if (is.null(smallplot)) 
-        stick <- T
-    else stick <- F
+        stick <- TRUE
+    else stick <- FALSE
     if (is.null(smallplot)) {
         smallplot <- old.par$plt
         if (horizontal) {

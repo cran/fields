@@ -1,5 +1,5 @@
 "WQSdi" <-
-function (x, transpose = F) 
+function (x, transpose = FALSE) 
 {
     if (!transpose) 
         t(WQSi(t(WQSi(x))))

@@ -1,12 +1,14 @@
 "describe.bplot" <-
-function (temp, style = "tukey", outlier = T) 
+function (temp, style = "tukey", outlier = TRUE) 
 {
     obj <- list()
     temp <- temp[!is.na(temp)]
     obj$N <- length(temp)
-    obj$range <- range(temp)
     obj$out <- numeric(0)
     obj$style <- style
+if( obj$N <1) { obj$range<- NA
+return( obj)}
+    obj$range <- range(temp)
     if (style == "quantile") {
         quant <- c(0.05, 0.25, 0.5, 0.75, 0.95)
         out$bb <- quantile(temp, quant)

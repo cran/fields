@@ -13,7 +13,7 @@ function (x, digits = 4)
     c2 <- c(c2, round(x$opt.crit, digits))
     sum <- cbind(c1, c2)
     dimnames(sum) <- list(rep("", dim(sum)[1]), rep("", dim(sum)[2]))
-    print(sum, quote = F, digits = digits)
+    print(sum, quote = FALSE, digits = digits)
     other.crit <- x$other.crit
     if (length(other.crit) > 1) {
         cat("\nOptimality criteria for other designs:\n\t")
@@ -21,6 +21,6 @@ function (x, digits = 4)
     }
     cat("\nHistory:\n")
     dimnames(x$history)[[1]] <- rep("", nrow(x$history))
-    print(round(x$history, digits), quote = F)
+    print(round(x$history, digits), quote = FALSE)
     invisible(x)
 }

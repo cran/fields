@@ -1,6 +1,6 @@
 "setup.W.image.cov" <-
 function (m, n, weights = 1, D = NULL, cut.min = 8, max.m = m, 
-    max.n = n, x = NULL, grid = NULL, normalize = T, ...) 
+    max.n = n, x = NULL, grid = NULL, normalize = TRUE, ...) 
 {
     call <- match.call()
     if (!is.null(x)) {
@@ -22,7 +22,7 @@ function (m, n, weights = 1, D = NULL, cut.min = 8, max.m = m,
     if (normalize) {
         e[x1, x2] <- 1
         temp.max <- max(Wtransform.image(junk$D * Wtransform.image(e, 
-            inv = T, transpose = T, cut.min = cut.min), inv = T, 
+            inv = TRUE, transpose = TRUE, cut.min = cut.min), inv = TRUE, 
             cut.min = cut.min, ))
     }
     else {

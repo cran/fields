@@ -8,7 +8,7 @@ Plots quickly, medium resolution outlines of the US with the states and
 bodies of water.  
 }
 \usage{
-US( xlim=c(-124.7, -67.1), ylim = c(25.2, 49.4), add=F, ...)
+US( xlim=c(-124.7, -67.1), ylim = c(25.2, 49.4), add=FALSE, ...)
 }
 \arguments{
 

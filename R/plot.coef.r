@@ -1,5 +1,5 @@
 "plot.coef" <-
-function (x, cut.min = 8, graphics.reset = T, common.range = F) 
+function (x, cut.min = 8, graphics.reset = TRUE, common.range = FALSE) 
 {
     old.par <- par()
     par(mar = c(3, 0, 3, 0))
@@ -25,13 +25,13 @@ function (x, cut.min = 8, graphics.reset = T, common.range = F)
     zr <- range(x)
     set.panel(level, 3)
     image.plot(x[m1:m2, n1:n2], zlim = zr, xaxt = "n", yaxt = "n", 
-        graphics.reset = F)
+        graphics.reset = FALSE)
     mtext(3, line = 1, text = "smooth", cex = 1.1)
     par(mfg = c(2, 1, level, 3))
     level <- 1
     while (n3 <= n & m3 <= m) {
-        cat(c(m1, m2, m3), fill = T)
-        cat(c(n1, n2, n3), fill = T)
+        cat(c(m1, m2, m3), fill = TRUE)
+        cat(c(n1, n2, n3), fill = TRUE)
         zr <- range(c(x[m1:m2, (n2 + 1):n3], x[(m2 + 1):m3, n1:n2], 
             x[(m2 + 1):m3, (n2 + 1):n3]))
         image(x[m1:m2, (n2 + 1):n3], zlim = zr, xaxt = "n", yaxt = "n")

@@ -26,6 +26,6 @@ function(x, ...)
 	dimnames(sum) <- list(rep("", dim(sum)[1]), rep("", dim(sum)[2]))
 	cat("Call:\n")
 	dput(x$call)
-	print(sum, quote = F)
+	print(sum, quote = FALSE)
 	invisible(x)
 }

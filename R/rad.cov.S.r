@@ -1,5 +1,5 @@
 "rad.cov.S" <-
-function (x1, x2, p = 1, with.log = T, with.constant = T) 
+function (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE) 
 {
     if (!is.matrix(x1)) 
         x1 <- as.matrix(x1)

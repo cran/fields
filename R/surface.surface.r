@@ -1,11 +1,11 @@
 "surface.surface" <-
-function (obj, lab = NA, type = "b", zlab, xlab, ylab, graphics.reset = F, 
+function (obj, lab = NA, type = "b", zlab, xlab, ylab, graphics.reset = FALSE, 
     ...) 
 {
     old.par <- par("mfrow", "oma")
     if (graphics.reset) {
         on.exit(par(old.par))
-        par(xpd = T)
+        par(xpd = TRUE)
     }
     if (is.null(obj$xlab)) 
         obj$xlab <- "X"
@@ -24,7 +24,7 @@ function (obj, lab = NA, type = "b", zlab, xlab, ylab, graphics.reset = F,
         lab <- obj$main
     }
     if (type == "b") 
-        set.panel(2, 1, T)
+        set.panel(2, 1, TRUE)
     if (type == "p" | type == "b") {
         persp(obj, xlab = obj$xlab, ylab = obj$ylab, zlab = zlab, 
             ...)
@@ -45,7 +45,7 @@ function (obj, lab = NA, type = "b", zlab, xlab, ylab, graphics.reset = F,
             title(lab)
         }
         if (type == "I") {
-            contour(obj, add = T)
+            contour(obj, add = TRUE)
         }
     }
     invisible()
