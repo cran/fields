@@ -21,6 +21,9 @@ Any ploting options for abline.
  yline, abline 
 }
 \examples{
+
+plot( 1:10)
+xline( 6.5, col=2)
  
 world( col=3) 
 yline( seq( -80,80,10),col=4, lty=2)

@@ -9,7 +9,8 @@ The resulting object is suitable for use with functions for viewing 3-d
 surfaces.  
 }
 \usage{
-predict.surface(out, grid.list=NA, extrap=F, chull.mask, model=NA,...)
+predict.surface(out, grid.list=NA, extrap=FALSE, chull.mask, model=NA,
+nx=30, ny=30,...)
 }
 \arguments{
 \item{out}{
@@ -46,8 +47,12 @@ lambda value for a Tps fit).
 \item{\dots}{
 Any other arguments to pass to the predict function associated with the fit
 object. 
- 
 }
+\item{nx}{
+Number of grid points in X axis. }
+\item{ny}{
+Number of grid points in Y axis. }
+
 }
 \value{
 The usual list components for making contour and perspective plots along  
@@ -66,13 +71,17 @@ Tps, Krig, predict, grid.list, make.surface.grid, as.surface, surface
 \examples{
 fit<- Tps( BD[,1:4], BD$lnya)  # fit surface to data 
 
-# make grid list
-grid.list<- list( KCl="x", MgCl2=mean(BD[,2]),KPO4="y",dNTP=mean(BD[,4]))
-out.p<- predict.surface(fit,grid.list, extrap=T) 
 # evaluate on a grid on two 
 # variables holding two fixed  
+# default surface and contour plot  
+# make grid list
+grid.list<- list( KCl="x", MgCl2=mean(BD[,2]),KPO4="y",dNTP=mean(BD[,4]))
+
+out.p<- predict.surface(fit,grid.list, extrap=TRUE) 
+
 surface(out.p) 
-# surface and contour plot  
+
+set.panel(1,1)
 }
 \keyword{spatial}
 % docclass is function

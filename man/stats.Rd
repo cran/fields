@@ -46,7 +46,7 @@ zork<- matrix( rnorm(200), ncol=8)
 stats(zork) 
 
 zork<- rnorm( 200)
-id<- sample( 1:8, 200, replace=T)
+id<- sample( 1:8, 200, replace=TRUE)
 stats( zork, by=id)
 }
 \keyword{univar}

@@ -13,7 +13,7 @@ existing plot.
 }
 \usage{
 arrow.plot(a1, a2, u = NA, v = NA, arrow.ex = 0.05,  
-     xpd = T, true.angle = F, ...)
+     xpd = TRUE, true.angle = FALSE, ...)
 }
 \arguments{
 \item{a1}{

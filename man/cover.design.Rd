@@ -10,9 +10,9 @@ is that the candidate set can satisfy whatever constraints are important
 for the problem. 
 }
 \usage{
-cover.design(R, nd, nruns = 1, nn = T, num.nn = 100, fixed = NULL, 
+cover.design(R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL, 
     scale.type = "unscaled", R.center, R.scale, P = -20, Q = 20,
-    start = NULL, DIST = NULL, return.grid = T, return.transform = T)
+    start = NULL, DIST = NULL, return.grid = TRUE, return.transform = TRUE)
 
 cover.design.S(...) # S version
 cover.design.F(...) # FORTRAN version
@@ -34,11 +34,11 @@ the minimum.
 }
 \item{nn}{
 Logical value specifying whether or not to consider only nearest 
-neighbors in the swapping algorithm. When nn=F, then the swapping 
-algorithm will consider all points in the candidate space. When nn=T, 
+neighbors in the swapping algorithm. When nn=FALSE, then the swapping 
+algorithm will consider all points in the candidate space. When nn=TRUE, 
 then the swapping algorithm will consider only the num.nn closest 
 points for possible swapping. The default is to use nearest neighbors 
-only (nn=T). 
+only (nn=TRUE). 
 }
 \item{num.nn}{
 Number of nearest-neighbors to search over. The default number is 100. 

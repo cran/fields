@@ -1,17 +1,17 @@
-BD                       Data frame of the effect of buffer compositions
-                         on DNA strand displacement amplification. A 4-d
-                         regression data set with with replication. This
-                         is a useful test data set for exercising
-                         function fitting methods.
-US.dat                   Outline of coterminous US and states.
-flame                    Response surface experiment ionizing a reagent
-lennon                   Gray image of John Lennon.
-minitri                  Mini triathlon results
-ozone                    Data set of ozone measurements at 20 Chicago
-                         monitoring stations.
-ozone2                   Daily 8-hour ozone averages for sites in the
-                         Midwest
-precip                   Standardized monthly precipitation for August
-                         1963 inteh Rocky Mountain Region
-rat.diet                 Experiment studying an appetite supressant in
-                         rats.
+BD                      Data frame of the effect of buffer compositions
+                        on DNA strand displacement amplification. A 4-d
+                        regression data set with with replication. This
+                        is a useful test data set for exercising
+                        function fitting methods. 
+US.dat                  Outline of coterminous US and states. 
+flame                   Response surface experiment ionizing a reagent 
+lennon                  Gray image of John Lennon. 
+minitri                 Mini triathlon results 
+ozone                   Data set of ozone measurements at 20 Chicago
+                        monitoring stations. 
+ozone2                  Daily 8-hour ozone averages for sites in the
+                        Midwest 
+precip                  Standardized monthly precipitation for August
+                        1963 inteh Rocky Mountain Region 
+rat.diet                Experiment studying an appetite supressant in
+                        rats. 

@@ -117,14 +117,11 @@ wght<- image.smooth.setup( nrow=128, ncol=128,  dx=dx, dy=dy, theta= .25,
 Mwidth=32, Nwidth=32)
 
 #
-# 6 random fields from smoothing white noise with this filter.
+#  random fields from smoothing white noise with this filter.
 #
-set.panel( 3,2)
-par( pty="s")
-look<- image.smooth( out$z, wght) 
-for( k in 1:6) {
 look<- image.smooth( matrix( rnorm(128**2), 128,128), wght)
-image( look)
+# take a look: image.plot( look)
+
 }
 }
 \keyword{smooth}

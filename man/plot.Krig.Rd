@@ -7,7 +7,7 @@
 Plots a series of four diagnostic plots that summarize the fit from Krig. 
 }
 \usage{
-plot.Krig(out, main=NA, digits=4, which=c(T,T,T,T), graphics.reset=T,
+plot.Krig(out, main=NA, digits=4, which=c(TRUE,T,T,TRUE), graphics.reset=TRUE,
 ...)
 }
 \arguments{

@@ -10,7 +10,7 @@ value the average is used.
 }
 \usage{
 as.image(Z, ind, grid=NULL, x=NULL, nrow=64, ncol=64,weights=rep( 1,
-length(Z)))
+length(Z)), na.rm=TRUE)
 }
 \arguments{
 \item{Z}{
@@ -39,6 +39,8 @@ If two or more values fall into the same
 pixel a weighted average is used to represent the pixel value. Default is 
 equal weights. 
 }
+\item{na.rm}{ 
+If true NA's are removed from the Z vector.}
 }
 \value{
 An list in image format with a few more components. Components x and y are 

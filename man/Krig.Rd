@@ -20,11 +20,11 @@ and marginal variances are supplied.
 \usage{
 Krig(x, Y, cov.function=exp.cov, lambda=NA, df = NA,
 cost=1, knots, weights=rep(1,length(Y)), 
-m=2, return.matrices=T, nstep.cv=80, scale.type="user", 
+m=2, return.matrices=TRUE, nstep.cv=80, scale.type="user", 
 x.center=rep(0, ncol(x)), x.scale=rep(1, ncol(x)), rho=NA, sigma2=NA, 
-method="GCV", decomp="DR", verbose=F, cond.number=10^8, mean.obj=NULL, 
-sd.obj=NULL, yname=NULL, return.X=T, null.function=make.tmatrix, offset=0, 
- outputcall = NULL, cov.by.name = T,...)
+method="GCV", decomp="DR", verbose=FALSE, cond.number=10^8, mean.obj=NULL, 
+sd.obj=NULL, yname=NULL, return.X=TRUE, null.function=make.tmatrix, offset=0, 
+ outputcall = NULL, cov.args=NULL,...)
 }
 \arguments{
 \item{x}{
@@ -140,13 +140,10 @@ The offset to be used in the GCV criterion. Default is 0. This would be
 used when Krig is part of a backfitting algorithm and the offset has to be 
 adjusted to reflect other model degrees of freedom. 
 }
-\item{cov.by.name}{
-If false, a local copy of the covariance function is attached to the Krig
-output object. This provides an unambiguous version and guards
-against the problem of the covariance function being changed after the
-Krig object is created. If true just the name of the covariance function
-is attached to the Krig object. 
+\item{cov.args}{
+A list with the arguments to call the covariance function. (in addition to the locations)
 }
+
 \item{outputcall}{
 If NULL the output object will have a \$call argument based on this call. 
 If no NULL the output call will have whatever is passed. This is kludge
@@ -270,6 +267,9 @@ measurement error and the scale factor for covariance used in the fit.
 }
 }
 \details{
+This function produces a object of class Krig. With this object it is easy to subsequently 
+predict with this fitted surface, find standard errors, alter the y data ( but not x),  etc. 
+
 The kriging model is:  Y(x)= P(x) + Z(x) + e 
 
 where Y is the dependent variable observed at location x, P is a low order
@@ -338,24 +338,28 @@ image(out.p)
 
 predict( fit)
 
-# predict on a default surface to make a surface object
+# predict on a grid ( grid chosen here by defaults)
 out<- predict.surface( fit)
 persp( out)
 
-# predict at arbitrary points
-xnew<- cbind( c( 10, 20), c( -10, 15))
+# predict at arbitrary points (10,-10) and (20, 15)
+xnew<- rbind( c( 10, -10), c( 20, 15))
 predict( fit, xnew)
 
-# standard errors of prediction based on covariance being OK. 
+# standard errors of prediction based on covariance model.  
 predict.se( fit, xnew)
 
 #
 # Roll your own: using a user defined Gaussian covariance 
 #
-test.cov <- function(x1,x2){exp(-(rdist(x1,x2)/.5)**2)} 
+test.cov <- function(x1,x2,theta){exp(-(rdist(x1,x2)/theta)**2)} 
 # use this and put in quadratic polynomial fixed function 
-fit.flame<- Krig(flame$x, flame$y, test.cov, m=3)  
-# BTW:  GCV indicates an interpolating model  
+fit.flame<- Krig(flame$x, flame$y, test.cov, m=3, theta=.5)
+#
+# note how range parameter is passed to Krig.   
+# BTW:  GCV indicates an interpolating model (nugget variance is zero) 
+#
+# take a look ...
 surface(fit.flame, type="I") 
 
 # 
@@ -364,7 +368,8 @@ surface(fit.flame, type="I")
 # p=2 is the power in the radial basis function 
 # If m is the degree of derivative in penalty then p=2m-d 
 # where d is the dimension of x. p must be greater than 0. 
-#  In the example below p = 2*2 - 2 
+#  In the example below p = 2*2 - 2 = 2  
+# See also the Fields function Tps
 
 out<- Krig( ozone$x, ozone$y, rad.cov, m=2,  p=2)
 

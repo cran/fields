@@ -7,7 +7,7 @@
 Evaluates the standard error of predictions on a surface. 
 }
 \usage{
-predict.surface.se(out, grid.list=NA, extrap=F, chull.mask,...)
+predict.surface.se(out, grid.list=NA, extrap=FALSE, chull.mask,...)
 }
 \arguments{
 \item{out}{

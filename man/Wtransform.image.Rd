@@ -8,7 +8,7 @@ Finds the forward or inverse discrete wavelet transform using the
 quadratic W basis. 
 }
 \usage{
-Wtransform.image(x, inv=F, transpose=F, cut.min=8)
+Wtransform.image(x, inv=FALSE, transpose=FALSE, cut.min=8)
 }
 \arguments{
 \item{x}{
@@ -47,20 +47,26 @@ plot.coef, WQS, WQSi, Wtransform.D
 # Wtransform of John Lennon image
 data(lennon)
 look<- Wtransform.image( lennon)
-image.plot( look)
+# 
+### take a look: 
+# image.plot( look)
 #threshhold 
 thr<-  quantile( abs( look), .95)
 temp<- look
 temp[abs(look)< thr] <- 0
-look2<- Wtransform.image( temp, inv=T)
-image( look2) # 95 \% compressed image
+look2<- Wtransform.image( temp, inv=TRUE)
+# 
+### take a look: 
+# image( look2) # 95 \% compressed image
 
  
 # a diagonal detail basis function 
 temp<- matrix(0, nrow=32, ncol=32) 
 temp[12,12]<- 1 
-look<- Wtransform.image( temp , inv=T)
+look<- Wtransform.image( temp , inv=TRUE)
 persp( look) 
+image( look)
+title("diagonal detail W-wavlet")
 }
 \keyword{spatial}
 % docclass is function

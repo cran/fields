@@ -12,8 +12,8 @@ provisions to use a different covariance for evaluation than the one used
 to define the BLUE.  
 }
 \usage{
-predict.se.Krig(out, x, cov.function, rho, sigma2, weights=NULL, cov=F,  
-stationary=T, fixed.mean=T, ...)
+predict.se.Krig(out, x, cov.function, rho, sigma2, weights=NULL, cov=FALSE,  
+stationary=TRUE, fixed.mean=TRUE, ...)
 }
 \arguments{
 \item{out}{
@@ -23,11 +23,9 @@ A Krig object.
 Points to compute the SE. 
 }
 \item{cov.function}{
-True covariance function for the random surface if different from the one  
+Name of the true covariance function for the random surface if different from the one  
 used to generate predictions. If omitted, then the 
-function from the Krig object ( e.g. out\$cov.function) is used. This
-option only works if the Krig object is created with cov.by.name=F.
-(This initial covariance function is copied into the Krig object.)
+function from the Krig object 
 }
 \item{rho}{
 Parameter that multiplies the covariance function. If omitted the
@@ -94,10 +92,7 @@ correct it is BLUE, otherwise the MSE for the spatial estimate will be
 larger than optimal.  The cov.function argument in this function defaults
 to the same covariance used to determine the spatial prediction but
 it also can be specified separately, in this case it interpreted as the true
-covariance and the prediction variances are evaluated accordingly. To
-avoid even more spaghetti in this function the misspecification only works
-when the covariance function is passed by value ( cov.by.name =F) in Krig.
-The example below makes this detail clear. 
+covariance and the prediction variances are evaluated accordingly. 
 }
 \section{References}{
 See Case Studies in Environmental Statistics  
@@ -132,9 +127,7 @@ image.plot( out)
 # 
 # first call Krig to create the Krig object.  
 # 
-Krig( ozone$x, ozone$y, cov.function=exp.cov, theta=100,  
-cov.by.name=F)-> fit 
-
+Krig( ozone$x, ozone$y, cov.function=exp.cov, theta=100)-> fit 
 # note how the new cov. parameters are specified just like in Krig  
 predict.se(fit,xg)-> look 
 predict.se( fit, xg, cov.function=exp.cov, theta=2.0, sigma2=1)-> look2 
@@ -143,6 +136,7 @@ set.panel( 2,1)
 image.plot( as.surface( xg, look))
 points( fit$x)
 image.plot( as.surface( xg, look2))
+set.panel( 1,1)
 }
 \keyword{spatial}
 % docclass is function

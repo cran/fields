@@ -63,7 +63,7 @@ grid<-list( KCl="x", MgCl2=mean(BD[,2]),KPO4="y", dNTP=mean(BD[,4]))
 
 # evalute on a grid on two 
 # variables holding two fixed at their mean levels 
-out.p<-predict.surface(fit, grid, extrap=T)  
+out.p<-predict.surface(fit, grid, extrap=TRUE)  
 
 plot.surface(out.p, type="C") # surface plot  
 }

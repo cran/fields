@@ -50,7 +50,7 @@ look$stats["Std.Dev.",]
 
 data( ozone2)
 # make up a variogram day 16 of Midwest daily ozone ...
-look<- vgram( ozone2$lon.lat, c(ozone2$y[16,]), lon.lat=T)
+look<- vgram( ozone2$lon.lat, c(ozone2$y[16,]), lon.lat=TRUE)
 
 # break points
 brk<- seq( 0, 250,,40)

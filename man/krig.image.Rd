@@ -21,7 +21,7 @@ of the FFT for fast multiplication of a covariance matrix with a vector.
 \usage{
 krig.image(x, Y, cov.function, m=NULL, n=NULL, lambda=0, start=NULL, 
 tol=1e-05, kmax=25,  cov.obj=NULL, grid=NULL, 
-weights=rep(1, length(Y)), verbose=F, conv.verbose=F, expand=1, ...)
+weights=rep(1, length(Y)), verbose=FALSE, conv.verbose=FALSE, expand=1, ...)
 }
 \arguments{
 \item{x}{
@@ -248,7 +248,7 @@ plot( out)
 
 # CV predictions and RMSE to judge adequacy of lambda choice 
 pred.cv<- predict( out, precip$x.cv) 
-sqrt(mean( ( pred.cv- precip$y.cv)^2, na.rm=T)) 
+sqrt(mean( ( pred.cv- precip$y.cv)^2, na.rm=TRUE)) 
 
 # look at the surface 
 image.plot( out$surface)  #or just      surface( out)
@@ -256,7 +256,7 @@ image.plot( out$surface)  #or just      surface( out)
 #
 #simulate 4 realizations from the conditional distribution 
 look<- sim.krig.image( out, nreps=4) 
-plot( look)
+# take a look:  plot( look)
  
 # check out another values of lambda reusing some of the objects from the 
 # first fit 
@@ -284,7 +284,8 @@ res<- predict( out2, out2$xM) - out2$yM
  
 out<- krig.image( precip$x, precip$y, cov.function=rad.image.cov, 
 lambda=1, m=64, n=64, p=2, kmax=300) 
-image.plot( out$surface) 
+
+# take a look: image.plot( out$surface) 
 
 # check out  different values reuse some of the things to make it quicker 
 # note addition of kmax argument to increase teh number of iterations
@@ -304,22 +305,24 @@ lambda=1e-7, start= out3$omega2, cov.obj=out$cov.obj,kmax=500, tol=1e-3)
 #compare the the four surfaces: 
 # but note the differences in scales ( fix zlim to make them the same) 
 # 
+# take a look
+# set.panel( 2,2) 
+# image.plot( out$surface) 
+# points( out$x, pch=".") 
 
-set.panel( 2,2) 
-image.plot( out$surface) 
-points( out$x, pch=".") 
-
-image.plot( out2$surface) 
-image.plot( out3$surface) 
-image.plot( out4$surface) 
+# image.plot( out2$surface) 
+# image.plot( out3$surface) 
+# image.plot( out4$surface) 
  
 # some diagnostic plots) 
 set.panel( 4,4) 
-plot( out, graphics.reset=F) 
-plot( out2, graphics.reset=F) 
-plot( out3, graphics.reset=F) 
-plot( out4, graphics.reset=F) 
+plot( out, graphics.reset=FALSE) 
+plot( out2, graphics.reset=FALSE) 
+plot( out3, graphics.reset=FALSE) 
+plot( out4, graphics.reset=FALSE) 
+set.panel(1,1)
 }
+
 \keyword{spatial}
 % docclass is function
 % Converted by Sd2Rd version 1.21.

@@ -9,8 +9,8 @@ object.
 }
 \usage{
 plot.sreg
-(out, main = NA, digits = 4, which = c(T, T, T, T), graphics.reset
-= T, ...)
+(out, main = NA, digits = 4, which = c(TRUE, TRUE, TRUE, TRUE), graphics.reset
+= TRUE, ...)
 }
 \arguments{
 \item{out}{

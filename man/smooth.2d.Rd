@@ -11,8 +11,8 @@ is a smoother in S code that avoid explicit looping.
 }
 \usage{
 smooth.2d
- (Y, ind = NULL, weight.obj = NULL, setup = F, grid = NULL,
-    x = NULL, nrow = 64, ncol = 64, surface = T, cov.function =
+ (Y, ind = NULL, weight.obj = NULL, setup = FALSE, grid = NULL,
+    x = NULL, nrow = 64, ncol = 64, surface = TRUE, cov.function =
 gauss.cov, Mwidth = NULL, Nwidth = NULL, ...)
 }
 \arguments{
@@ -28,7 +28,7 @@ smoothing the same locations many times. (See also the x argument.)
 \item{weight.obj }{
 An object that 
 has the FFT of the convolution kernel and other information ( i.e. the
-result from calling this with setup=T).   
+result from calling this with setup=TRUE).   
 }
 \item{setup}{
 If true creates a list that includes the FFT of the 
@@ -121,16 +121,17 @@ Mwidth=32)
 # with a bandwidth of .25 degrees the normal kernel is essentially zero  
 # beyond 32 grid points from its center ( about 6 standard deviations) 
 #
-set.panel(2,1)
-image( look3, zlim=c(-8,12))
-points( precip$x, pch=".")  
-image( look, zlim =c(-8,12))
-points( precip$x, pch=".")  
+# take a look:
+
+#set.panel(2,1)
+#image( look3, zlim=c(-8,12))
+#points( precip$x, pch=".")  
+#image( look, zlim =c(-8,12))
+#points( precip$x, pch=".")  
 
 
 # bandwidth changed to .25, exponential kernel   
-look2<- smooth.2d( precip$y, x=precip$x, cov.function=exp.cov,
-theta=.25)
+look2<- smooth.2d( precip$y, x=precip$x, cov.function=exp.cov,theta=.25)
 # 
 
 

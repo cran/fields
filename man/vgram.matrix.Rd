@@ -9,7 +9,7 @@ and returning summary information about the differences in each of these
 directions.  
 }
 \usage{
-vgram.matrix(dat, R=5, nsum=1:8, collapse=T)
+vgram.matrix(dat, R=5, nsum=1:8, collapse=TRUE)
 }
 \arguments{
 \item{dat}{
@@ -65,7 +65,7 @@ plot( out$d, out$vgram, xlab="separation distance", ylab="variogram")
 # image plot of vgram values by direction.  
 
 # look at different directions 
-out<-vgram.matrix( lennon, collapse=F) #this takes a bit of time 
+out<-vgram.matrix( lennon, collapse=FALSE) #this takes a bit of time 
 
 set.panel(2,1)
 plot( out$d, out$vgram) 
@@ -84,6 +84,7 @@ temp[ out$ind+1]<- out$vgram
 # note values for diagonal elements 
 image.plot( (1:M)-1, (1:N)-1, temp, xlab="x difference", 
 ylab="y difference") 
+set.panel(1,1)
 }
 \keyword{spatial}
 % docclass is function

@@ -9,13 +9,17 @@ and allows for placement at different horizontal or vertical positions. It
 is also flexible in the input object accepting either a list or matrix.
 }
 \usage{
-bplot(x, style = "tukey", outlier = T, plot = T, ...)
+bplot(x, by,style = "tukey", outlier = TRUE, plot = TRUE, ...)
 }
 \arguments{
 \item{x}{
 Vector, matrix,  list or data frame. A vector may be divided according
 to the by argument. Matrices and data frames are separated by columns and
 lists by components.   
+}
+\item{by}{
+If x is a vector, an optional vector (either character or numerical)
+specifying the categories to divide x into separate data sets.
 }
 \item{style}{
 Type of boxplot default is "tukey". The other choice is "quantile" where
@@ -117,9 +121,9 @@ temp<- matrix( rnorm(12*8), ncol=12)
 pos<- c(1:6,9:14)
 bplot(temp)
 #
-bplot( temp, pos=pos, labels=paste( "D",1:12), horizontal=T)
+bplot( temp, pos=pos, labels=paste( "D",1:12), horizontal=TRUE)
 #
-bplot( temp, pos=pos, label.cex=0, horizontal=T)
+bplot( temp, pos=pos, label.cex=0, horizontal=TRUE)
 # add an axis
 axis( 2)
 }

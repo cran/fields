@@ -11,7 +11,7 @@ including a GCV estimate.
 \usage{
 predict.Krig
 (out, x = NULL, lambda = NA, df = NA, model = NA,
-        eval.correlation.model = T, y = NULL, verbose = F, gcv = F)
+        eval.correlation.model = TRUE, y = NULL, verbose = FALSE, gcv = FALSE)
 }
 \arguments{
 \item{out}{
@@ -90,7 +90,7 @@ contour( out.p)
 look<- predict(fit,grid, df=15)
 
 # re fit with random data and lambda found by GCV
-look<- predict( fit, grid, y= rnorm( 20), gcv=T)
+look<- predict( fit, grid, y= rnorm( 20), gcv=TRUE)
 
 # NOTE: look is a list now  look$predicted  predicted values and look$lambda
 # the value of lambda
