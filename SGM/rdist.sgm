@@ -1,0 +1,66 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+   <s-topic>rdist</s-topic>
+</s-topics>
+<s-title>
+Euclidean distance matrix 
+</s-title>
+<s-description>
+Given two sets of locations computes the Euclidean distance  matrix
+among all pairings. 
+</s-description>
+<s-usage>
+<s-old-style-usage>
+rdist(x1, x2)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="x1">
+Matrix of first set of locations where each row gives the coordinates of a
+particular
+point.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="x2">
+Matrix of second set of locations where each row gives the coordinates of
+a particular point. If this is missing x1 is used. 
+</s-arg>
+</s-args-optional>
+<s-value>
+The distance matrix if nrow(x1)=m and nrow(
+x2)=n then the returned matrix will be mXn. 
+</s-value>
+<s-details>
+
+Let D be the mXn distance matrix.  The elements are 
+the Euclidean distances between the all locations x1[i,] and x2[j,].
+
+D.ij = sqrt(  sum.k (( x1[i,k] - x2[j,k]) **2 ).
+
+
+FORTRAN: The default function calls FORTRAN to evaluate the
+distances. A pure S code version also exists: rdist.S 
+
+</s-details>
+<s-see>  exp.cov, rdist.earth </s-see>
+<s-examples>
+<s-example>
+out<- rdist( ozone$x)
+# out is a 20X20 matrix.
+out2<- rdist( ozone$x[1:5,], ozone$x[11:20,])
+#out2 is a 5X10 matrix
+
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>spatial</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

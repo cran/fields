@@ -1,0 +1,39 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> rat.diet </s-topic>
+</s-topics>
+<s-title>
+Experiment studying an appetite supressant in rats.
+</s-title>
+<s-section name="SUMMARY">
+The `rat.diet' data frame has 39 rows and 3 columns.
+These are data from a study of an appetite supressant given to young rats.
+The suppressant was removed from the treatment group at around 60 days.
+The responses are the median food intake and  each group had approximately 
+10 animals. 
+</s-section>
+<s-section name= "DATA DESCRIPTION">
+This data frame contains the following columns:
+</s-section>
+<s-args>
+<s-arg name= t >
+Time in days
+ </s-arg>
+<s-arg name= con >
+Median food intake of the control group 
+ </s-arg>
+<s-arg name= trt >
+Median food intake of the treatment group
+ </s-arg>
+</s-args>
+<s-keywords>
+<s-keyword>datasets</s-keyword>
+</s-keywords>
+<s-docclass>
+data
+</s-docclass>
+</s-function-doc>

@@ -1,0 +1,153 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+   <s-topic>bplot</s-topic>
+</s-topics>
+<s-title>
+boxplot  
+</s-title>
+<s-description>
+Plots boxplots of several groups of data
+and allows for placement at different horizontal or vertical positions. It
+is also flexible in the input object accepting either a list or matrix.
+</s-description>
+<s-usage>
+<s-old-style-usage>
+bplot(x, style = "tukey", outlier = T, plot = T, ...)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="x">
+Vector, matrix,  list or data frame. A vector may be divided according
+to the by argument. Matrices and data frames are separated by columns and
+lists by components.   
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="style">
+Type of boxplot default is "tukey". The other choice is "quantile" where
+the whiskers are drawn to the 5 and 95 percentiles instead being based on
+the inner fences. 
+ </s-arg>
+<s-arg name="outlier">
+If true outliers (points beyond outer fences) will be added to the plots. 
+</s-arg>
+<s-arg name="plot">
+If false just returns a list with the statistics used for plotting the
+box plots. 
+</s-arg>
+<s-arg name="...">
+Other arguments controlling the boxplots ( passed to
+bplot.obj) these are
+listed below. Other graphical plotting arguments not matched (e.g. yaxt)
+are used in the call to plot to set up the intial plot if add=T. 
+</s-arg>
+<s-arg name="pos">
+The boxplots will be plotted vertically and pos gives the x or y locations
+for their centers. If omitted the boxes are equally spaced at integer  
+values.  
+</s-arg>
+<s-arg name="width">
+Width of boxplots (in user coordinates) if omitted then the width is a
+reasonable fraction of the  
+distance between boxes and is set by the space argument. 
+</s-arg>
+<s-arg name="labels">
+Labels under each boxplot. If missing the columns names or components of  
+x are used.  
+</s-arg>
+<s-arg name="srt">
+Rotate the labels (srt=90 makes them vertical). Default is to put them
+horizontal. Sometimes long
+labels run into each if they are horizontal.   
+</s-arg>
+<s-arg name="add">
+If true, do not create a new plots just add the boxplots to a current
+plot. Note  
+that the pos argument may be useful in this case and should be in the
+user coordinates of the parent plot.  
+</s-arg>
+<s-arg name="space">
+Space between boxplots.  
+</s-arg>
+<s-arg name="sort.names">
+If true plot the boxplot data set names are sorted in alphabetic order by
+their labels.  
+</s-arg>
+<s-arg name="xlab">
+Label for the x-axis 
+</s-arg>
+<s-arg name="ylab">
+Label for the y-axis 
+</s-arg>
+<s-arg name="ylab">
+Label for the y-axis 
+</s-arg>
+<s-arg name="label.cex">
+Boxplot label  size where 1.0 is  normal size characters.
+If zero labels will not be added.  
+</s-arg>
+<s-arg name="xaxt">
+Plotting parameter for x-axis generation. Default is not to produce
+an x-axis. 
+</s-arg>
+<s-arg name="outlier">
+If true add outliers as plotted points. 
+</s-arg>
+<s-arg name="horizontal"> 
+If true draw boxplots horizontally the default is false, produce
+veritcal box plots. 
+</s-arg>
+
+
+</s-args-optional>
+<s-details>
+This function was created as a complement to the usual S function for  
+boxplots. The current function makes it possible to put the boxplots at  
+unequal x or y positions. This is useful for visually grouping a large
+set of  
+boxplots into several groups. Also placement of the boxplots with  
+respect to the axis can add information to the plot.  Another aspect  
+is the emphasis on data structures for groups of data. One useful  
+feature is the by option to break up the x vector into distinct  groups.   
+If 5 or less observations are in a group the points themselves are  
+plotted instead of a box.   
+
+The function is broken into two steps: a call to stats.bplot to find the
+statistics and a call to bplot.obj to plot the resulting object. 
+The user is referred to describe.bplot to modify the statistics used and 
+to draw.bplot.obj to modify how the bplot is drawn.
+
+Finally to bin data into groups based on a continuous variable and to make
+bplots of each group see bplot.xy. 
+
+</s-details>
+<s-see>
+describe.bplot, draw.bplot.obj, stats.bplot, bplot.xy, bplot.obj
+</s-see>
+<s-examples>
+<s-example type = text>
+#
+set.seed(123)
+temp<- matrix( rnorm(12*8), ncol=12)
+pos<- c(1:6,9:14)
+bplot(temp)
+#
+bplot( temp, pos=pos, labels=paste( "D",1:12), horizontal=T)
+#
+bplot( temp, pos=pos, label.cex=0, horizontal=T)
+# add an axis
+axis( 2)
+
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>hplot</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

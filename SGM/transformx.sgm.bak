@@ -1,0 +1,67 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+   <s-topic>transformx</s-topic>
+</s-topics>
+<s-title>
+Linear transformation   
+</s-title>
+<s-description>
+Linear transformation of each column of a matrix. There are several 
+choices of the type of centering and scaling.  
+</s-description>
+<s-usage>
+<s-old-style-usage>
+transformx (x, scale.type = "unit.sd", x.center, x.scale)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="x">
+Matrix with columns to be transformed.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="scale.type">
+Type of transformation the default is "unit.sd": subtract the mean and 
+divide by the standard deviation. 
+Other  choices are "unscaled" (do nothing),  "range" (transform to 
+[0,1]),"user" (subtract a supplied location and divide by a scale).
+</s-arg>
+<s-arg name="x.center">
+A vector of centering values to subtract from each column. 
+</s-arg>
+<s-arg name="x.scale">
+A vector of scaling values to subtract from each column.
+</s-arg>
+</s-args-optional>
+<s-value>
+A matrix whose columns have between transformed.
+This matrix also has the attributes: scale.type, x.center and y.center 
+with the transformation information. 
+</s-value>
+<s-details>
+After deciding what the centering and scaling values should be for each 
+column of x, this function just calls the standard utility scale. 
+This function was created partly to attach the transformation information 
+as attributes to the tranformed matrix. It is used in Krig, cover.design, 
+krig.image etc. to transform the independent variables.   
+</s-details>
+<s-see>
+scale
+</s-see>
+<s-examples>
+<s-example type = text>
+#
+newx<-transformx( ozone$x, scale.type="range")
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>manip</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

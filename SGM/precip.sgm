@@ -1,0 +1,46 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> precip </s-topic>
+</s-topics>
+<s-title>
+Standardized monthly precipitation for August 1963 inteh Rocky Mountain 
+Region
+</s-title>
+<s-section name=" SUMMARY">
+This is a useful spatial data set of moderate size consisting of 800 
+locations The list has 
+components:
+</s-section>
+<s-section name=" DATA DESCRIPTION">
+This data set is a list containing the following components: 
+</s-section>
+<s-args>
+<s-arg name="x">
+Longitude-latitude postion of monitoring stations. 
+</s-arg>
+<s-arg name="y">
+Standardized precipitaton. The square root of precip has 
+been standardized by subtracting the 30 year ( 1960-1989) mean and 
+dividing 
+by the standard deviation. This is a simple way to transform to a process  
+that closer to a stationary Gaussian field.
+</s-arg>
+<s-arg name="x.cv">
+Additional locations for cross-validation. The 
+locations weere generated as a space-filling type design. 
+</s-arg>
+<s-arg name="y.cv">
+values for cross validation
+</s-arg>
+</s-args>
+<s-keywords>
+<s-keyword>datasets</s-keyword>
+</s-keywords>
+<s-docclass>
+data
+</s-docclass>
+</s-function-doc>

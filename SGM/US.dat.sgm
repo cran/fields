@@ -1,0 +1,25 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> US.dat </s-topic>
+</s-topics>
+<s-title>
+Data base for drawing US map
+</s-title>
+<s-section name="SUMMARY">
+Country and state outlines for the US in longitude latitude. 
+This data set si used by the Field function US.  
+<s-section name= "DATA DESCRIPTION">
+Sequence of lon lats that are to be connected by line segments. Missing 
+values are used to signal line breaks.
+</s-section>
+<s-keywords>
+<s-keyword>datasets</s-keyword>
+</s-keywords>
+<s-docclass>
+data
+</s-docclass>
+</s-function-doc>

@@ -1,0 +1,6 @@
+function ( add=F,  legend.shrink = 0.9, legend.width =
+0.04, horizontal = F, offset = 2 * legend.width,
+    bigplot = NULL, smallplot = NULL)
+function ( add=F,  legend.shrink = 0.9, legend.width =
+0.04, horizontal = F, offset = 2 * legend.width,
+    bigplot = NULL, smallplot = NULL)

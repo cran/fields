@@ -1,0 +1,411 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+   <s-topic>Krig</s-topic>
+</s-topics>
+<s-title>
+Kriging surface estimate  
+</s-title>
+<s-description>
+Fits a surface to irregularly spaced data. The Kriging model assumes  
+that the unknown  function is a realization  of a Gaussian 
+random spatial processes. The assumed model is additive 
+Y = P(x) +  Z(X) + e, where P is a low order polynomial and Z is a 
+mean zero, 
+Gaussian stochastic process with a  
+covariance that is unknown up to a scale constant. The main advantages of
+this function are the flexibility in specifying the covariance as an
+S-function and also the supporting functions plot, predict,
+predict.se, surface for
+subsequent analysis. Krig also supports a correlation model where the mean
+and marginal variances are supplied. 
+</s-description>
+<s-usage>
+<s-old-style-usage>
+Krig(x, Y, cov.function=exp.cov, lambda=NA, df = NA,
+cost=1, knots, weights=rep(1,length(Y)), 
+m=2, return.matrices=T, nstep.cv=80, scale.type="user", 
+x.center=rep(0, ncol(x)), x.scale=rep(1, ncol(x)), rho=NA, sigma2=NA, 
+method="GCV", decomp="DR", verbose=F, cond.number=10^8, mean.obj=NULL, 
+sd.obj=NULL, yname=NULL, return.X=T, null.function=make.tmatrix, offset=0, 
+ outputcall = NULL, cov.by.name = T,...)  
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="x">
+Matrix of independent variables. 
+</s-arg>
+<s-arg name="Y">
+Vector of dependent variables. 
+</s-arg>
+<s-arg name="cov.function">
+Covariance function for data in the form of an S-PLUS function (see exp.cov).  
+Default assumes that correlation is an exponential function of distance.
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="df">
+The effective number of parameters for the fitted surface. Conversely, 
+N- df, where N is the total number of observations is the degrees of
+freedom associated with the residuals. 
+This is an
+alternative to specifying lambda and much more interpretable. 
+</s-arg>
+<s-arg name="lambda">
+Smoothing parameter that is the ratio of the error variance (sigma**2) 
+to the scale parameter of the  
+covariance function (rho). If omitted this is estimated by GCV ( see
+method below). 
+</s-arg>
+<s-arg name="cost">
+Cost value used in GCV criterion. Corresponds to a penalty for  
+increased number of parameters. 
+</s-arg>
+<s-arg name="knots">
+A matrix of locations similar to x. These can define an alternative set of
+basis functions for representing the estimate. One choice may be a
+space-filling subset of the original x locations. (See details.)
+</s-arg>
+<s-arg name="weights">
+Weights are proportional to the reciprocal variance of the measurement  
+error. The default is no weighting i.e. vector of unit weights. 
+</s-arg>
+<s-arg name="m">
+A polynomial function of degree (m-1) will be  
+included in the model as the drift (or spatial trend) component. 
+</s-arg>
+<s-arg name="return.matrices">
+Matrices from the decompositions are returned. The default is T.  
+</s-arg>
+<s-arg name="nstep.cv">
+Number of grid points for minimum GCV search. 
+</s-arg>
+<s-arg name="scale.type">
+This is a character string among: "range", "unit.sd", "user", "unscaled".
+The independent variables and knots are scaled to the specified scale.type. 
+By default no scaling is done. Scale type of
+"range" scales the data to the interval (0,1) by forming 
+(x-min(x))/range(x) for each x. Scale type of "unit.sd" 
+Scale type of "user" allows specification of an x.center and x.scale by the 
+user. The default for "user" is mean 0 and standard deviation 1. Scale 
+type of "unscaled" does not scale the data. 
+</s-arg>
+<s-arg name="x.center">
+Centering values to be subtracted from each column of the x matrix. 
+</s-arg>
+<s-arg name="x.scale">
+Scale values that are divided into each column after centering. 
+</s-arg>
+<s-arg name="rho">
+Scale factor for covariance. 
+</s-arg>
+<s-arg name="sigma2">
+Variance of the errors, often called the nugget variance. If weights are
+specified then the error variance is sigma2 divided by weights. 
+</s-arg>
+<s-arg name="method"> 
+How should the "smoothing" parameter be estimated? The default is by
+standard GCV 
+Other choices are: GCV.model, GCV.one, RMSE, pure error. The differences 
+are explained below.  
+</s-arg>
+<s-arg name="decomp">
+Type of matrix decompositions used to compute the solution. Default is  
+"DR" Demmler-Reinsch an alternative that more numerically stable is  
+"WBW" Wendelberger-Bates-Wahba. This is the strategy used in GCV pack.   
+"WBW" can not be used if knots are specified.
+</s-arg>
+<s-arg name="verbose">
+If true will print out all kinds of intermediate stuff. Default is false,
+of course.   
+</s-arg>
+<s-arg name="cond.number">
+Maximum size of condition number to allow when using DR decomposition. 
+</s-arg>
+<s-arg name="mean.obj">
+Object to predict the mean of the spatial process. This used in when
+fitting a correlation model with varying spatial means and varying
+marginal variances. (See details.)
+</s-arg>
+<s-arg name="sd.obj">
+Object to predict the marginal standard deviation of the spatial process. 
+</s-arg>
+<s-arg name="yname">
+Name of y variable 
+</s-arg>
+<s-arg name="return.X">
+If true returns the big X matrix used for the estimate.  
+</s-arg>
+<s-arg name="null.function">
+An S function that creates the matrices for the null space model.  
+The default is make.tmatrix, an S function that creates polynomial 
+null spaces of degree up to m-1. (See details)  
+</s-arg>
+<s-arg name="offset">
+The offset to be used in the GCV criterion. Default is 0. This would be 
+used when Krig is part of a backfitting algorithm and the offset has to be 
+adjusted to reflect other model degrees of freedom. 
+</s-arg>
+<s-arg name="cov.by.name">
+If false, a local copy of the covariance function is attached to the Krig
+output object. This provides an unambiguous version and guards
+against the problem of the covariance function being changed after the
+Krig object is created. If true just the name of the covariance function
+is attached to the Krig object. 
+</s-arg>
+<s-arg name="outputcall">
+If NULL the output object will have a $call argument based on this call. 
+If no NULL the output call will have whatever is passed. This is kludge
+for the Tps function so that it return a Krig object but have the right
+call argument.
+</s-arg>
+<s-arg name="...">
+Optional arguments that appear are assume to be additional arguments
+to the covariance function. 
+</s-arg>
+</s-args-optional>
+<s-value>
+A object of class Krig. This includes the predicted values in  
+fitted.values and the residuals in residuals. The results of the grid 
+search to minimize the generalized cross validation function are 
+returned in gcv.grid. 
+<s-return-component name="call">
+Call to the function 
+</s-return-component>
+<s-return-component name="y">
+Vector of dependent variables. 
+</s-return-component>
+<s-return-component name="x">
+Matrix of independent variables. 
+</s-return-component>
+<s-return-component name="weights">
+Vector of weights. 
+</s-return-component>
+<s-return-component name="knots">
+Locations used to define the basis functions.  
+</s-return-component>
+<s-return-component name="transform">
+List of components used in centering and scaling data. 
+</s-return-component>
+<s-return-component name="np">
+Total number of parameters in the model. 
+</s-return-component>
+<s-return-component name="nt">
+Number of parameters in the null space. 
+</s-return-component>
+<s-return-component name="matrices">
+List of matrices from the decompositions (D, G, u, X, qr.T). 
+</s-return-component>
+<s-return-component name="gcv.grid">
+Matrix of values from the GCV grid search. The first column 
+is the grid of lambda values used in the search, the second column  
+is the trace of the A matrix, the third column is the GCV values and 
+the fourth column is the estimated value of sigma conditional on the vlaue
+of lambda.  
+</s-return-component>
+<s-return-component name="lambda.est">
+A table of estimated smoothing parameters with corresponding degrees 
+of freedom and estimates of sigma found by different methods.  
+</s-return-component>
+<s-return-component name="cost">
+Cost value used in GCV criterion. 
+</s-return-component>
+<s-return-component name="m">
+Order of the polynomial space: highest degree polynomial is (m-1). 
+This is a fixed part of the surface often referred to as the drift 
+or spatial trend.  
+</s-return-component>
+<s-return-component name="eff.df">
+Effective degrees of freedom of the model. 
+</s-return-component>
+<s-return-component name="fitted.values">
+Predicted values from the fit. 
+</s-return-component>
+<s-return-component name="residuals">
+Residuals from the fit. 
+</s-return-component>
+<s-return-component name="lambda">
+Value of the smoothing parameter used in the fit. 
+</s-return-component>
+<s-return-component name="yname">
+Name of the response. 
+</s-return-component>
+<s-return-component name="cov.function">
+Covariance function of the model. 
+</s-return-component>
+<s-return-component name="beta">
+Estimated coefficients in the ridge regression format 
+</s-return-component>
+<s-return-component name="d">
+Estimated coefficients for the polynomial basis functions that span the 
+null space 
+</s-return-component>
+<s-return-component name="fitted.values.null">
+Fitted values for just the polynomial part of the estimate 
+</s-return-component>
+<s-return-component name="trace">
+Effective number of parameters in model. 
+</s-return-component>
+<s-return-component name="c">
+Estimated coefficients for the basis functions derived from the 
+covariance. 
+</s-return-component>
+<s-return-component name="coefficients">
+Same as the beta vector. 
+</s-return-component>
+<s-return-component name="just.solve">
+Logical describing if the data has been interpolated using the basis  
+functions.  
+</s-return-component>
+<s-return-component name="shat">
+Estimated standard deviation of the measurement error (nugget effect). 
+</s-return-component>
+<s-return-component name="sigma2">
+Estimated variance of the measurement error (shat**2). 
+</s-return-component>
+<s-return-component name="rho">
+Scale factor for covariance.  COV(h(x),h(x<s-expression>)) = rho*cov.function(x,x</s-expression>) 
+</s-return-component>
+<s-return-component name="mean.var">
+Normalization of the covariance function used to find rho. 
+</s-return-component>
+<s-return-component name="best.model">
+Vector containing the value of lambda, the estimated variance of the  
+measurement error and the scale factor for covariance used in the fit. 
+</s-return-component>
+</s-value>
+<s-details>
+The kriging model is:  Y(x)= P(x) + Z(x) + e 
+<p>
+where Y is the dependent variable observed at location x, P is a low order
+polynomial, Z is a mean zero, Gaussian field with covariance function K
+and e is assumed to be independent normal errors. The estimated surface is
+the best linear unbiased estimate (BLUE)  of P(x) + Z(x) given the
+observed data. For this estimate K, is taken to be rho*cov.function and
+the errors have variance sigma**2.
+<p>
+If these parameters rho and sigma2 are omitted in the call, then they are
+estimated in the following way. If lambda is given, then sigma2 is
+estimated from the residual sum of squares divided by the degrees of
+freedom associated with the residuals.  Rho is found as the difference
+between the sums of squares of the predicted values having subtracted off
+the polynomial part and sigma2.  
+<p>
+A useful extension of a stationary correlation to a nonstationary
+covariance is what we term a correlation model. 
+If mean and marginal standard deviation objects are included in the call.  
+Then the observed data is standardized based on these functions.  The
+spatial process is then estimated with respect to the standardized scale.
+However for predictions and standard errors the mean and standard
+deviation surfaces are used to produce results in the original scale of
+the observations.
+<p>
+The GCV function has several alternative definitions when replicate
+observations are present or if one uses a reduced set knots.  Here are the
+choices based on the method argument:  GCV: leave-one-out GCV. But if
+there are replicates it is leave one group out. (Wendy and Doug prefer
+this one.)  GCV.one: Really leave-one-out GCV even if there are replicate
+points.  This what the tps function uses in FUNFITS versions &gt; 2.2
+rmse: Match the estimate of sigma**2 to a external value ( called rmse)  
+pure error: Match the estimate of sigma**2 to the estimate based on
+replicated data (pure error estimate in ANOVA language).  GCV.model:
+Only considers the residual sums of squares explained by the basis
+functions.  
+<p>
+WARNING: The covariance functions often have a nonlinear parameter that
+control the strength of the correlations as a function of separation,
+usually referred to as the range parameter. This parameter must be
+specified in the call to Krig and will not be estimated.
+
+</s-details> 
+
+<s-section name=" REFERENCES">
+
+See "Additive Models" by Hastie and Tibshirani, "Spatial Statistics" by    
+Cressie and the FIELDS manual. 
+</s-section>
+<s-see>
+summary.Krig, predict.Krig, predict.se.Krig, predict.surface.se,
+predict.surface, plot.Krig,
+surface.Krig </s-see>
+<s-examples>
+<s-example type = text>
+
+#2-d example 
+# fitting a surface to ozone  
+# measurements. Range parameter is 10 (in miles) 
+
+fit <- Krig(ozone$x, ozone$y, exp.cov, theta=10)  
+ 
+summary( fit) # summary of fit 
+plot(fit) # diagnostic plots of fit  
+surface( fit, type="C") # look at the surface 
+out.p<- predict.surface.se( fit) 
+image(out.p)
+
+# predict at data
+
+predict( fit)
+
+# predict on a default surface to make a surface object
+out<- predict.surface( fit)
+persp( out)
+
+# predict at arbitrary points
+xnew<- cbind( c( 10, 20), c( -10, 15))
+predict( fit, xnew)
+
+# standard errors of prediction based on covariance being OK. 
+predict.se( fit, xnew)
+
+#
+# Roll your own: using a user defined Gaussian covariance 
+#
+test.cov <- function(x1,x2){exp(-(rdist(x1,x2)/.5)**2)} 
+# use this and put in quadratic polynomial fixed function 
+fit.flame<- Krig(flame$x, flame$y, test.cov, m=3)  
+# BTW:  GCV indicates an interpolating model  
+surface(fit.flame, type="I") 
+
+# 
+# Thin plate spline fit to ozone data using generalized variance 
+# function 
+# p=2 is the power in the radial basis function 
+# If m is the degree of derivative in penalty then p=2m-d 
+# where d is the dimension of x. p must be greater than 0. 
+#  In the example below p = 2*2 - 2 
+
+out<- Krig( ozone$x, ozone$y, rad.cov, m=2,  p=2)
+
+# correlation model example
+
+# fit krig surface using a mean and sd function to standardize 
+# first get stats from 1987 summer Midwest O3 data set 
+# Compare the function Tps to the call to Krig given above 
+# fit tps surfaces to the mean and sd  points.  
+# (a shortcut is being taken here just using the lon/lat coordinates) 
+data(ozone2)
+stats.o3<- stats( ozone2$y)
+mean.o3<- Tps( ozone2$lon.lat, c( stats.o3[2,]))
+sd.o3<- Tps(  ozone2$lon.lat, c( stats.o3[3,]))
+
+# Now use these to fit particular day ( day 16) 
+
+y16<- ozone2$y[16,] # there are some missing values! 
+good<- !is.na( y16) 
+ 
+fit<- Krig( ozone2$lon.lat[good,], y16[good],exp.earth.cov, theta=353, 
+mean.obj=mean.o3, sd.obj=sd.o3)
+  
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>spatial</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

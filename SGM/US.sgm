@@ -1,0 +1,56 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+   <s-topic>US</s-topic>
+</s-topics>
+<s-title>
+Plot of the US with state boundaries 
+</s-title>
+<s-description>
+Plots quickly, medium resolution outlines of the US with the states and 
+bodies of water.  
+</s-description>
+<s-usage>
+<s-old-style-usage>
+US( xlim=c(-124.7, -67.1), ylim = c(25.2, 49.4), add=F, ...) 
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+</s-args-required>
+<s-args-optional>
+<s-arg name="ylim">
+range of latitudes 
+</s-arg>
+<s-arg name="xlim">
+range of longitudes 
+</s-arg>
+<s-arg name="add">
+If true will add the world map to current plot 
+</s-arg>
+<s-arg name="...">
+These are graphical arguments that are passed to the lines function that 
+draws outline.  
+</s-arg>
+</s-args-optional>
+<s-details>
+This function uses the FIELDS dataset US.dat for the coordinates.   
+</s-details>
+<s-see>
+world
+</s-see>
+<s-examples>
+<s-example type = text>
+# Draw map in device color # 3 
+US( col=3) 
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>hplot</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

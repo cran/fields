@@ -1,0 +1,149 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+   <s-topic>qsreg</s-topic>
+</s-topics>
+<s-title>
+Quantile spline regression  
+</s-title>
+<s-description>
+Uses a penalized likelihood approach to estimate the conditional  
+quantile function for regression data. This method is only implemented  
+for univariate data. For the pairs (X,Y) the  
+conditional quantile, f(x), is  P( Y&lt;f(x)| X=x) = alpha. This estimate  
+is useful for determining the envelope of a scatterplot or assessing  
+departures from a constant variance with respect to the independent  
+variable.    
+</s-description>
+<s-usage>
+<s-old-style-usage>
+qsreg(x, y, lam=NA, maxit=50, maxit.cv=10, tol=1e-7,  
+offset=0, 
+sc=sqrt(var(y)) * 1e-05, alpha=0.5, wt=rep(1, length(x)), cost=1, 
+nstep.cv=100, hmin=NA, hmax=NA, trmin=2 * 1.05, trmax=0.95 * 
+length(unique(x)))  
+</s-old-style-usage>
+</s-usage>
+<s-args-optional>
+<s-arg name="lam">
+Values of the smoothing parameter. If omitted is found by GCV based on the  
+the quantile criterion 
+</s-arg>
+<s-arg name="maxit">
+Maximum number of iterations used to estimate each quantile spline. 
+</s-arg>
+<s-arg name="maxit.cv">
+Maximum number of iterations to find GCV minimum. 
+</s-arg>
+<s-arg name="tol">
+Tolerance for convergence when computing quantile spline. 
+</s-arg>
+<s-arg name="cost">
+Cost value used in the GCV criterion. Cost=1 is the usual GCV  
+denominator. 
+</s-arg>
+<s-arg name="offset">
+Constant added to the effective degrees of freedom in the GCV function.  
+</s-arg>
+<s-arg name="sc">
+Scale factor for rounding out the absolute value function at zero to a 
+quadratic. Default is a small scale to produce something more like 
+quantiles. Scales on the order of the residuals will result is a robust 
+regression fit using the Huber weight function. The default is 1e-5 of the 
+variance of the Y's. The larger this value the better behaved the problem 
+is numerically and requires fewer iterations for convergence at each new 
+value of lambda. 
+</s-arg>
+<s-arg name="alpha">
+Quantile to be estimated. Default is find the median. 
+</s-arg>
+<s-arg name="wt">
+Weight vector default is constant values. Passing nonconstant weights is a 
+pretty strange thing to do.  
+</s-arg>
+<s-arg name="nstep.cv">
+Number of points used in CV grid search 
+</s-arg>
+<s-arg name="hmin">
+Minimum value of log( lambda) used for GCV grid search. 
+</s-arg>
+<s-arg name="hmax">
+Maximum value of log( lambda) used for GCV grid search. 
+</s-arg>
+</s-args-optional>
+<s-value>
+<s-return-component name="trmin trmax ">
+Define the minimum and maximum values for the CV grid search in terms of 
+the effective number of parameters. (see hmin, hmax) 
+Object of class qsreg with many arguments similar to a sreg object.  
+One difference is that cv.grid has five columns the last being  
+the number of iterations for convergence at each value of lambda.  
+</s-return-component>
+</s-value>
+<s-details>
+This is an experimental function to find the smoothing parameter for a  
+quantile spline using a more appropriate criterion than mean squared  
+error prediction.  
+The quantile spline is found by an iterative algorithm using weighted  
+least squares cubic splines. At convergence the estimate will also be a  
+weighted natural  cubic spline but the weights will depend on the 
+estimate. 
+Of course these weights are crafted so that the resulting spline is an  
+estimate of the alpha quantile instead of the mean. CV as function of 
+lambda can be strange so it should be plotted. 
+  
+</s-details>
+<s-see>
+<s-function name="sreg.sgm">sreg</s-function> </s-see>
+<s-examples>
+<s-example type = text>
+# fit a CV  quantile spline 
+fit50<- qsreg(rat.diet$t,rat.diet$con)
+# (default is .5 so this is an estimate of the conditional median) 
+# control group of rats. 
+plot( fit50) 
+predict( fit50) 
+# predicted values at data points 
+xg<- seq(0,110,,50) 
+plot( fit50$x, fit50$y) 
+lines( xg, predict( fit50, xg))
+
+# the data 
+# The global GCV function is weird so it would be better to use the local 
+# minima with largest lambda instead of this default value.  
+# one should should consider redoing the three quantile fits in this 
+# example after looking at the cv functions and choosing a good value for 
+#lambda 
+# for example 
+lam<- fit50$cv.grid[,1] 
+tr<- fit50$cv.grid[,2] 
+# lambda close to df=6  
+lambda.good<- max(lam[tr>=6]) 
+fit50.subjective<-qsreg(rat.diet$t,rat.diet$con, lam= lambda.good)
+fit10<-qsreg(rat.diet$t,rat.diet$con, alpha=.1, nstep.cv=200)
+fit90<-qsreg(rat.diet$t,rat.diet$con, alpha=.9, nstep.cv=200)
+# spline fits at 50 equally spaced points 
+sm<- cbind( 
+
+predict( fit10, xg),   
+predict( fit50.subjective, xg),   
+predict( fit90, xg))  
+ 
+# and now zee data ... 
+plot( fit50$x, fit50$y) 
+# and now zee quantile splines at 10% 50% and 90%.  
+# 
+matlines( xg, sm, col=c( 3,4,3), lty=1) # the spline 
+  
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>smooth</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>
