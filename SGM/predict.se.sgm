@@ -1,0 +1,56 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+   <s-topic>predict.se</s-topic>
+</s-topics>
+<s-title>
+Standard errors of predictions 
+</s-title>
+<s-description>
+Calculates the standard error of predictions. This is
+usually the fitted object from a function estimate such as from Krig
+or Tps. 
+</s-description>
+<s-usage>
+<s-old-style-usage>
+predict.se(object, ...) 
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="object">
+A fitted model object of a certain class 
+</s-arg>
+</s-args-required>
+<s-value>
+A vector of standard errors for the predicted values. 
+</s-value>
+<s-details>
+This function is generic and will call the appropriate function to calculate 
+the standard errors for the object class. The prediction standard error is
+for
+the estimated function or parameters (a mean value) not for the
+prediction of a new observation.
+</s-details>
+<s-see>
+predict, predict.surface.se, predict.se.Krig  </s-see>
+<s-examples>
+<s-example type = text>
+
+fit<-Tps(ozone$x,ozone$y)
+predict.se(fit)                             # std errors of predictions 
+xg<- expand.grid(seq(-15,15,,40),seq(-20,20,,40)) 
+out<- predict.se(fit,xg)
+image.plot( matrix( out, 40))
+
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>spatial</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

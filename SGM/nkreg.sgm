@@ -1,0 +1,83 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> nkreg </s-topic>
+</s-topics>
+<s-title>
+Normal kernel regression estimate 
+</s-title>
+<s-description>
+Estimates a univariate or multivariate regression surface 
+using a normal kernel function and a fixed bandwidth. 
+</s-description>
+<s-usage>
+<s-old-style-usage>
+nkreg(data.x, data.y, bandwidth, n.points=50, grid=NULL, grid.list=NULL)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name= data.x >
+a matrix of data locations
+</s-arg>
+<s-arg name= data.y >
+a vector of values for smoothing 
+</s-arg>
+<s-arg name= bandwidth >
+bandwidth for kernel if a vector then an estimate will be be found for each 
+bandwidth. 
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name= n.points >
+Number of equally spaced points to evaluate a univariate estimate 
+estimate or a 2-d estimate on a regular grid. 
+</s-arg>
+<s-arg name= grid >
+matrix of locations to evaluate the kernel estimate
+</s-arg>
+<s-arg name= grid.list >
+A grid.list that describes the regular grid to evaluate the estimate.
+If it is missing the default for 2-d is to create a grid 
+</s-arg>
+</s-args-optional>
+<s-value>
+<s-return-component name="x">
+Points for evaluation
+</s-return-component>
+<s-return-component name="y">
+estimate of curve or surface. If more than one bandwidth is supplied then 
+y is matrix with columns indexed by the bandwidth values
+</s-return-component>
+<s-return-component name="h">
+bandwidths used. 
+</s-return-component>
+<s-return-component name="grid.list">
+grid.list that was either passed or created. 
+</s-return-component>
+</s-value>
+<s-see>
+Tps, Krig, sreg, smooth.2d, image.smooth
+</s-see>
+<s-examples>
+<s-example>
+
+out<- nkreg( rat.diet$t, rat.diet$con, bandwidth=3, n.points=100)
+plot( rat.diet$t, rat.diet$con)
+lines( out$x, out$y)
+
+# 2-d example evaluate at 40 points
+out<- nkreg( precip$x, precip$y, bandwidth=.5, n.points=64)
+image.plot( as.surface(out$x, out$y))
+
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>smooth</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

@@ -1,0 +1,84 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+   <s-topic>plot.surface</s-topic>
+</s-topics>
+<s-title>
+Plots a surface 
+</s-title>
+<s-description>
+Plots a surface object in several different ways to give 3-d
+information e.g. a contour plots, perspective plots.  
+</s-description>
+<s-usage>
+<s-old-style-usage>
+plot.surface
+(obj, main = NULL, type = "b", zlab = NULL, xlab = NULL,
+    ylab = NULL, levels = NULL, zlim = NULL, graphics.reset = NULL,
+   ...)
+
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="obj">
+A surface object. At the minimum a list with components x,y and z 
+in the same form as the input list for the standard contour and persp
+functions. This can also be an object from predict.surface. 
+</s-arg>
+<s-arg name="main">
+Title for plot. 
+ </s-arg>
+<s-arg name="type">
+type="p" for a perspective plot, type="c" for a contour plot  
+and type="b" for both (default). type="I" for an image plot with a legend
+strip (see image.plot). type="C" is the "I" option with contours lines
+added. 
+</s-arg>
+<s-arg name="zlab">
+z-axes label 
+</s-arg>
+<s-arg name="xlab">
+x-axes label 
+</s-arg>
+<s-arg name="ylab">
+y-axes labels 
+</s-arg>
+<s-arg name="levels">
+Vector of levels to be passed to contour function. 
+</s-arg>
+<s-arg name="graphics.reset">
+Reset to original graphics parameters after function plotting. 
+Default is to reset if type ="b" but not for the single plot options.  
+</s-arg>
+<s-arg name="...">
+Other graphical parameters that are passed along to either persp, contour
+or image. 
+</s-arg>
+</s-args-required>
+<s-see>
+surface, predict.surface, as.surface,   </s-see>
+<s-examples>
+<s-example type = text>
+
+fit<- Tps( BD[,1:4], BD$lnya) # fit surface to data 
+
+# make grid list 
+grid<-list( KCl="x", MgCl2=mean(BD[,2]),KPO4="y", dNTP=mean(BD[,4]))
+
+# evalute on a grid on two 
+# variables holding two fixed at their mean levels 
+out.p<-predict.surface(fit, grid, extrap=T)  
+
+plot.surface(out.p, type="C") # surface plot  
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>hplot</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

@@ -1,0 +1,89 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+<s-topic> bplot.xy </s-topic>
+</s-topics>
+<s-title>
+Boxplots for conditional distribution 
+</s-title>
+<s-description>
+Draws boxplots for y by binning on x. This gives a coarse, but quick,  
+representation
+of the conditional distrubtion of [Y|X] in terms of boxplots.  
+</s-description>
+<s-usage>
+<s-old-style-usage>
+bplot.xy(x, y, N = 10, breaks = pretty(x, N), style = "tukey", 
+    outlier = T, plot = T, xaxt = "s", ...)
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name= x >
+Vector to use for bin membership
+</s-arg>
+<s-arg name= y >
+Vector to use for constructing boxplot statistics. 
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name= N >
+Number of bins on x. Default is 10.
+</s-arg>
+<s-arg name= breaks >
+Break points defining bin boundaries. These can be unequally spaced. 
+</s-arg>
+<s-arg name="style">
+Type of boxplot default is "tukey". The other choice is "quantile" where
+the whiskers are drawn to the 5 and 95 percentiles instead being based on
+the inner fences.
+</s-arg>
+<s-arg name="xaxt"> 
+Plotting parameter for x-axis generation. Default is to produce
+an x-axis.
+</s-arg>
+<s-arg name="outlier">
+If true outliers (points beyond outer fences) will be added to the plots.
+</s-arg>
+<s-arg name="plot">
+If false just returns a list with the statistics used for plotting the
+box plots.
+</s-arg>
+
+<s-arg name= ... >
+Any other optional arguments passed to the bplot.obj function see the
+help file for bplot for details. 
+</s-arg>
+</s-args-optional>
+<s-see>
+bplot, draw.bplot
+</s-see>
+<s-examples>
+
+<s-example>
+# condition on swim times to see how run times vary
+bplot.xy( minitri$swim, minitri$run, N=5)
+
+</s-example>
+<s-example>
+# bivariate normal corr= .6
+set.seed( 123)
+x<-rnorm( 10000)
+y<- .6*x +  sqrt( 1- .6**2)*rnorm( 1000)
+#
+#
+bplot.xy( x,y, breaks=seq( -3, 3,,15) ,xlim =c(-4,4), ylim =c(-4,4))
+points( x,y, pch=".", col=3)
+
+
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>hplot</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

@@ -1,0 +1,86 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+   <s-topic>plot.Krig</s-topic>
+</s-topics>
+<s-title>
+Diagnostic and summary plots of the Krig object 
+</s-title>
+<s-description>
+Plots a series of four diagnostic plots that summarize the fit from Krig. 
+</s-description>
+<s-usage>
+<s-old-style-usage>
+plot.Krig(out, main=NA, digits=4, which=c(T,T,T,T), graphics.reset=T,
+...) 
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="out">
+A Krig output object. 
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="main">
+Title of the plot. Default is the function call. 
+</s-arg>
+<s-arg name="digits">
+Number of significant digits for the RMSE label. 
+</s-arg>
+<s-arg name="graphics.reset">
+Reset to original graphics parameters after plotting. Default is TRUE.
+</s-arg>
+<s-arg name="which">
+A vector of 4 logical values. 
+Controls which of the four graphs to plot. 
+</s-arg>
+<s-arg name="...">
+Optional graphics arguments to pass to each plot. 
+</s-arg>
+</s-args-optional>
+<s-details>
+
+This function creates four summary plots of the Krig object. The default
+is to put these in a 2X2 panel. However if the screen is already divided
+in some other fashion the plots will just be added according to that
+scheme. This option is useful to compare to compare several different
+model fits.
+
+The first is a scatterplot of predicted value against observed.
+
+The second plot is "standardized" residuals against predicted value.  
+Here we mean that the residuals are divided by the GCV estimate for sigma
+and multiplied by the square root of any weights that have been specified.
+In the case of a "correlation model" the residuals are also divided by the
+marginal standard deviation from this model.
+
+The third plot are the values of the GCV function against the effective
+degrees of freedom. When there are replicate points several versions of
+the GCV function may be plotted.  GCV function is with respect to the
+standardized data if a correlation model is specified. A vertical line
+indicates the minimium found.
+
+The fourth plot is a histogram of the standardized residuals. 
+
+
+</s-details>
+<s-see>
+Krig, summary.Krig, Tps  </s-see>
+<s-examples>
+<s-example type = text>
+fit<-Krig(ozone$x, ozone$y,exp.cov, theta=200)  
+# fitting a surface to ozone  
+# measurements 
+plot(fit)
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>spatial</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>

@@ -1,0 +1,83 @@
+<!doctype s-function-doc system "s-function-doc.dtd" [
+<!entity % S-OLD "INCLUDE">
+]
+>
+<s-function-doc>
+<s-topics>
+   <s-topic>Wtransform.image</s-topic>
+</s-topics>
+<s-title>
+Quadratic W wavelet transform for an image 
+</s-title>
+<s-description>
+Finds the forward or inverse discrete wavelet transform using the
+quadratic W basis. 
+</s-description>
+<s-usage>
+<s-old-style-usage>
+Wtransform.image(x, inv=F, transpose=F, cut.min=8) 
+</s-old-style-usage>
+</s-usage>
+<s-args-required>
+<s-arg name="x">
+Matrix to be transformed 
+</s-arg>
+</s-args-required>
+<s-args-optional>
+<s-arg name="inv">
+If true will compute the inverse transform default is false  
+</s-arg>
+<s-arg name="transpose">
+If true will compute the transpose of transform default is false 
+</s-arg>
+<s-arg name="cut.min">
+Minimum level of transformation.  cut.min=8 means that the coarsest level
+will consist of 64=8X8 scale functions centered on an 8X8 grid.  
+</s-arg>
+</s-args-optional>
+<s-value>
+A matrix the same size as x.   
+</s-value>
+<s-details>
+The wavelet transform can be thought as matrix multiplication 
+A %*% vec(x)  where vec(x) is the matrix x  stacked by columns.  
+The inverse transform is  inv(A) %*% vec(x) and transpose is  
+ t(A) %*% vec( x) 
+</s-details>
+<s-section name=" REFERENCES">
+
+Nychka,D.  Wikle,C. ,  
+Royle, J.A. (1999) Large spatial prediction problems and nonstationary 
+random 
+fields  
+</s-section>
+<s-see>
+plot.coef, WQS, WQSi, Wtransform.D  </s-see>
+<s-examples>
+<s-example type = text>
+# Wtransform of John Lennon image
+data(lennon)
+look<- Wtransform.image( lennon)
+image.plot( look)
+#threshhold 
+thr<-  quantile( abs( look), .95)
+temp<- look
+temp[abs(look)< thr] <- 0
+look2<- Wtransform.image( temp, inv=T)
+image( look2) # 95 % compressed image
+
+ 
+# a diagonal detail basis function 
+temp<- matrix(0, nrow=32, ncol=32) 
+temp[12,12]<- 1 
+look<- Wtransform.image( temp , inv=T)
+persp( look) 
+</s-example>
+</s-examples>
+<s-keywords>
+<s-keyword>spatial</s-keyword>
+</s-keywords>
+<s-docclass>
+function
+</s-docclass>
+</s-function-doc>
