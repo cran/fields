@@ -4,14 +4,16 @@
   Draws image plot with a legend strip for the color scale.  
 }
 \description{
-This function combines the SPLUS image function with some automatic 
+This function combines the R image function with some automatic 
 placement of a legend. This is done by splitting the plotting region  
 into two parts. Putting the image in one and the legend in the other.  
 }
 \usage{
-image.plot(..., add=TRUE, nlevel=32, legend.shrink=0.9, legend.width=0.02,  
+image.plot(..., add=TRUE, nlevel=64, legend.shrink=0.9, 
+legend.width=0.02,  
 graphics.reset=TRUE, horizontal=FALSE, offset=0.04,  
-bigplot=NULL, smallplot=NULL, legend.only=FALSE, col=topo.colors(64))
+bigplot=NULL, smallplot=NULL, legend.only=FALSE, 
+col=topo.colors(nlevel))
 }
 \arguments{
 \item{\dots}{
@@ -40,9 +42,10 @@ coordinates.
 }
 \item{graphics.reset}{
  If
-false (default)  the plotting region ( plt in par) will not be reset and
+FALSE (default)  the plotting region ( plt in par) will not be reset 
+and
 one can add more information onto the image plot. (e.g. using functions
-such as points or lines.)  If true will reset plot parameters to the
+such as points or lines.)  If TRUE will reset plot parameters to the
 values before entering the function.  
 }
 \item{horizontal}{
@@ -59,20 +62,21 @@ Plot coordinates for legend. If not passed these will be determined within
 the function.  
 }
 \item{legend.only}{
-If true just add the
+If TRUE just add the
 legend to a the plot in the plot region defined by the coordinates in
-smallplot.  
+smallplot. In the abscence of other information the range for the legend 
+is determined from the \code{zlim} argument. 
 }
 \item{col}{
 Color table to use for image ( see help file on image for details).
-Default is a pleasing range of 64 divisions on a topgraphic scale.
+Default is a pleasing range of 64 divisions on a topographic scale.
 }
 }
 \section{Side Effects}{
 After exiting, the
 plotting region may be changed to make it possible to add more features to
-the plot. To be explicit, par()\$plt may be changed to reflect a smaller
-plotting region that includes a legend subplot.  
+the plot. To be explicit, \code{par()\$plt} may be changed to reflect a 
+smaller plotting region that has accommodated room for the legend subplot.  
 }
 \details{
 It is surprising how hard it is just to automatically add the
@@ -84,45 +88,73 @@ default solutions to placing information on graphs but the choices made
 here may be useful for most cases. The most annoying thing is that after
 using plot.image and adding information the next plot that is made may
 have the slightly smaller plotting region set by the image plotting.
+The user should set \code{reset.graphics=TRUE} to avoid the plotting size 
+some from changing. The disadvantage, however, of resetting the graphics 
+is that one can no longer add additional graphics elements to the image 
+plot. (Note that filled.contour always resets the graphics but provides 
+another mechanism to pass through plotting commands. Apparently 
+filled.contour,while very pretty, does not work for multiple plots ... )
 
- The strategy is simple, divide the plotting region into two smaller
-regions.  The image goes in one and the legend in the other. This way
+The strategy for \code{image.plot} is simple, divide the plotting region 
+into two smaller
+regions \code{bigplot} and \code{smallplot}. The image goes in one and 
+the legend in the other. This way
 there is always room for the legend. Some adjustments are made to this
-rule by not shrinking the image plot if there is already room for the
+rule by not shrinking the \code{bigplot} if there is already room for the
 legend strip and also sticking the legend strip close to the image plot.
-Also, one can specify the plot regions explicitly by bigplot and small
-plot if the default choices do not work. There may be problems with small
-plotting regions in fitting both of these plot and one may have to change
-the default character sizes or margins to make things fit.  
+One can specify the plot regions explicitly by \code{bigplot} and \
+\code{smallplot}
+if the default choices do not work. There may be problems with small
+plotting regions in fitting both of these in the plot region and one may 
+have to change the default character sizes or margins to make things fit.
 
- By keeping the zlim argument the same across images one can generate
-the same color scale. (See image help file)  One useful technique for a
+By keeping the zlim argument the same across images one can generate the
+same color scale. (See the image help file)  One useful technique for a
 panel of images is to just draw the first with image.plot to get a legend
 and just use image for subsequent plots. Also keep in mind one can just
 add a legend to an existing plot without changing plotting parameters.
 Usually a square plot (pty="s") done in a rectangular plot region will
-have room for the legend with any adjustments stuck to the right side.
+have room for the legend with any adjustments stuck to the right side. 
+
+Note that to add just the legend strip all one needs is the zlim argument!
+The default color table for this function is the topographic color scale 
+(\code{topo.colors}) showing our geophysical basis. 
+See also \code{terrain.colors} for a subset. For using other color choices 
+see how the \code{nlevels} argument figures into the legend and main plot
+number of colors. 
+
+
 }
-\seealso{
-image
-}
+
+\seealso{ image,filled.contour } 
 \examples{
  x<- 1:10 
  y<- 1:15 
 z<- outer( x,y,"+") 
 image.plot(x,y,z) 
-# now add some points on diagonal  
-points( 5:10, 5:10)
+# or obj<- list( x=x,y=y,z=z); image.plot(obj)
+# now add some points on diagonal with some clipping anticipated 
+points( 5:12, 5:12, pch="X", cex=3)
 #
 #fat (5\% of figure) and short (50\% of figure)  legend strip on the bottom 
 image.plot( x,y,z,legend.width=.05, legend.shrink=.5, horizontal=TRUE) 
 
-# add a legend on the bottom but first change margin for some room 
-par( mar=c(10,5,5,5))
+# you can always add a legend arbitrarily to any plot;
+# note that here the plot is too big for the vertical strip but the
+# horizontal fits nicely.
+plot( 1:10, 1:10)
+image.plot( zlim=c(0,25), legend.only=TRUE)
+image.plot( zlim=c(0,25), legend.only=TRUE, horizontal =TRUE)
 
-image( x,y,z)
-image.plot( zlim=c(0,25), legend.only=TRUE, horizontal=TRUE)
+# combining the  usual image function and adding a legend
+# first change margin for some more room
+\dontrun{
+par( mar=c(10,5,5,5))
+image( x,y,z, col=topo.colors(64))
+image.plot( zlim=c(0,25), nlevel=64,legend.only=TRUE, horizontal=TRUE)
+}
 #
+# 
  
 }
 \keyword{hplot}

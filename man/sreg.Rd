@@ -291,6 +291,7 @@ title( "95 pct pointwise  and simultaneous intervals")
 # and use this estimate of lambda
 sreg( test.data2$x, test.data2$y, rmse=.2, method="RMSE")-> fit
 
+set.panel( 1,1)
 }
 \keyword{smooth}
 % docclass is function

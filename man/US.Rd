@@ -8,7 +8,7 @@ Plots quickly, medium resolution outlines of the US with the states and
 bodies of water.  
 }
 \usage{
-US( xlim=c(-124.7, -67.1), ylim = c(25.2, 49.4), add=FALSE, ...)
+US( xlim=c(-124.7, -67.1), ylim = c(25.2, 49.4), add=FALSE,shift=FALSE, ...)
 }
 \arguments{
 
@@ -21,6 +21,10 @@ range of longitudes
 \item{add}{
 If true will add the world map to current plot 
 }
+\item{shift}{ If TRUE shifts to be centered on the Dateline and longitude
+runs from 0 to 360. If FALSE centers on Prime Meridian and longitude runs
+from -180 to 180.}
+
 \item{\dots}{
 These are graphical arguments that are passed to the lines function that 
 draws outline.  

@@ -39,7 +39,6 @@ function(out, x, cov.function=NULL, rho, sigma2, weights = NULL, cov = FALSE, st
                         cov.function <- as.character(substitute(cov.function))
         }
         else{ cov.function<- out$call.name}
-        print( cov.function)
 
         if(missing(sigma2)) {
 		sigma2 <- out$sigma2

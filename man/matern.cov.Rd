@@ -9,7 +9,7 @@ for covariances among all pairings.
 }
 \usage{
 matern.cov
-(x1, x2, theta = rep(1, ncol(x1)), smoothness = 0.5)
+(x1, x2, theta = rep(1, ncol(x1)), smoothness = 0.5, scale=1)
 }
 \arguments{
 \item{x1}{
@@ -30,6 +30,9 @@ The shape parameter for the Matern family. The exponential
 is found with smoothness = 0.5 as smoothness goes to infinity one
 recovers the Gaussian. 
 }
+\item{scale}{ 
+Marginal variance. 
+}
 }
 \value{
 The cross covariance matrix between locations x1 and x2. If x1 is
@@ -42,20 +45,37 @@ returned.
 
 }
 \details{
-In d dimensions a process with Matern smoothness parameter S
-will have S + d/2 derivatives that exist in a mean square sense. 
+Derivatives of sample paths:
+In d dimensions a Gaussian process with Matern covariance and smoothness 
+parameter 
+nu will have nu + d/2 derivatives that exist in a mean square sense. 
+The marginal variance is given by the parameter scale. When this 
+parameter is set to one this yields a correlation 
+function. 
+
+There several different ways to parameterize the Matern family and the 
+reader is referred to Stein's book page 49 for discussion. In terms 
+of the more geostatistical terminology, we note that out theta is also the 
+"range" and the scale is also the "sill" if there is no nugget variance 
+included in the covariance. We caution that the range for this function 
+gives a qualitatively different scaling as one varies the smoothness. 
 
 Functional Form: If x1 and x2 are matrices where nrow(x1)=m and nrow(
-x2)=n then this
+x2)=n  and each row are the coordinates of a location, then this
 function should return a mXn matrix where the (i,j) element is the
 covariance between the locations x1[i,] and x2[j,]. The
 covariance is found as  H( D.ij) where  D.ij is the Euclidean
 distance between  x1[i,] and x2[j,] but having first been scaled by theta.
-H is proportional to a modified Bessel function that depends on the
-smoothness. 
-H is normalized so that H(0)=1.  
-Specifically the definition of the distance matrix is 
+H is proportional to a modified Bessel function 
+of third kind using denoted by K.nu .  In our parameterization we take 
+smoothness = nu and H is normalized so that H(0)=1. (See the function matern for a succinct definition as R code.) 
+The reader is referred 
+to Stein's book, page 31 for more details. Note that we do not use Stein's 
+normalization, however, as it seems more useful to normalize the 
+covariance so that .     
 
+
+Definition of the distance matrix: 
 D.ij = sqrt(  sum.k (( x1[i,k] - x2[j,k]) /theta[k])**2 ).
 
 Note that if theta is a scalar then this defines an isotropic covariance
@@ -67,32 +87,43 @@ distance matrix ( D defined above) for two sets of locations. Thus in
 compact S code we have  
 
 u <- t(t(x1)/theta)
-
 v <- t(t(x2)/theta)
-
 H(-rdist(u, v))
 
-FORTRAN: The actual function calls FORTRAN to evaluate the special
-function H (the FIELDS function matern). We
-use the code by Montse Fuentes for this purpose. 
- 
 A simple modification of this function for the user would be to substitute
 rdist.earth for rdist to give a distance metric that makes sense for
 lon/lat coordinates. 
 }
 \seealso{
- Krig, matern.cov, rdist, rdist.earth, gauss.cov, exp.image.cov 
+ Krig, matern, rdist, rdist.earth, gauss.cov, exp.image.cov 
 }
 \examples{
-# maternl covariance matrix ( marginal variance =1) for the ozone
-#locations 
-out<- matern.cov( ozone$x, theta=100)
+#
+# Presenting the Matern family:
+# the function matern is called by matern.cov
+d<- seq( 0,5,,200)
+sm<- seq( .5, 8,,5)
+temp<- matrix( NA, 200, 5)
+for ( k in 1:5){
+temp[,k] <- matern(d, smoothness=sm[k])
+}
+matplot( d, temp, type="l", lty=1)
+# note differing correlation scales depending on smoothness 
 
+
+# Matern covariance matrix ( marginal variance =1) for the ozone
+# locations 
+out<- matern.cov( ozone$x, theta=100, smoothness=1.0)
 # out is a 20X20 matrix
-out2<- matern.cov( ozone$x[6:20,],ozone$x[1:2,], theta=100)
-# out2 is 15X2 matrix 
-# Kriging fit where the nugget variance is found by GCV 
-fit<- Krig( ozone$x, ozone$y, matern.cov, theta=100, smoothness=.8)
+
+out2<- matern.cov( ozone$x[6:20,],ozone$x[1:2,], theta=100, 
+smoothness=1.0)
+
+# out2 is 15X2 cross covariance matrix 
+
+# Kriging fit using a Matern covariance and where the nugget  and 
+# sill variances are found by GCV 
+fit<- Krig( ozone$x, ozone$y, matern.cov, theta=100, smoothness=1.0)
 
 }
 \keyword{spatial}

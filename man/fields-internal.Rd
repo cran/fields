@@ -72,6 +72,7 @@
 \alias{plot.qsreg}
 \alias{plot.sim.krig.image}
 \alias{plot.spatial.design}
+\alias{plot.vgram.matrix}
 \alias{predict.interp.surface}
 \alias{predict.krig.image}
 \alias{predict.qsreg}
@@ -245,9 +246,9 @@ make.tmatrix (x, m = 2)
 make.tmatrix.F (x, m = 2) 
 make.tmatrix.S (x, m = 2) 
  
-matern (x = seq(0, 4 * range, len = 100), scale = 1, range = 1, 
-    smoothness = 0.5) 
- 
+matern (t , scale = 1, range = 1,alpha=1/range,
+                smoothness = 0.5, nu= smoothness, phi=scale)  
+
 minimax.crit (obj, des = TRUE, R) 
  
 nkden (data, bandwidth, n.points, grid) 
@@ -262,6 +263,7 @@ plot.krig.image (out, main = NA, digits = 4, which = rep(TRUE, 4),
 plot.qsreg (out, pch = "*", main = NA) 
 plot.sim.krig.image (obj) 
 plot.spatial.design (out) 
+plot.vgram.matrix (obj, ...)
  
 predict.interp.surface (obj, loc) 
 predict.krig.image (obj, x, ...) 
@@ -341,8 +343,7 @@ surface.krig.image (obj, grid.list = NA, extrap = TRUE,
       graphics.reset = FALSE, xlab = NULL, ylab = NULL, main = NULL,
       zlab = NULL,zlim = NULL,levels = NULL, ptype = "I", ...) 
  
-surface.surface (obj, lab = NA, type = "b", zlab, xlab, ylab, 
-   graphics.reset = FALSE,  ...) 
+surface.surface (...)
  
 test.data  
 

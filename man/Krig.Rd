@@ -258,6 +258,8 @@ Estimated variance of the measurement error (shat**2).
 }
 \item{rho}{
 Scale factor for covariance.  COV(h(x),h(x\code{)) = rho*cov.function(x,x}) 
+If the covariance is actually a 
+correlation function then rho is also the "sill". 
 }
 \item{mean.var}{
 Normalization of the covariance function used to find rho. 
@@ -271,14 +273,17 @@ measurement error and the scale factor for covariance used in the fit.
 This function produces a object of class Krig. With this object it is easy to subsequently 
 predict with this fitted surface, find standard errors, alter the y data ( but not x),  etc. 
 
-The kriging model is:  Y(x)= P(x) + Z(x) + e 
+The Kriging model is:  Y(x)= P(x) + Z(x) + e 
 
 where Y is the dependent variable observed at location x, P is a low order
 polynomial, Z is a mean zero, Gaussian field with covariance function K
 and e is assumed to be independent normal errors. The estimated surface is
 the best linear unbiased estimate (BLUE)  of P(x) + Z(x) given the
 observed data. For this estimate K, is taken to be rho*cov.function and
-the errors have variance sigma**2.
+the errors have variance sigma**2. In more conventional geostatistical terms
+rho is the "sill" if the covariance function is actually a correlation function  and 
+sigma**2 is the nugget variance or measure error variance (the two are confounded in this 
+model.)  
 
 If these parameters rho and sigma2 are omitted in the call, then they are
 estimated in the following way. If lambda is given, then sigma2 is
@@ -364,15 +369,20 @@ fit.flame<- Krig(flame$x, flame$y, test.cov, m=3, theta=.5)
 surface(fit.flame, type="I") 
 
 # 
-# Thin plate spline fit to ozone data using generalized variance 
-# function 
-# p=2 is the power in the radial basis function 
+# Thin plate spline fit to ozone data using the radial 
+# basis function as a generalized covariance function 
+#
+# p=2 is the power in the radial basis function (with a log term added for 
+# even dimensions)
 # If m is the degree of derivative in penalty then p=2m-d 
 # where d is the dimension of x. p must be greater than 0. 
 #  In the example below p = 2*2 - 2 = 2  
+#
 # See also the Fields function Tps
 
-out<- Krig( ozone$x, ozone$y, rad.cov, m=2,  p=2)
+out<- Krig( ozone$x, ozone$y, rad.cov, m=2,  p=2, 
+scale.type="range",decomp="WBW") # these last two options make sure the
+                                 # the results with Tps are identical
 
 # correlation model example
 
@@ -393,6 +403,11 @@ good<- !is.na( y16)
  
 fit<- Krig( ozone2$lon.lat[good,], y16[good],exp.earth.cov, theta=353, 
 mean.obj=mean.o3, sd.obj=sd.o3)
+#
+# the finale
+surface( fit, type="I")
+US( add=TRUE)
+title("Estimated ozone surface")
   
 }
 \keyword{spatial}

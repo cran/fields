@@ -29,11 +29,10 @@ function from the Krig object
 }
 \item{rho}{
 Parameter that multiplies the covariance function. If omitted the
-value out\$rho, 
-estimated from the data from the data is used. 
+value 'out\$rho', estimated from the data is used. 
 }
 \item{sigma2}{
-Variance of the measurement error. If omitted the value out\$sigma2, 
+Variance of the measurement error. If omitted the value 'out\$sigma2', 
 estimated from the data is used. 
 }
 \item{weights}{
@@ -45,7 +44,7 @@ efficient computations can be used.
 }
 \item{cov}{
 If true the full covariance matrix for the predicted values is returned.
-Make sure this will not be big is this option is used. ( e.g. 50X50 grid
+Make sure this will not be big if this option is used. ( e.g. 50X50 grid
 will return a matrix that is 2500X2500!)  If false just the marginal
 standard deviations of the predicted values are returned. Default is
 false.
@@ -73,11 +72,10 @@ combination that estimates this point. Finding this expected value is
 straight forward given the unbiasedness of LY for P(x) and the covariance 
 for Z and Y. 
 
-In these calculations is assumed that the covariance 
-parameters are fixed. This is an approximation since in most cases they 
-have been estimated from the data.  
-It should also be noted that if one assumes a Gaussian field and known 
-parameters in the covariance, the usual Kriging estimating is the 
+In these calculations it is assumed that the covariance parameters are fixed.
+This is an approximation since in most cases they have been estimated from the 
+data. It should also be noted that if one assumes a Gaussian field and known 
+parameters in the covariance, the usual Kriging estimate is the 
 conditional mean of the field given the data. This function finds the 
 conditional standard deviations (or full covariance matrix) of the 
 fields given the data.  
@@ -89,9 +87,9 @@ covariance misspecification.  Note that the linear combination is based
 on the covariance function from the Krig object. One can view this first
 step as simply defining a spatial estimator. If the covariance used is
 correct it is BLUE, otherwise the MSE for the spatial estimate will be
-larger than optimal.  The cov.function argument in this function defaults
+larger than optimal.  The 'cov.function' argument in this function defaults
 to the same covariance used to determine the spatial prediction but
-it also can be specified separately, in this case it interpreted as the true
+it also can be specified separately, in this case it is interpreted as the true
 covariance and the prediction variances are evaluated accordingly. 
 }
 \section{References}{
@@ -128,6 +126,7 @@ image.plot( out)
 # first call Krig to create the Krig object.  
 # 
 Krig( ozone$x, ozone$y, cov.function=exp.cov, theta=100)-> fit 
+
 # note how the new cov. parameters are specified just like in Krig  
 predict.se(fit,xg)-> look 
 predict.se( fit, xg, cov.function=exp.cov, theta=2.0, sigma2=1)-> look2 

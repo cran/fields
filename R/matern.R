@@ -1,25 +1,24 @@
 "matern" <-
-function (x = seq(0, 4 * range, , 100), scale = 1, range = 1, 
-    smoothness = 0.5) 
+function (t , scale = 1, range = 1,alpha=1/range, 
+    smoothness = 0.5, nu= smoothness, phi=scale) 
 {
-    y <- x
-    n <- length(x)
-    theta <- c(scale, range, smoothness)
-    storage.mode(x) <- "double"
-    storage.mode(y) <- "double"
-    storage.mode(theta) <- "double"
-    storage.mode(n) <- "integer"
+#
+# Matern covariance function transcribed from Stein's book page 31
+# nu==smoothness, alpha ==  1/range
+# GeoR parameters map to kappa==smoothness and phi == range 
+# check for negative distances
+if( any( t <0)) stop("distance argument must be nonnegative")
 
-itest<- trunc(  smoothness)+1
-
-ncal<- as.integer( rep( 0, n))
-
-    out <- .Fortran("rkmat", theta = theta, x = x, y = y, n = n, 
-ncal= ncal)
-
-# set to NA any calculation that failed in the call to rkmat
-out$y[ out$ncal!=itest] <- NA
-
- list(x = out$x, y = out$y, scale = scale, range = range,
- smoothness = smoothness)
+t<- t*alpha
+#
+# the hairy constant ...
+# this is different from Stein to make this a correlation function when 
+# scale =1
+con<- (2^(nu - 1))*gamma(nu)
+con<- 1/con
+#
+# call to  Bessel function from R base package
+#
+ phi*ifelse( t>0,
+                 con*(t^nu) * besselK(t , nu ), 1)
 }
