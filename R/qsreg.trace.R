@@ -3,9 +3,6 @@ function(x, y, lam, maxit = 50, maxit.cv = 10, tol = 0.0001, offset = 0, sc =
 	sqrt(var(y)) * 9.9999999999999995e-08, alpha = 0.5, wt = rep(1, length(
 	x)), cost = 1)
 {
-	if(!is.loaded(symbol.For("css"))) {
-		temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 2)
-	}
 	N <- length(y)
 	if(length(x) != length(y))
 		stop(" X and Y do not match")

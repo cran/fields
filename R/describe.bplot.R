@@ -19,7 +19,8 @@ return( obj)}
     }
     if (style == "tukey") {
         quant <- c(0.05, 0.25, 0.5, 0.75, 0.95)
-        bb <- quantile(temp, quant)
+# old line        bb <- quantile(temp, quant)
+        obj$bb <- bb <- quantile(temp, quant)
         iqr <- bb[4] - bb[2]
         bb[1] <- min(temp[temp >= bb[2] - 1.5 * iqr])
         bb[5] <- max(temp[temp <= bb[4] + 1.5 * iqr])

@@ -15,7 +15,7 @@ function (x, grid = NULL, nrow = 64, ncol = 64)
         ind <- temp$index
     }
     rep.info <- cat.matrix(ind)
-    uniquerows <- !dup(rep.info)
+    uniquerows <- !duplicated(rep.info)
     if (sum(uniquerows) < length(Z)) {
         ind <- ind[uniquerows, ]
         Z <- fast.1way(rep.info, Z)$n

@@ -55,7 +55,8 @@ Number of grid points in Y axis. }
 
 }
 \value{
-The usual list components for making contour and perspective plots along  
+The usual list components for making contour and perspective plots 
+(x,y,z) along  
 with the component containing the grid list. 
 }
 \details{
@@ -63,10 +64,16 @@ This function creates the right grid using the grid.list information or
 the defaults (make.surface.grid), calls the predict function for the
 object with these points
 and also adding any extra arguments passed in the ... section, and then 
-reforms the results as a surface object ( as.surface). 
-}
+reforms the results as a surface object ( as.surface). To determine the 
+what parts of the prediction grid are in the convex hull of the data the 
+function in.poly is used. See the argument inflation in this function is 
+used to include a small margin around the outside of the polygon so that 
+point on convex hull are included. This funny addition is to prevent 
+excluding grid points that fall exactly on the ranges of the data. 
+ }
 \seealso{
-Tps, Krig, predict, grid.list, make.surface.grid, as.surface, surface 
+Tps, Krig, predict, grid.list, make.surface.grid, as.surface, surface , 
+in.poly
 }
 \examples{
 fit<- Tps( BD[,1:4], BD$lnya)  # fit surface to data 

@@ -1,10 +1,6 @@
 "splint" <-
 function (x, y, xgrid, derivative = 0) 
 {
-    if (!is.loaded(symbol.For("css"))) {
-        temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 
-            2)
-    }
     if (is.matrix(x)) {
         xgrid <- y
         y <- x[, 2]
@@ -15,7 +11,7 @@ function (x, y, xgrid, derivative = 0)
         y <- x$y
         x <- x$x
     }
-    ind <- !dup(x)
+    ind <- !duplicated(x)
     x <- x[ind]
     y <- y[ind]
     if ((derivative > 2) | (derivative < 0)) 

@@ -2,7 +2,7 @@
 function (lev, y, w = rep(1, length(y))) 
 {
     N <- length(y)
-    tags <- lev[!dup(lev)]
+    tags <- lev[!duplicated(lev)]
     lev <- match(lev, tags)
     id <- order(lev)
     brk <- c(diff(lev[id]) != 0, TRUE)

@@ -1,10 +1,6 @@
 "nkden" <-
 function(data, bandwidth, n.points, grid)
 {
-	if(!is.loaded(symbol.For("nkden"))) {
-		temp <- dyn.load(paste(FUNFITS.BIN, "funfits.o", sep = ""),
-			2)
-	}
 	# who wants to keep typing bandwidth!]
 	if(data.class(data) == "data.frame") data <- as.matrix(data)
 	h <- bandwidth

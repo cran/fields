@@ -36,14 +36,10 @@
 \alias{cat.to.list}
 \alias{ceiling2}
 \alias{conjugate.gradient}
-\alias{cover.design.S}
 \alias{describe}
 \alias{describe.bplot}
 \alias{draw.bplot}
 \alias{draw.bplot.obj}
-\alias{dup}
-\alias{dup.matrix}
-\alias{dyn.load.fields}
 \alias{exp.cov.F}
 \alias{exp.cov.S}
 \alias{exp.earth.cov}
@@ -132,7 +128,6 @@
 \alias{surface.surface}
 \alias{test.data}
 \alias{test.data2}
-\alias{unique.matrix}
 \alias{unscale}
 \alias{variogram.matrix}
 \alias{world.dat}
@@ -200,21 +195,11 @@ ceiling2 (m)
 conjugate.gradient (b, multAx, start = NULL, tol = 1e-05, kmax = 
              25, verbose = TRUE,    ...) 
  
-cover.design.S (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = 
-          ,scale.type = "range", R.center, R.scale, P = -20, Q = 20, 
-          start = NULL, DIST = NULL, return.grid = TRUE, return.transform = TRUE) 
- 
 describe (x) 
 describe.bplot (temp, style = "tukey", outlier = TRUE) 
  
 draw.bplot (temp, width, xpos, outlier = TRUE, style = "tukey") 
 draw.bplot.obj (obj, width, xpos, outlier = TRUE, horizontal = FALSE) 
- 
-dup (dat) 
- 
-dup.matrix (mat) 
- 
-dyn.load.fields (...) 
  
 exp.cov.F (x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA) 
 exp.cov.S (x1, x2, theta = 1) 
@@ -247,7 +232,7 @@ image.smooth.setup (nrow = 64, ncol = 64, dx = 1, dy = 1,
      kernel.function = function(x) {    exp(-abs(x))}, 
      theta = 1, Mwidth = nrow, Nwidth = ncol, ...) 
  
-in.poly (xd, xp, convex.hull = FALSE) 
+in.poly (xd, xp, convex.hull = FALSE, inflation=1e-7) 
  
 krig.image.parameters (out) 
  
@@ -363,8 +348,6 @@ test.data
 
 test.data2
 
-unique.matrix (x) 
- 
 unscale (x, x.center, x.scale) 
  
 variogram.matrix (dat, R = 5) 

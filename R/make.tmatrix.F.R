@@ -1,10 +1,6 @@
 "make.tmatrix.F" <-
 function (x, m = 2) 
 {
-    if (!is.loaded(symbol.For("radbas"))) {
-        temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 
-            2)
-    }
     d <- ncol(x)
     n <- nrow(x)
     nterms <- .Fortran("mkpoly", as.integer(m), as.integer(d), 

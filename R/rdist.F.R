@@ -1,10 +1,6 @@
 "rdist.F" <-
 function (x1, x2) 
 {
-    if (!is.loaded(symbol.For("radbas"))) {
-        temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 
-            2)
-    }
     if (!is.matrix(x1)) 
         x1 <- as.matrix(x1)
     if (!is.matrix(x2)) 

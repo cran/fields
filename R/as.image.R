@@ -26,7 +26,7 @@ weights<- weights[ind2]
     m <- length(grid$x)
     n <- length(grid$y)
     rep.info <- cat.matrix(ind)
-    uniquerows <- !dup(rep.info)
+    uniquerows <- !duplicated(rep.info)
     if (sum(uniquerows) < length(Z)) {
         ind <- ind[uniquerows, ]
         temp <- fast.1way(rep.info, Z, w = weights)

@@ -5,9 +5,6 @@ function(x, y, lam = NA, df = NA, offset = 0, wt = rep(1, length(x)), cost = 1,
 	verbose = FALSE, do.cv = TRUE, method = "GCV", rmse = NA, lambda = NA)
 {
 	call <- match.call()
-	if(!is.loaded(symbol.For("css"))) {
-		temp <- dyn.load(paste(FIELDS.BIN, "fields.o", sep = ""), 2)
-	}
 	out <- list()
 	out$call <- match.call()
 	class(out) <- c("sreg")
@@ -54,7 +51,7 @@ function(x, y, lam = NA, df = NA, offset = 0, wt = rep(1, length(x)), cost = 1,
 		out$pure.ss <- 0
 		YM <- y
 		weightsM <- wt
-		xM <- x[!dup(rep.info)]
+		xM <- x[!duplicated(rep.info)]
 	}
 	else {
 		##
@@ -65,7 +62,7 @@ function(x, y, lam = NA, df = NA, offset = 0, wt = rep(1, length(x)), cost = 1,
 		shat.rep <- shat.pure.error
 		YM <- rep.info.aov$means
 		weightsM <- rep.info.aov$w.means
-		xM <- as.matrix(x[!dup(rep.info)])
+		xM <- as.matrix(x[!duplicated(rep.info)])
 		out$pure.ss <- rep.info.aov$SSE
 		if(verbose) {
 			cat(" rep info", fill = TRUE)

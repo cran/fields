@@ -13,9 +13,6 @@ for the problem.
 cover.design(R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL, 
     scale.type = "unscaled", R.center, R.scale, P = -20, Q = 20,
     start = NULL, DIST = NULL, return.grid = TRUE, return.transform = TRUE)
-
-cover.design.S(...) # S version
-cover.design.F(...) # FORTRAN version
 }
 \arguments{
 \item{R}{
@@ -199,13 +196,9 @@ The maximum number of outer loops.
 }
 }
 \details{
-The default is to use the code that calls FORTRAN this function is also  
-listed as cover.design.F. A version using just S code with the same  
-features is cover.design.S. To switch from FORTRAN to S code just  
-overwrite cover.design with cover.design.S or use cover.design.S
 
 OTHER DISTANCE FUNCTIONS:
-If the S version is used you can supply an S-function to be used as the
+You can supply an R/S-function to be used as the
 distance metric. The expected calling sequence for this distance function
 is
 function( X1,X2)\{....\} where X1 and X2 are matrices with coordinates as
@@ -269,16 +262,15 @@ considered for swapping are limited to the num.nn nearest neighbors
 of the current design point. 
 
 STABILITY
-The algorithm described above is guaranteed to converge.  However, 
-upon convergence, the solution is sensitive to the initial configuration 
-of points.  Thus, it is recommended that multiple optimizations be 
-done (i.e. set nruns greater than 1 ).  Also, the quality of the
-solution depends 
-on the density of the points on the region.  At the same time, for 
-large regions , optimization can be computationally prohibitive
-unless the nearest neighbor option is employed.
-Up to now, we have be run up to 20,000 candidate points, 400 design points,
-and 20 dimensions. 
+
+The algorithm described above is guaranteed to converge.  However, upon
+convergence, the solution is sensitive to the initial configuration of
+points.  Thus, it is recommended that multiple optimizations be done (i.e.
+set nruns greater than 1 ).  Also, the quality of the solution depends on
+the density of the points on the region.  At the same time, for large
+regions , optimization can be computationally prohibitive unless the
+nearest neighbor option is employed. 
+
 }
 \section{References}{
 Johnson, M.E., Moore, L.M., and Ylvisaker, D. (1990).  Minimax and 
@@ -349,7 +341,7 @@ dist.man<- function(x1,x2) {
 # use the design from the Euclidean distance as the starting
 #configuration.
 
-cover.design.S( candidates, 15, DIST=dist.man, start= out3$best.id)-> out2
+cover.design( candidates, 15, DIST=dist.man, start= out3$best.id)-> out2
 # this takes a while ...
 plot( out2$design)
 points( out3$design, col=2)
@@ -360,13 +352,14 @@ points( out3$design, col=2)
 candidates<- make.surface.grid( list( x=seq( -180,180,,20), y= seq( -85,
 85,,20)))
 
-out4<-cover.design.S( candidates, 15, DIST=rdist.earth)
+out4<-cover.design( candidates, 15, DIST=rdist.earth)
 # this takes a while 
 
 plot( candidates, pch=".")
 points(out4$design, pch="o", col=3)
 
 # covering based on correlation for 153 ozone stations
+#
 data( ozone2)
 
 cor.mat<-cor( ozone2$y, use="pairwise")
@@ -374,12 +367,18 @@ cor.mat<-cor( ozone2$y, use="pairwise")
 cor.dist<- function( x1,x2)
 {matrix( 1-cor.mat[ x1,x2], ncol=length(x2))}
 
-# find 25 points oiut of the 153
-out5<-cover.design.S(1:153,25, DIST= cor.dist, scale.type="unscaled") 
+#
+# find 25 points out of the 153
+# here the "locations" are just the index but the distance is 
+# determined by the correlation function. 
+#
+out5<-cover.design(cbind(1:153),25, DIST= cor.dist, scale.type="unscaled") 
 
 plot( ozone2$lon.lat, pch=".")
 points(  ozone2$lon.lat[out5$best.id,],pch="O", col=4)
-
+#
+# this seems a bit strange probably due some funny correlation values
+#
  
 }
 \keyword{spatial}
