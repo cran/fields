@@ -1,5 +1,5 @@
 "matern.cov" <-
-function (x1, x2, theta = rep(1, ncol(x1)), smoothness = 0.5) 
+function (x1, x2, theta = rep(1, ncol(x1)), smoothness = 0.5, scale=1) 
 {
     if (!is.matrix(x1)) 
         x1 <- as.matrix(x1)
@@ -14,6 +14,6 @@ function (x1, x2, theta = rep(1, ncol(x1)), smoothness = 0.5)
     n2 <- nrow(x2)
     x1 <- t(t(x1)/theta)
     x2 <- t(t(x2)/theta)
-    matrix(matern(c(rdist(x1, x2)), smoothness = smoothness)$y, 
+    matrix(matern(c(rdist(x1, x2)), smoothness = smoothness, scale=scale), 
         nrow = n1, ncol = n2)
 }

@@ -1,23 +1,18 @@
+arrow.plot              Adds arrows to a plot
+as.image                Creates image from irregular x,y,z
+as.surface              Creates an "surface" object from grid values.
 BD                      Data frame of the effect of buffer
                         compositions on DNA strand displacement
                         amplification. A 4-d regression data set with
                         with replication. This is a useful test data
                         set for exercising function fitting methods.
-Krig                    Kriging surface estimate
-Tps                     Thin plate spline regression
-US                      Plot of the US with state boundaries
-US.dat                  Outline of coterminous US and states.
-Wtransform.image        Quadratic W wavelet transform for an image
-Wtransform.sim          Simulates a 2-d random wavelet field
-arrow.plot              Adds arrows to a plot
-as.image                Creates image from irregular x,y,z
-as.surface              Creates an "surface" object from grid values.
 bplot                   boxplot
 bplot.xy                Boxplots for conditional distribution
 cover.design            Computes Space-Filling "Coverage" designs
                         using Swapping Algorithm
 exp.cov                 Exponential, Gaussian and "power" covariance
                         family
+fields                  fields - tools for spatial data
 flame                   Response surface experiment ionizing a reagent
 grid list               Grid list for describing equally spaced grids
 image.count             Creates image for a 2-d histogram from
@@ -30,6 +25,7 @@ image.smooth            Kernel smoother for irregular 2-d data
 interp.surface          Fast bilinear interpolator from a grid.
 krig.image              Spatial process estimate for large irregular
                         2-d dats sets.
+Krig                    Kriging surface estimate
 lennon                  Gray image of John Lennon.
 make.Amatrix.krig       Computes the prediction matrix for a Krig fit.
 make.Amatrix            Matrix relating predicted values to the
@@ -37,10 +33,10 @@ make.Amatrix            Matrix relating predicted values to the
 matern.cov              Matern covariance function
 minitri                 Mini triathlon results
 nkreg                   Normal kernel regression estimate
-ozone                   Data set of ozone measurements at 20 Chicago
-                        monitoring stations.
 ozone2                  Daily 8-hour ozone averages for sites in the
                         Midwest
+ozone                   Data set of ozone measurements at 20 Chicago
+                        monitoring stations.
 plot.Krig               Diagnostic and summary plots of the Krig
                         object
 plot.sreg               Plots smoothing spline regression object
@@ -59,21 +55,26 @@ print.Krig              Print kriging fit results.
 qsreg                   Quantile or Robust spline regression
 rat.diet                Experiment studying an appetite supressant in
                         rats.
-rdist                   Euclidean distance matrix
 rdist.earth             Great circle distance matrix
+rdist                   Euclidean distance matrix
 set.panel               Specify a panel of plots
 sim.rf                  Simulates a random field
 smooth.2d               Kernel smoother for irregular 2-d data
 splint                  Cubic spline interpolation
 sreg                    Smoothing spline regression
-stats                   Calculate summary statistics
 stats.bin               Bins data and finds some summary statistics.
+stats                   Calculate summary statistics
 summary.krig            Summary for Krig spatial process estimate
 surface.Krig            Plots a surface and contours
+Tps                     Thin plate spline regression
 transformx              Linear transformation
+US.dat                  Outline of coterminous US and states.
+US                      Plot of the US with state boundaries
+vgram.matrix            Computes a variogram from an image
 vgram                   Finds a traditional or robust variogram for
                         spatial data.
-vgram.matrix            Computes a variogram from an image
 world                   Plot of the world
+Wtransform.image        Quadratic W wavelet transform for an image
+Wtransform.sim          Simulates a 2-d random wavelet field
 xline                   Draw a vertical line
 yline                   Draw horizontal lines

@@ -65,26 +65,17 @@ plot( out$d, out$vgram, xlab="separation distance", ylab="variogram")
 # image plot of vgram values by direction.  
 
 # look at different directions 
-out<-vgram.matrix( lennon, collapse=FALSE) #this takes a bit of time 
+out<-vgram.matrix( lennon, R=10, collapse=FALSE) #this takes a bit of time 
 
 set.panel(2,1)
 plot( out$d, out$vgram) 
 plot(out$d, out$vgram.robust) 
 
-# different directions do not appear to have different variances
-
-# matrix plot of orientations.
-
-M<- max( out$ind[,1]) +1 
-N<- max( out$ind[,2]) +1
-# make up matrix of right size 
-temp<- matrix( NA, M,N) 
-# fill the matrix 
-temp[ out$ind+1]<- out$vgram 
-# note values for diagonal elements 
-image.plot( (1:M)-1, (1:N)-1, temp, xlab="x difference", 
-ylab="y difference") 
+#image plot of variogram values for different directions. 
 set.panel(1,1)
+plot.vgram.matrix( out)
+# John Lennon appears remarkably isotropic!
+
 }
 \keyword{spatial}
 % docclass is function

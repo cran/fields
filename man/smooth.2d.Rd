@@ -6,8 +6,8 @@
 \description{
 An approximate Nadaraya Watson kernel smoother is obtained by first
 discretizing the locations to a grid and then using convolutions to find 
-find and to apply the kernel weights. The main advantage of this function
-is a smoother in S code that avoid explicit looping. 
+and to apply the kernel weights. The main advantage of this function
+is a smoother that avoids explicit looping. 
 }
 \usage{
 smooth.2d
@@ -81,7 +81,7 @@ exponential or gaussian)
 }
 \value{
 Either a matrix of smoothed values or a surface object.  
-The surfacea objcet also has a component ind that give the subscripts of the image 
+The surface object also has a component 'ind' that gives the subscripts of the image 
 matrix where the data is present. 
 }
 \details{

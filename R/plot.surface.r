@@ -34,9 +34,11 @@ else{ graphics.reset<- FALSE}
     if (type == "p" | type == "b") {
         if (is.null(zlim)) 
             persp(obj$x, obj$y, obj$z, xlab = xlab, ylab = ylab, 
-                zlab = zlab, ...)
+                zlab = zlab, 
+                 theta=30, phi=30, expand=.5, col="LightGreen",...)
         else persp(obj, xlab = xlab, ylab = ylab, zlab = zlab, 
-            zlim = zlim, ...)
+            zlim = zlim, 
+                 theta=30, phi=30, expand=.5, col="LightGreen",...)
         if (!is.null(main)) 
             title(main)
     }
