@@ -1,9 +1,9 @@
 "cover.design" <-
 function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL, 
     scale.type = "unscaled", R.center, R.scale, P = -20, Q = 20, 
-    start = NULL, DIST = NULL, return.grid = TRUE, return.transform = TRUE) 
+    start = NULL, DIST = NULL, return.grid = TRUE, return.transform = 
+TRUE,max.loop=20) 
 {
-########### S code version 
     if (!is.null(start) && is.matrix(start)) {
         if (any(duplicated.array(start))) 
             stop("Error: start must not have duplicate rows")
@@ -35,7 +35,7 @@ function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL,
     transform <- attributes(R)
     saved.crit <- rep(NA, nruns)
     saved.designs <- matrix(NA, nrow = nruns, ncol = n)
-    saved.hist <- list()
+    saved.hist <- list(1:nruns)
     for (RUNS in 1:nruns) {
         if (is.null(start)) {
             if (!is.null(fixed)) {
@@ -60,8 +60,9 @@ function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL,
         CRIT <- rep(NA, length(Cset))
         CRIT.temp <- rep(NA, length(Cset))
         hist <- matrix(c(0, 0, crit.i), ncol = 3, nrow = 1)
+        loop.counter<-1
         repeat {
-            for (i in 1:nd) {
+        for (i in 1:nd) {
                 Dset.i <- matrix(R[Dset[i], ], nrow = 1)
                 partial.newrow <- sum(DIST(Dset.i, R[Dset[-i], 
                   ])^P)
@@ -90,8 +91,10 @@ function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL,
                   rs <- (dist.mat^P) %*% rep(1, n)
                 }
             }
-            if (crit.i == crit.old) 
+            if ((crit.i == crit.old) |(loop.counter>=max.loop))
                 break
+        loop.counter<- loop.counter +1
+       
         }
         saved.crit[RUNS] <- crit.i
         saved.designs[RUNS, ] <- Dset

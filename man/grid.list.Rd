@@ -13,7 +13,7 @@ one needs to be able to  specify which variable should be identified
 with the horizontal or "X"  axis and which variable should be associated  
 with the vertical or "Y" axis when the surface is  
 plotted using contour or persp.   
-This format is used extensively in the FUNFITS/FIELDS   
+This format is used extensively in fields   
 functions that evaluate function estimates and plot surfaces. 
 The form of a grid.list is  
 list( var.name1= what  , var.name2=what , ... var.nameN=what)  

@@ -48,5 +48,5 @@ function ( add=FALSE,  legend.shrink = 0.9, legend.width =
             smallplot[2] <- smallplot[1] + dp
         }
     }
-return( smallplot=smallplot, bigplot=bigplot)
+return( list(smallplot=smallplot, bigplot=bigplot))
 }

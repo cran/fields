@@ -1,5 +1,5 @@
 "variogram.matrix" <-
-function (dat, R = 5) 
+function (dat, R = 5,dx) 
 {
     shift.fct <- function(d) {
         shift.x <- c(0:d)
@@ -51,5 +51,5 @@ function (dat, R = 5)
         }
         vgram[i] <- (0.5 * sum.temp)/l.temp
     }
-    return(vgram, d)
+    list(vgram=vgram, d=d*dx)
 }

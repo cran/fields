@@ -12,7 +12,8 @@ for the problem.
 \usage{
 cover.design(R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL, 
     scale.type = "unscaled", R.center, R.scale, P = -20, Q = 20,
-    start = NULL, DIST = NULL, return.grid = TRUE, return.transform = TRUE)
+    start = NULL, DIST = NULL, return.grid = TRUE, return.transform = 
+TRUE, max.loop=20)
 }
 \arguments{
 \item{R}{
@@ -40,10 +41,6 @@ only (nn=TRUE).
 \item{num.nn}{
 Number of nearest-neighbors to search over. The default number is 100. 
 If nn=F then this argument will be ignore. 
-}
-\item{max.loop}{
-Maximum number of outer loops in algorithm. This is the number of passes
-through the design testing for swaps. 30 is the default.
 }
 \item{fixed}{
 A matrix or vector specifying points to be forced into the 
@@ -118,6 +115,10 @@ The candidate matrix is used by plot.spatial.design if it is available.
 Logical value that tells whether or not to return the transformation  
 attributes 
 of candidate set. The default is return.transform=T. 
+}
+\item{max.loop}{
+Maximum number of outer loops in algorithm. This is the maximum number of 
+passes through the design testing for swaps. 
 }
 }
 \value{

@@ -16,7 +16,7 @@ data(rat.diet)
 \format{
 This data frame contains the following columns:
 }
-\arguments{
+\describe{
 \item{t}{
 Time in days
  

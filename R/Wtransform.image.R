@@ -19,6 +19,11 @@ function (x, inv = FALSE, transpose = FALSE, cut.min = 8)
         stop(" number of columns of x must >= to number of\nrows")
     nn <- n
     mm <- m
+# test 
+           if( dyadic.2check( mm,nn,cut.min)==FALSE) 
+                 {stop("error in column or row dimensions")}
+
+
     if (!inv) {
         while (nn > cut.min) {
             if (!transpose) {

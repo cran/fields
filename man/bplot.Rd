@@ -38,8 +38,8 @@ box plots.
 Other arguments controlling the boxplots ( passed to
 bplot.obj) these are
 listed below. Other graphical plotting arguments not matched (e.g. yaxt)
-are used in the call to plot to set up the intial plot if add=T. 
-}
+are used in the call to plot to set up the initial plot if add=T. 
+ \describe{
 \item{pos}{
 The boxplots will be plotted vertically and pos gives the x or y locations
 for their centers. If omitted the boxes are equally spaced at integer  
@@ -88,7 +88,9 @@ an x-axis.
 }
 \item{horizontal}{
 If true draw boxplots horizontally the default is false, produce
-veritcal box plots. 
+vertical box plots. 
+}
+}
 }
 }
 \details{

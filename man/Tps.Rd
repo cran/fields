@@ -53,7 +53,7 @@ type of "unscaled" does not scale the data.
 \item{\dots}{
 Any argument that is valid for the Krig function. Some of the main ones
 are listed below. 
-}
+\describe{
 \item{lambda}{
 Smoothing parameter that is the ratio of the error variance (sigma**2) 
 to the scale parameter of the  
@@ -126,6 +126,8 @@ used when Krig/Tps is part of a backfitting algorithm and the offset has
 to be included  to reflect other model degrees of freedom. 
 }
 }
+}
+}
 \value{
 A list of class Krig. This includes the predicted surface of 
 fitted.values and the residuals. The results of the grid 
@@ -160,11 +162,11 @@ polynomial base model by ordinary least squares.
 This estimator is implemented simply by feeding the right generalized 
 covariance function based on radial basis functions to the more general 
 function Krig. This is a different approach than the older version in 
-FUNFITS (tps) and provides simpler coding. One advantage of both the  
-FUNFITS and FIELDS implementations is that once a Tps/Krig object is 
-created the estimator can be found rapidly other data and smoothing 
+FUNFITS (tps) and provides simpler coding. One advantage of this   
+implementation is that once a Tps/Krig object is 
+created the estimator can be found rapidly for other data and smoothing 
 parameters  provided the locations remain unchanged. This makes simulation 
-within S efficient ( see example below).  
+within R efficient (see example below).  
 }
 \section{References}{
 See "Nonparametric Regression and Generalized Linear Models"  

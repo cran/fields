@@ -15,7 +15,7 @@ data(precip)
 \format{
 This data set is a list containing the following components: 
 }
-\arguments{
+\describe{
 \item{x}{
 Longitude-latitude postion of monitoring stations. 
 }
