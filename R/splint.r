@@ -23,5 +23,6 @@ function (x, y, xgrid, derivative = 0)
         as.double(y), as.double(rep(0, n)), as.double(rep(1, 
             n)), as.double(1), as.double(1), as.double(1), as.integer(length(xgrid)), 
         as.double(xgrid), ygrid = as.double(rep(0, length(xgrid))), 
-        as.integer(c(2, 3, 0)), as.integer(derivative), as.integer(0))$ygrid
+        as.integer(c(2, 3, 0)), as.integer(derivative), 
+        as.integer(0),PACKAGE="fields")$ygrid
 }

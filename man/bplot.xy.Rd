@@ -9,8 +9,9 @@ representation
 of the conditional distrubtion of [Y|X] in terms of boxplots.  
 }
 \usage{
-bplot.xy(x, y, N = 10, breaks = pretty(x, N), style = "tukey", 
-    outlier = TRUE, plot = TRUE, xaxt = "s", ...)
+bplot.xy(x, y, N = 10, breaks = pretty(x, N, eps.correct = 1),
+         style = "tukey", outlier = TRUE, plot = TRUE, xaxt =
+         "s", ...)
 }
 \arguments{
 \item{x}{

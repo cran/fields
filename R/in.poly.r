@@ -16,5 +16,5 @@ function (xd, xp, convex.hull = FALSE, inflation=1e-7)
 
     .Fortran("inpoly", nd = as.integer(nd), as.single(xd[, 1]), 
         as.single(xd[, 2]), np = np, as.single(xp[, 1]), as.single(xp[, 
-            2]), ind = as.integer(rep(-1, nd)))$ind
+            2]), ind = as.integer(rep(-1, nd)), PACKAGE="fields")$ind
 }

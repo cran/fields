@@ -1,5 +1,5 @@
 "bplot.obj" <-
-function (data, pos = NA, width = NULL, labels = NULL, srt = NULL, 
+function (data, pos = NA, width = NULL, labels = NULL, las = NULL, 
     add = FALSE, space = 0.25, sort.names = FALSE, xlab = "", ylab = "", 
     label.cex = 1, xaxt = "n", outlier = TRUE, horizontal = FALSE, ...) 
 {
@@ -43,12 +43,12 @@ function (data, pos = NA, width = NULL, labels = NULL, srt = NULL,
             horizontal = horizontal)
     }
     if (label.cex > 0) {
-        if (is.null(srt)) {
+        if (is.null(las)) {
             if (length(labels) > 7) {
-                srt <- 90
+                las <- 2
             }
             else {
-                srt <- 0
+                las <- 1
             }
         }
         if (horizontal) {
@@ -57,7 +57,7 @@ function (data, pos = NA, width = NULL, labels = NULL, srt = NULL,
         else {
             axis.loc <- 1
         }
-        axis(axis.loc, pos, labels, tick = FALSE, srt = srt, adj = 0.5, 
+        axis(axis.loc, pos, labels, tick = FALSE, las = las, adj = 0.5, 
             cex = label.cex)
     }
     invisible()

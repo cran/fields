@@ -5,33 +5,41 @@ function(x, Y, cov.function = "exp.cov", lambda = NA, df = NA, cost = 1., knots,
 	1., ncol(x)), rho = NA, sigma2 = NA, method = "GCV", decomp = "DR",
 	verbose = FALSE, cond.number = 10.^8., mean.obj = NULL, sd.obj = NULL,
 	yname = NULL, return.X = TRUE, null.function = make.tmatrix, offset = 0.,
-	outputcall = NULL, cov.args = NULL, ...)
+	outputcall = NULL, cov.args = NULL, na.rm=FALSE, ...)
 {
 	# Here is the ouput list for this function
 	out <- list()
 	class(out) <- c("Krig")
+
+# save the covariance function
 	if(!is.character(cov.function)) {
 		if(is.function(cov.function))
 			cov.function <- as.character(substitute(cov.function))
 	}
 		out$call.name <- cov.function
-	if(is.null(outputcall)) {
+
+# save the call 	
+        if(is.null(outputcall)) {
 		out$call <- match.call()
 	}
 	else {
 		out$call <- outputcall
 	}
-	N <- length(Y)
-	#
-	#
-	if(sum(is.na(Y)) != 0.) {
-		stop("Need to remove missing values\n from Y vector!")
+#
+#
+	if(sum(is.na(Y)) != 0.&!na.rm) {
+	stop("Need to remove missing values or set na.rm equal to TRUE")
 	}
-	# name of Y data
-	# length of Y data
-	if(is.null(yname)) out$yname <- deparse(substitute(Y)) else out$yname <-
-			yname
-	out$N <- N
+
+# name of Y data
+	if(is.null(yname)) {
+             out$yname <- deparse(substitute(Y)) }
+        else {
+                 out$yname <-yname
+        }   
+#
+# setup up other components of output object.     
+
 	out$decomp <- decomp
 	#
 	out$make.tmatrix <- null.function
@@ -68,8 +76,26 @@ function(x, Y, cov.function = "exp.cov", lambda = NA, df = NA, cost = 1., knots,
 		dimnames(x)[[2.]] <- paste("X", format(1.:ncol(x)), sep = "")
 	}
 	Y <- c(Y)
+
+        #
+        # deal with NA's 
+        #
+        if( na.rm){
+        ind<- is.na( Y)
+        if( any(ind)){
+        Y<- Y[!ind]
+        x<- x[!ind,]
+        warning("NA's have been removed from Y and corresponding X rows removed.")
+        } 
+        }
+
+#
+# OK here are the real data sets
+        N<- length(Y)
+	out$N <- N
 	out$y <- Y
 	out$x <- x
+#
 	if(!is.null(sd.obj) & !is.null(mean.obj)) {
 		correlation.model <- TRUE
 	}

@@ -7,7 +7,7 @@ function(x, y, lam, maxit = 50, maxit.cv = 10, tol = 0.0001, offset = 0, sc =
 	if(length(x) != length(y))
 		stop(" X and Y do not match")
 	h <- log(lam)
-	temp <- (.Fortran("rcss",
+	temp <- .Fortran("rcss",
 		h = as.double(log(lam)),
 		npoint = as.integer(N),
 		x = as.double(x),
@@ -24,6 +24,6 @@ function(x, y, lam, maxit = 50, maxit.cv = 10, tol = 0.0001, offset = 0, sc =
 		ideriv = as.integer(0),
 		din = as.double(c(cost, offset, maxit, tol, sc, alpha)),
 		dout = as.double(rep(0, 4)),
-		ierr = as.integer(0))$dout)
+		ierr = as.integer(0), PACKAGE="fields")$dout
 	return(temp[3])
 }

@@ -24,7 +24,7 @@ m=2, return.matrices=TRUE, nstep.cv=80, scale.type="user",
 x.center=rep(0, ncol(x)), x.scale=rep(1, ncol(x)), rho=NA, sigma2=NA, 
 method="GCV", decomp="DR", verbose=FALSE, cond.number=10^8, mean.obj=NULL, 
 sd.obj=NULL, yname=NULL, return.X=TRUE, null.function=make.tmatrix, offset=0, 
- outputcall = NULL, cov.args=NULL,...)
+ outputcall = NULL, cov.args=NULL,na.rm=FALSE,...)
 }
 \arguments{
 \item{x}{
@@ -151,6 +151,9 @@ If no NULL the output call will have whatever is passed. This is kludge
 for the Tps function so that it return a Krig object but have the right
 call argument.
 }
+\item{na.rm}{If true NAs will be removed from the \code{y} vector and the 
+corresponding 
+rows of \code{x}.}
 \item{\dots}{
 Optional arguments that appear are assume to be additional arguments
 to the covariance function. 

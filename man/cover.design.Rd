@@ -384,6 +384,9 @@ points(  ozone2$lon.lat[out5$best.id,],pch="O", col=4)
 #
 # this seems a bit strange probably due some funny correlation values
 #
+
+# reset panel
+set.panel(1,1)
  
 }
 \keyword{spatial}

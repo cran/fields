@@ -13,7 +13,7 @@ function (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, C = NULL)
         par <- c(p/2, ifelse((d%%2 == 0) & (with.log), 1, 0))
         temp <- .Fortran("radbas", nd = as.integer(d), x1 = as.double(x1), 
             n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
-            par = as.double(par), k = as.double(rep(0, n1 * n2)))
+            par = as.double(par), k = as.double(rep(0, n1 * n2)), PACKAGE="fields")
         if (with.constant) {
             Amd <- radbas.constant(m, d)
         }

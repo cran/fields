@@ -13,11 +13,11 @@ departures from a constant variance with respect to the independent
 variable.    
 }
 \usage{
-qsreg(x, y, lam=NA, maxit=50, maxit.cv=10, tol=1e-7,  
-offset=0, 
-sc=sqrt(var(y)) * 1e-05, alpha=0.5, wt=rep(1, length(x)), cost=1, 
-nstep.cv=100, hmin=NA, hmax=NA, trmin=2 * 1.05, trmax=0.95 * 
-length(unique(x)))
+qsreg(x, y, lam = NA, maxit = 50, maxit.cv = 10, tol =
+                 1e-07, offset = 0, sc = sqrt(var(y)) * 1e-05, alpha =
+                 0.5, wt = rep(1, length(x)), cost = 1, nstep.cv = 80,
+                 hmin = NA, hmax = NA, trmin = 2 * 1.05, trmax = 0.95
+                 * length(unique(x)))
 }
 \arguments{
 \item{x}{

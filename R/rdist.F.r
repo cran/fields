@@ -9,8 +9,9 @@ function (x1, x2)
     n1 <- nrow(x1)
     n2 <- nrow(x2)
     par <- c(1/2, 0)
-    matrix((.Fortran("radbas", nd = as.integer(d), x1 = as.double(x1), 
+    matrix(
+(.Fortran("radbas", nd = as.integer(d), x1 = as.double(x1), 
         n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
-        par = as.double(par), k = as.double(rep(0, n1 * n2)))$k), 
+        par = as.double(par), k = as.double(rep(0, n1 * n2)),PACKAGE="fields")$k), 
         ncol = n2, nrow = n1)
 }

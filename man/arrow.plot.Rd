@@ -13,7 +13,7 @@ existing plot.
 }
 \usage{
 arrow.plot(a1, a2, u = NA, v = NA, arrow.ex = 0.05,  
-     xpd = TRUE, true.angle = FALSE, ...)
+     xpd = TRUE, true.angle = FALSE, arrowfun=arrows,...)
 }
 \arguments{
 \item{a1}{
@@ -45,6 +45,13 @@ not to clip.
 If true preserves the true angle of the (u,v) pair on the plot. E.g. if  
 (u,v)=(1,1) then the arrow will be drawn at 45 degrees.  
 }
+\item{arrowfun}{
+The actual arrow function to use. The default is standard R \code{arrows}.
+However,  Tamas K Papp suggests  \code{p.arrows} from sfsmisc which makes prettier 
+arrows.
+}
+
+
 \item{\dots}{
 Graphics arguments passed to the arrows function that can can change the 
 color or arrow sizes. See help on this for 
@@ -77,7 +84,11 @@ y<- runif( 20)
 u<- rnorm( 20)
 v<- rnorm( 20)
 plot( x,y)
-arrow.plot( x,y,u,v, length=.05, col=3)
+arrow.plot( x,y,u,v, col='red') # a default choice that is ugly 
+arrow.plot( x,y,-u,-v, arrow.ex=.2, length=.1, col='green', lwd=2) 
+# thicker lines in green, smaller heads and longer tails. Note length, col and lwd are
+# options that the arrows function itself knows about. 
+  
 }
 \keyword{aplot}
 % docclass is function

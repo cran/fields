@@ -18,6 +18,6 @@ function(h, info)
 		yg = as.double(0),
 		job = as.integer(c(3, 0, 0)),
 		ideriv = as.integer(0),
-		ierr = as.integer(0))$trace)
+		ierr = as.integer(0),PACKAGE="fields")$trace)
 	return(temp)
 }
