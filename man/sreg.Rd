@@ -33,7 +33,7 @@ spline
 \item{offset}{
 an offset added to the term cost*degrees of freedom in the denominator of
 the GCV function. (This would be used for adjusting the df from fitting
-other models such as in backfitting additive models.)
+other models such as in back-fitting additive models.)
 }
 \item{wt}{
 A vector that is proportional to the reciprocal variances of the
@@ -194,6 +194,8 @@ sum of these  (trace(A(lambda)) can be interpreted as the effective
 number of parameters that are used to define the spline function. 
 IF there are replicate points the A matrix is the result of finding group
 averages and applying a weighted spline to the means. 
+The A matrix is also used to find "Bayesian" confidence intervals for the 
+estimate, see the example below. 
 
 CROSS-VALIDATION:The GCV criterion with no replicate points for a fixed
 value of lambda is
@@ -201,7 +203,9 @@ value of lambda is
  (1/n)(Residual sum of squares)/((1-(tr(A)-offset)*cost + offset)/n)**2, 
 
 Usually offset =0 and cost =1. Variations on GCV with replicate points are
-described in the documentation help file for Krig. 
+described in the documentation help file for Krig.  With an appropriate
+choice for the smoothing parameter, the estimate of sigma**2 is found by
+(Residual sum of squares)/tr(A).
 
 COMPUTATIONS: The computations for 1-d splines exploit the banded
 structure of the matrices needed to solve for the spline coefficients.
@@ -234,20 +238,59 @@ set.panel( 2,1)
 plot( fit$x, fit$y) # the data 
 lines( xg, sm) # the spline 
 plot( xg,der.sm, type="l") # plot of estimated derivative 
-
+set.panel() # reset panel to 1 plot
 
 
 # the same fit using  the thin plate spline numerical algorithms 
-# (sreg is more efficient for 1-d problems) 
+# (NOTE: sreg is more efficient for 1-d problems) 
 fit.tps<-Tps( rat.diet$t,rat.diet$con)
 summary( fit.tps) 
 
+# finding approximate standard errors at observations
+
+SE<- fit$shat.GCV*sqrt(fit$diagA)
+
+# compare to predict.se( fit.tps) differences are due to 
+# slightly different lambda values and using shat.MLE instad of shat.GCV
+#
+
+# 95% pointwise prediction intervals
+Zvalue<-  qnorm(.0975)
+upper<- fit$fitted.values + Zvalue* SE
+lower<- fit$fitted.values - Zvalue* SE
+#
+# conservative, simultaneous Bonferroni bounds
+#
+ZBvalue<-  qnorm(1- .025/fit$N)
+upperB<- fit$fitted.values + ZBvalue* SE
+lowerB<- fit$fitted.values - ZBvalue* SE
+#
+# take a look
+
+plot( fit$x, fit$y)
+lines( fit$predicted, lwd=2)
+matlines( fit$x, 
+cbind( lower, upper, lowerB, upperB), type="l", col=c( 2,2,4,4), lty=1)
+title( "95 pct pointwise  and simultaneous intervals")
+# or try the more visually  honest:
+plot( fit$x, fit$y)
+lines( fit$predicted, lwd=2)
+segments(  fit$x, lowerB, fit$x, upperB, col=4)
+segments(  fit$x, lower, fit$x, upper, col=2, lwd=2)
+title( "95 pct pointwise  and simultaneous intervals")
+
+
+
+
+
+
+
+
 # replicated data
-# this is a simulated case. find lambda by matching rmse to be .2
+# this is a simulated case. Find lambda by matching rmse to be .2
 # and use this estimate of lambda
 sreg( test.data2$x, test.data2$y, rmse=.2, method="RMSE")-> fit
 
-set.panel( 1,1)
 }
 \keyword{smooth}
 % docclass is function

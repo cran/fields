@@ -16,7 +16,7 @@ c
 c  On Exit:
 c   mkploy		(m + dim - 1) choose dim
 c
-c $Header: /data/nychka/CVS.REPOS/FR/src/mkpoly.f,v 1.1 2001/05/24 21:51:21 nychka Exp $
+c $Header: /fs/cgd/home0/thoar/CVS.REPOS/fields/src/mkpoly.f,v 1.1.1.1 2002/12/04 22:46:16 thoar Exp $
 c
       integer i,j,k,k1,kcoef,n, npoly
 c 			compute binomial coefficient

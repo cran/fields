@@ -1,4 +1,4 @@
-        subroutine rkmat(theta,x,y,n)
+        subroutine rkmat(theta,x,y,n, ncal)
 c
 c       msh:                                         date: 1/13/89
 c
@@ -34,6 +34,7 @@ c
         parameter( fifty = 50.0d0 )
 c
         dimension theta(3),x(n),y(n)
+        integer ncal(n), ncalc
         dimension bk(50)
 c
         t1  = theta(1)
@@ -58,6 +59,7 @@ c
               y(i) = t1*dexp(-p1*p1)        
             endif
           endif
+          ncal(i)= ncalc
 10      continue
 c
 c       finish up
