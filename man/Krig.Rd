@@ -391,8 +391,40 @@ surface(fit.flame, type="I")
 out<- Krig( ozone$x, ozone$y, rad.cov, m=2,  p=2, 
 scale.type="range",decomp="WBW") # these last two options make sure the
                                  # the results with Tps are identical
+# A Knot example
 
-# correlation model example
+data(ozone2)
+y16<- ozone2$y[16,] # there are some missing values! 
+good<- !is.na( y16)
+y<- y16[good] # Krig does not remove missing values. 
+x<- ozone2$lon.lat[ good,]
+
+#
+# the knots can be arbitrary but just for fun find them with a space 
+# filling design. Here we select  50 from the full set of 147 points
+#
+xknots<- cover.design( x, 50)$design # select 50 knot points
+
+out<- Krig( x, y, knots=xknots,  rad.cov, m=2,  p=2,scale.type="range")
+
+# Zee plot 
+surface( out, type="C")
+US( add=TRUE)
+points( x, col=2)
+points( xknots, cex=2, pch="O")
+
+summary( out)
+#
+# note that that trA found by GCV is around 15 so 50>15  knots may be a 
+# reasonable approximation to the full estimator. 
+#
+surface( out, type='C')
+# obs and knots
+points( x)
+points( xknots, col=2)
+
+
+# Correlation model example
 
 # fit krig surface using a mean and sd function to standardize 
 # first get stats from 1987 summer Midwest O3 data set 
@@ -416,6 +448,7 @@ mean.obj=mean.o3, sd.obj=sd.o3)
 surface( fit, type="I")
 US( add=TRUE)
 title("Estimated ozone surface")
+
   
 }
 \keyword{spatial}

@@ -1,8 +1,8 @@
 "cover.design" <-
 function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL, 
     scale.type = "unscaled", R.center, R.scale, P = -20, Q = 20, 
-    start = NULL, DIST = NULL, return.grid = TRUE, return.transform = 
-TRUE,max.loop=20) 
+    start = NULL, DIST = NULL, return.grid = TRUE, return.transform = TRUE, 
+    max.loop = 20, verbose=FALSE) 
 {
     if (!is.null(start) && is.matrix(start)) {
         if (any(duplicated.array(start))) 
@@ -13,10 +13,16 @@ TRUE,max.loop=20)
     }
     R.orig <- R
     R <- as.matrix(R)
+# some checks on inputs 
+    if( nd >= nrow( R)) {
+       stop(" number of design points >= the number of candidates")}
     if (any(duplicated.array(R))) 
         stop("Error: R must not have duplicate rows")
-    if (num.nn >= nrow(R)) 
+    if (num.nn >= (nrow(R)-nd)) {
         nn <- FALSE
+        warning(
+"Number of nearst neighbors (nn) reduced to the actual number of candidates")
+} 
     if (is.null(DIST)) 
         DIST <- function(x, y) {
             rdist(x, y)
@@ -24,18 +30,25 @@ TRUE,max.loop=20)
     id <- 1:nrow(R)
     if (!is.null(start)) 
         nd <- length(start)
-
     if (is.null(fixed)) 
         n <- nd
     else {
         n <- nd + length(fixed)
     }
-
     R <- transformx(R, scale.type, R.center, R.scale)
     transform <- attributes(R)
     saved.crit <- rep(NA, nruns)
     saved.designs <- matrix(NA, nrow = nruns, ncol = n)
     saved.hist <- list(1:nruns)
+
+     if( verbose) { cat( dim(R), fill=TRUE)}
+#
+# do nruns with initial desing drawn at random
+#
+# in this code Dset are the indices of the design
+# Cset are the complement set of indices indicating the candidate points 
+# no used in the design
+#
     for (RUNS in 1:nruns) {
         if (is.null(start)) {
             if (!is.null(fixed)) {
@@ -60,10 +73,12 @@ TRUE,max.loop=20)
         CRIT <- rep(NA, length(Cset))
         CRIT.temp <- rep(NA, length(Cset))
         hist <- matrix(c(0, 0, crit.i), ncol = 3, nrow = 1)
-        loop.counter<-1
+        loop.counter <- 1
         repeat {
-        for (i in 1:nd) {
+            for (i in 1:nd) {
+# loop over current design points looking for a productive swap
                 Dset.i <- matrix(R[Dset[i], ], nrow = 1)
+if( verbose) { cat( "design point", i, Dset.i,fill=T)}
                 partial.newrow <- sum(DIST(Dset.i, R[Dset[-i], 
                   ])^P)
                 rs.without.i <- rs - c(DIST(Dset.i, R[-Dset, 
@@ -72,17 +87,23 @@ TRUE,max.loop=20)
                   vec <- (1:length(Cset))[order(dist.mat[, i])[1:num.nn]]
                 else vec <- 1:length(Cset)
                 for (j in vec) {
+# loop over possible candidates to swap with design point
                   Cset.j <- matrix(R[Cset[j], ], nrow = 1)
                   newcol <- c(DIST(Cset.j, R[c(-Dset, -Cset[j]), 
                     ])^P)
                   CRIT[j] <- (sum((rs.without.i[-j] + newcol)^(Q/P)) + 
                     (DIST(Cset.j, Dset.i)^P + partial.newrow)^(Q/P))^(1/Q)
+if( verbose) { cat( j," ")}
                 }
                 best <- min(CRIT[!is.na(CRIT)])
+
                 best.spot <- Cset[CRIT == best][!is.na(Cset[CRIT == 
                   best])][1]
+if( verbose) { cat( i,"best found ", best," at",  best.spot, fill=T)}
                 crit.old <- crit.i
+# check if the best swap is really better thatn what you already have. 
                 if (best < crit.i) {
+if( verbose) { cat( i,"best swapped ",fill=T)}
                   crit.i <- best
                   hist <- rbind(hist, c(Dset[i], best.spot, crit.i))
                   Dset[i] <- best.spot
@@ -91,10 +112,9 @@ TRUE,max.loop=20)
                   rs <- (dist.mat^P) %*% rep(1, n)
                 }
             }
-            if ((crit.i == crit.old) |(loop.counter>=max.loop))
+            if ((crit.i == crit.old) | (loop.counter >= max.loop)) 
                 break
-        loop.counter<- loop.counter +1
-       
+            loop.counter <- loop.counter + 1
         }
         saved.crit[RUNS] <- crit.i
         saved.designs[RUNS, ] <- Dset

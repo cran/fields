@@ -1,13 +1,15 @@
 "plot.surface" <-
 function (obj, main = NULL, type = "b", zlab = NULL, xlab = NULL, 
     ylab = NULL, levels = NULL, zlim = NULL, graphics.reset = NULL, 
-    ...) 
+    labcex=.6,...) 
 {
-    old.par <- par(no.readonly=TRUE)
-    if (is.null(graphics.reset)&( type == "b"))
-{ graphics.reset<- TRUE}
-else{ graphics.reset<- FALSE}
-    
+    old.par <- par(no.readonly = TRUE)
+    if (is.null(graphics.reset) & (type == "b")) {
+        graphics.reset <- TRUE
+    }
+    else {
+        graphics.reset <- FALSE
+    }
     if (graphics.reset) {
         on.exit(par(old.par))
     }
@@ -34,19 +36,19 @@ else{ graphics.reset<- FALSE}
     if (type == "p" | type == "b") {
         if (is.null(zlim)) 
             persp(obj$x, obj$y, obj$z, xlab = xlab, ylab = ylab, 
-                zlab = zlab, 
-                 theta=30, phi=30, expand=.5, col="LightGreen",...)
+                zlab = zlab, theta = 30, phi = 30, expand = 0.5, 
+                col = "LightGreen", ...)
         else persp(obj, xlab = xlab, ylab = ylab, zlab = zlab, 
-            zlim = zlim, 
-                 theta=30, phi=30, expand=.5, col="LightGreen",...)
+            zlim = zlim, theta = 30, phi = 30, expand = 0.5, 
+            col = "LightGreen", ...)
         if (!is.null(main)) 
             title(main)
     }
     if (type == "c" | type == "b") {
         if (is.null(levels)) 
-            levels <- pretty(obj$z[ !is.na(obj$z)] , 5)
+            levels <- pretty(obj$z[!is.na(obj$z)], 5)
         contour(obj$x, obj$y, obj$z, , xlab = xlab, ylab = ylab, 
-            levels = levels, ...)
+            levels = levels, labcex=labcex,...)
     }
     if (type == "I") {
         image.plot(obj$x, obj$y, obj$z, xlab = xlab, ylab = ylab)
@@ -57,8 +59,9 @@ else{ graphics.reset<- FALSE}
         image.plot(obj$x, obj$y, obj$z, xlab = xlab, ylab = ylab, 
             graphics.reset = graphics.reset)
         if (is.null(levels)) 
-            levels <- pretty(obj$z[ !is.na(obj$z)] , 5)
+            levels <- pretty(obj$z[!is.na(obj$z)], 5)
         contour(obj$x, obj$y, obj$z, add = TRUE, levels = levels, 
+labcex=labcex,
             ...)
         if ((!is.null(main)) & type != "b") 
             title(main)

@@ -1,11 +1,12 @@
 "surface.Krig" <-
 function(obj, grid.list = NA, extrap = FALSE, graphics.reset = NULL, xlab = NULL,
 	ylab = NULL, main = NULL, zlab = NULL, zlim = NULL, levels = NULL,
-	type = "b", ...)
+	type = "b", nx=30, ny=30,...)
 {
 	## modified so that you can give main, and ylab as arguments
 	## in ... and have them passed correctly
-	out.p <- predict.surface(obj, grid.list = grid.list, extrap = extrap)
+	out.p <- predict.surface(obj, 
+             grid.list = grid.list, extrap = extrap, nx=nx,ny=ny)
 	if(!is.null(ylab))
 		out.p$ylab <- ylab
 	if(!is.null(xlab))

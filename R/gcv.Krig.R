@@ -44,10 +44,13 @@ function (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA,
 
 #
     RSS <- pure.ss + RSS.model
-    MSE <- pure.ss/N + RSS.model/length(D)
+    MSE <- RSS.model/length(D)
+    if((N - length(D)) > 0) {
+        MSE <- MSE + pure.ss/(N - length(D))
+    }
     MSE.one <- (pure.ss + RSS.model)/N
 # denominator for grid of lambda values for the GCV function 
-   den <- 1 - (cost * (trA - nt - offset) + nt)/length(D)
+    den <- 1 - (cost * (trA - nt - offset) + nt)/length(D)
     den.one <- 1 - (cost * (trA - nt - offset) + nt)/N
 # different versions of GCV function based on how replicate data is 
 # handled

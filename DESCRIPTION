@@ -1,6 +1,6 @@
 Package: fields
-Version: 1.4.2
-Date: Aug 27 2003
+Version: 1.5
+Date: May 10 2004
 Title: Tools for spatial data
 Author: Doug Nychka
 Maintainer: Doug Nychka <nychka@ucar.edu> 
