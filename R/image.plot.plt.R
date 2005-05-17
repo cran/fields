@@ -1,8 +1,9 @@
 "image.plot.plt" <-
-function ( add=FALSE,  legend.shrink = 0.9, legend.width = 
+function ( x, add=FALSE,  legend.shrink = 0.9, legend.width = 
 0.04, horizontal = FALSE, offset = 2 * legend.width, 
-    bigplot = NULL, smallplot = NULL)
+    bigplot = NULL, smallplot = NULL,...)
 {
+ # hack S3
     old.par <- par(no.readonly = TRUE)
     if (is.null(smallplot)) 
         stick <- TRUE

@@ -1,8 +1,9 @@
 "plot.surface" <-
-function (obj, main = NULL, type = "b", zlab = NULL, xlab = NULL, 
+function (x, main = NULL, type = "b", zlab = NULL, xlab = NULL, 
     ylab = NULL, levels = NULL, zlim = NULL, graphics.reset = NULL, 
     labcex=.6,...) 
-{
+{ 
+    obj <- x # hack S3
     old.par <- par(no.readonly = TRUE)
     if (is.null(graphics.reset) & (type == "b")) {
         graphics.reset <- TRUE

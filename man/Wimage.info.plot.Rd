@@ -1,14 +1,16 @@
-\name{plot.Wimage.info}
-\alias{plot.Wimage.info}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{plot to check 2-d multiresolution indexing.}
+\name{Wimage.info.plot}
+\alias{Wimage.info.plot}
+
+\title{Plot to check 2-d multiresolution indexing}
 \description{
-Plots in image format the differnt blocks of coefficents asscoatied with 
-a 2-d multiresolution. This function can be used to check the Wtransfomr indexing 
-functions and also as an introduction to how the coefficients are organized. 
+Plots in image format the differnt blocks of coefficents associated 
+with a 2-d multiresolution. This function can be used to check the 
+Wtransform indexing 
+functions and is also an introduction to how the coefficients are 
+organized. 
 }
 \usage{
-plot.Wimage.info(m, n, cut.min)
+Wimage.info.plot(m, n, cut.min)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -37,7 +39,7 @@ coefficients are pack into the image format.
 # e.g. the (1,1) element is the lower left corner. 
 #
 
-plot.Wimage.info( 64, 128, cut.min=8)
+Wimage.info.plot( 64, 128, cut.min=8)
 
 }
 \keyword{spatial}% at least one, from doc/KEYWORDS

@@ -1,5 +1,5 @@
 "surface.default" <-
-function (...) 
+function (obj,...) 
 {
-    plot.surface(...)
+    plot.surface(obj,...)
 }

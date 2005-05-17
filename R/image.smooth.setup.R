@@ -1,5 +1,6 @@
 "image.smooth.setup" <-
-function (nrow = 64, ncol = 64, dx = 1, dy = 1, kernel.function = function(x){ exp(-abs(x))}, 
+function (x, nrow = 64, ncol = 64, dx = 1, dy = 1, kernel.function = 
+double.exp, 
     theta = 1, Mwidth = nrow, Nwidth = ncol, ...) 
 {
     m <- nrow

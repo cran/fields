@@ -1,6 +1,7 @@
 "plot.qsreg" <-
-function (out, pch = "*", main = NA) 
+function (x, pch = "*", main = NA,...) 
 {
+out<- x # hack S3
     old.par <- par("mfrow", "oma")
     on.exit(par(old.par))
     set.panel( 2, 2, relax=TRUE)
@@ -43,13 +44,17 @@ yline( 0, col=2)
         mtext(deparse(out$call), cex = 1.3, outer = TRUE, line = -2)
     else mtext(main, cex = 1.3, outer = TRUE, line = -2)
 }
-"predict.qsreg" <-
-function (out, x, derivative = 0, model = out$ind.cv.ps) 
+
+"predict.qsreg" <- function(object, x, derivative = 0,
+                    model = object$ind.cv.ps,...) 
 {
+    
     if (missing(x)) 
-        x <- out$x
-    c(splint(out$predicted$x, out$predicted$y[, model], x, derivative = derivative))
+        x <- object$x
+    c(splint(object$predicted$x, object$predicted$y[, model],
+                   x, derivative = derivative))
 }
+
 "qsreg" <-
 function (x, y, lam = NA, maxit = 50, maxit.cv = 10, tol = 1e-07,
     offset = 0, sc = sqrt(var(y)) * 1e-05, alpha = 0.5, wt = rep(1, 

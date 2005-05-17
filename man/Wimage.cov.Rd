@@ -10,7 +10,7 @@ Wimage.sim generates a random field with the implied covariance.
 }
 \usage{
 Wimage.cov(Y = NULL, ind = NULL, H.obj, find.row = FALSE)
-Wimage.sim( H.obj))
+Wimage.sim( H.obj)
 }
 \arguments{
   \item{Y}{ The vector for the multiplication, if ind is missing this should a 

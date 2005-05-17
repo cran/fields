@@ -1,6 +1,6 @@
 "print.krig.image" <-
-function (obj) 
+function (x,...) 
 {
-    print(obj$call)
+    print(x$call)
     invisible()
 }

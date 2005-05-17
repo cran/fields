@@ -1,6 +1,7 @@
 "predict.surface.se" <-
-function(out, grid.list = NA, extrap = FALSE, chull.mask, ...)
+function(object, grid.list = NA, extrap = FALSE, chull.mask, ...)
 {
+        out <- object # hack S3
 	if((length(grid.list) == 1) | (is.na(grid.list)[1])) {
 		grid.list <- as.list(rep("c", ncol(out$x)))
 		grid.list[[1]] <- "x"

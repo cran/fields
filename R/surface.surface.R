@@ -1,6 +1,6 @@
 "surface.surface" <-
-function (...) 
+function (obj, ...) 
 {
 # 
-    plot.surface(...)
+    plot.surface(obj,...)
 }

@@ -1,3 +1,4 @@
+add.image               Adds an image to an existing plot.
 arrow.plot              Adds arrows to a plot
 as.image                Creates image from irregular x,y,z
 as.surface              Creates an "surface" object from grid values.
@@ -8,6 +9,8 @@ BD                      Data frame of the effect of buffer
                         set for exercising function fitting methods.
 bplot                   boxplot
 bplot.xy                Boxplots for conditional distribution
+colorbar.plot           Plots one or more color scale strips as a
+                        symbol
 cover.design            Computes Space-Filling "Coverage" designs
                         using Swapping Algorithm
 exp.cov                 Exponential, Gaussian and "power" covariance
@@ -26,12 +29,11 @@ image.plot              Draws image plot with a legend strip for the
 image.smooth            Kernel smoother for irregular 2-d data
 interp.surface          Fast bilinear interpolator from a grid.
 Krig                    Kriging surface estimate
+Krig.Amatrix            Smoother (or "hat") matrix relating predicted
+                        values to the dependent (Y) values.
 krig.image              Spatial process estimate for large irregular
                         2-d dats sets.
 lennon                  Gray image of John Lennon.
-make.Amatrix            Matrix relating predicted values to the
-                        dependent (Y) values
-make.Amatrix.Krig       Computes the prediction matrix for a Krig fit.
 matern.cov              Matern covariance function
 minitri                 Mini triathlon results
 ozone                   Data set of ozone measurements at 20 Chicago
@@ -44,7 +46,6 @@ plot.sreg               Plots smoothing spline regression object
 plot.surface            Plots a surface
 plot.Wimage             Plots 2-d wavelet coefficents by level and
                         type
-plot.Wimage.info        plot to check 2-d multiresolution indexing.
 poisson.cov             Poisson spherical covariance function
 predict.Krig            Evaluation of Krig spatial process estimate.
 predict.se              Standard errors of predictions
@@ -59,8 +60,8 @@ rat.diet                Experiment studying an appetite supressant in
                         rats.
 rdist                   Euclidean distance matrix
 rdist.earth             Great circle distance matrix
-RMprecip                Standardized monthly precipitation for August
-                        1963 inteh Rocky Mountain Region
+RMprecip                Monthly total precipitation (mm) for August
+                        1963 in the Rocky Mountain Region
 set.panel               Specify a panel of plots
 sim.rf                  Simulates a random field
 smooth.2d               Kernel smoother for irregular 2-d data
@@ -82,6 +83,7 @@ Wimage.cov              Functions for W-transform based covariance
                         models
 Wimage.info             Finds key indices related to a 2-d
                         multiresolution
+Wimage.info.plot        Plot to check 2-d multiresolution indexing
 W.info                  Gives indexing imfomration for a wavelet
                         decompostion
 world                   Plot of the world

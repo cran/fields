@@ -1,8 +1,10 @@
 "plot.sreg" <-
-function(out, main = NA, digits = 4, which = c(TRUE, TRUE, TRUE, TRUE), graphics.reset 
+function(x, main = NA, digits = 4, which = c(TRUE, TRUE, TRUE, TRUE), 
+graphics.reset 
 = TRUE,
 	...)
 {
+        out<- x # hack S3
 	old.par <- par("mfrow", "oma")
 	if(graphics.reset) {
 		on.exit(par(old.par))

@@ -1,6 +1,7 @@
 "summary.gcv.Krig" <-
-function(out, lambda, cost = 1, verbose = FALSE, offset = 0, y = NULL)
+function(object, lambda, cost = 1, verbose = FALSE, offset = 0, y = NULL,...)
 {
+out<- object # hack S3
 	nt <- out$nt
 	np <- out$np
 	N <- out$N

@@ -8,16 +8,15 @@ Plots a surface object in several different ways to give 3-d
 information e.g. a contour plots, perspective plots.  
 }
 \usage{
-plot.surface
-(obj, main = NULL, type = "b", zlab = NULL, xlab = NULL,
+plot.surface(x, main = NULL, type = "b", zlab = NULL, xlab = NULL,
     ylab = NULL, levels = NULL, zlim = NULL, graphics.reset = NULL,
-   ...)
+     labcex = 0.6, ...)
 }
 \arguments{
-\item{obj}{
+\item{x}{
 A surface object. At the minimum a list with components x,y and z 
-in the same form as the input list for the standard contour and persp
-functions. This can also be an object from predict.surface. 
+in the same form as the input list for the standard contour, persp
+or image functions. This can also be an object from predict.surface. 
 }
 \item{main}{
 Title for plot. 
@@ -47,10 +46,14 @@ Default is to reset if type ="b" but not for the single plot options.
 }
 \item{zlim}{
 Sets z limits on perspective plot. }
+\item{labcex}{
+Label sizes for axis labeling etc. 
+}
 \item{\dots}{
 Other graphical parameters that are passed along to either persp, contour
 or image. 
 }
+
 }
 \seealso{
 surface, predict.surface, as.surface,   

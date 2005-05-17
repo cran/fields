@@ -207,7 +207,7 @@ image.plot(1:8, 1:6, A)
 text( c( row(A)), c( col(A)), A)
 # and the indices ...
 text( c( row(A)), c( col(A))-.25,  
-   paste( "(", c(row(A)), ",",c(col(A)),")", sep=""), col=2)
+   paste( "(", c(row(A)), ",",c(col(A)),")", sep=""), col="grey")
 
 # "columns" of A are horizontal and rows are ordered from bottom to top!
 #

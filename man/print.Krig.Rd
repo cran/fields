@@ -7,15 +7,16 @@
 Prints the results from a fitting a spatial process estimate (Krig)
 }
 \usage{
-print.Krig(x,digits=4)
+print.Krig(x,digits=4,...)
 }
 \arguments{
 \item{x}{
-Object from krig fitting. 
+Object from Krig function. 
 }
 \item{digits}{
 Number of significant digits in printed output. Default is 4. 
 }
+\item{\dots}{ Other arguments to print.}
 }
 \value{
 Selected summary results from Krig. 

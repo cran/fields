@@ -1,10 +1,11 @@
 "image.smooth" <-
-function (Y, wght = NULL, dx = 1, dy = 1, Nwidth = nrow(Y), Mwidth = ncol(Y), 
-    kernel.function = function(x) {
-        exp(-abs(x))
-    }, theta = 1, grid = NULL, tol = 1e-08, xwidth = NULL, ywidth = NULL, 
-    weights = NULL) 
+function (x, wght = NULL, dx = 1, dy = 1, Nwidth = nrow(Y), Mwidth = 
+ncol(Y), 
+    kernel.function = double.exp, theta = 1, grid = NULL, tol = 1e-08,
+     xwidth = NULL, ywidth = NULL, 
+    weights = NULL,...) 
 {
+Y<- x # hack S3
     if (!is.matrix(Y)) {
         stop("Requires a matrix")
     }

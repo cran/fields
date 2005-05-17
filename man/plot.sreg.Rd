@@ -8,13 +8,12 @@ Plots a series of three plots that summarizes the smoothing spline regression
 object. 
 }
 \usage{
-plot.sreg
-(out, main = NA, digits = 4, which = c(TRUE, TRUE, TRUE, TRUE), graphics.reset
-= TRUE, ...)
+plot.sreg(x, main = NA, digits = 4, which = c(TRUE, TRUE, TRUE, TRUE), 
+               graphics.reset= TRUE, ...)
 }
 \arguments{
-\item{out}{
-A sreg object 
+\item{x}{
+A sreg object. 
 }
 \item{main}{
 Title of the plot. Default is the function call. 

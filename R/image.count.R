@@ -1,5 +1,5 @@
 "image.count" <-
-function (x, grid = NULL, nrow = 64, ncol = 64) 
+function (x, grid = NULL, nrow = 64, ncol = 64,...) 
 {
     Z <- rep(1, nrow(x))
     if (is.null(x) & is.null(grid)) {

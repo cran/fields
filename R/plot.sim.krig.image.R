@@ -1,6 +1,7 @@
 "plot.sim.krig.image" <-
-function (obj) 
+function (x,...) 
 {
+    obj<- x # hack S3
     par.old <- par(read.only=TRUE)
     on.exit(par(par.old))
     M <- length(obj$out)

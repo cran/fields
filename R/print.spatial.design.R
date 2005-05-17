@@ -1,5 +1,5 @@
 "print.spatial.design" <-
-function (x) 
+function (x,...) 
 {
     print(x$design)
 }

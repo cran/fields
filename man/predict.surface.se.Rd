@@ -7,10 +7,10 @@
 Evaluates the standard error of predictions on a surface. 
 }
 \usage{
-predict.surface.se(out, grid.list=NA, extrap=FALSE, chull.mask,...)
+predict.surface.se(object, grid.list=NA, extrap=FALSE, chull.mask,...)
 }
 \arguments{
-\item{out}{
+\item{object}{
 A fitted model object of a certain class 
 }
 \item{grid.list}{

@@ -12,11 +12,12 @@ provisions to use a different covariance for evaluation than the one used
 to define the BLUE.  
 }
 \usage{
-predict.se.Krig(out, x, cov.function, rho, sigma2, weights=NULL, cov=FALSE,  
+predict.se.Krig(object, x, cov.function, rho, sigma2, weights=NULL, 
+cov=FALSE,  
 stationary=TRUE, fixed.mean=TRUE, ...)
 }
 \arguments{
-\item{out}{
+\item{object}{
 A Krig object.  
 }
 \item{x}{
