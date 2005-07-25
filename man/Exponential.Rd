@@ -41,7 +41,7 @@ phi* exp( -d/range)
 
 Matern:
 
-   phi*con*(d\^nu) * besselK(d , nu )
+   \eqn{phi*con*(d^nu) * besselK(d , nu )}
 
  Matern covariance function transcribed from Stein's book page 31
 nu==smoothness, alpha ==  1/range

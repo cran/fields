@@ -9,11 +9,9 @@ points, new data (Y) or other values of the smoothing parameter (lambda)
 including a GCV estimate. 
 }
 \usage{
-predict.Krig(
-object, x = NULL, Z = NULL, drop.Z = FALSE, just.fixed
-                 = FALSE, lambda = NA, df = NA, model = NA,
-                 eval.correlation.model = TRUE, y = NULL, yM = NULL,
-                 verbose = FALSE, ...)
+predict.Krig(object, x = NULL, lambda = NA, df = NA, model = NA,
+                 eval.correlation.model = TRUE, y = NULL,yM=NULL, verbose =
+                 FALSE, ...)
 
 }
 \arguments{
@@ -24,14 +22,6 @@ Fit object from the Krig or Tps function.
 Matrix of x values on which to evaluate the kriging surface. 
 If omitted, the data x values, i.e. out\$x  will be used. 
 }
-\item{Z}{ Vector/Matrix of additional covariates to be included in 
-fixed part of spatial model}
-\item{drop.Z}{ If TRUE only spatial fixed part of model is evaluated. 
-i.e. Z covariates are not used. 
-}
-\item{just.fixed}{
-Only fixed part of model is evaluated}
-
 \item{lambda}{
 Smoothing parameter. If omitted, out\$lambda will be used. 
 (See also df and gcv arguments)
@@ -86,15 +76,8 @@ Krig, predict.surface gcv.Krig
 }
 
 \examples{
-Krig(ozone$x,ozone$y, theta=50) ->fit
+Krig(ozone$x,ozone$y,exp.cov, theta=50) ->fit
 predict( fit) # gives predicted values at data points
-
-# only the fixed part of the model
-
-predict( fit, just.fixed=TRUE) 
-
-# in this case the default is a linear spatial drift  (m=2) and there 
-# are no additional covariates
 
 grid<- make.surface.grid( list( seq( -40,40,,15), seq( -40,40,,15)))
 

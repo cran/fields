@@ -39,8 +39,8 @@ function( object, grid.list=NA, M=1, nx = 40, ny = 40, xy=c(1,2),
 # set up various sizes of arrays
      m<- nx*ny
      n<- nrow(object$xM) # NOTE: xM _unique_ locations of data
-     N<- n
-       if( verbose) { 
+     N<- length( object$y)
+     if( verbose) { 
        cat( " m,n,N, sigma2, rho", m, n, N, sigma2, rho,fill=TRUE)}
 
 #transform the new points
@@ -80,12 +80,6 @@ function( object, grid.list=NA, M=1, nx = 40, ny = 40, xy=c(1,2),
 
     h.true<-list( x= glist$x, y = glist$y, z= matrix( NA, nx,ny))
 
-# covariance matrix for observations
-
-  W2i<- Krig.make.Wi( object, verbose=verbose)$W2i
-  if( verbose) {
-     cat( "dim of W2i", dim( W2i), fill=TRUE)}
-
 ####
 ### begin the big loop
 ### 
@@ -112,14 +106,15 @@ function( object, grid.list=NA, M=1, nx = 40, ny = 40, xy=c(1,2),
 #
       h.data <- interp.surface(h.true,object$xM)   
 
+# expand the values according to the replicate pattern
+  
+     h.data<- h.data[object$rep.info]
        if( verbose){
           cat( "synthetic true values", h.data, fill=TRUE) }
 
-# create synthetic data 
-# NOTE:these are actually the "yM"s  the y's 
-# having been collapsed to replicate means.
+# create synthetic data
 
-        y.synthetic<- h.data + sqrt( sigma2)*W2i%d*%rnorm(N)
+        y.synthetic<- h.data + rnorm(N)*sqrt( sigma2/object$weights)
 
        if( verbose){
           cat( "synthetic data", y.synthetic, fill=TRUE) }
@@ -128,7 +123,7 @@ function( object, grid.list=NA, M=1, nx = 40, ny = 40, xy=c(1,2),
 # and subtract from "true" value 
 
        temp.error<- predict.surface( 
-                     object, grid.list=grid.list, yM=y.synthetic, 
+                     object, grid.list=grid.list, y=y.synthetic, 
                      eval.correlation.model=FALSE,extrap=TRUE)$z - h.true$z 
 
     if( verbose){

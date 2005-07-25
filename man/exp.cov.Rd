@@ -187,7 +187,7 @@ out<- exp.cov( ozone$x, theta=100)
 out2<- exp.cov( ozone$x[6:20,],ozone$x[1:2,], theta=100)
 # out2 is 15X2 matrix 
 # Kriging fit where the nugget variance is found by GCV 
-fit<- Krig( ozone$x, ozone$y, cov.function="exp.cov", theta=100)
+fit<- Krig( ozone$x, ozone$y, exp.cov, theta=100)
 
 }
 \keyword{spatial}

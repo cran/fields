@@ -1,10 +1,6 @@
 "fields.mkpoly" <-
 function (x, m = 2) 
 {
-
- if (m < 1) stop("'m' has to be larger than zero.")
- if (!is.matrix(x)) x <- as.matrix(x)	    
-
     d <- ncol(x)
     n <- nrow(x)
     nterms <- .Fortran("mkpoly", as.integer(m), as.integer(d), 

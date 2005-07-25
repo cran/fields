@@ -48,7 +48,7 @@ function(out, Y, verbose = FALSE, yM=NA )
 		# find the pure error sums of sqaures.  
 		#
 		temp <- out$matrices$X %*% out$matrices$G %*% u
-		temp <- sum((out$W2%d*%(out2$yM - temp) )^2)
+		temp <- sum(out$weightsM * (out2$yM - temp)^2)
 		out2$pure.ss <- temp + out2$pure.ss
 		if(verbose) {
 			cat("pure.ss", fill = TRUE)
@@ -65,7 +65,7 @@ function(out, Y, verbose = FALSE, yM=NA )
 	if(out$decomp == "WBW") {
 		#### decomposition of Q2TKQ2
 		u <- c(rep(0, out$nt), t(out$matrices$V) %*% qr.q2ty(out$
-			matrices$qr.T, out$W2%d*%out2$yM ))
+			matrices$qr.T, sqrt(out$weightsM) * out2$yM))
 		if(verbose)
 			cat("u", u, fill = TRUE)
 		#

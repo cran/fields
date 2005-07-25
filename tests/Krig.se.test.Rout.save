@@ -21,10 +21,23 @@ Type 'q()' to quit R.
 
 > library( fields)
 fields is loaded use help(fields) for an overview of this library
-> 
 > # tests of predict.se
-> # against direct linear algebra 
-> 
 > options( echo=FALSE)
-all done testing predict.se 
-> 
+testing:  Amatrix vs. predict
+** PASSED test at tolerance  1e-08
+testing:  Marginal predict.se
+** PASSED test at tolerance  1e-08
+testing:  Full covariance predict.se
+** PASSED test at tolerance  1e-08
+testing:  Marginal standard Cond. Sim.
+** PASSED test at tolerance  0.01
+testing:  Full covariance standard Cond. Sim.
+** PASSED test at tolerance  0.02
+testing:  Amatrix vs. predict
+** PASSED test at tolerance  1e-08
+testing:  Weighted case and exact for ozone2 full 
+cov
+** PASSED test at tolerance  1e-08
+testing:  Conditional simulation marginal se for grid
+** PASSED test at tolerance  0.005
+

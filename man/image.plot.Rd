@@ -13,8 +13,7 @@ into two parts. Putting the image in one and the legend in the other.
 image.plot(..., add = FALSE, nlevel = 64, legend.shrink = 0.9, 
 legend.width = 1.2, legend.mar = NULL, 
 graphics.reset = FALSE, horizontal = FALSE, bigplot = NULL
-, smallplot = NULL, legend.only = FALSE, col = tim.colors(nlevel),
-lab.breaks=NULL, axis.args=NULL)} 
+, smallplot = NULL, legend.only = FALSE, col = tim.colors(nlevel))} 
 
 \arguments{ \item{\dots}{
 The usual arguments to the image function. This includes the use of 
@@ -70,13 +69,6 @@ Color table to use for image ( see help file on image for details).
 Default is a pleasing range of 64 divisions suggested by Tim Hoar and is similar to 
 the MATLAB (TM) jet color scheme.
 }
-
-\item{lab.breaks}{ If breaks are supplied these are text string labels
-to put at each break value. This is intended to label axis on a
-transformed scale such as logs.}
-\item{axis.args}{Additional arguments for the axis function used to 
-create the legend axis. (See example below adding a log scaling.)}
-
 }
 \section{Side Effects}{
 After exiting, the
@@ -159,26 +151,19 @@ number of colors.
 add.image, colorbar.plot, tim.colors } 
 
 \examples{
-x<- 1:10; y<- 1:15; z<- outer( x,y,"+") 
-
-
+x<- 1:10 
+y<- 1:15 
+z<- outer( x,y,"+") 
 image.plot(x,y,z) 
+
 # or obj<- list( x=x,y=y,z=z); image.plot(obj)
+
 # now add some points on diagonal with some clipping anticipated 
    points( 5:12, 5:12, pch="X", cex=3)
-
-
-# adding breaks and distinct colors
-#        (lab.breaks are optional)
-
-brk<- quantile( c(z))
-image.plot(x,y,z, breaks=brk, col=rainbow(4), 
-             lab.breaks=names(brk))
 
 #
 #fat (5 characters wide) and short (50\% of figure)  color bar on the bottom
    image.plot( x,y,z,legend.width=5, legend.shrink=.5, horizontal=TRUE) 
-
 
 set.panel()
 
@@ -195,7 +180,6 @@ image( matrix( rnorm(150), 10,15), zlim=c(-4,4), col=tim.colors())
 
 par(oma=c( 0,0,0,1))# reset margin to be much smaller.
 image.plot( legend.only=TRUE, zlim=c(-4,4)) 
-
 # image.plot tricked into  plotting in margin of old setting 
 
 set.panel() # reset plotting device
@@ -245,8 +229,7 @@ image.plot( zlim=c(0,25), legend.only=TRUE, horizontal =TRUE)
 \dontrun{
 par( mar=c(10,5,5,5))
 image( x,y,z, col=topo.colors(64))
-image.plot( zlim=c(0,25), nlevel=64,legend.only=TRUE, horizontal=TRUE,
-col=topo.colors(64))
+image.plot( zlim=c(0,25), nlevel=64,legend.only=TRUE, horizontal=TRUE)
 }
 #
 # 
@@ -274,3 +257,4 @@ image.plot( t( A[6:1,]), axes=FALSE)
 }
 \keyword{hplot}
 % docclass is function
+% Converted by Sd2Rd version 1.21.

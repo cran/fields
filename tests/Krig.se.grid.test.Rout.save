@@ -22,8 +22,9 @@ Type 'q()' to quit R.
 > library( fields)
 fields is loaded use help(fields) for an overview of this library
 > # tests of predict.se
-> # using approximations for conditional simulation on a grid. 
-> #
 > options( echo=FALSE)
-all done with grid based se tests
-> 
+testing:  Conditional simulation marginal se for grid
+** PASSED test at tolerance  0.05
+testing:  Conditional simulation correlations for grid (RMSE) 
+** PASSED test at tolerance  0.05
+

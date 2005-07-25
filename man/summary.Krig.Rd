@@ -35,7 +35,7 @@ Krig. The results are formatted and printed using print.summary.Krig.
 Krig, summary, print.summary.Krig  
 }
 \examples{
-fit<- Krig(ozone$x, ozone$y, theta=100)  
+fit<- Krig(ozone$x, ozone$y, exp.cov, theta=100)  
 summary(fit)                            # summary of fit 
 }
 \keyword{spatial}

@@ -6,13 +6,11 @@
 Testing fields functions
 }
 \description{
-
-Some of the basic methods in feilds can be tested by directly
-implementing the linear algebra using matrix expressions. These
-comparisons are done in the the R source code test files in the tests
-subdirectory of fields.  The function \code{test.for.zero} is useful for
-comparing the tests in a meaninful and documented way. 
-
+Some of the basic methods in feilds can be tested by directly implementing the
+linear algebra using matrix expressions. These comparisons are done in the 
+the test files: Krig.se.test.R Krig.se.grid.test.R  Krig.test.R.
+The function test.for.zero is useful for comparing the tests in a meaninful
+and documented way. 
 }
 
 \usage{
@@ -38,48 +36,28 @@ test.for.zero( xtest,xtrue,  tol= 1.0e-8, relative=TRUE, tag=NULL)
 \details{
 The scripts in the tests subdirectory are 
 
-\describe{
-\item{Krig.test.R:}{Tests basic parts of the Krig and Tps functions including replicated
-and weighted observations. }
+Krig.test.R: 
+ Tests basic parts of the Krig and Tps functions including replicated
+and weighted observations. 
 
-\item{Krig.se.test.R:}{Tests computations of standard errors for the
-Kriging estimate.}
+Krig.se.test.R:
+ Tests computations of standard errors for the Kriging estimate.
 
-\item{Krig.se.grid.test.R}{Tests approximate standard errors for the
-Krig function found by Monte Carlo conditional simulation.} 
-
-\item{Krig.test.W.R}{Tests predictions and A matrix  when an off diagonal 
-observation weight matrix is used.}
-
-\item{Krig.se.W.R}{Tests standard errors when an off diagonal 
-observation weight matrix is used.}
-
-}
+Krig.se.grid.test.R 
+ Tests approximate standard errors for the Krig function found by Monte
+Carlo conditional simulation. 
 
 To run the tests just attach the fields library and source the testing file. 
-In the the fields source code these are in a subdirectory "tests".
+For the fields package source code these are in a subdirectory "tests".
 
+ \code{test.for.zero} is used to print out the result for each individual comparison.
 
+All the tests should pass with  text beginning,
 
- \code{test.for.zero} is used to print out the result for each
-individual comparison.
-Failed tests are potentially very bad and are reported with a
-string beginning 
+ "****** passed test at tolerance ..."
 
-"FAILED test value = ... "
+Failed tests are potentially very bad ...
 
-If the object test.for.zero.flag exists ( it can have any value),
-all the tests that pass print  text beginning,
-
- "    PASSED  test at tolerance ..."
-
-This startegy means that if all tests succeed nothing and the
-\code{object test.for.zero.flag} does not exist then nothing is printed
-in the test scripts.  This is option simplifies the output scripts for
-running through the tests -- no news is good news. 
-
-
-FORM OF COMPARISON:
 The actual test done is the sum of absolute differnces:
 
 test value = \code{ 

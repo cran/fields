@@ -5,16 +5,16 @@
 \title{Perspective plot draped with colors in the facets.}
 \description{
 Function to produce the 
-usual wireframe perspective plot with the facets being filled  
-with different colors. By default the colors are assigned from a
-color bar based on the z values. \code{drape.color}  can be used to create
+usual wireframe perspective plot with the facets being filled by 
+according to a colors. By default the colors are assigned from a
+color bar based on the z values. \code{drape.color} is used to create
 a color matrix different from the z matrix used for the wireframe.}
 \usage{
-drape.plot(x, y, z, z2=NULL, col = tim.colors(64), zlim = range(z, na.rm=TRUE), 
- zlim2 = NULL, add.legend = TRUE, horizontal = TRUE, theta = 30, phi = 20, ...)
+drape.plot( x,y,z,z2=NULL, col = tim.colors(64), zlim = NULL, 
+ add.legend = TRUE, horizontal = TRUE, theta = 30, phi = 20, ...)
 
 drape.color(z, col = tim.colors(64), zlim = NULL,
-   transparent.color = "white")
+   transperent.color = "white")
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -26,21 +26,15 @@ components x y and z are used.)}
   \item{z2} { A matrix of z values to use for coloring facets. If NULL 
 then z is used for this purpose}
   \item{col}{ A color table for the z values that will be used for draping}
-  \item{zlim}{the z limits for \code{z} these are used to set up
-  the scale of the persp plot. This defaults to range(z, na.rm=TRUE) as
-  in persp}
-  \item{zlim2}{the z limits for \code{z2} these are used to set up
-  the color scale. This defaults to  }
+  \item{zlim}{ the z limits default is the range of z. }
   \item{add.legend}{ If true a color strip is added as a legend.}
   \item{horizontal}{ If true color strip is put at bottom of the 
 plot, if FALSE it is placed vertically on the right side.  }
   \item{theta}{ x-y rotation angle for perspective. }
   \item{phi}{ z-angle for perspective. }
-  \item{transparent.color}{ Color to use when given an NA in z} 
+  \item{transperent.color}{ Color to use when given an NA in z} 
   \item{\dots}{ Other arguments that will be passed to the 
-          persp function. The most common is zlim the z limits for the
-	  3-d  plot and also the limits to set up the color scale. The
-	  default for zlim is the range of z.}
+          persp function.  }
 }
 \value{
 \code{drape.plot}
@@ -56,40 +50,36 @@ matrix where each element is a text string specifying the color.
 }
 \details{ 
 
-The legend strip may obscure part of the plot. If so, add this as
-another step using image.plot.
+The legend strip may obscure part of the plot. If so add this 
+as another step changing the defaults in image.plot. 
 
-When using \code{drape.color} just drop the results into the
-\code{col} argument of \code{persp}. Given this function there are no
-surprises how the higher level \code{drape.plot} works: it calls
-\code{drape.color} followed by \code{persp} and finally the legend
-strip is added with \code{image.plot}.
+When using drape.color just drop the results into the \code{col} argument
+of \code{persp}. Having said written this, no surprises what drape.plot
+does it calls \code{drape.color} followed by \code{persp} and finally 
+the legend strip is added with \code{image.plot}.  
 
-The color scales essentially default to the ranges of the z
-values. However, by specifying zlim and/or zlim2 one has more control
-of how the perspective plot is scaled and the limits of the color
-scale used to fill the facets.  The color assignments are done by
-dividing up the zlim2 interval into equally spaced bins and adding a
-very small inflation to these limits.  The mean z2 values, comprising
-an (M-1)X(N-1) matrix, for each facet are discretized to the bins. The
-bin numbers then become the indices used for the color scale. If zlim2
-is not specified it is the range of the z2 matrix is used to generate
-the ranges of the color bar. Note that this may be different than the
-range of the mean facets.  If z2 is not passed then z is used in its
-place and in this case the zlim2 or zlim argument can used to define
-the color scale.
+The color assignments are done by dividing up the zlim interval into
+equally spaced bins, adding a very small inflation to the z limits.  The
+mean z values, comprising an (M-1)X(N-1) matrix, for each facet are
+discretized to the bins. The bin numbers then become the indices used for
+the color scale. If zlim is not specified it is the range of the z or z2 
+matrix is used to generate the ranges of the color bar. Note that this 
+may be different than the range of the mean facets. 
 
-This kind of plot is also supported through the wireframe function in the
-\code{lattice} package. The advantage of the fields version is that it uses the
+
+This kind of plot is also supported through the wireframed function in the
+lattice package. The advantage of this fields version is that it uses the
 standard R graphics functions -- and is written in R code.  
 
 The drape plot is also drawn by the fields \code{surface} function with 
 \code{type="P"}. 
 
+
+
 }
 \author{D. Nychka }
 
-\seealso{ image.plot, quilt.plot,  persp, plot.surface, surface, lattice, trans3d} 
+\seealso{ image.plot, persp, plot.surface, surface, lattice, trans3d} 
 \examples{
 
 # an obvious choice:
@@ -102,15 +92,7 @@ y<- seq( 0,1,,N)
 
 drape.plot( x,y,volcano, col=terrain.colors(128))-> pm 
 
-# use different range for color scale and persp plot
-
- drape.plot( x,y,volcano, col=terrain.colors(128),zlim=c(0,500),
-                     zlim2=c( 120,180))
-
-# note tranparent color for facets outside the zlim2 range
-
-
-#The projection has been saved in pm
+#note the projection has been saved in pm
 # add a point marking the summit
 max( volcano)-> zsummit
 ix<- row( volcano)[volcano==zsummit]

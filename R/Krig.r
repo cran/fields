@@ -1,22 +1,14 @@
 "Krig" <-
-function (x, Y, 
-    cov.function = "stationary.cov", lambda = NA, df = NA, 
-    Z=NULL,
-    cost = 1, knots=NA, weights = NULL,
-    m = 2, 
-    nstep.cv = 80,
-    scale.type = "user", x.center = rep(0, ncol(x)), x.scale = rep(1, ncol(x)),
-    rho = NA, sigma2 = NA, method = "GCV", 
-    verbose = FALSE,
-    mean.obj = NA, sd.obj = NA,
-    null.function = "Krig.null.function",
-    wght.function = NULL,
-    offset = 0, outputcall = NULL,
-    na.rm = TRUE,
-    cov.args = NULL, chol.args = NULL, null.args = NULL, wght.args = NULL, 
-    W = NULL, give.warnings = TRUE, ...) 
-
-
+function (x, Y, cov.function = "stationary.cov", lambda = NA, df = NA, 
+    cost = 1, knots=NA, weights = NULL, m = 2, 
+    nstep.cv = 80, scale.type = "user", x.center = rep(0, ncol(x)), 
+    x.scale = rep(1, ncol(x)), rho = NA, sigma2 = NA, method = "GCV", 
+     verbose = FALSE, mean.obj = NA, 
+    sd.obj = NA, 
+    null.function = fields.mkpoly, 
+    offset = 0, outputcall = NULL, cov.args = NULL, na.rm = TRUE,
+    chol.args=NULL, give.warnings=TRUE,
+    ...) 
 # NOTES 
 # the verbose switch prints many intermediate steps as an aid in debugging.
 #
@@ -36,57 +28,27 @@ function (x, Y,
     else{
         out$call <- outputcall}
 #
-# save covariance function as its name 
+# save covariance function as it name 
 #
-      out$cov.function.name <- as.character(substitute(cov.function))
-#
-# save null space function as its name 
-#
-      out$null.function.name <- as.character(substitute(null.function)) 
+   if (!is.character(cov.function)) {
+        if (is.function(cov.function)) {
+            out$cov.function.name <- as.character(substitute(cov.function))}
+        
+    }
+    else{
+      out$cov.function.name <- cov.function }
 
 #
-# save weight  function as its name if it is not a NULL
-#
-      if( is.null(wght.function)){
-           out$wght.function.name<- NULL}
-      else{
-           out$wght.function.name <- as.character(substitute(wght.function)) }
-
-      out$W<- W
-    
-      if( verbose){
-          print( out$cov.function.name)
-          print( out$null.function.name)
-          print( out$wght.function.name)}
-          
-#
-# logical to indicate if the "C" argument is present in cov.function
-#    
+# logical to indicate if the "C" argument is present in this function
     C.arg.missing<- all( names( formals( get( out$cov.function.name)))!="C")
     if( C.arg.missing) stop("Need to have C argument in covariance function 
                                  see exp.cov.simple as an example")
 
 #
 # save parameters values possibly passed to the covariance function
-# also those added to call are assumed to be covariance arguments.
-    
     if (!is.null(cov.args)) 
-      out$args <- c( cov.args, list(...))
+        out$args <- cov.args
     else out$args <- list(...)
-
-#
-# default values for null space function 
-
-        out$null.args<- null.args
-#
-#       set degree of polynomial null space if this is default
-#       mkpoly is used so often is it helpful to include m argument
-#       by default in Krig call.
-    
-   if( out$null.function.name=="Krig.null.function"){
-            out$null.args<- list( m=m)
-            out$m <- m}
-
 #
 # default values for Cholesky decomposition, these are important
 # for sparse matrix decompositions used in Krig.engine.fixed. 
@@ -96,9 +58,16 @@ function (x, Y,
     else{
         out$chol.args<- chol.args}
 
-# additional arguments for weight matrix.
-    out$wght.args<- wght.args
-    
+
+#
+#
+# save function that creates null space.
+# for fields.mkpoly  the order of polynomial will be (m-1)
+
+    if( m < 1) { 
+       stop("m needs to be 1 or greater" )}
+    out$make.tmatrix <- null.function
+    out$m <- m 
 #
 # the offset is the effective number of parameters used in the GCV 
 # calculations
@@ -126,7 +95,7 @@ function (x, Y,
 #
 # verbose block
     if (verbose) {
-        cat("  Cov function arguments in call  ", fill = TRUE)
+        cat(" Local cov function arguments ", fill = TRUE)
         print(out$args)
         cat(" covariance function used is : ", fill = TRUE)
         print(out$cov.function.name)
@@ -137,9 +106,7 @@ function (x, Y,
 ###############################################################
  
 # various checks on x and  Y including removal of NAs in Y
-   if( verbose){ cat("checks on x,Y, and Z", fill=TRUE)}
-
-   out2<- Krig.check.xY( x,Y,Z, weights, na.rm, verbose=verbose)
+   out2<- Krig.check.xY( x,Y, weights, na.rm, verbose=verbose)
    out<- c( out, out2)
 
 
@@ -151,13 +118,12 @@ function (x, Y,
    if( out$correlation.model){
                out$y<- Krig.cor.Y(out, verbose=verbose)}
 
-   if( verbose){ cat("transform x", fill=TRUE)}
-
-   out2<- Krig.transform.xY(out,knots, verbose=verbose)
+   out2<- Krig.transform.xY(out,knots, verbose=FALSE)
    out<- c( out, out2)
 
 
 # NOTE: knots have been transformed after this step
+
 
 #############################################################
 #  Figure out what to do 
@@ -198,57 +164,30 @@ function (x, Y,
         cat("lambda, fixed? ", lambda, out$fixed.model, fill = TRUE)}
 
 
-# Make weight matrix for observations
-#    ( this is proportional to the inverse square root of obs covariance)
-#     if a weight function or W has not been passed then this is
-#     diag( out$weightsM) for W
-#     The checks represent a limitation of this model to
-#     the  WBW type decoposition and no replicate observations. 
-    
-   out$nondiag.W<- (!is.null( wght.function)) | (!is.null(W))
- 
-   if( verbose){cat( "out$nondiag", out$nondiag, fill=TRUE)}
 
-# Do not continue if there there is a nondiagonal wieght matrix
-# and replicate observations. 
-
-   if( out$nondiag.W){ 
-        if (out$knot.model | out$fixed.model) {
-           stop("Non diagonal weight matrix for observations not supported
-                       with knots or fixed lambda.")}
-        if  (!is.na( out$shat.pure.error)) {
-           stop("Non diagonal weight matrix not implemented with replicate
-                     locations")}
-   }
-    
-#  make weight matrix and its square root having passed checks  
-
-    out <- c( out, Krig.make.W( out, verbose=verbose))
-
-    
-    
 ########################################################
-#  You have reached the Engines!
+#   Do the intensive linear algebra to find the solution
 ########################################################
-#   Do the intensive linear algebra to find the solutions
-#   this is where all the heavy lifting happens.
+
+# this is where all the heavy lifting happens and are termed the 
+# engines. 
 #
-#   Note that all the information is passed as a list
-#   including arguments to the cholesky decomposition 
-#   used within Krig.engine.fixed
+# Note that all the information is passed as a list
+# incl,uding arguments to the cholesky decomposition 
+# used within Krig.engine.fixed
 #
-# The results are saved in the component matrices 
+# The results are saved in the component _matrices_ 
 #
 # if method=="user" then just evaluate at single lambda
-#  fixed here means a fixed lambda
+#  _fixed_ here means a fixed lambda
 #
-# For fixed lambda the decompositions with and without knots
-# are surprisingly similar and so are in one engine.
-###########################################################
+# For fixed lambda the decompostions with and without knots
+# are surprisingly similar and so are in one function
+#
 
   if( out$fixed.model){
        out$matrices<-  Krig.engine.fixed( out, verbose=verbose)
-# can't find the trace of A matrix in fixed lambda case so set this to NA.
+   # can't find the trace of A matrix in fixed lambda case. 
        out$eff.df<- NA
   }
 #
@@ -256,18 +195,13 @@ function (x, Y,
 # matrix decompositions suitable for 
 # evaluation at many lambdas to facilitate GCV/REML estimates  etc. 
 #
-    
   if( !out$fixed.model){
-
     if( out$knot.model){
-# the knot model engine
            out$matrices <- Krig.engine.knots( out, verbose=verbose)
            out$pure.ss <- out$matrices$pure.ss}
 
     else{
-# standard engine following the basic computations for thin plate splines
-           if( verbose){ cat( "Call to Krig.engine.default", fill=TRUE)}
-           out$matrices<- Krig.engine.default( out, verbose=verbose) 
+           out$matrices<- Krig.engine.default( out, verbose=verbose)
     }
   } 
 #
@@ -276,25 +210,7 @@ function (x, Y,
  out$nt<- out$matrices$nt # dim of null space
  out$np<- out$matrices$np # number of basis functions
  out$decomp<- out$matrices$decomp # type of decomposition see Krig.coef
-#
-# Now determine a logical vector indices for coefficients tied to  the
-# the "spatial drift" i.e. the fixed part of the model 
-# that is not due to the Z covariates. 
-# NOTE that the spatial drift coefficients must be the first columns of the
-# M matrix 
-    
-   if( is.null(out$Z)) { 
-          out$ind.drift<- rep(TRUE, out$nt) }
-   else{
-            mZ<- ncol(out$ZM)
-           out$ind.drift<-
-               c( rep(TRUE, out$nt-mZ ), rep( FALSE, mZ) )  }
-     if( verbose){
-        cat( "null df: ",out$nt, "drift df: ",sum( out$ind.drift), fill=TRUE )}
 
-#########################
-# End of engine block
-#########################
 
 #################################################
 # Do GCV and REML search over lambda if not fixed
@@ -332,28 +248,20 @@ function (x, Y,
 # find coefficients at prefered lambda 
 # and evaluate the solution at observations
 ##########################################
-#   pass replicate group means -- no need to recalculate these. 
+#   pass replicate group means -- noneed to recalculate these. 
 
     out2 <- Krig.coef(out, yM= out$yM)
     out<- c( out, out2)
-    if( verbose){
-     cat("Krig.coef:", fill=TRUE)
-     print( out2)}
+   
 #
 # fitted values and residuals and predicted values on null space (fixed 
 # effects). But be sure to do this at the nonmissing x's
 #
-    out$fitted.values <- predict.Krig(out, x=out$x, Z=out$Z, 
+    out$fitted.values <- predict.Krig(out, out$x, 
                             eval.correlation.model = FALSE)
     out$residuals <- out$y - out$fitted.values
-#
-# this is just M%*%d  note use of do.call using function name 
-
-    Tmatrix<-do.call( out$null.function.name,
-                  c(out$null.args, list( x=out$x, Z= out$Z)) )
-
-    out$fitted.values.null <- as.matrix(Tmatrix)  %*% out$d 
-    
+    out$fitted.values.null <- as.matrix(
+                out$make.tmatrix(out$x, m)) %*% out$d 
 #
 # verbose block
     if (verbose) {
@@ -368,14 +276,11 @@ function (x, Y,
 #
 # assign the "best" model as a default choice 
 # either use the user supplied values or the results from 
-# optimization
+#  optimization
 #
-
-      passed.sigma2 <- (!is.na(out$sigma2))
-      if(out$method=="user" & passed.sigma2 ) {
-          out$best.model <- c(out$lambda, out$sigma2, out$rho)}
+      if(out$method=="user"){
+           out$best.model <- c(out$lambda, out$sigma2, out$rho)}
       else{
-          # in this case lambda is from opt. or supplied by user
           out$best.model <- c(out$lambda, out$shat.MLE**2, out$rhohat)}
 
 # Note: values in best.model are used in subsquent functions as the choice 

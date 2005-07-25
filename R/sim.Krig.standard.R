@@ -93,11 +93,7 @@ function( object, xp, M=1, verbose=FALSE, sigma2=NA, rho=NA) {
     if (object$correlation.model) {
       if( !is.na( object$sd.obj[1]) ) {temp.sd<-predict( object$sd.obj, x)}
     }
-#
-#  Define W2i for simulating errors. 
-#
 
-  W2i <- Krig.make.Wi( object)$W2i
 
   for(  k in 1: M){
 
@@ -119,7 +115,7 @@ function( object, xp, M=1, verbose=FALSE, sigma2=NA, rho=NA) {
 
 # create synthetic data
 
-     y.synthetic<- h.data + sqrt(sigma2)* W2i%d*%rnorm(N)
+     y.synthetic<- h.data + rnorm(N)*sqrt( sigma2/object$weightsM)
 
 # predict at xp using these data
 # and subtract from "true" value 

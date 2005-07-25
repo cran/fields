@@ -209,15 +209,6 @@ lines( out$x, out$fitted.values)
 # compare to the ( much faster) one spline algorithm 
 #  sreg(rat.diet$t, rat.diet$trt) 
 # 
-
-# Adding a covariate to the fixed part of model
-# Note: this is a fairly big problem numerically (850+ locations)
-
-Tps( RMprecip$x,RMprecip$y, Z=RMprecip$elev)-> out
-
-surface( out, drop.Z=TRUE)
-US( add=TRUE, col="grey")
-
 #
 # simulation reusing Tps/Krig object
 #

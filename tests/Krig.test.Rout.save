@@ -27,5 +27,72 @@ fields is loaded use help(fields) for an overview of this library
 > #  Check against linear algebra
 > #
 > options( echo=FALSE)
-done with Krig tests
-> 
+testing:  Compare d coef
+** PASSED test at tolerance  1e-08
+testing:  Compare c coef
+** PASSED test at tolerance  1e-08
+testing:  Compare d coef fixed lambda
+** PASSED test at tolerance  1e-08
+testing:  Compare c coef fixed lambda
+** PASSED test at tolerance  1e-08
+testing:  d coef Krig.coef
+** PASSED test at tolerance  1e-08
+testing:  c coef Krig.coef
+** PASSED test at tolerance  1e-08
+testing:  d coef Krig.coef fixed
+** PASSED test at tolerance  1e-08
+testing:  c coef Krig.coef fixed
+** PASSED test at tolerance  1e-08
+testing:  d coef new y
+** PASSED test at tolerance  1e-08
+testing:  c coef new y
+** PASSED test at tolerance  1e-08
+testing:  d coef new y fixed
+** PASSED test at tolerance  1e-08
+testing:   c coef new y fixed
+** PASSED test at tolerance  1e-08
+testing:   d coef
+** PASSED test at tolerance  1e-08
+testing:  c coef
+** PASSED test at tolerance  1e-08
+testing:  d new y Krig.coef
+** PASSED test at tolerance  1e-08
+testing:  c new y Krig.coef
+** PASSED test at tolerance  1e-08
+testing:  d fixed case
+** PASSED test at tolerance  1e-08
+testing:   c fixed case
+** PASSED test at tolerance  1e-08
+testing:   d new y
+** PASSED test at tolerance  1e-08
+testing:  c new y
+** PASSED test at tolerance  1e-08
+testing:  d new y fixed
+** PASSED test at tolerance  1e-08
+testing:  c new y fixed
+** PASSED test at tolerance  1e-08
+testing:   d reps
+** PASSED test at tolerance  1e-08
+testing:  c reps
+** PASSED test at tolerance  1e-08
+testing:   pure sums of squares
+** PASSED test at tolerance  1e-08
+testing:  Amatrix prediction
+** PASSED test at tolerance  1e-08
+** PASSED test at tolerance  1e-08
+testing:   trace from A matrix
+** PASSED test at tolerance  1e-08
+** PASSED test at tolerance  1e-08
+testing:  A matrix predict with new y
+** PASSED test at tolerance  1e-08
+testing:  A matrix predict compared to collapsed yM
+** PASSED test at tolerance  1e-08
+testing:  pure sums of squares
+** PASSED test at tolerance  1e-08
+testing:   check trace
+** PASSED test at tolerance  1e-08
+testing:  GCV one
+** PASSED test at tolerance  1e-08
+testing:  GCV model
+** PASSED test at tolerance  1e-08
+

@@ -188,7 +188,15 @@ data(lennon)
 look<- Wtransform.image( lennon)
 # 
 ### take a look: 
- image.plot( look)
+# image.plot( look)
+#threshhold 
+thr<-  quantile( abs( look), .95)
+temp<- look
+temp[abs(look)< thr] <- 0
+look2<- Wtransform.image( temp, inv=TRUE)
+# 
+### take a look: 
+# image( look2) # 95 \% compressed image
 
  
 # a diagonal detail basis function 

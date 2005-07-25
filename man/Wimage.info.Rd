@@ -123,46 +123,42 @@ Wimage.i2s( ind,m=64, n=64, cut.min=8)
 
 
 # W transform of John Lennon image
-
      data(lennon)
      m<- nrow(lennon)
      n<- ncol(lennon)
-
-# add an grey strip down middle columns
-
-     lennon[ , 128:132]<- 120
-
      look<- Wtransform.image( lennon, cut.min=8)
 
 # get info 
      info<- Wimage.info( n, m, cut.min=8)
+# Keep only the coarest level of S,H,V,Di  basis functions coefficients, 
+# set the rest to zero. 
 
+tmp<- matrix( 0, m,n)
 
-# Zero out all V basis functions coefficients, 
+# fill in smooths
+indm<- info$S[1]: info$S[2]
+indn<- info$S[3]: info$S[4]
+tmp[ indm, indn] <- look[indm, indn]
 
-tmp<- look
-
-Vind<- info$V
-for (lev in 1: info$Lmax){
-tmp[ Vind[lev,1]: Vind[lev,2], Vind[lev,3]: Vind[lev,4]]<- 0 
-}
-
+#horizontals
+indm<- info$H[1]: info$H[2]
+indn<- info$H[3]: info$H[4]
+tmp[ indm, indn] <- look[indm, indn]
+#verticals
+indm<- info$V[1]: info$V[2]
+indn<- info$V[3]: info$V[4]
+tmp[ indm, indn] <- look[indm, indn]
+#diagonals
+indm<- info$Di[1]: info$Di[2]
+indn<- info$Di[3]: info$Di[4]
+tmp[ indm, indn] <- look[indm, indn]
 
 look2<- Wtransform.image( tmp, cut.min=8, inv=TRUE)
 
-# take a look at vertically  filtered image
+# take a look at (severely) filtered image, Happy Halloween!
 set.panel( 2,1)
-par( pty="s")
 image( lennon, col=grey(seq(0,1,,256)))
 image( look2, col=grey(seq(0,1,,256)))
-
-# NOTE:
-# What is vertical and horizontal is confusing here
-# due to the convention of the R image plot of running rows 
-# of the image as the X coordinate
-# The grey column in lennon image is plotted as 
-# a horizontal line  
-# 
 
 }
 \keyword{spatial}
