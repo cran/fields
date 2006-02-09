@@ -15,20 +15,16 @@ data(rat.diet)
 }
 \format{
 This data frame contains the following columns:
-}
+
 \describe{
 \item{t}{
-Time in days
- 
-}
+Time in days}
 \item{con}{
-Median food intake of the control group 
- 
-}
+Median food intake of the control group }
 \item{trt}{
-Median food intake of the treatment group
- 
+Median food intake of the treatment group}
 }
+
 }
 \keyword{datasets}
 % docclass is data

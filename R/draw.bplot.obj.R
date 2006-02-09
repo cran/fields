@@ -1,6 +1,11 @@
 "draw.bplot.obj" <-
-function (obj, width, xpos, outlier = TRUE, horizontal=FALSE) 
-{
+function (obj, width, xpos, outlier = TRUE, horizontal = 
+FALSE,lwd=NA,col=NA) {
+#
+# fill in defaults if not specfied
+if( missing( lwd)) lwd<- par()$lwd
+if( missing( col)) lwd<- par()$col
+
     N <- obj$N
     bb <- obj$bb
     mid <- xpos
@@ -14,20 +19,22 @@ function (obj, width, xpos, outlier = TRUE, horizontal=FALSE)
             bb[5], bb[5])
         x <- c(x, high, high, high, low, NA, mid, mid, high, 
             low)
-   if( horizontal) 
-    {  lines(y, x)}
-    else{      lines(x, y)}
-}
-#
-#
-#
+        if (horizontal) {
+            lines(y, x, lwd=lwd, col=col)
+        }
+        else {
+            lines(x, y,lwd=lwd, col=col)
+        }
+    }
     outs <- obj$out
     olen <- length(outs)
-    if ((olen > 0) & outlier) 
-    {
-         if( horizontal){
-         points(outs,rep(mid, olen))}
-         else{
-         points(rep(mid, olen), outs)}
+    if ((olen > 0) & outlier) {
+        if (horizontal) {
+            points(outs, rep(mid, olen), col=col)
+        }
+        else {
+            points(rep(mid, olen), outs, col=col)
+        }
     }
 }
+

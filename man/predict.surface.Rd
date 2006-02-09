@@ -10,7 +10,7 @@ surfaces.
 }
 \usage{
 predict.surface(object, grid.list=NA, extrap=FALSE, 
-     chull.mask, model=NA, nx=30, ny=30,...)
+     chull.mask, model=NA, nx=80, ny=80,...)
 }
 \arguments{
 \item{object}{

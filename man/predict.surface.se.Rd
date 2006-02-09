@@ -7,7 +7,8 @@
 Evaluates the standard error of predictions on a surface. 
 }
 \usage{
-predict.surface.se(object, grid.list=NA, extrap=FALSE, chull.mask,...)
+predict.surface.se(object, grid.list=NA, extrap=FALSE, chull.mask,
+nx=80, ny=80,...)
 }
 \arguments{
 \item{object}{
@@ -32,9 +33,12 @@ argument is missing (and extrap is false).
 \item{extrap}{
 Extrapolation beyond the range of the data. If false function will be
 restricted to the convex hull of the observed data or the convex hull
-defined from the points from the argument chull.mask.
- 
-}
+defined from the points from the argument chull.mask.}
+
+\item{nx}{ Number of grid points for "x" coordinate of grid.}
+
+\item{ny}{ Number of grid points for "y" coordinate of grid.}
+
 \item{\dots}{
 Any additional arguments that will passed to the predict.se function
 specific to the fit object. 

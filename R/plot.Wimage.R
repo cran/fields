@@ -10,7 +10,6 @@ function (x, cut.min, graphics.reset = TRUE, common.range = FALSE,
         Nlevel <- info$Lmax
     }
     old.par <- par(no.readonly = TRUE)
-
     par(mar = c(0, 1, 1, 0), ...)
     omd.bottom <- par()$cxy[2]
     figs <- rbind(c(0, 1 - omd.width, omd.bottom, 1), c(1 - omd.width, 
@@ -23,7 +22,7 @@ function (x, cut.min, graphics.reset = TRUE, common.range = FALSE,
     M <- 1:info$L[1, 1]
     N <- 1:info$L[1, 2]
 #
-#
+# add box function
     add.boxes <- function() {
         if (with.lines) {
             xline(c(0.5, M + 0.5), col = "white", lwd = 0.5)
@@ -40,16 +39,28 @@ function (x, cut.min, graphics.reset = TRUE, common.range = FALSE,
     screen(ind[3])
     image(1:m, 1:n, x, xaxt = "n", yaxt = "n", col = color.table, 
         xlab = "", ylab = "")
-        box()
-    save.zr <- matrix(NA, Nlevel, 2)
+    box()
+#
+#  add in the multiresolution partitioning of 
+#  image matrix. 
 
+    if( with.lines){
+     temp<- info$L
+      temp<- rbind( temp, c(m,n))
+     for( k in 1:info$Lmax){
+        xt<- c(temp[k,1]+.5, temp[k,1]+.5)
+        yt<- c(0,temp[k+1,2]+.5) 
+        segments( xt[1], yt[1],xt[2],yt[2], col="white", lwd=.5)
+        yt<- c(temp[k,2]+.5, temp[k,2]+.5)
+        xt<- c(0,temp[k+1,1]+.5) 
+        segments( xt[1], yt[1],xt[2],yt[2], col="white", lwd=.5)
+     }
+    }
+
+    save.zr <- matrix(NA, Nlevel, 2)
     screen.off <- ind[3]
     KK <- 1
-
     for (lev in (1:Nlevel)) {
-
-# many indices to locate right subset of image
-
         M <- 1:info$L[lev, 1]
         N <- 1:info$L[lev, 2]
         H1 <- info$H[lev, 1]:info$H[lev, 2]
@@ -58,8 +69,7 @@ function (x, cut.min, graphics.reset = TRUE, common.range = FALSE,
         V2 <- info$V[lev, 3]:info$V[lev, 4]
         D1 <- info$Di[lev, 1]:info$Di[lev, 2]
         D2 <- info$Di[lev, 3]:info$Di[lev, 4]
-#
-# common range or a range particular to this level
+
         if (common.range) {
             zr <- zr.common
         }
@@ -67,23 +77,18 @@ function (x, cut.min, graphics.reset = TRUE, common.range = FALSE,
             zr <- range(c(x[H1, H2], x[V1, V2], x[D1, D2]), na.rm = TRUE)
             save.zr[lev, ] <- zr
         }
-
-# the three plots across a row KK is the screen counter
-
         screen(screen.off + KK)
         image(M, N, x[H1, H2], zlim = zr, xaxt = "n", yaxt = "n", 
             col = color.table, xlab = "", ylab = "")
         add.boxes()
         box()
         KK <- KK + 1
-
         screen(screen.off + KK)
         image(M, N, x[V1, V2], zlim = zr, xaxt = "n", yaxt = "n", 
             col = color.table, xlab = "", ylab = "")
         add.boxes()
         box()
         KK <- KK + 1
-
         screen(screen.off + KK)
         image(M, N, x[D1, D2], zlim = zr, xaxt = "n", yaxt = "n", 
             col = color.table, xlab = "", ylab = "")
@@ -92,6 +97,7 @@ function (x, cut.min, graphics.reset = TRUE, common.range = FALSE,
         KK <- KK + 1
     }
     screen(2)
+
     if (common.range) {
         image.plot(zlim = zr, legend.only = TRUE, smallplot = c(0.2, 
             0.3, 0.1, 0.5), col = color.table, graphics.reset = TRUE)
@@ -111,14 +117,13 @@ function (x, cut.min, graphics.reset = TRUE, common.range = FALSE,
     if (graphics.reset) {
         close.screen(all = TRUE)
         par(cex.axis = 1)
-#        par(old.par, mar=old.par$mar)
         par(old.par)
         invisible()
     }
     else {
-cat( "Still in split.screen mode", fill=TRUE)
-cat( "  Use: screen.close( all=TRUE) to close this panel 
-      after adding to plots", fill=TRUE)
+        cat("Still in split.screen mode", fill = TRUE)
+        cat("  Use: screen.close( all=TRUE) to close this panel \n      after adding to plots", 
+            fill = TRUE)
         return(matrix(ind, ncol = 3, byrow = TRUE))
     }
 }

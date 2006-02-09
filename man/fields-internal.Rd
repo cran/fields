@@ -195,7 +195,8 @@ bisection.search (x1, x2, f, tol = 1e-07, niter = 25, f.extra =
  
 bplot.obj (data, pos = NA, width = NULL, labels = NULL, las=NULL
             ,add = FALSE, space = 0.25, sort.names = FALSE, xlab = "", ylab = "", 
-              label.cex = 1, xaxt = "n", outlier = TRUE, horizontal = FALSE, ...) 
+              label.cex = 1, xaxt = "n", outlier = TRUE, horizontal = FALSE, 
+              lwd=NA,col=NA,...) 
  
 cat.matrix (mat, digits = 8) 
  
@@ -215,7 +216,8 @@ dyadic.2check( m,n,cut.p=2)
 dyadic.check( n,cut.p=2) 
 
 draw.bplot (temp, width, xpos, outlier = TRUE, style = "tukey") 
-draw.bplot.obj (obj, width, xpos, outlier = TRUE, horizontal = FALSE) 
+draw.bplot.obj (obj, width, xpos, outlier = TRUE, 
+             horizontal = FALSE,lwd=NA,col=NA) 
  
 exp.earth.cov (x1, x2, theta = 1) 
  
@@ -234,12 +236,11 @@ gcv.sreg (out, lambda.grid = NA, cost = 1, nstep.cv = 20, rmse =
 golden.section.search (ax, bx, cx, f, niter = 25, f.extra = NA, 
      tol = 1e-05) 
  
-grey.level (n) 
+grey.level (n=256) 
  
 image.plot.info (...) 
-image.plot.plt(x, add=FALSE,  legend.shrink = 0.9, legend.width = 0.04, 
-horizontal = FALSE, offset = 2 * legend.width, bigplot = NULL, smallplot = 
-NULL,...)
+image.plot.plt(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
+horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
 
 image.smooth.setup (x,nrow = 64, ncol = 64, dx = 1, dy = 1, 
      kernel.function = double.exp, 
@@ -326,10 +327,10 @@ sreg.trace (h, info)
 stats.bplot (x, by, style = "tukey", outlier = TRUE) 
 stats.sim.krig.image (obj) 
  
-summary.gcv.Krig (object, lambda, cost = 1, verbose = FALSE, offset = 
-    0, y = NULL,...) 
-summary.gcv.sreg (object, lambda, cost = 1, nstep.cv = 20, offset = 
-    0, verbose = TRUE,...) 
+summary.gcv.Krig (object, lambda=NULL,df, cost = 1, verbose = FALSE, 
+        offset =0, y = NULL,...) 
+summary.gcv.sreg (object, lambda, cost = 1, nstep.cv = 20, 
+        offset = 0, verbose = TRUE,...) 
 summary.krig.image (object, digits = 4, ...) 
 summary.qsreg (object, ...) 
 summary.spatial.design (object, digits = 4, ...) 

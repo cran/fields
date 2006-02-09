@@ -1,18 +1,37 @@
-add.image               Adds an image to an existing plot.
-arrow.plot              Adds arrows to a plot
-as.image                Creates image from irregular x,y,z
-as.surface              Creates an "surface" object from grid values.
 BD                      Data frame of the effect of buffer
                         compositions on DNA strand displacement
                         amplification. A 4-d regression data set with
                         with replication. This is a useful test data
                         set for exercising function fitting methods.
+Krig                    Kriging surface estimate
+Krig.Amatrix            Smoother (or "hat") matrix relating predicted
+                        values to the dependent (Y) values.
+RMprecip                Monthly total precipitation (mm) for August
+                        1963 in the Rocky Mountain Region
+Tps                     Thin plate spline regression
+US                      Plot of the US with state boundaries
+US.dat                  Outline of coterminous US and states.
+W.info                  Gives indexing imfomration for a wavelet
+                        decompostion
+Wimage.cov              Functions for W-transform based covariance
+                        models
+Wimage.info             Finds key indices related to a 2-d
+                        multiresolution
+Wimage.info.plot        Plot to check 2-d multiresolution indexing
+Wtransform              Quadratic W wavelet transform for 1-d vectors
+                        or rectangular or cylindrical images
+add.image               Adds an image to an existing plot.
+arrow.plot              Adds arrows to a plot
+as.image                Creates image from irregular x,y,z
+as.surface              Creates an "surface" object from grid values.
 bplot                   boxplot
 bplot.xy                Boxplots for conditional distribution
 colorbar.plot           Plots one or more color scale strips as a
                         symbol
 cover.design            Computes Space-Filling "Coverage" designs
                         using Swapping Algorithm
+drape.plot              Perspective plot draped with colors in the
+                        facets.
 exp.cov                 Exponential, Gaussian and "power" covariance
                         family
 exp.image.cov           Exponential,Gaussian, "power" and Matern
@@ -28,9 +47,6 @@ image.plot              Draws image plot with a legend strip for the
                         color scale.
 image.smooth            Kernel smoother for irregular 2-d data
 interp.surface          Fast bilinear interpolator from a grid.
-Krig                    Kriging surface estimate
-Krig.Amatrix            Smoother (or "hat") matrix relating predicted
-                        values to the dependent (Y) values.
 krig.image              Spatial process estimate for large irregular
                         2-d dats sets.
 lennon                  Gray image of John Lennon.
@@ -42,10 +58,10 @@ ozone2                  Daily 8-hour ozone averages for sites in the
                         Midwest
 plot.Krig               Diagnostic and summary plots of the Krig
                         object
-plot.sreg               Plots smoothing spline regression object
-plot.surface            Plots a surface
 plot.Wimage             Plots 2-d wavelet coefficents by level and
                         type
+plot.sreg               Plots smoothing spline regression object
+plot.surface            Plots a surface
 poisson.cov             Poisson spherical covariance function
 predict.Krig            Evaluation of Krig spatial process estimate.
 predict.se              Standard errors of predictions
@@ -56,12 +72,11 @@ predict.surface         Evaluates a fitted function as a surface
 predict.surface.se      Standard errors of predictions
 print.Krig              Print kriging fit results.
 qsreg                   Quantile or Robust spline regression
+quilt.plot              Image plot for irregular spatial data.
 rat.diet                Experiment studying an appetite supressant in
                         rats.
 rdist                   Euclidean distance matrix
 rdist.earth             Great circle distance matrix
-RMprecip                Monthly total precipitation (mm) for August
-                        1963 in the Rocky Mountain Region
 set.panel               Specify a panel of plots
 sim.rf                  Simulates a random field
 smooth.2d               Kernel smoother for irregular 2-d data
@@ -70,24 +85,15 @@ sreg                    Smoothing spline regression
 stats                   Calculate summary statistics
 stats.bin               Bins data and finds some summary statistics.
 summary.Krig            Summary for Krig spatial process estimate
+summary.ncdf            Summarizes a netCDF file handle
 surface.Krig            Plots a surface and contours
 tim.colors              Tim's useful color table
-Tps                     Thin plate spline regression
+trans3d                 Converts 3-d coordinates to 2-d plotting
+                        coordinates
 transformx              Linear transformation
-US                      Plot of the US with state boundaries
-US.dat                  Outline of coterminous US and states.
 vgram                   Finds a traditional or robust variogram for
                         spatial data.
 vgram.matrix            Computes a variogram from an image
-Wimage.cov              Functions for W-transform based covariance
-                        models
-Wimage.info             Finds key indices related to a 2-d
-                        multiresolution
-Wimage.info.plot        Plot to check 2-d multiresolution indexing
-W.info                  Gives indexing imfomration for a wavelet
-                        decompostion
 world                   Plot of the world
-Wtransform              Quadratic W wavelet transform for 1-d vectors
-                        or rectangular or cylindrical images
 xline                   Draw a vertical line
 yline                   Draw horizontal lines

@@ -1,7 +1,7 @@
 "predict.surface" <-
 function (object, grid.list = NA, extrap = FALSE, chull.mask, model = 
 NA, 
-    nx = 30, ny = 30, ...) 
+    nx = 80, ny = 80, ...) 
 {
     out<- object # hack S3
     if ((length(grid.list) == 1) | (is.na(grid.list)[1])) {

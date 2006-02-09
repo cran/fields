@@ -18,8 +18,8 @@ subsequent analysis. Krig also supports a correlation model where the mean
 and marginal variances are supplied. 
 }
 \usage{
-Krig(x, Y, cov.function=exp.cov, lambda=NA, df = NA,
-cost=1, knots, weights=rep(1,length(Y)), 
+Krig(x, Y, cov.function="exp.cov", lambda=NA, df = NA,
+cost=1, knots, weights=NULL, 
 m=2, return.matrices=TRUE, nstep.cv=80, scale.type="user", 
 x.center=rep(0, ncol(x)), x.scale=rep(1, ncol(x)), rho=NA, sigma2=NA, 
 method="GCV", decomp="DR", verbose=FALSE, cond.number=10^8, mean.obj=NULL, 

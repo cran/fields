@@ -1,14 +1,19 @@
 \name{matern.cov}
 \alias{matern.cov}
+\alias{matern.earth.cov}
 \title{
   Matern covariance function 
 }
 \description{
 Given two sets of locations computes the Matern cross covariance matrix
-for covariances among all pairings. 
-}
+for covariances among all pairings. In the case of matern.earth.cov the 
+locations are assumed to be lon/lat coordinates and  the covariance 
+function is a spherical modification. 
+ }
 \usage{
 matern.cov(x1, x2, theta = 1.0, smoothness = 0.5, scale=1)
+matern.earth.cov(x1, x2, theta = 1, 
+smoothness = 0.5, scale = 1, miles = TRUE, R = NULL)
 }
 \arguments{
 \item{x1}{
@@ -21,7 +26,9 @@ Matrix of second set of locations where each row gives the coordinates of
 a particular point. If this is missing x1 is used. 
 }
 \item{theta}{
-Range (or scale) parameter matrix. This can be a scalar, a vector or matrix. 
+Range (or scale) parameter matrix. This can be a scalar, a vector or 
+matrix for matern.cov but must be a scalar for the spherical version.
+ 
 Default is theta=1. The locations are scaled by the inverse of theta before the 
 distances are found. Off diagonal elements of theta build in anisotrophy.
 }
@@ -33,6 +40,11 @@ recovers the Gaussian.
 \item{scale}{ 
 Marginal variance. 
 }
+  \item{miles}{If TRUE then radius of earth is in miles, if FALSE then 
+radius is in kilometers. } 
+  \item{R}{ Radius used for sphere default is to use the earth's 
+radius. }
+
 }
 \value{
 The cross covariance matrix between locations x1 and x2. If x1 is
@@ -92,9 +104,11 @@ H(-rdist(u, v))
 
 where \code{solve(theta)} is the (matrix) inverse for theta. 
 
-A simple modification of this function for the user would be to substitute
-rdist.earth for rdist to give a distance metric that makes sense for
-a small region in lon/lat coordinates. 
+The adaptation to the sphere is to transform the angular separation 
+among locations by  2R sin( angle/2). This is a measure of distance  
+is then used in the matern functional form for the covariance. 
+For small regions this will approximate the usual Matern but is a valid 
+covariance at all distances. (See last example below.)
 }
 \seealso{
  Krig, matern, rdist, rdist.earth, gauss.cov, exp.image.cov, matern.imag.cov 
@@ -126,6 +140,52 @@ smoothness=1.0)
 # Kriging fit using a Matern covariance and where the nugget  and 
 # sill variances are found by GCV 
 fit<- Krig( ozone$x, ozone$y, matern.cov, theta=100, smoothness=1.0)
+
+
+######## examples with  matern.earth.cov
+
+# create a 1 degree patch of lon/lats  at the equator:
+x<- seq( -1,1,,25)
+y<- x
+make.surface.grid( list( x=x, y=y))-> xg
+
+# find covariance with the  (lon,lat) =(0,0)  
+# theta = 30 , a degree at the equator is about 69.17333 miles. 
+
+matern.earth.cov( xg,rbind( c(0,0)), theta = 30 )-> look
+
+# covariance surface
+image.plot( x,y,matrix(look, 25,25)) 
+
+# compare to matern.cov( xg,rbind( c(0,0)), theta = 30/69.17333)
+
+# now change the grid to be close to the north pole
+# create a 1 degree patch of lon/lats  at  (0, 80N) :
+
+x<-  seq( -1,1,,25)
+y<- x + 80
+make.surface.grid( list( x=x, y=y))-> xg
+
+# evaluate the same covariance function at this point
+
+matern.earth.cov( xg,rbind( c(0,80)), theta = 30 )-> look
+
+# plot covariance surface 
+#     stretching is an artifact of this Mercator projection 
+
+image.plot( x,y,matrix(look, 25,25)) 
+
+# a Kriging example with the ozone data
+
+data(ozone2)
+
+Krig( ozone2$lon.lat, ozone2$y[16,], cov.function= matern.earth.cov, 
+    theta=300, na.rm=TRUE)-> look
+
+surface( look, type="C")
+US( add=TRUE, lwd=2)
+
+
 
 }
 \keyword{spatial}

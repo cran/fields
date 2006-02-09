@@ -9,17 +9,15 @@ placement of a legend. This is done by splitting the plotting region
 into two parts. Putting the image in one and the legend in the other.  
 }
 \usage{
-image.plot(..., add = FALSE, nlevel = 64, legend.shrink = 0.9,
-                 legend.width = 0.05, graphics.reset = FALSE,
-                 horizontal = FALSE, offset = 2 * legend.width,
-                 bigplot = NULL, smallplot = NULL, legend.only =
-                 FALSE, col = tim.colors(nlevel))
-}
-\arguments{
-\item{\dots}{
-The usual arguments to the image function. 
-because this function may change the size of the plotting 
-region. (See details below)  
+
+image.plot(..., add = FALSE, nlevel = 64, legend.shrink = 0.9, 
+legend.width = 1.2, legend.mar = NULL, 
+graphics.reset = FALSE, horizontal = FALSE, bigplot = NULL
+, smallplot = NULL, legend.only = FALSE, col = tim.colors(nlevel))} 
+
+\arguments{ \item{\dots}{
+The usual arguments to the image function. This includes the use of 
+the breaks argument for an unequal color scale. 
 }
 \item{add}{
 If true add image and a legend strip to the existing plot. 
@@ -32,14 +30,13 @@ Number of color levels used in legend strip
 of the plot.  
 }
 \item{legend.width}{
-Width in plotting 
-coordinates (the full size plot is [0,1]X[0,1]) of the legend strip. 
-}
-\item{offset}{
-Amount that the legend strip is set in from the left edge or the bottom 
-of the plotting region. Units are with respect to the plotting 
-coordinates.
-}
+Width in characters of the legend strip. Default is 1.2, a little bigger 
+that the width of a character. }
+
+\item{legend.mar}{
+Width in characters of legend margin that has the axis. Default is 5.1 
+for a vertical legend and 3.1 for a horizontal legend.}
+
 \item{graphics.reset}{
  If
 FALSE (default)  the plotting region ( plt in par) will not be reset 
@@ -64,7 +61,7 @@ the function.
 \item{legend.only}{
 If TRUE just add the
 legend to a the plot in the plot region defined by the coordinates in
-smallplot. In the abscence of other information the range for the legend 
+smallplot. In the absence of other information the range for the legend 
 is determined from the \code{zlim} argument. 
 }
 \item{col}{
@@ -80,17 +77,30 @@ the plot. To be explicit, \code{par()\$plt} may be changed to reflect a
 smaller plotting region that has accommodated room for the legend subplot.  
 }
 \details{
-If the z component is a matrix then the user should know that 
-this function locates the matrix element z[i,j]  at the grid locations 
-(x[i], y[j]) this is very diiffernet than simply listing out the matrix 
-in the usual row column tabular form. See the example below for more 
-details of this difference in formatting. 
+ If the z component is a matrix then the user should be aware that this
+function locates the matrix element z[i,j] at the grid locations (x[i],
+y[j]) this is very different than simply listing out the matrix in the
+usual row column tabular form. See the example below for more details of
+this difference in formatting. What does one do if you don't really have
+the "z" values on a regular grid? See the functions \code{quilt.plot.Rd}
+and \code{as.image} to discretize irregular observations to a grid. 
+
 
 It is surprising how hard it is just to automatically add the
 legend! All "plotting coordinates" mentioned here are in device
 coordinates. The plot region is assumed to be [0,1]X[0,1] and plotting
 regions are defined as rectangles within this square. We found these
-easier to work with than user coordinates.  There are always problems with
+easier to work with than user coordinates.  
+
+\code{legend.width} and \code{legend.mar} are in character spaces. These
+units are helpful in thinking about axis labels that will be put into
+these areas. To add more or less space between the legend and the image
+plot alter the mar parameters. The default mar settings (5.1,5.1,5.1,2.1)
+leaves 2.1 spaces for vertical legends and 5.1 spaces for horizontal
+legends. Changing the plot margins directly replaces the offset 
+argument in the older version of this function. 
+
+There are always problems with
 default solutions to placing information on graphs but the choices made
 here may be useful for most cases. The most annoying thing is that after
 using plot.image and adding information the next plot that is made may
@@ -98,43 +108,49 @@ have the slightly smaller plotting region set by the image plotting.
 The user should set \code{reset.graphics=TRUE} to avoid the plotting size 
 some from changing. The disadvantage, however, of resetting the graphics 
 is that one can no longer add additional graphics elements to the image 
-plot. (Note that filled.contour always resets the graphics but provides 
+plot. Note that filled.contour always resets the graphics but provides 
 another mechanism to pass through plotting commands. Apparently 
-filled.contour,while very pretty, does not work for multiple plots ... )
+filled.contour, while very pretty, does not work for multiple plots. 
+\code{levelplot} that is part of the lattice package has a very 
+similar function to image.plot and a formula syntax in the call. 
 
-The strategy for \code{image.plot} is simple, divide the plotting region 
-into two smaller
-regions \code{bigplot} and \code{smallplot}. The image goes in one and 
-the legend in the other. This way
-there is always room for the legend. Some adjustments are made to this
-rule by not shrinking the \code{bigplot} if there is already room for the
-legend strip and also sticking the legend strip close to the image plot.
-One can specify the plot regions explicitly by \code{bigplot} and \
-\code{smallplot}
-if the default choices do not work. There may be problems with small
-plotting regions in fitting both of these in the plot region and one may 
+The strategy for \code{image.plot} is simple, divide the plotting region
+into two smaller regions \code{bigplot} and \code{smallplot}. The image
+goes in one and the legend in the other. This way there is always room for
+the legend. Some adjustments are made to this rule by not shrinking the
+\code{bigplot} if there is already room for the legend strip and also
+sticking the legend strip close to the image plot. One can specify the
+plot regions explicitly by \code{bigplot} and \ \code{smallplot} if the
+default choices do not work. There may be problems with small plotting
+regions in fitting both of these elements in the plot region and one may 
 have to change the default character sizes or margins to make things fit.
 
 By keeping the zlim argument the same across images one can generate the
-same color scale. (See the image help file)  One useful technique for a
-panel of images is to just draw the first with image.plot to get a legend
-and just use image for subsequent plots. Also keep in mind one can just
-add a legend to an existing plot without changing plotting parameters.
+same color scale. (See the image help file.)  One useful technique for a
+panel of images is to just draw the images with \code{image} 
+and then use image.plot to add a legend to the last plot. (See example 
+below for messing with the outer margins to make this work.) 
 Usually a square plot (pty="s") done in a rectangular plot region will
-have room for the legend with any adjustments stuck to the right side. 
+have room for the legend stuck to the right side without any other 
+adjustments. See the example below and the code for \code{plot.Wimage} 
+for more complicated arrangements of multiple image plots and summary 
+legends.  
 
-Note that to add just the legend strip all one needs is the zlim argument!
-The default color table for this function is the topographic color scale 
-(\code{topo.colors}) showing our geophysical basis. 
+Note that to add just the legend strip all the numerical information one 
+needs is the zlim argument! 
+We like \code{tim.colors} as a default color scale. 
+The the topographic color scale 
+(\code{topo.colors}) is also a close second showing our geophysical basis. 
 See also \code{terrain.colors} for a subset. For using other color choices 
 see how the \code{nlevels} argument figures into the legend and main plot
-number of colors. We like \code{tim.colors} as a defualt color scale. 
+number of colors. 
 
 }
 
-\seealso{ image,filled.contour, tim.colors } 
-\examples{
+\seealso{ image,filled.contour, quilt.plot, plot.surface, 
+add.image, colorbar.plot, tim.colors } 
 
+\examples{
 x<- 1:10 
 y<- 1:15 
 z<- outer( x,y,"+") 
@@ -146,19 +162,38 @@ image.plot(x,y,z)
    points( 5:12, 5:12, pch="X", cex=3)
 
 #
-#fat (5\% of figure) and short (50\% of figure)  legend strip on the bottom 
-  image.plot( x,y,z,legend.width=.05, legend.shrink=.5, horizontal=TRUE) 
-
-
+#fat (5 characters wide) and short (50\% of figure)  color bar on the bottom
+   image.plot( x,y,z,legend.width=5, legend.shrink=.5, horizontal=TRUE) 
 
 set.panel()
 
+# Here is quick but quirky way to add a common legend to several plots. 
+# The idea is leave some room in the margin and then over plot in this margin
+
+par(oma=c( 0,0,0,4)) # margin of 4 spaces width at right hand side
+set.panel( 2,2) # 2X2 matrix of plots
+
+# now draw all your plots using usual image command
+for (  k in 1:4){
+image( matrix( rnorm(150), 10,15), zlim=c(-4,4), col=tim.colors())
+}
+
+par(oma=c( 0,0,0,1))# reset margin to be much smaller.
+image.plot( legend.only=TRUE, zlim=c(-4,4)) 
+# image.plot tricked into  plotting in margin of old setting 
+
+set.panel() # reset plotting device
+
 #
-# Here is a strategy to add a common legend to a panel of plots
-# consult the  split.screen help file for more explanations
-# draw two images top and bottom and add a single legned strip on the right side
-# first divide screen into the figure region and strip on the right ot put a 
-# legend. 
+# Here is a more learned strategy to add a common legend to a panel of
+# plots  consult the split.screen help file for more explanations.
+# For this example we  draw two
+# images top and bottom and add a single legend color bar on the right side 
+
+
+
+# first divide screen into the figure region and legend colorbar on the 
+# right to put a legend. 
 
    split.screen( rbind(c(0, .8,0,1), c(.8,1,0,1)))
 
@@ -198,8 +233,9 @@ image.plot( zlim=c(0,25), nlevel=64,legend.only=TRUE, horizontal=TRUE)
 }
 #
 # 
-# sorting difference in formatting between matrix storage and the image 
-#plot depiction
+# sorting out the difference in formatting between matrix storage 
+# and the image plot depiction
+
 A<- matrix( 1:48, ncol=6)
 # Note that matrix(c(A), ncol=6) == A
 image.plot(1:8, 1:6, A)
@@ -211,7 +247,8 @@ text( c( row(A)), c( col(A))-.25,
 
 # "columns" of A are horizontal and rows are ordered from bottom to top!
 #
-# matrix in its usual tabluar form where the rows are y  and columns are x
+# matrix in its usual tabular form where the rows are y  and columns are x
+
 image.plot( t( A[6:1,]), axes=FALSE)
 
 

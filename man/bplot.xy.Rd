@@ -44,8 +44,8 @@ If false just returns a list with the statistics used for plotting the
 box plots.
 }
 \item{\dots }{
-Any other optional arguments passed to the bplot.obj function see the
-help file for bplot for details. 
+Any other optional arguments passed to the bplot.obj function there 
+are quite a few that are useful, see the help file for bplot for details. 
 }
 }
 \seealso{
@@ -57,8 +57,8 @@ bplot.xy( minitri$swim, minitri$run, N=5)
 
 # bivariate normal corr= .6
 set.seed( 123)
-x<-rnorm( 1000)
-y<- .6*x +  sqrt( 1- .6**2)*rnorm( 1000)
+x<-rnorm( 200)
+y<- .6*x +  sqrt( 1- .6**2)*rnorm( 200)
 #
 #
 bplot.xy( x,y, breaks=seq( -3, 3,,15) ,xlim =c(-4,4), ylim =c(-4,4))

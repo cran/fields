@@ -154,6 +154,7 @@ indn<- info$Di[3]: info$Di[4]
 tmp[ indm, indn] <- look[indm, indn]
 
 look2<- Wtransform.image( tmp, cut.min=8, inv=TRUE)
+
 # take a look at (severely) filtered image, Happy Halloween!
 set.panel( 2,1)
 image( lennon)
