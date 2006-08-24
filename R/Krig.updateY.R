@@ -1,12 +1,12 @@
 "Krig.updateY" <-
-function(out, Y, verbose = FALSE)
+function(out, Y, verbose = FALSE, yM=NA )
 {
 	#given new Y values but keeping everything else the same finds the 
 	#new u vector and pure error SS associated with the Kriging estimate
 	# the steps are
 	# 1) standardize if neccesary
 	# 2) find means, in the case of replicates
-	# 3) based on the decomposition, multipy a weighted version of yM
+	# 3) based on the decomposition, multiply a weighted version of yM
 	#    with a large matrix extracted from teh Krig object out. 
 	#
 	# The out object may be large. This function is written so that out is # #not changed with the hope that it is not copied locally  in this  #function .
@@ -23,7 +23,12 @@ function(out, Y, verbose = FALSE)
 	}
 	#
 	#STEP 2
-	out2 <- Krig.ynew(out, Y)
+        if( is.na( yM[1])){
+          out2 <- Krig.ynew(out, Y)}
+        else{
+          out2<- list( yM= yM, 
+          shat.rep = NA,shat.pure.error = NA, pure.ss = NA)}
+
 	if(verbose) {
 		print(out2)
 	}
@@ -33,6 +38,7 @@ function(out, Y, verbose = FALSE)
 	# Note how matrices are grabbed from the Krig object
 	#
 	if(verbose) cat("Type of decomposition", out$decomp, fill = TRUE)
+
 	if(out$decomp == "DR") {
 		#
 		#

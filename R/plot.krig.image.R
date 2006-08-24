@@ -19,7 +19,7 @@ old.par <- par(no.readonly=TRUE)
         abline(0, 1)
     }
     if (which[2]) {
-        image.plot(out$surface, offset = 0.1)
+        image.plot(out$surface)
         points(out$x, pch = ".")
     }
     if (which[3]) {
@@ -31,8 +31,7 @@ old.par <- par(no.readonly=TRUE)
         look <- list(x = out$grid$x, y = out$grid$y, z = matrix(NA, 
             out$m, out$n))
         look$z[out$indexM] <- out$yM - predict(out, out$xM)
-        image.plot(look, xlab = "x", ylab = "y", graphics.reset = FALSE, 
-            offset = 0.1)
+        image.plot(look, xlab = "x", ylab = "y", graphics.reset = FALSE)
         contour(out$surface, labex = 0, add = TRUE)
         title("Residuals on surface ", cex = 0.8)
     }

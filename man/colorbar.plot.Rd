@@ -69,7 +69,7 @@ impression of location and scale for several distributions.
 plot( 1:10, (1:10)*10, type="n", bty="n") 
 # of course this could be anything 
 
-y<- cbind( 1:15, 26:35)
+y<- cbind( 1:15, (1:15)+25)
 
 colorbar.plot( 2.5, 30, y)
 points( 2.5,30, pch="+", cex=2, adj=.5)

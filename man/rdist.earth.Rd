@@ -9,15 +9,15 @@ Given two sets of longitude/latitude locations computes the Great circle
 among all pairings. 
 }
 \usage{
-rdist.earth(loc1, loc2, miles = TRUE, R = NULL)
+rdist.earth(x1, x2, miles = TRUE, R = NULL)
 }
 \arguments{
-\item{loc1}{
+\item{x1}{
 Matrix of first set of lon/lat coordinates first column is the
 longitudes
 and second is the latitudes. 
 }
-\item{loc2}{
+\item{x2}{
 Matrix of second  set of lon/lat coordinates first column is the
 longitudes
 and second is the latitudes. If missing x1 is used. 
@@ -36,10 +36,11 @@ The great circle distance matrix if nrow(x1)=m and nrow(
 x2)=n then the returned matrix will be mXn. 
 }
 \details{
-Surprisingly this  all done efficiently in S.
-}
+Surprisingly this all done efficiently in R by dot products of the
+direction cosines. Thanks to Qing Yang for pointing this out a long time 
+ago. }
 \seealso{
-  rdist, exp.earth.cov 
+  rdist, stationary.cov 
 }
 \examples{
 out<- rdist.earth ( ozone$lon.lat)

@@ -1,5 +1,9 @@
 \name{Krig}
 \alias{Krig}
+\alias{resid.Krig}
+\alias{fitted.Krig}
+\alias{coef.Krig}
+
 \title{
   Kriging surface estimate  
 }
@@ -18,152 +22,195 @@ subsequent analysis. Krig also supports a correlation model where the mean
 and marginal variances are supplied. 
 }
 \usage{
-Krig(x, Y, cov.function="exp.cov", lambda=NA, df = NA,
-cost=1, knots, weights=NULL, 
-m=2, return.matrices=TRUE, nstep.cv=80, scale.type="user", 
-x.center=rep(0, ncol(x)), x.scale=rep(1, ncol(x)), rho=NA, sigma2=NA, 
-method="GCV", decomp="DR", verbose=FALSE, cond.number=10^8, mean.obj=NULL, 
-sd.obj=NULL, yname=NULL, return.X=TRUE, null.function=make.tmatrix, offset=0, 
- outputcall = NULL, cov.args=NULL,na.rm=FALSE,...)
+Krig(x, Y, cov.function = "stationary.cov", lambda = NA, df = NA,
+    cost = 1, knots=NA, weights = NULL, m = 2,
+    nstep.cv = 80, scale.type = "user", x.center = rep(0, ncol(x)),
+    x.scale = rep(1, ncol(x)), rho = NA, sigma2 = NA, method = "GCV",
+     verbose = FALSE,  mean.obj = NA,
+    sd.obj = NA,
+    null.function = fields.mkpoly,
+    offset = 0, outputcall = NULL, cov.args = NULL, na.rm = TRUE,
+    chol.args=NULL,give.warnings=TRUE,
+    ...)
+
+fitted.Krig(object,...)
+
+coef.Krig(object,...)
+
+resid.Krig(object,...)
+
 }
 \arguments{
 \item{x}{
-Matrix of independent variables. 
+Matrix of independent variables. These could the locations for spatial
+data or the indepedent variables in a regression. 
 }
 \item{Y}{
-Vector of dependent variables. 
+Vector of dependent variables. These are the values of the surface
+(perhaps with measurement error) at the locations or the dependent
+response in a regression.
 }
 \item{cov.function}{
 Covariance function for data in the form of an R function (see 
-exp.cov).  
+exp.simple.cov as an example).  
 Default assumes that correlation is an exponential function of distance.
+See also \code{stationary.cov} for more general choice of covariance 
+shapes. \code{exponential.cov} will be faster if only the exponential 
+covariance form is needed. 
 }
-\item{df}{
-The effective number of parameters for the fitted surface. Conversely, 
-N- df, where N is the total number of observations is the degrees of
-freedom associated with the residuals. 
-This is an
-alternative to specifying lambda and much more interpretable. 
-}
+
 \item{lambda}{
 Smoothing parameter that is the ratio of the error variance (sigma**2) 
 to the scale parameter of the  
 covariance function (rho). If omitted this is estimated by GCV ( see
 method below). 
 }
+
+\item{df}{
+The effective number of parameters for the fitted surface. Conversely, 
+N- df, where N is the total number of observations is the degrees of
+freedom associated with the residuals. 
+This is an alternative to specifying lambda and much more interpretable. 
+}
 \item{cost}{
 Cost value used in GCV criterion. Corresponds to a penalty for  
-increased number of parameters. 
+increased number of parameters. The default is 1.0 and corresponds to the
+usual GCV. 
 }
+
 \item{knots}{
 A matrix of locations similar to x. These can define an alternative set of
 basis functions for representing the estimate. One choice may be a
-space-filling subset of the original x locations. (See details.)
+space-filling subset of the original x locations, thinning out the
+design where locations cluster. The 
+default is to put a "knot" at all unique locations. (See details.)
 }
+
 \item{weights}{
 Weights are proportional to the reciprocal variance of the measurement  
-error. The default is no weighting i.e. vector of unit weights. 
+error. The default is equal weighting i.e. vector of unit weights. 
 }
+
 \item{m}{
 A polynomial function of degree (m-1) will be  
 included in the model as the drift (or spatial trend) component. 
+The "m" notation is from thin-plate splines where m is the 
+derivative in the penalty function. With m=2 as the default a linear 
+model in the locations  will be fit a fixed part of the model. 
 }
-\item{return.matrices}{
-Matrices from the decompositions are returned. The default is T.  
-}
+
 \item{nstep.cv}{
-Number of grid points for minimum GCV search. 
+Number of grid points for the coarse grid search  to 
+minimize the GCV  RMLE and other related criterian for finding lambda. 
 }
+
 \item{scale.type}{
 This is a character string among: "range", "unit.sd", "user", "unscaled".
 The independent variables and knots are scaled to the specified scale.type. 
-By default no scaling is done. Scale type of
-"range" scales the data to the interval (0,1) by forming 
+By default no scaling is done. This usuall makes sense for spatial locations.
+Scale type of "range" scales the data to the interval (0,1) by forming 
 (x-min(x))/range(x) for each x. Scale type of "unit.sd" 
 Scale type of "user" allows specification of an x.center and x.scale by the 
 user. The default for "user" is mean 0 and standard deviation 1. Scale 
 type of "unscaled" does not scale the data. 
 }
+
 \item{x.center}{
 Centering values to be subtracted from each column of the x matrix. 
 }
+
 \item{x.scale}{
 Scale values that are divided into each column after centering. 
 }
+
 \item{rho}{
 Scale factor for covariance. 
 }
+
 \item{sigma2}{
 Variance of the errors, often called the nugget variance. If weights are
 specified then the error variance is sigma2 divided by weights. 
+Note that lambda is defined as the ratio  sigma2/rho.
 }
+
 \item{method}{
- 
-How should the "smoothing" parameter be estimated? The default is by
-standard GCV 
-Other choices are: GCV.model, GCV.one, RMSE, pure error. The differences 
-are explained below.  
+Determines what "smoothing" parameter should be used. The default 
+is to estimate standard GCV 
+Other choices are: GCV.model, GCV.one, RMSE, pure error and REML. The 
+differences are explained below.  
 }
-\item{decomp}{
-Type of matrix decompositions used to compute the solution. Default is  
-"DR" Demmler-Reinsch an alternative that more numerically stable is  
-"WBW" Wendelberger-Bates-Wahba. This is the strategy used in GCV pack.   
-"WBW" can not be used if knots are specified.
-}
+
 \item{verbose}{
 If true will print out all kinds of intermediate stuff. Default is false,
-of course.   
+of course as this is used mainly for debugging.
 }
-\item{cond.number}{
-Maximum size of condition number to allow when using DR decomposition. 
-}
+
 \item{mean.obj}{
 Object to predict the mean of the spatial process. This used in when
 fitting a correlation model with varying spatial means and varying
 marginal variances. (See details.)
 }
+
 \item{sd.obj}{
 Object to predict the marginal standard deviation of the spatial process. 
 }
-\item{yname}{
-Name of y variable 
-}
-\item{return.X}{
-If true returns the big X matrix used for the estimate.  
-}
+
 \item{null.function}{
-An S function that creates the matrices for the null space model.  
-The default is make.tmatrix, an S function that creates polynomial 
-null spaces of degree up to m-1. (See details)  
+An R function that creates the matrices for the null space model.  
+The default is fields.mkpoly, an R function that creates a polynomial 
+regression matrix with all terms up to degree m-1. (See Details)  
 }
+
 \item{offset}{
 The offset to be used in the GCV criterion. Default is 0. This would be 
-used when Krig is part of a backfitting algorithm and the offset has to be 
-adjusted to reflect other model degrees of freedom. 
-}
-\item{cov.args}{
-A list with the arguments to call the covariance function. (in addition to the locations)
+used when Krig is part of a backfitting algorithm and the offset is 
+other model degrees of freedom from other regression components. 
 }
 
 \item{outputcall}{
 If NULL the output object will have a \$call argument based on this call. 
 If no NULL the output call will have whatever is passed. This is kludge
 for the Tps function so that it return a Krig object but have the right
-call argument.
+call argument. Sorry no one promised that fields would be pretty. 
 }
-\item{na.rm}{If true NAs will be removed from the \code{y} vector and the 
-corresponding 
-rows of \code{x}.}
+
+\item{cov.args}{
+A list with the arguments to call the covariance function. (in addition to the locations)
+}
+
+\item{na.rm}{If TRUE NAs will be removed from the \code{y} vector and the 
+corresponding rows of \code{x} -- with a warning. 
+If FALSE Krig will just stop with a message. Once NAs are removed all 
+subsequent analysis in fields does not use those data. }
+
+\item{chol.args}{
+Arguments to be passed to the cholesky decomposition in Krig.engine.fixed. 
+The default if NULL, assigned at the top level of this function, is 
+list( pivot=FALSE). This argument is useful when working with 
+the sparse matrix package. }
+
+\item{give.warnings}{ If TRUE warnings are given in gcv grid search limits.
+If FALSE warnings are not given. Best to leave this TRUE!}
+
 \item{\dots}{
-Optional arguments that appear are assume to be additional arguments
-to the covariance function. 
-}
+ Optional arguments that appear are assumed to be additional arguments
+to the covariance function. Or are included in methods functions (resid,
+fitted, coef) as a
+required argument.}
+
+\item{object}{ A Krig object}
+
+
+
 }
 \value{
 A object of class Krig. This includes the predicted values in  
 fitted.values and the residuals in residuals. The results of the grid 
 search to minimize the generalized cross validation function are 
 returned in gcv.grid. 
+
+The coef.Krig function only returns the coefficients, "d", associated with the 
+fixed part of the model (also known as the null space or spatial drift).
 
 \item{call}{
 Call to the function 
@@ -339,45 +386,74 @@ predict.surface, plot.Krig,
 surface.Krig 
 }
 \examples{
-#2-d example 
+
+# a 2-d example 
 # fitting a surface to ozone  
-# measurements. Range parameter is 10 (in miles) 
+# measurements. Exponential covariance, parameter is 10 (in miles) 
 
 fit <- Krig(ozone$x, ozone$y, exp.cov, theta=10)  
  
 summary( fit) # summary of fit 
-plot(fit) # diagnostic plots of fit  
+set.panel( 2,2) 
+plot(fit) # four diagnostic plots of fit  
+set.panel()
 surface( fit, type="C") # look at the surface 
-out.p<- predict.surface.se( fit) 
-image(out.p)
 
 # predict at data
-
 predict( fit)
 
 # predict on a grid ( grid chosen here by defaults)
-out<- predict.surface( fit)
-persp( out)
+ out<- predict.surface( fit)
+ surface( out, type="C") # option "C" our favorite
 
 # predict at arbitrary points (10,-10) and (20, 15)
-xnew<- rbind( c( 10, -10), c( 20, 15))
-predict( fit, xnew)
+ xnew<- rbind( c( 10, -10), c( 20, 15))
+ predict( fit, xnew)
 
 # standard errors of prediction based on covariance model.  
-predict.se( fit, xnew)
+ predict.se( fit, xnew)
+
+# surface of standard errors on a default grid
+ predict.surface.se( fit)-> out.p # this takes some time!
+ surface( out.p, type="C")
+ points( fit$x)
+
+
+# Using anohter stationary covariance. 
+# smoothness is the shape parameter for the Matern. 
+
+fit <- Krig(ozone$x, ozone$y, Covariance="Matern", theta=10, smoothness=1.0)  
+summary( fit)
 
 #
-# Roll your own: using a user defined Gaussian covariance 
+# Roll your own: creating very simple user defined Gaussian covariance 
 #
-test.cov <- function(x1,x2,theta){exp(-(rdist(x1,x2)/theta)**2)} 
+
+test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
+
+# return marginal variance
+    if( marginal) { return(rep( 1, nrow( x1)))}
+
+# find cross covariance matrix     
+    temp<- exp(-(rdist(x1,x2)/theta)**2)
+    if( is.na(C[1])){
+          return( temp)}
+    else{
+          return( temp\%*\%C)}
+   } 
+
+#
 # use this and put in quadratic polynomial fixed function 
-fit.flame<- Krig(flame$x, flame$y, test.cov, m=3, theta=.5)
+
+ fit.flame<- Krig(flame$x, flame$y, test.cov, m=3, theta=.5)
+
 #
 # note how range parameter is passed to Krig.   
 # BTW:  GCV indicates an interpolating model (nugget variance is zero) 
 #
+
 # take a look ...
-surface(fit.flame, type="I") 
+ surface(fit.flame, type="I") 
 
 # 
 # Thin plate spline fit to ozone data using the radial 
@@ -389,71 +465,108 @@ surface(fit.flame, type="I")
 # where d is the dimension of x. p must be greater than 0. 
 #  In the example below p = 2*2 - 2 = 2  
 #
-# See also the Fields function Tps
 
-out<- Krig( ozone$x, ozone$y, rad.cov, m=2,  p=2, 
-scale.type="range",decomp="WBW") # these last two options make sure the
-                                 # the results with Tps are identical
+ out<- Krig( ozone$x, ozone$y,rad.cov, m=2,p=2,scale.type="range") 
+
+# See also the Fields function Tps
+# out  should be identical to  Tps( ozone$x, ozone$y)
+# 
+
 # A Knot example
 
-data(ozone2)
-y16<- ozone2$y[16,] # there are some missing values! 
-good<- !is.na( y16)
-y<- y16[good] # Krig does not remove missing values. 
-x<- ozone2$lon.lat[ good,]
+ data(ozone2)
+ y16<- ozone2$y[16,] 
+
+# there are some missing values -- remove them 
+ good<- !is.na( y16)
+ y<- y16[good] 
+ x<- ozone2$lon.lat[ good,]
 
 #
 # the knots can be arbitrary but just for fun find them with a space 
 # filling design. Here we select  50 from the full set of 147 points
 #
-xknots<- cover.design( x, 50)$design # select 50 knot points
+ xknots<- cover.design( x, 50, num.nn= 75)$design  # select 50 knot points
 
-out<- Krig( x, y, knots=xknots,  rad.cov, m=2,  p=2,scale.type="range")
-
-# Zee plot 
-surface( out, type="C")
-US( add=TRUE)
-points( x, col=2)
-points( xknots, cex=2, pch="O")
-
-summary( out)
-#
-# note that that trA found by GCV is around 15 so 50>15  knots may be a 
+ out<- Krig( x, y, knots=xknots,  exp.cov, theta=300)  
+ summary( out)
+# note that that trA found by GCV is around 17 so 50>17  knots may be a 
 # reasonable approximation to the full estimator. 
 #
-surface( out, type='C')
-# obs and knots
-points( x)
-points( xknots, col=2)
+
+# the plot 
+ surface( out, type="C")
+ US( add=TRUE)
+ points( x, col=2)
+ points( xknots, cex=2, pch="O")
 
 
-# Correlation model example
+
+# A correlation model example
 
 # fit krig surface using a mean and sd function to standardize 
 # first get stats from 1987 summer Midwest O3 data set 
 # Compare the function Tps to the call to Krig given above 
 # fit tps surfaces to the mean and sd  points.  
 # (a shortcut is being taken here just using the lon/lat coordinates) 
-data(ozone2)
-stats.o3<- stats( ozone2$y)
-mean.o3<- Tps( ozone2$lon.lat, c( stats.o3[2,]))
-sd.o3<- Tps(  ozone2$lon.lat, c( stats.o3[3,]))
 
-# Now use these to fit particular day ( day 16) 
+ data(ozone2)
+ stats.o3<- stats( ozone2$y)
+ mean.o3<- Tps( ozone2$lon.lat, c( stats.o3[2,]))
+ sd.o3<- Tps(  ozone2$lon.lat, c( stats.o3[3,]))
 
-y16<- ozone2$y[16,] # there are some missing values! 
-good<- !is.na( y16) 
- 
-fit<- Krig( ozone2$lon.lat[good,], y16[good],exp.earth.cov, theta=353, 
-mean.obj=mean.o3, sd.obj=sd.o3)
 #
-# the finale
-surface( fit, type="I")
-US( add=TRUE)
-title("Estimated ozone surface")
+# Now use these to fit particular day ( day 16) 
+# and use great circle distance
+#NOTE: there are some missing values for day 16. 
 
+ fit<- Krig( ozone2$lon.lat, y16, 
+            theta=350, mean.obj=mean.o3, sd.obj=sd.o3, 
+            Covariance="Matern", Distance="rdist.earth",
+            smoothness=1.0,
+            na.rm=TRUE) #
+
+
+# the finale
+ surface( fit, type="I")
+ US( add=TRUE)
+ points( fit$x)
+ title("Estimated ozone surface")
+
+#
+#
+# explore some different values for the range and lambda using REML
+ theta <- seq( 300,400,,10)
+ PLL<- matrix( NA, 10,80)
+# the loop 
+ for( k in 1:10){
+
+# call to Krig with different ranges
+# also turn off warnings for GCV search 
+# to avoid lots of messages. (not recommended in general!)
+
+  PLL[k,]<- Krig( ozone2$lon.lat[good,], y16[good],stationary.cov, 
+            theta=theta[k], mean.obj=mean.o3, sd.obj=sd.o3, 
+             Covariance="Matern",smoothness=.5, 
+             Distance="rdist.earth", nstep.cv=80,
+             give.warnings=FALSE)$gcv.grid[,7]
   
+#
+# gcv.grid is the grid search output from 
+# the optimization for estimating different estimates for lambda including 
+# REML
+# default grid is equally spaced in eff.df scale ( and should the same across theta)
+#  here 
+
+ }
+
+# see the 2 column of $gcv.grid to get the effective degress of freedom. 
+
+ cat( "all done", fill=TRUE)
+ contour( theta, 1:80, PLL)
+ 
+
 }
+
 \keyword{spatial}
 % docclass is function
-% Converted by Sd2Rd version 1.21.

@@ -12,54 +12,33 @@ provisions to use a different covariance for evaluation than the one used
 to define the BLUE.  
 }
 \usage{
-predict.se.Krig(object, x, cov.function, rho, sigma2, weights=NULL, 
-cov=FALSE,  
-stationary=TRUE, fixed.mean=TRUE, ...)
-}
+predict.se.Krig(object, x = NULL, cov = FALSE, verbose = FALSE,...)
+ }
 \arguments{
 \item{object}{
 A Krig object.  
 }
 \item{x}{
-Points to compute the SE. 
+Points to compute the predict standard error or the prediction 
+cross covariance matrix.  
 }
-\item{cov.function}{
-Name of the true covariance function for the random surface if different from the one  
-used to generate predictions. If omitted, then the 
-function from the Krig object 
+
+\item{cov}{
+If TRUE the full covariance matrix for the predicted values is returned.
+Make sure this will not be big if this option is used. ( e.g. 50X50 grid
+will return a matrix that is 2500X2500!)  If FALSE just the marginal
+standard deviations of the predicted values are returned. Default is
+FALSE -- of course.
 }
-\item{rho}{
-Parameter that multiplies the covariance function. If omitted the
-value 'out\$rho', estimated from the data is used. 
+
+\item{verbose}{If TRUE will print out various information for debugging.}
+
+\item{\dots}{
+These additional arguments passed to the predict.se function.
 }
-\item{sigma2}{
-Variance of the measurement error. If omitted the value 'out\$sigma2', 
-estimated from the data is used. 
-}
-\item{weights}{
 
 }
-\item{stationary}{
-If true the covariance function is assumed to be stationary and more 
-efficient computations can be used. 
-}
-\item{cov}{
-If true the full covariance matrix for the predicted values is returned.
-Make sure this will not be big if this option is used. ( e.g. 50X50 grid
-will return a matrix that is 2500X2500!)  If false just the marginal
-standard deviations of the predicted values are returned. Default is
-false.
-}
-\item{fixed.mean}{
-If true the mean function is assumed fixed and the variance of this 
-component is taken to be zero. If False the variance for this component is 
-added to the variance of prediction.   
-}
-\item{\dots}{
-These additional arguments are given to cov.function the "true" covariance 
-function, not the one associated with the Kriging weights.   
-}
-}
+
 \value{
 A vector of standard errors for the predicted values of the Kriging fit. 
 }
@@ -104,39 +83,27 @@ Krig, predict.Krig, predict.surface.se
 # Note: in these examples predict.se will default to predict.se.Krig using 
 # a Krig object  
 
-fit<- Krig(ozone$x,ozone$y,exp.cov, theta=10)    # krig fit 
-predict.se.Krig(fit)                        # std errors of predictions 
+  fit<- Krig(ozone$x,ozone$y,exp.cov, theta=10)    # krig fit 
+  predict.se.Krig(fit)      # std errors of predictions at obs.
 
 # make a  grid of X's  
-xg<-make.surface.grid( list(seq(-27,34,,40),seq(-20,35,,40)))     
-out<- predict.se.Krig(fit,xg)     # std errors of predictions 
+  xg<-make.surface.grid( 
+  list(East.West=seq(-27,34,,20),North.South=seq(-20,35,,20)))     
+  out<- predict.se.Krig(fit,xg)   # std errors of predictions 
 
-#at the grid points out is a vector of length 1600 
-# reshape the grid points into a 40X40 matrix etc.  
-out.p<-as.surface( xg, out) 
-image.plot( out.p) 
+#at the grid points out is a vector of length 400 
+#reshape the grid points into a 20X20 matrix etc.  
+
+   out.p<-as.surface( xg, out) 
+   surface( out.p, type="C") 
 
 # this is equivalent to  the single step function  
 # (but default is not to extrapolation beyond data
-out<- predict.surface.se( fit) 
-image.plot( out) 
+# out<- predict.surface.se( fit) 
+# image.plot( out) 
 
 
-# Investigate misspecification 
-# 
-# first call Krig to create the Krig object.  
-# 
-Krig( ozone$x, ozone$y, cov.function=exp.cov, theta=100)-> fit 
 
-# note how the new cov. parameters are specified just like in Krig  
-predict.se(fit,xg)-> look 
-predict.se( fit, xg, cov.function=exp.cov, theta=2.0, sigma2=1)-> look2 
-
-set.panel( 2,1)
-image.plot( as.surface( xg, look))
-points( fit$x)
-image.plot( as.surface( xg, look2))
-set.panel( 1,1)
 }
 \keyword{spatial}
 % docclass is function

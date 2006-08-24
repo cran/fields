@@ -1,6 +1,8 @@
 "Tps" <-
-function (x, Y, m = NULL, p = NULL, decomp = "WBW", scale.type = "range", ...) 
+function (x, Y, m = NULL, p = NULL, scale.type = "range", 
+    ...) 
 {
+
     x <- as.matrix(x)
     d <- ncol(x)
     if (is.null(p)) {
@@ -12,11 +14,15 @@ function (x, Y, m = NULL, p = NULL, decomp = "WBW", scale.type = "range", ...)
             stop(" m is too small  you must have 2*m -d >0")
         }
     }
-    if (!is.null(list(...)$knots)) 
-        decomp <- "DR"
+
+    if (!is.null(list(...)$lambda)) stop(
+     "Tps does not currently support the fixed lambda option. 
+                  See help(Tps) for details")
+
     Tpscall <- match.call()
     Tpscall$cov.function <- "Thin plate spline radial basis functions (rad.cov) "
-    Krig(x, Y, cov.function = rad.cov, m = m, decomp = decomp, 
+    Krig(x, Y, cov.function = rad.cov, m = m, 
         scale.type = scale.type, outputcall = Tpscall, p = p, 
         ...)
 }
+

@@ -6,12 +6,10 @@ Region
 }
 \description{
 This is a useful spatial data set of moderate size consisting of 865 
-locations. 
+locations. See www.image.ucar.edu/stats/GSP/DATA for the source of these data. 
 
 }
-\usage{
-data(RMprecip)
-}
+
 \format{
 This data set is a list containing the following components: 
 
@@ -39,8 +37,7 @@ for August 1963
 # and details. 
 
 # plot 
-as.image( RMprecip$y, x=RMprecip$x)-> look
-image.plot( look)
+quilt.plot(RMprecip$x, RMprecip$y)
 US( add=TRUE, col=2, lty=2)
 
 #

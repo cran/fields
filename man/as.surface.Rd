@@ -11,14 +11,15 @@ image and image.plot.
  
 }
 \usage{
-as.surface(grid.list, z, order.variables="xy")
+as.surface(obj, z, order.variables="xy")
 }
 \arguments{
-\item{grid.list}{
+\item{obj}{
 A description of the grid used to evaluate the function. This can 
 either be in the form of a grid.list 
 ( see help file for grid.list) or the matrix of grid of points produced 
-by make.surface.grid 
+by make.surface.grid. In the later case obj is a matrix with 
+the grid.list as an attribute. 
 }
 \item{z}{
 The value of the function evaluated at the gridded points. 
@@ -71,9 +72,9 @@ image.plot, as.image
 # Make a perspective of the surface Z= X**2 -Y**2 
 # Do this by evaluating quadratic function on a 25 X 25 grid
   
-grid.l<-list( X= seq( -2,2,,25), Y= seq( -2,2,,25)) 
+grid.l<-list( abcissa= seq( -2,2,,15), ordinate= seq( -2,2,,20)) 
 xg<-make.surface.grid( grid.l)
-# xg is a 625X2 matrix that has all pairs of X and Y grid values 
+# xg is a 300X2 matrix that has all pairs of X and Y grid values 
 z<- xg[,1]**2 - xg[,2]**2  
 # now fold z in the matrix format needed for persp 
 out.p<-as.surface( xg, z) 

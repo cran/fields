@@ -1,5 +1,5 @@
 "exp.cov" <-
-function (x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA) 
+function (x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA,marginal=FALSE) 
 {
     if (!is.matrix(x1)) 
         x1 <- as.matrix(x1)
@@ -15,13 +15,24 @@ function (x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA)
     x1 <- t(t(x1)/theta)
     x2 <- t(t(x2)/theta)
     par <- p
-    if (is.na(C[1])) {
-        exp(-rdist(x1, x2)^p)
+#
+# cross covariance matrix
+    if (is.na(C[1])& !marginal) {
+       return( exp(-rdist(x1, x2)^p) )
     }
-    else {
+#
+#multiply cross covariance matrix by C
+    if(!is.na( C[1])) {
+       return(
         .Fortran("multeb", nd = as.integer(d), x1 = as.double(x1), 
             n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
             par = as.double(par), c = as.double(C), h = as.double(rep(0, 
                 n1)), work = as.double(rep(0, n2)),PACKAGE="fields")$h
+      )
     }
+#
+# return marginal variance ( 1.0 in this case)
+    if( marginal){
+    return( rep( 1, ncol(x1)) )}
+
 }

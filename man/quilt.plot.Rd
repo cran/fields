@@ -39,10 +39,10 @@ are very close, separating them could results in very small boxes.
 As always, legend placement is never completely automatic. Place the 
 legend independently for more control, perhaps using \code{image.plot}
 in tandem with \code{split.screen} or enlarging the plot margin 
-See \code{help(image.plot)} for examples of this function. 
-}
+See \code{help(image.plot)} for examples of this function and these 
+strategies. }
 \author{D.Nychka}
-\seealso{ as.image, image.plot, lattice } 
+\seealso{ as.image, image.plot, lattice, persp, drape.plot } 
 \examples{
 
 data( ozone2)

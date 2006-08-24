@@ -57,7 +57,7 @@ bplot.xy( minitri$swim, minitri$run, N=5)
 
 # bivariate normal corr= .6
 set.seed( 123)
-x<-rnorm( 200)
+x<-rnorm( 2000)
 y<- .6*x +  sqrt( 1- .6**2)*rnorm( 200)
 #
 #

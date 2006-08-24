@@ -1,43 +1,45 @@
 "predict.surface" <-
-function (object, grid.list = NA, extrap = FALSE, chull.mask, model = 
-NA, 
-    nx = 80, ny = 80, ...) 
+function (object, grid.list = NA, extrap = FALSE, chull.mask=NA, 
+     nx = 80, ny = 80, xy=c(1,2),order.variables="xy",...) 
 {
-    out<- object # hack S3
-    if ((length(grid.list) == 1) | (is.na(grid.list)[1])) {
-        if (is.null(out$x)) 
-            stop("Need a an X matrix in the\noutput object")
-        grid.list <- as.list(rep("c", ncol(out$x)))
-        grid.list[[1]] <- "x"
-        grid.list[[2]] <- "y"
-        if (is.null(dimnames(out$x))) {
-            temp <- paste("X", 1:ncol(out$x), sep = "")
-        }
-        else {
-            temp <- dimnames(out$x)[[2]]
-        }
-        names(grid.list) <- temp
-    }
 
-    if (is.null(out$x)) 
-        xg <- make.surface.grid(grid.list, nx = nx, ny = ny)
-    else xg <- make.surface.grid(grid.list, X = out$x, nx = nx, 
-        ny = ny)
+#
+# without grid.list 
+# default is 80X80 grid on first two variables 
+# rest are set to median value of x. 
+#
 
-# at this point xg is the grid for evaluation
+  if (is.na(grid.list)[1]) {
+        if (is.null(object$x)){ 
+          stop("Need a an X matrix in the output object")}
+        grid.list<- fields.x.to.grid(object$x, nx=nx, ny=ny,xy=xy)
+  }
 
-    out2 <- as.surface(xg, predict(out, xg, model = model, ...))
+#
+# create grid     
+    xg<- make.surface.grid( grid.list)
 
+# make predictions ...
+
+    z<- predict(object, xg, ...)
+#
+# coerce to the plotting format ($x $y $z etc.) gridding info
+# is in grid.list
+
+    out <-  as.surface( grid.list,z, order.variables= order.variables)
+
+# 
+# if extrapolate is FALSE set all values outside convex hull to NA
+#
     if (!extrap) {
-# columns of variables that are the grid
-            ind <- c(attr(xg, "format")[, 1])
-        if (missing(chull.mask)) {
-            chull.mask <- unique.matrix(out$x[, ind])
+        if (is.na(chull.mask) ) {
+            chull.mask <- unique.matrix(object$x[, xy])
         }
-# set to NA any point in 2d grid that is outside convex hull        
-        out2$z[
-        in.poly(xg[,ind], xp = chull.mask,convex.hull=TRUE) == 0
-               ] <- NA
+        out$z[in.poly(xg[, xy], xp = chull.mask, convex.hull = TRUE) == 
+            0] <- NA
     }
-    out2
+#
+
+    out
 }
+

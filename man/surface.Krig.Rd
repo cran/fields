@@ -11,7 +11,7 @@ ranges.
 \usage{
 surface.Krig(obj, grid.list = NA, extrap = FALSE, graphics.reset =
                  NULL, xlab = NULL, ylab = NULL, main = NULL, zlab =
-                 NULL, zlim = NULL, levels = NULL, type = "b", nx =
+                 NULL, zlim = NULL, levels = NULL, type = "C", nx =
                  80, ny = 80, ...)
 }
 \arguments{
@@ -38,7 +38,7 @@ Reset to original graphics parameters after function plotting.
 Type of plot as a character. "p" perspective plot (persp). "c" contour
 plot (contour). "b" a two panel figure with perspective and contour
 plots. "I" image plot with legend strip (image.plot). "C" image plot
-with contours overlaid.  Both perspective and contour is the default.
+with contours overlaid.  Image with  contour is the default.
   
 }
 \item{main}{

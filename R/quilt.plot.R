@@ -18,7 +18,7 @@ x<- as.matrix(x)
 #  z is a vector or one column matrix of the z values.
 
 #discretize data
-as.image( z, x=x, nrow=nrow, ncol=ncol)-> out.p
+as.image( z, x=x, nrow=nrow, ncol=ncol, na.rm=TRUE)-> out.p
 
 #plot it 
 if( add.legend){

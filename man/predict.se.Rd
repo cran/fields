@@ -33,11 +33,15 @@ prediction of a new observation.
 predict, predict.surface.se, predict.se.Krig  
 }
 \examples{
-fit<-Tps(ozone$x,ozone$y)
-predict.se(fit)                             # std errors of predictions 
-xg<- expand.grid(seq(-15,15,,40),seq(-20,20,,40)) 
-out<- predict.se(fit,xg)
-image.plot( matrix( out, 40))
+  fit<-Krig(ozone$x,ozone$y, Covariance="Matern",theta=50, smoothness=1)
+  predict.se(fit)                             # std errors of predictions 
+#
+# create a grid of points  
+  xg<- make.surface.grid(
+        list(East.West=seq(-15,15,,20),North.South=seq(-20,20,,20) ) ) 
+  out<- predict.se(fit,xg)
+  image.plot( as.surface( xg, out))
+
 }
 \keyword{spatial}
 % docclass is function

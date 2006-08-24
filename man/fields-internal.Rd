@@ -2,8 +2,7 @@
 \alias{[.spatial.design}
 \alias{COR}
 \alias{D4transform.image}
-\alias{FIELDS.version}
-\alias{Krig.coef}
+\alias{rad.image.cov}
 \alias{Krig.df.to.lambda}
 \alias{Krig.discretize}
 \alias{Krig.fdf}
@@ -65,10 +64,6 @@
 \alias{krig.image.parameters}
 \alias{lonlat2xy}
 \alias{make.surface.grid}
-\alias{make.tmatrix}
-\alias{make.tmatrix.F}
-\alias{make.tmatrix.S}
-\alias{matern}
 \alias{minimax.crit}
 \alias{periodic.cov.1d}
 \alias{periodic.cov.cyl}
@@ -97,14 +92,7 @@
 \alias{qsreg.psi}
 \alias{qsreg.rho}
 \alias{qsreg.trace}
-\alias{rad.cov}
-\alias{rad.cov.F}
-\alias{rad.cov.S}
-\alias{rad.covC}
-\alias{rad.image.cov}
 \alias{radbas.constant}
-\alias{rdist.F}
-\alias{rdist.S}
 \alias{replace.args.function}
 \alias{sim.krig.image}
 \alias{sreg.df.to.lambda}
@@ -127,8 +115,6 @@
 \alias{surface.default}
 \alias{surface.krig.image}
 \alias{surface.surface}
-\alias{test.data}
-\alias{test.data2}
 \alias{unscale}
 \alias{variogram.matrix}
 \alias{world.dat}
@@ -144,9 +130,6 @@ COR (dat)
  
 D4transform.image (x, inv = FALSE, transpose = FALSE, cut.min = 8) 
  
-FIELDS.version  
-
-Krig.coef (out, u = NULL, lambda = NULL, yM = NULL) 
 Krig.df.to.lambda (df, D, guess = 1, tol = 1e-05) 
 Krig.discretize (x, m = 64, n = 64, xg = NULL, yg = NULL, grid 
     = NULL,  expand = c(1, 1)) 
@@ -161,10 +144,10 @@ give.warnings = FALSE)
 Krig.flplike (lam, obj)
 Krig.fs2hat (lam, obj) 
 Krig.ftrace (lam, D) 
-Krig.parameters (obj, mle.calc=TRUE)
+Krig.parameters (obj, mle.calc=obj$mle.calc)
 Krig.replicates (out, verbose = FALSE) 
-Krig.updateY (out, Y, verbose = FALSE) 
-Krig.ynew (out, ynew, verbose = FALSE) 
+Krig.updateY (out, Y, verbose = FALSE, yM=NA) 
+Krig.ynew (out, y=NULL, yM=NULL ) 
  
 
 WD4 (x) 
@@ -252,14 +235,9 @@ krig.image.parameters (out)
  
 lonlat2xy (lnlt, miles = FALSE) 
  
-make.surface.grid (grid.list, X, nx = 30, ny = 30, 
-      info.list = FALSE, FUN = median) 
-make.tmatrix (x, m = 2) 
-make.tmatrix.F (x, m = 2) 
-make.tmatrix.S (x, m = 2) 
- 
-matern (t , scale = 1, range = 1,alpha=1/range,
-                smoothness = 0.5, nu= smoothness, phi=scale)  
+make.surface.grid (grid.list)
+
+rad.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...)
 
 minimax.crit (obj, des = TRUE, R) 
  
@@ -301,15 +279,7 @@ qsreg.trace (x, y, lam, maxit = 50, maxit.cv = 10, tol = 1e-04,
     offset = 0, sc = sqrt(var(y)) * 1e-07, alpha = 0.5, 
     wt = rep(1, length(x)), cost = 1) 
 
-rad.cov (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, C =NULL) 
-rad.cov.F (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, C = NULL) 
-rad.cov.S (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE) 
-rad.covC (x1, x2, C, p = 1, with.log = TRUE, with.constant = TRUE) 
-rad.image.cov (ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid,...) 
 radbas.constant (m, d) 
- 
-rdist.F (x1, x2) 
-rdist.S (x1, x2, lon.lat = FALSE) 
  
 replace.args.function (fun, ...) 
  
@@ -327,8 +297,8 @@ sreg.trace (h, info)
 stats.bplot (x, by, style = "tukey", outlier = TRUE) 
 stats.sim.krig.image (obj) 
  
-summary.gcv.Krig (object, lambda=NULL,df, cost = 1, verbose = FALSE, 
-        offset =0, y = NULL,...) 
+summary.gcv.Krig (object, lambda, cost = 1, verbose = FALSE, 
+                offset = 0, y = NULL, ...)
 summary.gcv.sreg (object, lambda, cost = 1, nstep.cv = 20, 
         offset = 0, verbose = TRUE,...) 
 summary.krig.image (object, digits = 4, ...) 
@@ -344,10 +314,6 @@ surface.krig.image (obj, grid.list = NA, extrap = TRUE,
  
 surface.surface (obj, ...)
  
-test.data  
-
-test.data2
-
 unscale (x, x.center, x.scale) 
  
 variogram.matrix (dat, R = 5, dx) 

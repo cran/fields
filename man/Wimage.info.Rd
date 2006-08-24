@@ -157,8 +157,8 @@ look2<- Wtransform.image( tmp, cut.min=8, inv=TRUE)
 
 # take a look at (severely) filtered image, Happy Halloween!
 set.panel( 2,1)
-image( lennon)
-image( look2)
+image( lennon, col=grey(seq(0,1,,256)))
+image( look2, col=grey(seq(0,1,,256)))
 
 }
 \keyword{spatial}

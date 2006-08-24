@@ -227,7 +227,10 @@ Krig, Tps
 fit<- sreg(rat.diet$t,rat.diet$con)
 summary( fit)
 
-plot(fit)                       # diagnostic plots of  fit 
+set.panel(2,2)
+plot(fit)                       # four diagnostic plots of  fit 
+set.panel()
+
 predict( fit) # predicted values at data points 
 
 xg<- seq(0,110,,50) 
@@ -278,20 +281,6 @@ segments(  fit$x, lowerB, fit$x, upperB, col=4)
 segments(  fit$x, lower, fit$x, upper, col=2, lwd=2)
 title( "95 pct pointwise  and simultaneous intervals")
 
-
-
-
-
-
-
-
-# replicated data
-# this is a simulated case. Find lambda by matching rmse to be .2
-# and use this estimate of lambda
-sreg( test.data2$x, test.data2$y, rmse=.2, method="RMSE")-> fit
-
 set.panel( 1,1)
 }
 \keyword{smooth}
-% docclass is function
-% Converted by Sd2Rd version 1.21.

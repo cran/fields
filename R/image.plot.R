@@ -39,9 +39,13 @@ function (..., add = FALSE, nlevel = 64, legend.shrink = 0.9,
 #
     if (!legend.only) {
         if (!add) {
-            par(plt = bigplot)
-        }
+            par(plt = bigplot) }
+
         image(..., add = add, col = col)
+
+# add a box
+        box()
+
         big.par <- par(no.readonly = TRUE)
     }
 
@@ -72,36 +76,47 @@ function (..., add = FALSE, nlevel = 64, legend.shrink = 0.9,
     breaks<- list(...)$breaks
 
 # draw either horizontal or vertical legends. 
-# either using breaks or not 
+# either using either suggested breaks or not 
+#  -- a total of four cases. 
+# modify the lines for axis or image to fine tune how legend looks
+#
+
+# next par line sets up a new plotting region just for the legend strip
+# at the plot coordinates 
+         par(new = TRUE, pty = "m", plt = smallplot, err = -1)
 
     if (!horizontal) {
-        par(new = TRUE, pty = "m", plt = smallplot, err = -1)
-
-        if( is.null( breaks)){
+         if( is.null( breaks)){
             image(ix, iy, iz, xaxt = "n", yaxt = "n", xlab = "", 
-                ylab = "", col = col )}
-        else{
-            image(ix, iy, iz, xaxt = "n", yaxt = "n", xlab = "", 
-                 ylab = "", col = col, breaks=breaks )}
+                ylab = "", col = col )
+            axis(4, mgp = c(3, 1, 0), las = 2)}
+         else{
+            image(ix, iy, iz, 
+                 xaxt = "n", yaxt = "n", xlab = "",  ylab = "", 
+                 col = col, breaks=breaks )
+#
+# add axis but label where there are breaks
+        axis(4, at=breaks, labels=format( breaks), mgp = c(3, 1, 0), las = 2)}
 
-        axis(4, mgp = c(3, 1, 0), las = 2)
-        box()
     }
-    else {
-        par(new = TRUE, pty = "m", plt = smallplot, err = -1)
+      else {
       
-        if( is.null( breaks)){
-            image(iy, ix, t(iz), yaxt = "n", xlab = "", ylab = "", 
-                col = col)}
-        else{
-            image(iy, ix, t(iz), yaxt = "n", xlab = "", ylab = "",
-                col = col,breaks=breaks)}
-
-        box()
+          if( is.null( breaks)){
+             image(iy, ix, t(iz), xaxt="n",yaxt = "n", xlab = "", ylab = "", 
+                 col = col)
+              axis(1, mgp = c(3, 1, 0))}
+          else{
+             image(iy, ix, t(iz), 
+                 xaxt = "n", yaxt = "n", xlab = "",  ylab = "", 
+                 col = col, breaks=breaks )
+             axis(1, at=breaks, labels=format( breaks), mgp = c(3, 1, 0))}
     }
+
+# add a box around legend strip
+    box() 
 
 # clean up graphics device settings
-
+# reset to larger plot region with right user coordinates. 
 
     mfg.save <- par()$mfg
     if (graphics.reset | add) {

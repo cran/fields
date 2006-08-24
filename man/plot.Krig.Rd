@@ -1,43 +1,38 @@
 \name{plot.Krig}
 \alias{plot.Krig}
+\alias{plot.sreg}
 \title{
-  Diagnostic and summary plots of the Krig object 
+  Diagnostic and summary plots of a Kriging or spline object 
 }
 \description{
-Plots a series of four diagnostic plots that summarize the fit from Krig. 
+Plots a series of four diagnostic plots that summarize the fit. 
 }
 \usage{
-plot.Krig(x, main=NA, digits=4, which=c(TRUE,TRUE,TRUE,TRUE), 
-graphics.reset=TRUE,
-...)
+plot.Krig(x, digits=4, which= 1:4,...)
+plot.sreg(x, digits = 4, which = 1:4, ...)
+
+
 }
 \arguments{
-\item{x}{
-A Krig output object. 
-}
-\item{main}{
-Title of the plot. Default is the function call. 
-}
+\item{x}{ A Krig or an sreg object}
+
 \item{digits}{
 Number of significant digits for the RMSE label. 
 }
-\item{graphics.reset}{
-Reset to original graphics parameters after plotting. Default is TRUE.
-}
 \item{which}{
-A vector of 4 logical values. 
-Controls which of the four graphs to plot. 
+A vector specifying by number which of the four plots to draw.  
+1:4 plots all four. 
 }
 \item{\dots}{
 Optional graphics arguments to pass to each plot. 
 }
 }
 \details{
-This function creates four summary plots of the Krig object. The default
-is to put these in a 2X2 panel. However if the screen is already divided
-in some other fashion the plots will just be added according to that
-scheme. This option is useful to compare to compare several different
-model fits.
+ This function creates four summary plots of the Krig or sreg object. The
+default is to put these on separate pages. However if the screen is
+already divided in some other fashion the plots will just be added
+according to that scheme. This option is useful to compare to compare
+several different model fits. 
 
 The first is a scatterplot of predicted value against observed.
 
@@ -54,15 +49,29 @@ standardized data if a correlation model is specified. A vertical line
 indicates the minimium found.
 
 The fourth plot is a histogram of the standardized residuals. 
+For sreg if multiple lambdas are given plotted are boxplots of the  
+residuals for each fit. 
 }
 \seealso{
-Krig, summary.Krig, Tps  
+Krig, summary.Krig, Tps, set.panel
 }
 \examples{
+
 fit<-Krig(ozone$x, ozone$y,exp.cov, theta=200)  
 # fitting a surface to ozone  
 # measurements 
+
+set.panel( 2,2)
 plot(fit)
+
+fit<-sreg(rat.diet$t,rat.diet$con)
+
+# fit rat data
+set.panel(2,2)
+plot(fit)       
+
+set.panel(1,1) # reset graphics window. 
+
 }
 \keyword{spatial}
 % docclass is function

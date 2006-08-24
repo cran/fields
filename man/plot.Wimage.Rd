@@ -57,7 +57,7 @@ old.par<- par(no.readonly=TRUE) # these functions may leave the device in
 #
 #multiresolution of John Lennon 
 data(lennon) 
-Wtransform.image( lennon, cut.min=8)->look 
+Wtransform.image( lennon, cut.min=16)->look 
 plot.Wimage( look, cut.min=16)
 
 # adding information 
@@ -76,8 +76,8 @@ plot.Wimage( look, cut.min=16, Nlevel=3, graphics.reset=FALSE)-> plot.layout
  box(col=6, lwd=2)# just for fun 
 
 close.screen( all=TRUE)
+par( old.par) # reset  to old settings 
 
-par( old.par) # reset old settings 
 
 }
-\keyword{hplot}% at least one, from doc/KEYWORDS
+\keyword{hplot}
