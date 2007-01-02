@@ -1,40 +1,100 @@
-\name{exp.cov}
+\name{Exponential covariances, radial basis functions and stationary 
+covariances.} 
 \alias{exp.cov}
-\alias{exp.cov.simple}
+\alias{exp.simple.cov}
+\alias{rad.cov}
+\alias{rad.simple.cov}
+\alias{stationary.cov}
 \title{
-  Exponential, Gaussian and "power" covariance family 
-}
+  Exponential covariance family, radial basis 
+functions and a general function for stationary covariances. }
 \description{
 Given two sets of locations computes the cross covariance matrix for
 covariances among all pairings. 
 }
 \usage{
-exp.cov(x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA)
-exp.cov.simple(x1, x2, theta =1)
+exp.cov(x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA, marginal=FALSE)
+
+exp.simple.cov(x1, x2, theta =1, C=NA,marginal=FALSE)
+
+rad.cov(x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, 
+               C=NA,marginal=FALSE)
+
+rad.simple.cov(x1, x2, p=1, with.log = TRUE, with.constant = TRUE, 
+               C = NA, marginal=FALSE)
+
+stationary.cov(x1, x2, Covariance="Exponential", Distance="rdist",
+               Dist.args=NULL, theta=1.0,C=NA, marginal=FALSE,...)
+
 }
 \arguments{
+
 \item{x1}{
 Matrix of first set of locations where each row gives the coordinates of a
 particular
 point.
 }
+
 \item{x2}{
 Matrix of second set of locations where each row gives the coordinates of
 a particular point. If this is missing x1 is used. 
 }
+
 \item{theta}{
-Range (or scale) parameter. This can be a scalar or a vector that is the
-same length as the dimension of the locations. Default is theta=1.
-}
-\item{p}{
-Exponent in the exponential form. p=1 gives an exponential and p=2 gives a
-Gaussian. Default is the exponential form.
+Range (or scale) parameter. This can be a scalar, vector or matrix.
+If a scalar or vector these are expanded to be the diagonal elements of 
+a linear transformation of the coordinates. In R code the transformation 
+applied before distances are found is:  \code{x1 \%*\% t(solve(theta))} or 
+if theta is a scalar: \code{x1/theta}.
+Default is theta=1. See Details below. 
 }
 \item{C}{
 A vector with the same length as the number of rows of x2. 
 If specified the covariance matrix will be multiplied by this vector.
 }
+
+\item{marginal}{If TRUE returns just the diagonal elements of the 
+covariance matrix using the \code{x1} locations. In this case this is
+just 1.0. The marginal argument will trivial for this function is a 
+required argument and capability for all covariance functions used with 
+Krig.
 }
+
+\item{p}{
+Exponent in the exponential form. p=1 gives an exponential and p=2 gives a
+Gaussian. Default is the exponential form.
+
+For the radial basis  function this is the exponent for the distance 
+between locations. 
+ }
+
+\item{ with.constant}{ 
+ If TRUE includes complicated constant for radial basis functions. 
+See the function \code{radbad.constant} for more details. The
+default is TRUE include the constant. Without the usual constant
+the lambda used here will differ by a constant from estimators ( e.g.
+cubic smoothing splines) that use the constant. Also a negative value
+for the constant may be necessary to make the radial basis positive
+definite as opposed to negative definite. }
+
+\item{with.log} { If TRUE include a log term for even dimensions. 
+This is needed to be a thin plate spline of integer order. }
+
+\item{ Covariance} { Character string that is the name of the covariance 
+shape function for the distance between 
+locations. Choices in fields are \code{Exponential}, \code{Matern}}
+
+\item{Distance}{Character string that is the name of the distance 
+function to use. Choices in fields are \code{rdist}, \code{rdist.earth}}
+
+\item{Dist.args}{ A list of optional arguments to pass to the Distance 
+function.}
+
+\item{\dots}{ Any other arguments that will be passed to the 
+covariance function. e.g. \code{smoothness} for the Matern.}
+
+}
+
 \value{
 If the argument C is NULL the cross covariance matrix. Moreover if x1 is
 equal to x2 then this is the covariance matrix for this set of locations. 
@@ -46,40 +106,77 @@ then returned value is the multiplication of the cross covariance matrix
 with this vector:  Sigma\%*\%C 
 }
 \details{
-Functional Form: If x1 and x2 are matrices where nrow(x1)=m and nrow(
-x2)=n then this
-function should return a mXn matrix where the (i,j) element is the
-covariance between the locations x1[i,] and x2[j,]. The
-covariance is found as  exp( -(D.ij **p)) where  D.ij is the Euclidean
-distance between  x1[i,] and x2[j,] but having first been scaled by theta.
-Specifically 
 
-D.ij = sqrt(  sum.k (( x1[i,k] - x2[j,k]) /theta[k])**2 ).
+ For purposes of illustration, the function \code{exp.cov.simple} is
+provided as a simple example and implements the R code discussed below.
+It can also serve as a template for creating new covariance functions for the
+\code{Krig} function. Also see the higher level function 
+\code{stationary.cov} to mix and match different covariance shapes and 
+distance functions. 
+
+ Functional Form: If x1 and x2 are matrices where nrow(x1)=m and
+nrow(x2)=n then this function will return a mXn matrix where the (i,j)
+element is the covariance between the locations x1[i,] and x2[j,]. The
+covariance is found as exp( -(D.ij **p)) where D.ij is the Euclidean
+distance between x1[i,] and x2[j,] but having first been scaled by theta. 
+
+ Specifically if \code{theta} is a matrix to represent a linear 
+transformation of the coordinates, then let 
+u= x1\%*\% t(solve( theta)) and v= x2\%*\% t(solve(theta)).
+Form the mXn distance matrix with elements:
+
+D[i,j] = sqrt(  sum( ( u[i,] - v[j,])**2 )  ).
+
+and the cross covariance matrix is found by \code{exp(-D)}.
 
 Note that if theta is a scalar then this defines an isotropic covariance
-function. 
+function and the functional form is essentially \code{exp(-D/theta)}.
 
-Implementation: The function r.dist is a useful FIELDS function that finds
-the cross
-distance matrix ( D defined above) for two sets of locations. Thus in
-compact S code we have  
+Implementation: 
+The function \code{r.dist} is a useful FIELDS function that finds
+the cross Euclidean distance matrix (D defined above) for two sets of 
+locations. Thus in compact R code we have  
 
-u <- t(t(x1)/theta)
+  exp(-rdist(u, v)**p)
 
-v <- t(t(x2)/theta)
+Note that this function must also support two other kinds of calls:
 
-exp(-rdist(u, v)**p)
+If marginal is TRUE then just the diagonal elements are returned
+(in R code \code{diag( exp(-rdist(u,u)**p) )}). 
 
-FORTRAN: The actual function calls FORTRAN to make the evaluation more
-efficient this is especially important when the C argument is supplied.  
-So unfortunately the actual code is not as crisp as the few lines given
-above. For purposes of illustration, the function 
-\code{exp.cov.simple} is provided as
-a simple example and implements the R code above. It can also serve as a 
-template for creating new covariance functions for the \code{Krig} 
-function. }
+If C is passed then the returned value is 
+\code{ exp(-rdist(u, v)**p) \%*\% C} 
+
+Radial basis functions: The functional form is 
+Constant* rdist(u, v)**p for odd dimensions 
+and Constant* rdist(u,v)**p * log( rdist(u,v)
+For an m th order thin plate spline in d dimensions p= 2*m-d and must 
+be positive. The constant, depending on m and d, is coded in the fields 
+function \code{radbas.constant}. This form is only a generalized 
+covariance function -- it is only positive definite when restricted to
+linear subspace.  See \code{rad.simple.cov} for a coding of the radial 
+basis functions in R code. 
+
+Stationary covariance: Here the computation is apply the function
+ Covariance to the distances found by the Distance function. 
+For example \code{exp.cov(x1,x2, theta=MyTheta)} and 
+\code{stationary.cov( x1,x2, theta=MyTheta, Distance= "rdist", 
+Covariance="Exponential")}
+are the same. This also the same as 
+\code{stationary.cov( x1,x2, theta=MyTheta, Distance= "rdist", 
+Covariance="Matern",smoothness=.5)}.
+  
+
+About the FORTRAN: The actual function \code{exp.cov} and 
+\code{rad.cov} calls FORTRAN to 
+make the evaluation more efficient this is especially important when the 
+C argument is supplied. So unfortunately the actual production code in 
+exp.cov is not as crisp as the R code sketched above. See  
+\code{rad.simple.cov} for a R coding of the radial basis functions.  
+
+}
 \seealso{
- Krig, matern.cov, rdist, rdist.earth, gauss.cov, exp.image.cov 
+ Krig, rdist, rdist.earth, gauss.cov, exp.image.cov, Exponential, Matern.
 }
 \examples{
 # exponential covariance matrix ( marginal variance =1) for the ozone
@@ -90,8 +187,9 @@ out<- exp.cov( ozone$x, theta=100)
 out2<- exp.cov( ozone$x[6:20,],ozone$x[1:2,], theta=100)
 # out2 is 15X2 matrix 
 # Kriging fit where the nugget variance is found by GCV 
-fit<- Krig( ozone$x, ozone$y, exp.cov, theta=100)
+fit<- Krig( ozone$x, ozone$y, cov.function="exp.cov", theta=100)
+
 }
 \keyword{spatial}
 % docclass is function
-% Converted by Sd2Rd version 1.21.
+

@@ -13,7 +13,9 @@ C  J F MONAHAN  JAN 1982  DEPT OF STAT, N C S U, RALEIGH, NC 27650
       IU=N                                                             
   1   IF(IU-IL.LE.1) GO TO 4                                           
       I=(IU+IL)/2                                                      
-      IF(X-XK(I)) 2,5,3                                                
+C      IF(X-XK(I)) 2,5,3                                                
+      IF( (X-XK(I)).eq.0) go to 5
+      IF( (X-XK(I)).gt.0)  go to 3                                                
   2   IU=I                                                             
       GO TO 1                                                          
   3   IL=I                                                             

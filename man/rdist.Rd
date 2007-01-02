@@ -32,8 +32,6 @@ the Euclidean distances between the all locations x1[i,] and x2[j,].
 D.ij = sqrt(  sum.k (( x1[i,k] - x2[j,k]) **2 ).
 
 
-FORTRAN: The default function calls FORTRAN to evaluate the
-distances. A pure S code version also exists: rdist.S 
 }
 \seealso{
   exp.cov, rdist.earth 

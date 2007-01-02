@@ -44,8 +44,6 @@ add.image( 5,4,lennon, col=grey( (0:256)/256))
 xline( 5, col=2)
 yline( 4,col=2) 
 
-par( read.only=TRUE)-> save.par
-
 #
 # add lennon right in the corner beyond the plotting region
 # 

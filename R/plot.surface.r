@@ -1,10 +1,14 @@
 "plot.surface" <-
-function (x, main = NULL, type = "b", zlab = NULL, xlab = NULL, 
+function (x, main = NULL, type = "C", zlab = NULL, xlab = NULL, 
     ylab = NULL, levels = NULL, zlim = NULL, graphics.reset = NULL, 
     labcex = 0.6, add.legend = TRUE, ...) 
 {
     obj <- x
     old.par <- par(no.readonly = TRUE)
+
+    if( is.na(match( type, c("b", "C", "I", "p") )) ) {
+        stop("plot type does not match b, C, I, or p.") }
+
     if (is.null(zlim)) {
         zlim = range(obj$z, na.rm = TRUE)
     }

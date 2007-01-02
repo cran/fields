@@ -9,8 +9,8 @@ with the z values in the right cells. For cells with more than one Z
 value the average is used.   
 }
 \usage{
-as.image(Z, ind, grid=NULL, x=NULL, nrow=64, ncol=64,weights=rep( 1,
-length(Z)), na.rm=TRUE)
+as.image(Z, ind=NULL, grid=NULL, x=NULL, nrow=64, ncol=64,weights=NULL,
+ na.rm=FALSE, nx=NULL,ny=NULL)
 }
 \arguments{
 \item{Z}{
@@ -41,6 +41,9 @@ equal weights.
 }
 \item{na.rm}{ 
 If true NA's are removed from the Z vector.}
+\item{nx}{ Same as nrow}
+\item{ny}{ Same as ncol}
+
 }
 \value{
 An list in image format with a few more components. Components x and y are 
@@ -63,7 +66,7 @@ taken as the value.  See the source code to modify this to get more
 information about coincident locations. (See the call to fast.1way) 
 }
 \seealso{
-image.smooth, image.plot, Krig.discretize, Krig.replicates, image.count  
+image.smooth, image.plot, Krig.discretize, Krig.replicates  
 }
 \examples{
 # convert precip data to 50X50 image  

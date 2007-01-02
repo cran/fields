@@ -1,18 +1,25 @@
 \name{image.cov}
+\alias{stationary.image.cov}
 \alias{exp.image.cov}
 \alias{matern.image.cov}
 \title{
- Exponential,Gaussian, "power" and Matern covariance functions for 2-d 
-gridded locations 
+Exponential, Matern and general covariance functions for 2-d 
+gridded locations. 
 }
 \description{
 Given two sets of locations defined on a 2-d grid efficiently multiplies a 
-cross covariance with a vector. 
+cross covariance with a vector.  exp.image.cov and matern.image.cov will be  
+depreciated functions and are replaced by stationary.image.cov.
 }
 \usage{
-exp.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...) 
+stationary.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, 
+grid, M=NULL,N=NULL, Covariance="Matern", Distance="rdist",...) 
+
+exp.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...)
+
 matern.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid,
-M=NULL,N=NULL,...) 
+M=NULL,N=NULL,...)
+
 }
 \arguments{
 \item{ind1}{
@@ -51,16 +58,20 @@ result but  smaller values of M will yield an approximate, faster result.
 }
 
 \item{N} {Size of y-grid used to compute multiplication by the FFT.}
-
+\item{Covariance}{Covariance function that is apllied to the distance 
+between locations. (see stationary.cov) Default is the Matern model.
+(with smoothness=.5) the expontential. }
+\item{Distance}{
+Distance function applied to locations. Default is Euclidean distance. 
+Another choice is "rdist.earth", great circle distnace for lon/lat 
+coordinates. }
 \item{\dots}{
-Any arguments to pass to the covariance in setting up the
+Any arguments to pass to the covariance function in setting up the
 covariance object. This is only required if setup is TRUE.
-For the "exponential" the arguments are theta ( the range default=1), and 
-p (the 
-exponent default=1). For the matern  the arguments are theta 
-(the range default=1),   
+For the "Matern" the arguments are theta ( the range default=1), 
 and smoothness (default=.5 giving the exponential).
-}
+theta can be a matrix reflecting a rotation and scaling of 
+coordinates. See stationary.cov for details. }
 }
 \value{
 A vector that is the multiplication of the cross covariance matrix with
@@ -92,9 +103,7 @@ scaled by theta. Specifically,
 
 D.ij = sqrt(  sum.k (( x1[i,k] - x2[j,k]) /theta[k])**2 ).
 
-For the exponential phi(u) = exp( -u**p) and for the Matern
-phi(u)= matern( u, smoothness). (See the help file on matern.cov for 
-details.) 
+See \code{Matern} for the version of phi for the Matern family. 
  
 Note that if theta is a scalar then this defines an isotropic covariance
 function.  
@@ -122,67 +131,78 @@ to avoid creating and multiplying big.Sigma explicitly. It is often faster
 to multiply the regular grid and throw away the parts we do not need then
 to deal directly with the irregular set of locations.
 
-Confusion: In this entire discussion Y is treated as vector. However is
+Note: In this entire discussion Y is treated as vector. However if
 one has complete data then Y can also be interpreted as a image matrix
 conformed to correspond to spatial locations. See the last example for
 this distinction. 
   
 }
 \seealso{
-  exp.cov, matern.cov,smooth.2d, as.image, krig.image 
+  smooth.2d, as.image, krig.image, stationary.cov 
 }
 \examples{
 # multiply 2-d isotropic exponential with theta=4 by a random vector 
+
 junk<- matrix(rnorm(100*100), 100,100)
-cov.obj<- exp.image.cov( setup=TRUE, grid=list(x=1:100,y=1:100), theta=8)
-result<-  exp.image.cov(Y=junk,cov.obj=cov.obj)
 
-image( matrix( result, 100,100))
-# do it again, no setup needed 
+cov.obj<- stationary.image.cov( setup=TRUE, 
+             grid=list(x=1:100,y=1:100),theta=8) 
+result<-  stationary.image.cov(Y=junk,cov.obj=cov.obj)
+
+image( matrix( result, 100,100)) # NOTE that is also a smoother!
+
+# to do it again, no setup is needed 
+#  e.g. 
 #  junk2<- matrix(rnorm(100**2, 100,10))
-#  result2<-  exp.image.cov(Y=junk2, cov.obj=cov.obj)
-
-
+#  result2<-  stationary.image.cov(Y=junk2, cov.obj=cov.obj)
 
 # generate a grid and set of indices based on discretizing the locations
 # in the precip dataset
-data(RMprecip)
-out<-as.image( RMprecip$y, x= RMprecip$x)
-ind1<- out$ind
-grid<- list( x= out$x, y=out$y)
-# there are 750 gridded locations 
+
+ out<-as.image( RMprecip$y, x= RMprecip$x)
+ ind1<- out$ind
+ grid<- list( x= out$x, y=out$y)
+
+#
+# discretized x locations  to use for comparison
+  xd<- cbind( out$x[ out$ind[,1]], out$y[ out$ind[,2]] )
 
 # setup to create cov.obj for exponential covariance with range= 1.25
-# p=1 is the default
-cov.obj<- exp.image.cov( setup=TRUE, grid=grid, theta=1.25) 
+
+ cov.obj<- stationary.image.cov( setup=TRUE, grid=grid, theta=1.25) 
 
 # multiply covariance matrix by an arbitrary vector
-junk<-  rnorm(750)
-result<- exp.image.cov( ind1, ind1, Y= junk,cov.obj=cov.obj)
+ junk<-  rnorm(nrow( ind1))
+ result<- stationary.image.cov( ind1, ind1, Y= junk,cov.obj=cov.obj)
 
 # The brute force way would be  
-# result<- exp.cov( RMprecip$x, RMprecip$x,theta=1.25, C=junk)
+#   result<- stationary.cov( xd, xd, theta=1.25, C=junk)
+# or 
+#   result<- stationary.cov( xd, xd, theta=1.25) %*% junk
+# both of these take much longer 
 
 
 # evaluate the covariance between all grid points and the center grid point
-Y<- matrix(0,cov.obj$m, cov.obj$n)
-Y[32,32]<- 1
-result<- exp.image.cov( Y= Y,cov.obj=cov.obj)
+ Y<- matrix(0,cov.obj$m, cov.obj$n)
+ Y[32,32]<- 1
+ result<- stationary.image.cov( Y= Y,cov.obj=cov.obj)
 # covariance surface with respect to the grid point at (32,32)
 # 
 # reshape "vector" as an image
-temp<-  matrix( result, cov.obj$m,cov.obj$n)
-image.plot(cov.obj$grid$x,cov.obj$grid$y, temp)
+ temp<-  matrix( result, cov.obj$m,cov.obj$n)
+ image.plot(cov.obj$grid$x,cov.obj$grid$y, temp)
 # or persp( cov.obj$grid$x,cov.obj$grid$y, temp) 
 
-# check out the Matern. 
-cov.obj<- matern.image.cov( setup=TRUE, grid=grid, theta=1.25, 
-smoothness=2)
-Y<- matrix(0,64,64)
-Y[16,16]<- 1
-result<- matern.image.cov( Y= Y,cov.obj=cov.obj)
-temp<-  matrix( result, cov.obj$m,cov.obj$n)
-image.plot( cov.obj$grid$x,cov.obj$grid$y, temp)
+# check out the Matern 
+ cov.obj<- stationary.image.cov( 
+             setup=TRUE, grid=grid, theta=1.25, smoothness=2)
+ Y<- matrix(0,64,64)
+ Y[16,16]<- 1
+
+ result<- stationary.image.cov( Y= Y,cov.obj=cov.obj)
+  temp<-  matrix( result, cov.obj$m,cov.obj$n)
+ image.plot( cov.obj$grid$x,cov.obj$grid$y, temp)
+
 # Note we have centered at the location (16,16) for this case
 
 }

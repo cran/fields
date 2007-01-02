@@ -9,9 +9,12 @@ points, new data (Y) or other values of the smoothing parameter (lambda)
 including a GCV estimate. 
 }
 \usage{
-predict.Krig(object, x = NULL, lambda = NA, df = NA, model = NA,
-        eval.correlation.model = TRUE, y = NULL, 
-        verbose = FALSE, gcv = FALSE,...)
+predict.Krig(
+object, x = NULL, Z = NULL, drop.Z = FALSE, just.fixed
+                 = FALSE, lambda = NA, df = NA, model = NA,
+                 eval.correlation.model = TRUE, y = NULL, yM = NULL,
+                 verbose = FALSE, ...)
+
 }
 \arguments{
 \item{object}{
@@ -21,6 +24,14 @@ Fit object from the Krig or Tps function.
 Matrix of x values on which to evaluate the kriging surface. 
 If omitted, the data x values, i.e. out\$x  will be used. 
 }
+\item{Z}{ Vector/Matrix of additional covariates to be included in 
+fixed part of spatial model}
+\item{drop.Z}{ If TRUE only spatial fixed part of model is evaluated. 
+i.e. Z covariates are not used. 
+}
+\item{just.fixed}{
+Only fixed part of model is evaluated}
+
 \item{lambda}{
 Smoothing parameter. If omitted, out\$lambda will be used. 
 (See also df and gcv arguments)
@@ -46,21 +57,21 @@ to recomputing the Krig object with this new data but is more efficient
 because many pieces can be reused. Note that the x values are assumed to
 be the same. 
 }
-\item{verbose}{
+\item{yM}{
+If not NULL evaluate the estimate using this vector as the replicate mean 
+data. That is, assume the full data has been collapsed into replicate 
+means in the same order as xM. The replicate weights are assumed to be 
+the same as the original data. (weightsM)
+}
+
+ \item{verbose}{
 Print out all kinds of intermediate stuff for debugging 
 }
-\item{gcv}{
- 
-Default is false. Find lambda from the y vector using GCV. See the
-returned values for a side effect of setting equal to true. 
-}
-\item{\dots}{Other arguments for predict.}
+
+\item{\dots}{Other arguments passed to predict.}
 }
 \value{
-Vector of predicted responses if gcv=F ( the default)
-BUT NOTE: If lambda is found by gcv then the returned values is a list
-with the first component a vector of predictions and the second the
-estimated value of lambda.  
+Vector of predicted responses
 }
 \details{
 The main goal in this function is to reuse the Krig object to rapidly
@@ -71,11 +82,19 @@ is that most on the calculations depend on the observed locations not on
 lambda or the observed data.  
 }
 \seealso{
-Krig, predict.surface  
+Krig, predict.surface gcv.Krig 
 }
+
 \examples{
-Krig(ozone$x,ozone$y,exp.cov, theta=50) ->fit
+Krig(ozone$x,ozone$y, theta=50) ->fit
 predict( fit) # gives predicted values at data points
+
+# only the fixed part of the model
+
+predict( fit, just.fixed=TRUE) 
+
+# in this case the default is a linear spatial drift  (m=2) and there 
+# are no additional covariates
 
 grid<- make.surface.grid( list( seq( -40,40,,15), seq( -40,40,,15)))
 
@@ -90,14 +109,10 @@ contour( out.p)
 
 look<- predict(fit,grid, df=15)
 
-# re fit with random data and lambda found by GCV
-look<- predict( fit, grid, y= rnorm( 20), gcv=TRUE)
+# refit with random data 
 
-# NOTE: look is a list now  look$predicted  predicted values and look$lambda
-# the value of lambda
+look<- predict( fit, grid, y= rnorm( 20))
 
-out.p<-as.surface( grid, look$predicted) 
-contour( out.p)
 }
 \keyword{spatial}
 % docclass is function

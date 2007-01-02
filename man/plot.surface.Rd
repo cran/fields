@@ -8,7 +8,7 @@ Plots a surface object in several different ways to give 3-d
 information e.g. a contour plots, perspective plots.  
 }
 \usage{
-plot.surface(x, main = NULL, type = "b", zlab = NULL, xlab = NULL,
+plot.surface(x, main = NULL, type = "C", zlab = NULL, xlab = NULL,
     ylab = NULL, levels = NULL, zlim = NULL, graphics.reset = NULL,
      labcex = 0.6, add.legend=TRUE, ...)
 }
@@ -61,14 +61,11 @@ surface, predict.surface, as.surface, drape.plot, image.plot
 \examples{
 fit<- Tps( BD[,1:4], BD$lnya) # fit surface to data 
 
-# make grid list 
-grid<-list( KCl="x", MgCl2=mean(BD[,2]),KPO4="y", dNTP=mean(BD[,4]))
+# surface of variables 2 and 3 
+#    holding 1 and 4 fixed at their median levels
+ out.p<-predict.surface(fit, xy=c(2,3))  
+ plot.surface(out.p, type="C") # surface plot  
 
-# evalute on a grid on two 
-# variables holding two fixed at their mean levels 
-out.p<-predict.surface(fit, grid, extrap=TRUE)  
-
-plot.surface(out.p, type="C") # surface plot  
 }
 \keyword{hplot}
 % docclass is function

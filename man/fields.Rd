@@ -10,25 +10,32 @@ Fields is a collection of programs for curve and function
  Kriging and Kriging for large data sets. One main feature is any
  covariance function implemented in R can be used for spatial prediction. 
 
-Some major methods include:
-\itemize{
-\item \code{Tps}   Thin Plate spline regression (including GCV) 
-\item \code{Krig}  Spatial process estimation (Kriging) 
-\item \code{krig.image}   Spatial process estimate for large problems
+fields stives to have readable and tutorial code. Take a look at the
+source code for \code{Krig} and \code{Krig.engine.default} to see how
+things work "under the hood". 
+
+Some major methods include: 
+\itemize{ \item \code{Tps} Thin Plate spline
+regression (including GCV) 
+\item \code{Krig} Spatial process estimation
+(Kriging) including support for conditional simulation. 
 }
-The Kriging functions allow you to supply a covariance function that is
-written in native S/R code. The Matern family (\code{Matern.cov}) is 
-included as a built in 
-covariance. 
+
+The Krig function allow you to supply a covariance function that is
+written in native S/R code. 
+See (\code{stationary.cov}) that includes several families of 
+covariances and distance metrics including the Matern and great circle
+distance.  
 
 Some other noteworthy functions are
 \itemize{
 \item \code{cover.design}  Space-filling designs where the distance 
 function is expresed in R/S code
 
-\item \code{as.image}    \code{image.plot}  
-\code{image.count} \code{smooth.image}  convenient functions 
-for working with image data
+\item \code{as.image}, \code{image.plot}, \code{drape.plot}, \code{quilt.plot}
+ 
+convenient functions for working with image data and rationally (well,
+maybe reasonably) placing a color scale on an image plot. 
 
 \item \code{sreg},  \code{qsreg} \code{splint}   Fast 1-D smoothing 
 splines and 1-D 
@@ -50,6 +57,13 @@ To get started, try some of the examples from help files for \code{Tps} or
 \code{Krig}. See also the manual/tutorial at 
 \url{http://www.cgd.ucar.edu/stats/Software/fields}
 
+Graphics tips:
+\code{help( fields.hints)}
+ gives some R code tricks for setting up common legends and axes. 
+And has little to do with this package!
+
+Testing:
+See \code{help(fields.tests)} for testing fields. 
 
 DISCLAIMER:
 
@@ -60,11 +74,26 @@ authors permission.
 }
 \examples{
 set.panel()
-fit<- Tps(ozone$x, ozone$y)  # fits a thin plate spline surface to ozone 
-#                               measurements.
-summary(fit) #summary of the fit 
-plot(fit) # diagnostic plots of  fit and residuals.
-surface( fit, type="I") # image and contour plot of the fitted surface
+# some air quality data:
+data(ozone2)
+x<-ozone2$lon.lat
+y<- ozone2$y[16,]
 
+# pixel plot of spatial data
+quilt.plot( x,y)
+US( add=TRUE) # add US map
+
+fit<- Tps(x,y)
+# fits a GCV thin plate smoothing spline surface to ozone measurements.
+# Hey, it does not get any easier than this!
+
+summary(fit) #diagnostic summary of the fit 
+
+set.panel(2,2)
+plot(fit) # four diagnostic plots of  fit and residuals.
+
+surface(fit) # contour/image plot of the fitted surface
+US( add=TRUE, col="magenta", lwd=2) # US map overlaid
+title("Daily max 8 hour ozone in PPB,  June 19th, 1987")
 }
 \keyword{datasets}

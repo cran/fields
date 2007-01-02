@@ -9,8 +9,9 @@ The strips can either use a
 common color range or be scaled separately. 
 }
 \usage{
-colorbar.plot(x, y, strip, strip.width = 0.1, strip.length = 4 * 
-strip.width, zrange = NULL, adj.x = 0.5, adj.y = 0.5, col = tim.colors(256), horizontal = TRUE, ...)
+colorbar.plot(x, y, strip, strip.width = 0.1, strip.length = 4 * strip.width, 
+zrange = NULL, adj.x = 0.5, adj.y = 0.5, col = tim.colors(256), 
+horizontal = TRUE, ...)
 }
 \arguments{
   \item{x}{x position of strip  in user coordinates }
@@ -69,7 +70,7 @@ impression of location and scale for several distributions.
 plot( 1:10, (1:10)*10, type="n", bty="n") 
 # of course this could be anything 
 
-y<- cbind( 1:15, 26:35)
+y<- cbind( 1:15, (1:15)+25)
 
 colorbar.plot( 2.5, 30, y)
 points( 2.5,30, pch="+", cex=2, adj=.5)

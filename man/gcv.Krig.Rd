@@ -91,21 +91,22 @@ gcv.Krig( obj)-> out
 print( out$lambda.est) # results agree with Tps summary
 
 # a simulation example
-x<- seq( 0,1,,200)
+x<- seq( 0,1,,150)
 f<-  x**2*( 1-x)
 f<- f/sqrt( var( f))
 
-Tps( x,f)-> obj # create Krig object
-
 set.seed(123) # let's all use the same seed
 sigma<- .1
+y<- f + rnorm( 150)*sigma
 
-hold<- matrix( NA, ncol=4, nrow=100)
+Tps( x,y)-> obj # create Krig object
 
-for( k in 1 :100){
+hold<- matrix( NA, ncol=4, nrow=20)
+
+for( k in 1:20){
 # look at GCV estimates of lambda
 # new data simulated
-   y<- f + rnorm(200)*sigma 
+   y<- f + rnorm(150)*sigma 
 # save GCV estimates
 hold[k,]<-  gcv.Krig(obj,  y=y, give.warnings=FALSE)$lambda.est[1,]
 }
@@ -114,5 +115,6 @@ yline( sigma, col=2)
 # note some occaisional flaky behaviour with GCV ( eff df > 20!)
 
   }
+
 }
 \keyword{spatial}

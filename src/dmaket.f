@@ -29,7 +29,7 @@ c Subprograms Called Directly:
 c	Blas  - dcopy
 c	Other - mkpoly
 c
-c $Header: /fs/cgd/home0/thoar/CVS.REPOS/fields/src/dmaket.f,v 1.1.1.1 2002/12/04 22:46:16 thoar Exp $
+c $Header: /fs/image/home/thoar/CVS.REPOS/fields/src/dmaket.f,v 1.1.1.1 2002/12/04 22:46:16 thoar Exp $
 c
       integer i,j,k,tt,nt,bptr,eptr
 c

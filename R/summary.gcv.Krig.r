@@ -1,5 +1,5 @@
 "summary.gcv.Krig" <-
-function (object, lambda=NULL,df, cost = 1, verbose = FALSE, offset = 0, 
+function (object, lambda, cost = 1, verbose = FALSE, offset = 0, 
     y = NULL, ...) 
 {
     out <- object
@@ -7,14 +7,13 @@ function (object, lambda=NULL,df, cost = 1, verbose = FALSE, offset = 0,
     np <- out$np
     N <- out$N
     D <- out$matrices$D
-          
     if (is.null(y)) {
         u <- out$matrices$u
         shat.pure.error <- out$shat.pure.error
         pure.ss <- out$pure.ss
     }
     else {
-        out2 <- Krig.updateY(out, y)
+        out2 <- Krig.coef(out, y)
         u <- out2$u
         shat.pure.error <- out2$shat.pure.error
         pure.ss <- out2$pure.ss
@@ -25,11 +24,6 @@ function (object, lambda=NULL,df, cost = 1, verbose = FALSE, offset = 0,
     if (verbose) {
         print(info)
     }
-
-    if(is.null(lambda)){
-            lambda<-  Krig.df.to.lambda(df,D)
-           }
-
     lambda.est <- rep(NA, 6)
     names(lambda.est) <- c("lambda", "trA", "GCV", "GCV.one", 
         "GCV.model", "shat")
@@ -37,9 +31,10 @@ function (object, lambda=NULL,df, cost = 1, verbose = FALSE, offset = 0,
     lambda.est[2] <- Krig.ftrace(lambda, D)
     lambda.est[3] <- Krig.fgcv(lambda, info)
     lambda.est[4] <- Krig.fgcv.one(lambda, info)
+
     if (!is.na(shat.pure.error)) {
-        lambda.est[5] <- Krig.fgcv.model(lambda, info)
-    }
+        lambda.est[5] <- Krig.fgcv.model(lambda, info)}
+
     lambda.est[6] <- sqrt(Krig.fs2hat(lambda, info))
     lambda.est
 }

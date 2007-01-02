@@ -21,7 +21,7 @@ Value of the field at locations
 \item{id}{
 A 2 column matrix that specifies which variogram differnces to find. 
 If omitted all possible pairing are found. 
-This can can used if the data has an additional covariate that determines
+This can used if the data has an additional covariate that determines
 proximity, for example a time window. 
 }
 \item{d}{
@@ -47,33 +47,28 @@ but must be ordered.
 }
 \value{
 
-name= vgram>
+A list with these components. 
+
+\item{vgram}
 variogram values 
-</s-return-component >
 
-name= vgram>
-variogram values 
-</s-return-component >
+\item{d} pairwise distances 
 
-name= d>
-pairwise distances 
-</s-return-component >
 
-name= call>
+\item{call}
 calling string 
-</s-return-component >
 
-name= stats>
+\item{stats}
 Matrix of statistics for values in each bin. 
 Rows are the summaries returned by the stats function or describe.  
 If not either breaks or N arguments are not supplied then this
 component is not computed. 
-</s-return-component >
 
-name= centers>
+\item{centers}
 Bin centers
-</s-return-component >
+
 }
+
 \section{References}{
 See any standard reference on spatial statistics. For example 
 Cressie, Spatial Statistics  

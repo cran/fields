@@ -16,7 +16,7 @@ function (temp, style = "tukey", outlier = TRUE)
 
     if (style == "quantile") {
         quant <- c(0.05, 0.25, 0.5, 0.75, 0.95)
-        obj$bb<- bb <- quantile(temp, quant)
+        obj$bb<- bb <- quantile(temp, quant, na.rm=TRUE)
         if ((length(temp) > 5) & outlier) {
             obj$out <- temp[(temp < bb[1]) | (temp > bb[5])]
         }
@@ -25,7 +25,7 @@ function (temp, style = "tukey", outlier = TRUE)
 
     if (style == "tukey") {
         quant <- c(0.05, 0.25, 0.5, 0.75, 0.95)
-        obj$bb <- bb <- quantile(temp, quant)
+        obj$bb <- bb <- quantile(temp, quant, na.rm=TRUE)
         iqr <- bb[4] - bb[2]
         bb[1] <- min(temp[temp >= bb[2] - 1.5 * iqr])
         bb[5] <- max(temp[temp <= bb[4] + 1.5 * iqr])

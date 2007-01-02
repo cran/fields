@@ -23,7 +23,8 @@ function (info, lambda.grid, gcv, gcv.fun, tol, verbose = FALSE,
     }
     else {
         if (give.warnings) {
-            warning("GCV search gives a minumum at the endpoints of the grid search")
+            warning("GCV search gives a minimum at the endpoints of the 
+grid search")
         }
         return(lambda.gcv)
     }

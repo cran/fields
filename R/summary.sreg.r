@@ -20,8 +20,6 @@ function(object, digits = 4, ...)
 	summary$adjr2 <- 1 - ((length(x$residuals) - 1)/(length(x$residuals) -
 		x$eff.df)) * (1 - hold)
 	summary$digits <- digits
-	summary$cov.function <- as.character(x$call.name)
-	summary$correlation.model <- x$correlation.model
 	summary$sum.gcv.lambda <- summary.gcv.sreg(x, x$lambda)
 	summary
 }

@@ -1,152 +1,151 @@
 "predict.Krig" <-
-function(object, x = NULL, lambda = NA, df = NA, model = NA, 
-	eval.correlation.model = TRUE, y = NULL, verbose = FALSE, 
-        gcv = FALSE, ...)
+function (object, x = NULL, Z=NULL, drop.Z=FALSE,
+  just.fixed=FALSE, lambda = NA, df = NA, model = NA, 
+    eval.correlation.model = TRUE, y = NULL, yM= NULL,
+          verbose = FALSE,...) 
 {
-    out<- object # hack S3
-	#
-	# the key to computing the estimate are the coeffients c and d
-	# or if these need to be recomputed, the vector u
-	# for new data, u needs to be found 
-	#
-	if(is.null(y)) {
-		temp.u <- out$matrices$u
-		temp.yM <- out$yM
-		temp.c <- out$c
-		temp.d <- out$d
-	}
-	else {
-		out2 <- Krig.updateY(out, y, verbose = verbose)
-		temp.u <- out2$u
-		temp.yM <- out2$yM
-		if(verbose) {
-			cat("u's")
-			print(temp.u)
-		}
-	}
-	#
-	# temp.c and temp.d will be calculated below from the new stuff in out2
-	#
-	#
-	# use data x matrix for prediction if it has been omitted. 
-	#
-	if(is.null(x)) {
-		x <- out$x
-	}
-	x <- as.matrix(x)
-	if(verbose)
-		print(x)
-	#
-	# 
-	# sometimes one wants to over ride evaluating as a correlation model
-	# check for this flag
-	#
-	correlation.model <- (out$correlation.model & eval.correlation.model)
-	# correlation.model is False unless mean.obj and sd.obj 
-	# are specified in the call to Krig
-	if(correlation.model) {
-		#
-		# find mean and sd if this is a correlation model 
-		# the final predictions will then be transformed by these quantities
-		#
-		temp.mean <- predict(out$mean.obj, x)
-		temp.sd <- predict(out$sd.obj, x)
-	}
-	#
-	# scale the x values 
-	# using information from the output object
-	# scaling is (0,1) by default
-	#
-	if(is.null(out$transform)) {
-		xc <- rep(0, ncol(x))
-		xs <- rep(1, ncol(x))
-	}
-	else {
-		xc <- out$transform$x.center
-		xs <- out$transform$x.scale
-	}
-	x <- scale(x, xc, xs)
-	knots <- scale(out$knots, xc, xs)
-	#
-	if(verbose) {
-		print(x)
-	}
-	#
-	#
-	# figure out if coefficients  c and d need to be recomputed
-	#	
-	find.coef <- (!is.null(y) | !is.na(lambda) | !is.na(df))
-	#
-	# Now we make various choices for filling in lambda
-	#
-	# if  degrees of freedom is passed then convert to a lmbda and use
-	#this.
-	if(!is.na(df)) {
-		lambda <- Krig.df.to.lambda(df, out$matrices$D)
-	}
-	#   Fill in from model component
-	if(!is.na(model)) {
-		lambda <- model[1]
-	}
-	#
-	# if lambda is actually passed and no GCV then use this value for lambda
-	#
-	if(is.na(lambda) & !gcv) lambda <- out$lambda
-	#
-	# if GCV then do it and find lambda
-	# here we are assuming that new data is supplied.  
-	#
-	if(gcv) {
-		lambda <- gcv.Krig(out, cost = out$cost, offset = out$offset,
-			y = y)$lambda.best
-	}
-	if(find.coef) {
-		out3 <- Krig.coef(out, u = temp.u, lambda = lambda, yM = 
-			temp.yM)
-		temp.d <- out3$d
-		temp.c <- out3$c
-		if(verbose) {
-			cat(" d coefs")
-			print(temp.d)
-			cat("c coefs")
-			print(temp.c)
-		}
-	}
-	#
-	# At this point we have  the right coefficients (temp.d and temp.c)
-	# to compute the spline.  
-	#
-	#
-	# decide whether to use the fast multiplication routines for the
-	#covariance function
-	#
-	#
-	#
-	# check whether the covarinace function has the argument C in its call.
-	# If so take advantage of it. 
-	#
-	C.arg.missing <- is.null(formals(get(out$call.name))$C)
-	if(C.arg.missing) {
-			temp <- c(out$make.tmatrix(x, out$m) %*% temp.d + 
-				do.call(out$call.name, c(out$args, list(x1 = x,
-				x2 = knots))) %*% temp.c)
-	}
-	else {
-			temp <- c(out$make.tmatrix(x, out$m) %*% temp.d + 
-				do.call(out$call.name, c(out$args, list(x1 = x,
-				x2 = knots, C = temp.c))))
-	}
-	#
-	# if correlation model do the transformation
-	#
-	if(correlation.model) temp <- (temp * temp.sd + temp.mean)
-	#
-	# return lambda also if GCV was done
-	#
-	if(!gcv) {
-		return(temp)
-	}
-	if(gcv) {
-		return(list(predicted = temp, lambda = lambda))
-	}
+
+#NOTE: most of this function is figuring out what to do!
+# 
+
+# y is full data yM are the data collapsed to replicate means
+
+# if new data is not passed then copy from the object
+
+    if (is.null(y)&is.null( yM)) {
+        temp.c <- object$c
+        temp.d <- object$d
+    }
+
+# check for passed x but no Z -- this is an error if there Z covariates
+# in model and drop.Z is FALSE
+
+    if( !is.null(x) & is.null(Z) & !is.null( object$Z) & !drop.Z ){
+       stop("Need to specifify drop.Z as TRUE or pass Z values")}
+    
+
+
+# default is to predict at data x's
+    if (is.null(x)) {
+        x <- object$x      
+    }
+    else{
+        x <- as.matrix(x)}
+
+# default is to predict at data Z's
+    if (is.null(Z)) {
+        Z <- object$Z      
+    }
+    else{
+        Z <- as.matrix(Z)}
+     
+    if (verbose) {
+        print(x)
+        print(Z)}
+    
+# transformations of x values used in Krig
+
+    xc <- object$transform$x.center
+    xs <- object$transform$x.scale
+
+    x <- scale(x, xc, xs)
+
+# NOTE knots are already scaceld in Krig object and are used 
+# in transformed scale. 
+
+#    knots <- scale( object$knots, xc, xs)
+
+#
+# figure out if the coefficients for the surface needto be recomputed. 
+    find.coef <- (!is.null(y) | !is.null(yM) | !is.na(lambda) 
+                          | !is.na(df)|!is.na(model[1]))
+
+    if( verbose){ cat("find.coef", find.coef, fill=TRUE)}
+
+#   convert effective degrees of freedom to equivalent lambda
+    if (!is.na(df)) {
+        lambda <- Krig.df.to.lambda(df, object$matrices$D)
+    }
+
+    if (!is.na(model)) {
+        lambda <- model[1]
+    }
+
+    if (is.na(lambda)) 
+        lambda <- object$lambda
+
+# 
+# if the coefficients need to be recomputed  do it. 
+    if (find.coef) {
+
+        if( verbose){ cat("new coefs found", fill=TRUE)}
+
+        object3 <- Krig.coef( object, lambda = lambda, y=y, yM=yM)
+        temp.d <- object3$d
+        temp.c <- object3$c
+    
+    }
+
+        if (verbose) {
+            cat(" d coefs",fill=TRUE)
+            print(temp.d)
+            cat("c coefs", fill=TRUE)
+            print(temp.c)
+        }
+
+# 
+# The covariance function is 
+# evaluated by using it name, do.call function and any 
+# additional arguments. 
+#
+#
+# this is the fixed part of predictor 
+#
+     Tmatrix<- do.call(object$null.function.name, 
+                 c(object$null.args,list(x=x, Z=Z, drop.Z=drop.Z)  )  )
+
+     if( drop.Z){
+       temp <- Tmatrix %*% temp.d[object$ind.drift]}
+     else{
+       temp <-  Tmatrix %*% temp.d }
+
+# add in spatial piece
+
+  if( !just.fixed){     
+#
+# Now find sum of covariance functions times coefficients
+# Note that the multiplication of the cross covariance matrix
+# by the coefficients is done implicitly in the covariance function
+# 
+      temp<- temp + 
+       do.call(
+         object$cov.function.name, 
+         c( object$args, list(x1 = x, x2 = object$knots, C = temp.c)))
+
+# coerce to vector      
+   }    
+
+      temp<- c( temp)
+ 
+
+#
+# transform back into raw scale if this is a correlation model.
+# if y's are in the scale of correlations 
+# if so scale by sd and add back in mean 
+
+
+    correlation.model <- ( object$correlation.model & eval.correlation.model)
+
+    if (correlation.model) {
+
+      if( !is.na( object$sd.obj[1])){
+       temp<- temp*predict( object$sd.obj, x)}
+
+      if( !is.na( object$mean.obj[1])){
+       temp<- temp + predict( object$mean.obj, x)}
+
+    }
+
+        return(temp)
 }
+

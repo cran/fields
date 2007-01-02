@@ -16,15 +16,15 @@ linear smoothers the matrix A may depend on the smoothing parameter (
 or covariance function and the independent variables (X) but NOT on Y.    
 }
 \usage{
-Krig.Amatrix(out, x0 = out$x, lambda)
+Krig.Amatrix(object, x0 = object$x, lambda=NULL)
 }
 \arguments{
 Output object from fitting a data set using a FIELD regression
 method. 
 Currently this is supported only for Krig ( and Tps) functions. 
 
-\item{out}{
-A Krig object produced by the Krig function. 
+\item{object}{
+A Krig object produced by the Krig ( or Tps) function. 
 }
 \item{x0}{
 Locations for prediction default is the observation locations. 
@@ -51,6 +51,11 @@ matrix is usually constructed to predict the estimated curve at the data
 points Amatrix.Krig does not have such restrictions. This 
 is possible
 because any value of the estimated curve will be a linear function of Y.  
+
+The actual calculation in this function is not high tech. It invovles 
+loop through the unit vectors at each observation and computation of the
+prediction for each of these delta functions. 
+
 }
 \section{References}{
 Nychka (2000) "Spatial process estimates as smoothers." 

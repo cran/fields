@@ -10,14 +10,15 @@ model is additive  Y = f(X) +e  where f(X) is a d dimensional surface.
 This is a special case of the spatial process estimate.   
 }
 \usage{
-Tps(x, Y, m = NULL, p = NULL, decomp = "WBW", scale.type = "range", ...)
+Tps(x, Y, m = NULL, p = NULL, scale.type = "range", ...)
 }
 \arguments{
 To be helpful, a more complete list of arguments are described that are the 
 same as those for the Krig function.  
 
 \item{x}{
-Matrix of independent variables. Each row is a location. 
+Matrix of independent variables. Each row is a location or a set of 
+independent covariates. 
 }
 \item{Y}{
 Vector of dependent variables. 
@@ -28,16 +29,11 @@ included in the model as the drift (or spatial trend) component.
 Default is the value such that 2m-d is greater than zero where d is the 
 dimension of x. 
 }
+
 \item{p}{
 Exponent for radial basis functions. Default is 2m-d. 
 }
-\item{decomp}{
-Type of matrix decompositions used to compute the solution. Default is  
-the more numerically stable   
-"WBW" Wendelberger-Bates-Wahba. This is the strategy used in GCV pack.   
-An alternative is "DR" Demmler-Reinsch. This must be used if one 
-wants a reduced set of basis functions (specifying knots). 
-}
+
 \item{scale.type}{
 The independent variables and knots are scaled to the specified 
 scale.type. 
@@ -49,28 +45,36 @@ the
 user. The default for "user" is mean 0 and standard deviation 1. Scale 
 type of "unscaled" does not scale the data.  
 }
+
 \item{\dots}{
 Any argument that is valid for the Krig function. Some of the main ones
 are listed below. 
+
 \describe{
+
 \item{lambda}{
 Smoothing parameter that is the ratio of the error variance (sigma**2) 
 to the scale parameter of the  
 covariance function. If omitted this is estimated by GCV. 
 }
+
+\item{df}{
+The effective number of parameters for the fitted surface. Conversely,
+N- df, where N is the total number of observations is the degrees of
+freedom associated with the residuals.
+This is an alternative to specifying lambda and much more interpretable.
+}
+
 \item{cost}{
-Cost value used in GCV criterion. Corresponds to a penalty for  
-increased number of parameters. 
+Cost value used in GCV criterion. Corresponds to a penalty for
+increased number of parameters. The default is 1.0 and corresponds to the
+usual GCV.
 }
-\item{knots}{
-Subset of data used in the fit. 
-}
+
+
 \item{weights}{
 Weights are proportional to the reciprocal variance of the measurement  
 error. The default is no weighting i.e. vector of unit weights. 
-}
-\item{return.matrices}{
-Matrices from the decompositions are returned. The default is T.  
 }
 \item{nstep.cv}{
 Number of grid points for minimum GCV search. 
@@ -92,15 +96,15 @@ Scale factor for covariance.
 Variance of errors or if weights are not equal to 1 the variance is
 sigma**2/weight. 
 }
+
 \item{method}{
-Character string specifiying the method for estimating the "smoothing"
-parameter. The default is 'GCV' -- generalized corss-validation. 
+Determines what "smoothing" parameter should be used. The default
+is to estimate standard GCV
+Other choices are: GCV.model, GCV.one, RMSE, pure error and REML. The
+differences are explained below.
 }
 \item{verbose}{
 If true will print out all kinds of intermediate stuff.  
-}
-\item{cond.number}{
-maximum size of condition number to allow when using DR decomposition. 
 }
 \item{mean.obj}{
 Object to predict the mean of the spatial process. 
@@ -108,17 +112,13 @@ Object to predict the mean of the spatial process.
 \item{sd.obj}{
 Object to predict the marginal standard deviation of the spatial process. 
 }
-\item{yname}{
-Name of y variable 
-}
-\item{return.X}{
-If true returns the big X matrix used for the estimate.  
-}
+
 \item{null.function}{
-An R function that creates the matrices for the null space model.  
-The default is make.tmatrix, an S function that creates polynomial 
-null spaces.  
+An R function that creates the matrices for the null space model.
+The default is fields.mkpoly, an R function that creates a polynomial
+regression matrix with all terms up to degree m-1. (See Details)
 }
+
 \item{offset}{
 The offset to be used in the GCV criterion. Default is 0. This would be 
 used when Krig/Tps is part of a backfitting algorithm and the offset has
@@ -158,15 +158,18 @@ scale, lambda =0 corresponds to no smoothness constraints and the data
 is interpolated.  lambda=infinity corresponds to just fitting the 
 polynomial base model by ordinary least squares.  
 
-This estimator is implemented simply by feeding the right generalized 
-covariance function based on radial basis functions to the more general 
-function Krig. This is a different approach than the older version in 
-FUNFITS (tps) and provides simpler coding. One advantage of this   
-implementation is that once a Tps/Krig object is 
-created the estimator can be found rapidly for other data and smoothing 
-parameters  provided the locations remain unchanged. This makes simulation 
-within R efficient (see example below).  
-}
+This estimator is implemented by passing the right generalized covariance
+function based on radial basis functions to the more general function
+Krig.  One advantage of this implementation is that once a Tps/Krig object
+is created the estimator can be found rapidly for other data and smoothing
+parameters provided the locations remain unchanged. This makes simulation
+within R efficient (see example below). Tps does not currenty support the
+knots argument where one can use a reduced set of basis functions. This is
+mainly to simplify and a good alternative using knots would be to use a
+valid covariance from the Matern family and a large range parameter. 
+
+ }
+
 \section{References}{
 See "Nonparametric Regression and Generalized Linear Models"  
 by Green and Silverman. 
@@ -181,7 +184,11 @@ Krig, summary.Krig, predict.Krig, predict.se.Krig, plot.Krig,
 #2-d example 
 
 fit<- Tps(ozone$x, ozone$y)  # fits a surface to ozone measurements. 
-plot(fit) # diagnostic plots of  fit and residuals. 
+
+set.panel(2,2)
+plot(fit) # four diagnostic plots of  fit and residuals. 
+set.panel()
+
 summary(fit)
 
 # predict onto a grid that matches the ranges of the data.  
@@ -202,8 +209,18 @@ lines( out$x, out$fitted.values)
 # compare to the ( much faster) one spline algorithm 
 #  sreg(rat.diet$t, rat.diet$trt) 
 # 
+
+# Adding a covariate to the fixed part of model
+# Note: this is a fairly big problem numerically (850+ locations)
+
+Tps( RMprecip$x,RMprecip$y, Z=RMprecip$elev)-> out
+
+surface( out, drop.Z=TRUE)
+US( add=TRUE, col="grey")
+
 #
-# simulation reusing
+# simulation reusing Tps/Krig object
+#
 fit<- Tps( rat.diet$t, rat.diet$trt)
 true<- fit$fitted.values
 N<-  length( fit$y)
@@ -219,18 +236,14 @@ matplot( fit$x, temp, type="l")
 # 
 #4-d example 
 fit<- Tps(BD[,1:4],BD$lnya,scale.type="range") 
-surface(fit)   
+
 # plots fitted surface and contours 
-#2-d example using a reduced set of basis functions 
-r1 <- range(flame$x[,1]) 
-r2 <-range( flame$x[,2]) 
-g.list <- list(seq(r1[1], r1[2],6), seq(r2[1], r2[2], 6)) 
-knots<- make.surface.grid(g.list) 
-# these knots are a 6X6 grid over 
-# the ranges of the two flame variables 
-out<-Tps(flame$x, flame$y, knots=knots, m=3)   
-surface( out, type="I")
-points( knots)
+# default is to hold 3rd and 4th fixed at median values 
+
+surface(fit)   
+
+
+
 }
 \keyword{smooth}
 % docclass is function

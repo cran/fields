@@ -2,17 +2,22 @@
 function (lev, y, w = rep(1, length(y))) 
 {
     N <- length(y)
+# ordered unique values of lev
     tags <- lev[!duplicated(lev)]
+# lev are now integer tags
     lev <- match(lev, tags)
-    id <- order(lev)
-    brk <- c(diff(lev[id]) != 0, TRUE)
-    w.means <- diff(c(0, cumsum(w[id])[brk]))
-    means <- diff(c(0, cumsum(y[id] * w[id])[brk]))/w.means
-    n <- diff(c(0, (1:N)[brk]))
+
+# add together weights with same lev
+    w.means<- c(tapply( w, lev, sum))
+
+# find weighted means for each lev
+    means <- c(tapply( y*w, lev, sum)/w.means)
+
+# find SS
     SSE <- sum(w * (y - means[lev])^2)
-    MSE <- SSE/(length(y) - length(n))
-    names(means) <- tags
-    names(w.means) <- tags
-    list(means = means, SSE = SSE, w.means = w.means, n = n, 
-        MSE = MSE, fitted.values = means[lev], tags = tags)
+    MSE <- SSE/(length(y) - length(means))
+
+  list(n=length(means) , means = means, SSE = SSE, w.means = w.means, 
+        MSE = MSE, lev = lev, tags=tags)
 }
+
