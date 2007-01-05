@@ -12,16 +12,22 @@ function (x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA,marginal=FALSE)
     d <- ncol(x1)
     n1 <- nrow(x1)
     n2 <- nrow(x2)
-    x1 <- t(t(x1)/theta)
-    x2 <- t(t(x2)/theta)
+# scale the coordinates by theta
+# a more general scaling by a matrix is done in stationary.cov
+    x1 <- scale(x1 , center=FALSE, scale=theta)
+    x2 <- scale(x2 , center=FALSE, scale=theta)
     par <- p
 #
-# cross covariance matrix
+# there are three possible actions listed below:
+
+# find cross covariance matrix
     if (is.na(C[1])& !marginal) {
        return( exp(-rdist(x1, x2)^p) )
     }
 #
-#multiply cross covariance matrix by C
+# multiply cross covariance matrix by C
+# in this case implemented in FORTRAN
+#
     if(!is.na( C[1])) {
        return(
         .Fortran("multeb", nd = as.integer(d), x1 = as.double(x1), 
@@ -32,7 +38,8 @@ function (x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA,marginal=FALSE)
     }
 #
 # return marginal variance ( 1.0 in this case)
+
     if( marginal){
-    return( rep( 1, ncol(x1)) )}
+    return( rep( 1, nrow(x1)) )}
 
 }

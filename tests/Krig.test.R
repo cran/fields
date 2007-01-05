@@ -73,8 +73,8 @@ weights<- runif(15)*10
 
 # compare to 
 Krig( x,y, knots=knots, cov.function=exp.cov,weights=weights)-> out.new
-Krig( x,y, knots=knots, cov.function=exp.cov,weights=weights, lambda=1)-> out.new2
-
+Krig( x,y, knots=knots, cov.function=exp.cov,weights=weights, 
+          lambda=1)-> out.new2
 
 # compute test using linear algebra
 
@@ -309,7 +309,5 @@ test2<- (1/M)*sum(
 test.for.zero( test,test2,tag="GCV model")
 
 #cat("done with GCV case", fill=TRUE)
-#cat("done with Krig tests", fill=TRUE)
-#options( echo=TRUE)
-
-
+cat("done with Krig tests", fill=TRUE)
+options( echo=TRUE)

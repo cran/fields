@@ -19,12 +19,13 @@ Type 'q()' to quit R.
 
 [Previously saved workspace restored]
 
-> library( fields)
+> library(fields)
 fields is loaded use help(fields) for an overview of this library
-> 
-> # tests of predict.se
-> # against direct linear algebra 
-> 
+> #
+> #
+> #  test of off diagonal weight matrix for obs
+> #  Check against linear algebra
+> #
 > options( echo=FALSE)
-all done testing predict.se 
+all done  testing off diag W case
 > 

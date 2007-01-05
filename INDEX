@@ -1,3 +1,5 @@
+%d*%-methods            Multiplying diagonal matrices in Package
+                        'fields'
 BD                      Data frame of the effect of buffer compositions
                         on DNA strand displacement amplification. A 4-d
                         regression data set with with replication. This
@@ -7,8 +9,10 @@ Exponential             Covariance functions
 Krig                    Kriging surface estimate
 Krig.Amatrix            Smoother (or "hat") matrix relating predicted
                         values to the dependent (Y) values.
-Krig.engine.default     Basic linear algebra computations supporting
-                        the Krig function.
+Krig.engine.default     Basic linear algebra utilities and other
+                        computations supporting the Krig function.
+Krig.null.function      Default function to create fixed matrix part of
+                        spatial process model.
 RMprecip                Monthly total precipitation (mm) for August
                         1963 in the Rocky Mountain Region
 Tps                     Thin plate spline regression

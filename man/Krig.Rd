@@ -22,16 +22,17 @@ subsequent analysis. Krig also supports a correlation model where the mean
 and marginal variances are supplied. 
 }
 \usage{
-Krig(x, Y, cov.function = "stationary.cov", lambda = NA, df = NA,
-    cost = 1, knots=NA, weights = NULL, m = 2,
-    nstep.cv = 80, scale.type = "user", x.center = rep(0, ncol(x)),
-    x.scale = rep(1, ncol(x)), rho = NA, sigma2 = NA, method = "GCV",
-     verbose = FALSE,  mean.obj = NA,
-    sd.obj = NA,
-    null.function = fields.mkpoly,
-    offset = 0, outputcall = NULL, cov.args = NULL, na.rm = TRUE,
-    chol.args=NULL,give.warnings=TRUE,
-    ...)
+Krig(
+x, Y, cov.function = "stationary.cov", lambda = NA, df
+                 = NA, Z = NULL, cost = 1, knots = NA, weights = NULL,
+                 m = 2, nstep.cv = 80, scale.type = "user", x.center =
+                 rep(0, ncol(x)), x.scale = rep(1, ncol(x)), rho = NA,
+                 sigma2 = NA, method = "GCV", verbose = FALSE, mean.obj
+                 = NA, sd.obj = NA, null.function =
+                 "Krig.null.function", wght.function = NULL, offset =
+                 0, outputcall = NULL, na.rm = TRUE, cov.args = NULL,
+                 chol.args = NULL, null.args = NULL, wght.args = NULL,
+                 W = NULL, give.warnings = TRUE, ...)
 
 fitted.Krig(object,...)
 
@@ -58,6 +59,9 @@ See also \code{stationary.cov} for more general choice of covariance
 shapes. \code{exponential.cov} will be faster if only the exponential 
 covariance form is needed. 
 }
+\item{Z}{
+A vector of matrix of covariates to be include in the fixed part of the 
+model. If NULL (default) no addtional covariates are included.}
 
 \item{lambda}{
 Smoothing parameter that is the ratio of the error variance (sigma**2) 
@@ -161,6 +165,13 @@ The default is fields.mkpoly, an R function that creates a polynomial
 regression matrix with all terms up to degree m-1. (See Details)  
 }
 
+\item{wght.function}{
+An R function that creates a weights matrix to the observations.  
+This is only needed if the weight matirx has off diagonal elements. 
+The default is NULL indicating that the weight matrix is a diagonal, based
+on the weights argument. (See details)
+}
+
 \item{offset}{
 The offset to be used in the GCV criterion. Default is 0. This would be 
 used when Krig is part of a backfitting algorithm and the offset is 
@@ -188,6 +199,20 @@ Arguments to be passed to the cholesky decomposition in Krig.engine.fixed.
 The default if NULL, assigned at the top level of this function, is 
 list( pivot=FALSE). This argument is useful when working with 
 the sparse matrix package. }
+
+\item{wght.args}{
+Optional arguments to be passed to the weight function  (wght.function) 
+used to create the observation weight matrix.} 
+
+\item{W}{The explicit observatoin weight matrix.}
+
+\item{null.args}{ Extra arguments for the null space function 
+\code{null.function}. 
+If \code{fields.mkpoly} is passed as 
+\code{null.function} then this is set to a list with the
+value of \code{m}. So the default is use a polynomial of degree m-1 for the
+null space (fixed part) of the model. 
+}
 
 \item{give.warnings}{ If TRUE warnings are given in gcv grid search limits.
 If FALSE warnings are not given. Best to leave this TRUE!}
@@ -320,20 +345,26 @@ measurement error and the scale factor for covariance used in the fit.
 }
 }
 \details{
-This function produces a object of class Krig. With this object it is easy to subsequently 
-predict with this fitted surface, find standard errors, alter the y data ( but not x),  etc. 
 
-The Kriging model is:  Y(x)= P(x) + Z(x) + e 
+This function produces a object of class Krig. With this object it is
+easy to subsequently predict with this fitted surface, find standard
+errors, alter the y data ( but not x), etc. 
 
-where Y is the dependent variable observed at location x, P is a low order
-polynomial, Z is a mean zero, Gaussian field with covariance function K
-and e is assumed to be independent normal errors. The estimated surface is
-the best linear unbiased estimate (BLUE)  of P(x) + Z(x) given the
-observed data. For this estimate K, is taken to be rho*cov.function and
-the errors have variance sigma**2. In more conventional geostatistical terms
-rho is the "sill" if the covariance function is actually a correlation function  and 
-sigma**2 is the nugget variance or measure error variance (the two are confounded in this 
-model.)  
+The Kriging model is: Y.k= P(x.k) + Z(x.k) + e.k
+
+where ".k" means subscripted by k, Y is the dependent variable observed
+at location x.k, P is a low order polynomial, Z is a mean zero, Gaussian
+field with covariance function K and e is assumed to be independent
+normal errors. The estimated surface is the best linear unbiased
+estimate (BLUE) of P(x) + Z(x) given the observed data. For this
+estimate K, is taken to be rho*cov.function and the errors have variance
+sigma**2. In more conventional geostatistical terms rho is the "sill" if
+the covariance function is actually a correlation function and sigma**2
+is the nugget variance or measure error variance (the two are confounded
+in this model.)  If the weights are given then the variance of e.k is
+sigma**2/ weights.k . In the case that the weights are specified as a
+matrix, W,  using the wght.function option then the assumed covariance matrix
+for the errors is sigma**2 Wi, where Wi is the inverse of W. 
 
 If these parameters rho and sigma2 are omitted in the call, then they are
 estimated in the following way. If lambda is given, then sigma2 is
@@ -371,10 +402,11 @@ GCV.model:
 Only considers the residual sums of squares explained by the basis
 functions.  
 
-WARNING: The covariance functions often have a nonlinear parameter that
-control the strength of the correlations as a function of separation,
+WARNING: The covariance functions often have a nonlinear parameter(s) that
+often control the strength of the correlations as a function of separation,
 usually referred to as the range parameter. This parameter must be
-specified in the call to Krig and will not be estimated.
+specified in the call to Krig and will not be estimated. 
+
 }
 \section{References}{
 See "Additive Models" by Hastie and Tibshirani, "Spatial Statistics" by    
@@ -389,9 +421,9 @@ surface.Krig
 
 # a 2-d example 
 # fitting a surface to ozone  
-# measurements. Exponential covariance, parameter is 10 (in miles) 
+# measurements. Exponential covariance, range parameter is 20 (in miles) 
 
-fit <- Krig(ozone$x, ozone$y, exp.cov, theta=10)  
+fit <- Krig(ozone$x, ozone$y, theta=20)  
  
 summary( fit) # summary of fit 
 set.panel( 2,2) 
@@ -430,22 +462,21 @@ summary( fit)
 #
 
 test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
+   # return marginal variance
+     if( marginal) { return(rep( 1, nrow( x1)))}
 
-# return marginal variance
-    if( marginal) { return(rep( 1, nrow( x1)))}
-
-# find cross covariance matrix     
-    temp<- exp(-(rdist(x1,x2)/theta)**2)
-    if( is.na(C[1])){
+    # find cross covariance matrix     
+      temp<- exp(-(rdist(x1,x2)/theta)**2)
+      if( is.na(C[1])){
           return( temp)}
-    else{
+      else{
           return( temp\%*\%C)}
-   } 
-
+      } 
 #
 # use this and put in quadratic polynomial fixed function 
 
- fit.flame<- Krig(flame$x, flame$y, test.cov, m=3, theta=.5)
+
+ fit.flame<- Krig(flame$x, flame$y, cov.function="test.cov", m=3, theta=.5)
 
 #
 # note how range parameter is passed to Krig.   
@@ -466,7 +497,8 @@ test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
 #  In the example below p = 2*2 - 2 = 2  
 #
 
- out<- Krig( ozone$x, ozone$y,rad.cov, m=2,p=2,scale.type="range") 
+ out<- Krig( ozone$x, ozone$y,cov.function="rad.cov", 
+                       m=2,p=2,scale.type="range") 
 
 # See also the Fields function Tps
 # out  should be identical to  Tps( ozone$x, ozone$y)
@@ -488,7 +520,7 @@ test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
 #
  xknots<- cover.design( x, 50, num.nn= 75)$design  # select 50 knot points
 
- out<- Krig( x, y, knots=xknots,  exp.cov, theta=300)  
+ out<- Krig( x, y, knots=xknots,  cov.function="exp.cov", theta=300)  
  summary( out)
 # note that that trA found by GCV is around 17 so 50>17  knots may be a 
 # reasonable approximation to the full estimator. 
@@ -545,8 +577,9 @@ test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
 # also turn off warnings for GCV search 
 # to avoid lots of messages. (not recommended in general!)
 
-  PLL[k,]<- Krig( ozone2$lon.lat[good,], y16[good],stationary.cov, 
-            theta=theta[k], mean.obj=mean.o3, sd.obj=sd.o3, 
+  PLL[k,]<- Krig( ozone2$lon.lat[good,], y16[good],
+             cov.function="stationary.cov", 
+             theta=theta[k], mean.obj=mean.o3, sd.obj=sd.o3, 
              Covariance="Matern",smoothness=.5, 
              Distance="rdist.earth", nstep.cv=80,
              give.warnings=FALSE)$gcv.grid[,7]

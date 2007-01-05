@@ -21,10 +21,5 @@ Type 'q()' to quit R.
 
 > library( fields)
 fields is loaded use help(fields) for an overview of this library
-> 
-> # tests of predict.se
-> # against direct linear algebra 
-> 
 > options( echo=FALSE)
-all done testing predict.se 
 > 

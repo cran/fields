@@ -1,5 +1,8 @@
 library( fields)
+
 # tests of predict.se
+# against direct linear algebra 
+
 options( echo=FALSE)
 
 x0<- expand.grid( c(-8,-4,0,20,30), c(10,8,4,0))
@@ -25,9 +28,15 @@ look<- S0 - t(S1)%*% t(A) - A%*%S1 +
 #compare to 
 # diagonal elements
 
+
 test2<- predict.se( out, x= x0) 
 test.for.zero( sqrt(diag(  look)), test2,tag="Marginal predict.se")
 
+out2<- Krig( ozone$x, ozone$y, cov.function = "exp.cov", theta=50,
+            lambda=out$lambda)
+
+test2<- predict.se( out2, x= x0) 
+test.for.zero( sqrt(diag(  look)), test2,tag="Marginal predict.se fixed ")
 
 test<- predict.se( out, x= x0, cov=TRUE)
 test.for.zero( look, test,tag="Full covariance predict.se")
@@ -139,7 +148,5 @@ look2[j,k] <- sqrt(var( look$z[j,k,], na.rm=TRUE))
 test.for.zero(  1-mean(c(look2/test$z), na.rm=TRUE), 0, relative=FALSE, 
 tol=.005, tag="Conditional simulation marginal se for grid")
 
-#cat("done with Krig.se tests", fill=TRUE)
-#options( echo=TRUE)
-
-
+cat("all done testing predict.se ", fill=TRUE)
+options( echo=TRUE)

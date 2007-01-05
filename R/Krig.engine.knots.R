@@ -7,9 +7,12 @@ function(out, verbose=FALSE){
 
 # QR decomposition of null space regression matrix
 
-  qr.T <- qr(c(sqrt(out$weightsM)) * out$make.tmatrix(out$xM, out$m))  
+  Tmatrix <-  do.call(out$null.function.name, 
+                        c(out$null.args, list(x=out$xM, Z=out$ZM) ) )
+  
+  qr.T <- qr(c(sqrt(out$weightsM)) * Tmatrix)  
 
-  nt <- (qr.T$rank)
+  nt <- ncol(Tmatrix)
   np <- nrow(out$knots) + nt
 
 if( verbose){
@@ -29,9 +32,10 @@ if( verbose){
 # X is the monster ...
 
  X <- cbind(
-        out$make.tmatrix(out$xM, out$m), 
-        do.call(out$cov.function.name, 
-         c(out$args, list(x1 = out$xM, x2 = out$knots)))
+          do.call(out$null.function.name, 
+               c(out$null.args, list(x=out$xM, Z=out$ZM) ) ),    
+          do.call(out$cov.function.name, 
+            c(out$args, list(x1 = out$xM, x2 = out$knots)))
            )
 
 if( verbose){

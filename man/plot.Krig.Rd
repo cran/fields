@@ -57,7 +57,7 @@ Krig, summary.Krig, Tps, set.panel
 }
 \examples{
 
-fit<-Krig(ozone$x, ozone$y,exp.cov, theta=200)  
+fit<-Krig(ozone$x, ozone$y, theta=200)  
 # fitting a surface to ozone  
 # measurements 
 
