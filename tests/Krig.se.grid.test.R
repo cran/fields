@@ -1,5 +1,7 @@
 library( fields)
 # tests of predict.se
+# using approximations for conditional simulation on a grid. 
+#
 options( echo=FALSE)
 
 data( ozone2)
@@ -63,3 +65,6 @@ dd<- (c(hold)- c(test3))[upper]
 
 test.for.zero(   mean( abs(dd)) ,0, relative=FALSE,
 tol=.05, tag="Conditional simulation correlations for grid (RMSE) ")
+
+cat( "all done with grid based se tests", fill=TRUE)
+options( echo=TRUE)

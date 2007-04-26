@@ -42,10 +42,14 @@ function(out, verbose=FALSE, lambda=NA){
 ####################################################
 
 # create T matrix
-  Tmatrix <- out$make.tmatrix(out$knots, out$m)
+  Tmatrix <-  do.call(out$null.function.name, 
+                        c(out$null.args, list(x=out$knots, Z=out$ZM) ) )
 
+  if( verbose){
+     cat("Tmatrix:", fill=TRUE)
+     print( Tmatrix)}
   np <- nrow( out$knots)
-  nt <- nrow( Tmatrix)
+  nt <- ncol( Tmatrix)
 # form K 
      tempM<-  do.call(
              call.name,
@@ -71,6 +75,9 @@ function(out, verbose=FALSE, lambda=NA){
 
  d.coef<- qr.coef( qr.VT, forwardsolve( Mc, transpose=TRUE, out$yM, upper.tri=TRUE) )
 
+ if( verbose){
+  print( d.coef)}
+
  c.coef<- forwardsolve( Mc, transpose=TRUE, out$yM- Tmatrix%*% d.coef, upper.tri=TRUE)
  c.coef<- backsolve( Mc,c.coef)
 
@@ -88,10 +95,11 @@ return(
 ####################################################
 # create weighted T matrix
 
-  Tmatrix <- out$make.tmatrix(out$xM, out$m)
+  Tmatrix <-  do.call(out$null.function.name, 
+                        c(out$null.args, list(x=out$xM, Z= out$ZM) ) )
 
-  np <- nrow( out$knots)
-  nt <- nrow( Tmatrix)
+  nt <- ncol( Tmatrix)
+  np <- nrow( out$knots) +nt
 # form H
    H <-  do.call(
             call.name,

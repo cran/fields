@@ -9,7 +9,7 @@ image-like plot where the locations are discretized to a grid  and the z
 values are coded as a color level from a color scale. }
 \usage{
 quilt.plot(x, y, z, nrow = 64, ncol = 64, grid = NULL, 
-                     add.legend=TRUE,...)
+                     add.legend=TRUE,add=FALSE,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,6 +22,7 @@ in x the z vector  }
   \item{ncol}{ Number of grid boxes in y. }
   \item{grid}{ A grid in the form of a \code{grid list}.  }
    \item{add.legend} { If TRUE a legend color strip is added}
+  \item{add}{ If FALSE add to existing plot.}
   \item{\dots}{ arguments to be passed to the image.plot function }
 }
 \details{
@@ -30,11 +31,12 @@ This function combines the discretization to an image by the function
 Locations that fall into the same grid box will have their z values 
 averaged. 
 
-A similar function exists in the lattice package. The advantage of this 
-fields version is that it uses the standard R graphics functions and is 
-written in R code. Also, the aggregation to average values for z values in 
-the same gird box allows for different choices of grids. If two locations 
-are very close, separating them could results in very small boxes. 
+A similar function exists in the lattice package and produces good
+looking plots. The advantage of this fields version is that it uses the
+standard R graphics functions and is written in R code. Also, the
+aggregation to average values for z values in the same grid box allows
+for different choices of grids. If two locations are very close,
+separating them could result in very small boxes. 
 
 As always, legend placement is never completely automatic. Place the 
 legend independently for more control, perhaps using \code{image.plot}

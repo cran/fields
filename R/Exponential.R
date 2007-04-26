@@ -10,8 +10,6 @@ function (d , range = 1, alpha=1/range, phi=1)
 
 if( any( d <0)) stop("distance argument must be nonnegative")
 
-d<- d*alpha
-
 #
-return( phi*ifelse( d>0, exp(-d), 1) ) 
+return( phi*exp(-d*alpha) ) 
 }

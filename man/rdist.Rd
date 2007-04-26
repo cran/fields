@@ -34,7 +34,7 @@ D.ij = sqrt(  sum.k (( x1[i,k] - x2[j,k]) **2 ).
 
 }
 \seealso{
-  exp.cov, rdist.earth 
+  Exp.cov, rdist.earth 
 }
 \examples{
 out<- rdist( ozone$x)

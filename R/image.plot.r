@@ -1,9 +1,19 @@
 "image.plot" <-
-function (..., add = FALSE, nlevel = 64, legend.shrink = 0.9, 
-    legend.width = 1.2, legend.mar = NULL, graphics.reset = FALSE, 
-    horizontal = FALSE, bigplot = NULL, smallplot = NULL, legend.only = FALSE, 
-    col = tim.colors(nlevel)) 
+function (..., add=FALSE, nlevel = 64, 
+    horizontal = FALSE, 
+    legend.shrink = 0.9, 
+    legend.width = 1.2, legend.mar = ifelse( horizontal, 3.1, 5.1),
+    legend.lab=NULL, 
+    graphics.reset = FALSE, 
+    bigplot = NULL, smallplot = NULL, legend.only = FALSE, 
+    col = tim.colors(nlevel), lab.breaks=NULL, axis.args=NULL, legend.args=NULL) 
 {
+
+# Thanks to S. Koehler and  S. Woodhead
+# for comments on making this a better function
+#
+
+# save current graphics settings
     old.par <- par(no.readonly = TRUE)
 
 #  figure out zlim from passed arguments
@@ -43,9 +53,6 @@ function (..., add = FALSE, nlevel = 64, legend.shrink = 0.9,
 
         image(..., add = add, col = col)
 
-# add a box
-        box()
-
         big.par <- par(no.readonly = TRUE)
     }
 
@@ -60,10 +67,7 @@ function (..., add = FALSE, nlevel = 64, legend.shrink = 0.9,
 # Following code draws the legend using the image function 
 # and a one column image. 
     
-#
-# OLD code misaligns     iy <- seq(info$zlim[1], info$zlim[2], , nlevel)
-# This is corrected -- thanks to S. Woodhead
-#
+# calculate locations for colors on legend strip
     ix <- 1
     minz <- info$zlim[1]
     maxz <- info$zlim[2]
@@ -73,48 +77,93 @@ function (..., add = FALSE, nlevel = 64, legend.shrink = 0.9,
 
     iz <- matrix(iy, nrow = 1, ncol = length(iy))
 
+# extract the breaks
     breaks<- list(...)$breaks
-
+   
 # draw either horizontal or vertical legends. 
-# either using either suggested breaks or not 
-#  -- a total of four cases. 
-# modify the lines for axis or image to fine tune how legend looks
-#
-
-# next par line sets up a new plotting region just for the legend strip
+# using either suggested breaks or not -- a total of four cases. 
+# 
+   
+# next par call sets up a new plotting region just for the legend strip
 # at the plot coordinates 
          par(new = TRUE, pty = "m", plt = smallplot, err = -1)
 
+                                        
+# create the argument list to draw the axis
+#  this avoids 4 separate calls to axis and allows passing extra
+# arguments.
+
+    if( is.null( breaks)){
+           axis.args<- c( list( side= ifelse(horizontal,1,4),
+                            mgp = c(3, 1, 0),
+                            las = ifelse(horizontal, 0,2)),
+                           axis.args)}
+    else{
+# add axis but only put label where there are breaks
+# default labels for breaks are just the numeric values
+                              
+           if( is.null(lab.breaks)){ lab.breaks<- format( breaks)}
+
+           axis.args<- c( list( side= ifelse(horizontal,1,4),
+                                  mgp = c(3, 1, 0),
+                                 las = ifelse(horizontal, 0,2),
+                                 at=breaks,
+                                 labels=lab.breaks) ,
+                          axis.args)}    
+# 
+# draw color scales the four cases are horizontal/vertical breaks/no breaks
+# add a label if this is passed.
+    
     if (!horizontal) {
-         if( is.null( breaks)){
+    
+          if( is.null( breaks)){
             image(ix, iy, iz, xaxt = "n", yaxt = "n", xlab = "", 
-                ylab = "", col = col )
-            axis(4, mgp = c(3, 1, 0), las = 2)}
-         else{
+                ylab = "", col = col)}
+          else{
             image(ix, iy, iz, 
                  xaxt = "n", yaxt = "n", xlab = "",  ylab = "", 
-                 col = col, breaks=breaks )
-#
-# add axis but label where there are breaks
-        axis(4, at=breaks, labels=format( breaks), mgp = c(3, 1, 0), las = 2)}
-
-    }
-      else {
+                 col = col, breaks=breaks )}
+         }
+    else {
       
           if( is.null( breaks)){
              image(iy, ix, t(iz), xaxt="n",yaxt = "n", xlab = "", ylab = "", 
-                 col = col)
-              axis(1, mgp = c(3, 1, 0))}
+                 col = col)}
           else{
              image(iy, ix, t(iz), 
                  xaxt = "n", yaxt = "n", xlab = "",  ylab = "", 
-                 col = col, breaks=breaks )
-             axis(1, at=breaks, labels=format( breaks), mgp = c(3, 1, 0))}
-    }
+                 col = col, breaks=breaks )}
+         }
+    
+
+# 
+#
+# now add the axis to the legend strip.
+             
+        do.call( "axis", axis.args)
+
 
 # add a box around legend strip
-    box() 
+        box() 
+#
+#
+# add a label to the axis if information has been  supplied
+# using the mtext function. The arguments to mtext are
+# passed as a list like the drill for axis (see above)
+#
+            if( !is.null( legend.lab) ){         
+             legend.args<-list( 
+                    text= legend.lab,side= ifelse(horizontal, 1, 4), 
+                    line=legend.mar - 2)
+#                    just guessing at a good default for line! 
+            }
+#
+# add the label using mtext function             
 
+            if( !is.null( legend.args)){
+            do.call( mtext, legend.args) }
+#
+#
 # clean up graphics device settings
 # reset to larger plot region with right user coordinates. 
 

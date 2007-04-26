@@ -1,8 +1,8 @@
 "quilt.plot" <-
-function(x,y,z,nrow=64, ncol=64, grid=NULL, add.legend=TRUE,...){
+function(x,y,z,nrow=64, ncol=64, grid=NULL, add.legend=TRUE,add=FALSE,...){
+
 
 x<- as.matrix(x)
-
 
   if( ncol(x)==2){
    z<- y}
@@ -22,10 +22,10 @@ as.image( z, x=x, nrow=nrow, ncol=ncol, na.rm=TRUE)-> out.p
 
 #plot it 
 if( add.legend){
-image.plot( out.p,col=tim.colors(64),...)
+image.plot( out.p,col=tim.colors(64),add=add,...)
 }
 else{
-image(out.p, col=tim.colors(64),...)
+image(out.p, col=tim.colors(64),add=add,...)
 }
 
 

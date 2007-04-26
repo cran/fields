@@ -1,9 +1,9 @@
 \name{Exponential covariances, radial basis functions and stationary 
 covariances.} 
-\alias{exp.cov}
-\alias{exp.simple.cov}
-\alias{rad.cov}
-\alias{rad.simple.cov}
+\alias{Exp.cov}
+\alias{Exp.simple.cov}
+\alias{Rad.cov}
+\alias{Rad.simple.cov}
 \alias{stationary.cov}
 \title{
   Exponential covariance family, radial basis 
@@ -11,16 +11,20 @@ functions and a general function for stationary covariances. }
 \description{
 Given two sets of locations computes the cross covariance matrix for
 covariances among all pairings. 
+
+Note: These functions have been been renamed from the previous fields functions
+using 'Exp' in place of 'exp' to avoid conflict with the generic exponential 
+function (\code{exp(...)})in R. 
 }
 \usage{
-exp.cov(x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA, marginal=FALSE)
+Exp.cov(x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA, marginal=FALSE)
 
-exp.simple.cov(x1, x2, theta =1, C=NA,marginal=FALSE)
+Exp.simple.cov(x1, x2, theta =1, C=NA,marginal=FALSE)
 
-rad.cov(x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, 
+Rad.cov(x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, 
                C=NA,marginal=FALSE)
 
-rad.simple.cov(x1, x2, p=1, with.log = TRUE, with.constant = TRUE, 
+Rad.simple.cov(x1, x2, p=1, with.log = TRUE, with.constant = TRUE, 
                C = NA, marginal=FALSE)
 
 stationary.cov(x1, x2, Covariance="Exponential", Distance="rdist",
@@ -107,7 +111,7 @@ with this vector:  Sigma\%*\%C
 }
 \details{
 
- For purposes of illustration, the function \code{exp.cov.simple} is
+ For purposes of illustration, the function \code{Exp.cov.simple} is
 provided as a simple example and implements the R code discussed below.
 It can also serve as a template for creating new covariance functions for the
 \code{Krig} function. Also see the higher level function 
@@ -154,12 +158,12 @@ For an m th order thin plate spline in d dimensions p= 2*m-d and must
 be positive. The constant, depending on m and d, is coded in the fields 
 function \code{radbas.constant}. This form is only a generalized 
 covariance function -- it is only positive definite when restricted to
-linear subspace.  See \code{rad.simple.cov} for a coding of the radial 
+linear subspace.  See \code{Rad.simple.cov} for a coding of the radial 
 basis functions in R code. 
 
 Stationary covariance: Here the computation is apply the function
  Covariance to the distances found by the Distance function. 
-For example \code{exp.cov(x1,x2, theta=MyTheta)} and 
+For example \code{Exp.cov(x1,x2, theta=MyTheta)} and 
 \code{stationary.cov( x1,x2, theta=MyTheta, Distance= "rdist", 
 Covariance="Exponential")}
 are the same. This also the same as 
@@ -167,27 +171,28 @@ are the same. This also the same as
 Covariance="Matern",smoothness=.5)}.
   
 
-About the FORTRAN: The actual function \code{exp.cov} and 
-\code{rad.cov} calls FORTRAN to 
+About the FORTRAN: The actual function \code{Exp.cov} and 
+\code{Rad.cov} calls FORTRAN to 
 make the evaluation more efficient this is especially important when the 
 C argument is supplied. So unfortunately the actual production code in 
-exp.cov is not as crisp as the R code sketched above. See  
-\code{rad.simple.cov} for a R coding of the radial basis functions.  
+Exp.cov is not as crisp as the R code sketched above. See  
+\code{Rad.simple.cov} for a R coding of the radial basis functions.  
 
 }
 \seealso{
- Krig, rdist, rdist.earth, gauss.cov, exp.image.cov, Exponential, Matern.
+ Krig, rdist, rdist.earth, gauss.cov, Exp.image.cov, Exponential, Matern 
 }
 \examples{
 # exponential covariance matrix ( marginal variance =1) for the ozone
 #locations 
-out<- exp.cov( ozone$x, theta=100)
+out<- Exp.cov( ozone$x, theta=100)
 
 # out is a 20X20 matrix
-out2<- exp.cov( ozone$x[6:20,],ozone$x[1:2,], theta=100)
+out2<- Exp.cov( ozone$x[6:20,],ozone$x[1:2,], theta=100)
 # out2 is 15X2 matrix 
+
 # Kriging fit where the nugget variance is found by GCV 
-fit<- Krig( ozone$x, ozone$y, exp.cov, theta=100)
+fit<- Krig( ozone$x, ozone$y, cov.function="Exp.cov", theta=100)
 
 }
 \keyword{spatial}

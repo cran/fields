@@ -56,14 +56,27 @@ function (object, x=NULL, cov = FALSE, verbose=FALSE,...)
 #               =      temp0  - temp1 - t( temp1)       + temp2
 
 
+#
+# if off diagonal weight matrix is passed then 
+# find covariance matrix ( its inverse). 
+# otherwise just create this qucikly from diagonal weights
+# 
+   Wi<- Krig.make.Wi(object)$Wi
+    
+# find covariance of data 
+
+  if( object$nondiag.W){ 
+         Cov.y <- rho * do.call(call.name, 
+            c(object$args, list(x1 = xM, x2 = xM)))  +   sigma2 * Wi }
+    else{
+#     this is one case where keeping diagonal 
+#     matrix as a vector will not work.
+         Cov.y <- rho * do.call(call.name,
+            c(object$args, list(x1 = xM, x2 = xM))) + sigma2 * diag(Wi)}
+
+
 if ( !cov){
 # find diagonal elements of covariance matrix
-# covariance of data 
-
-    Cov.y <- rho * do.call(
-                    call.name, 
-        c(object$args, list(x1 = xM, x2 = xM))) +
-          sigma2 * diag(1/object$weightsM)
 
 # now find the three terms.
 # note the use of an element by element multiply to only get the 
@@ -87,14 +100,8 @@ if ( !cov){
        return(sqrt(temp * temp.sd^2 ))
 }
 else{
+#
 # find full covariance matrix
-
-# covariance of data
-
-    Cov.y <- rho * 
-       do.call(
-       call.name, c(object$args, list(x1 = xM, x2 = xM))) + 
-       sigma2 * diag(1/object$weightsM) # now find the three terms.
 #
     temp1 <- rho * 
         t(wght.vec)%*% do.call(

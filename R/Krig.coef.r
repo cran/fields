@@ -7,11 +7,11 @@ function (out, lambda = out$lambda, y = NULL, yM=NULL, verbose=FALSE)
 
 #
 # Determine whether to collapse onto means of replicates ( using y)
-# or if data as replicate means that have been passed (as yM) use it!
+# or if the data as replicate means have been passed use yM.
 # If both y and YM are null then just use out$yM 
-# for readbality of this function all this torturous logic happens in 
+# For readability of this function, all this tortured logic happens in 
 #  Krig.ynew. 
-
+#
     out2 <- Krig.ynew(out, y, yM)
     temp.yM <- out2$yM
 
@@ -20,14 +20,38 @@ function (out, lambda = out$lambda, y = NULL, yM=NULL, verbose=FALSE)
     u <- NA
     call.name<- out$cov.function.name
 
+    
+#
+#   case when knots= unqiue x's
+# any lambda
+#    
+    if (out$decomp == "WBW") {
+        u <- c(rep(0, out$nt), t(out$matrices$V) %*% qr.q2ty(out$matrices$qr.T, 
+            out$W2%d*% temp.yM))
+        beta <- out$matrices$G %*% ((1/(1 + lambda * out$matrices$D)) * 
+            u)
+        temp.c <- c(qr.qy(out$matrices$qr.T, c(rep(0, nt), beta[(nt + 
+            1):np])))
+        temp.c <- out$W2%d*%temp.c 
+        temp <- temp.yM - do.call(call.name, 
+             c(out$args, list(x1 = out$knots, x2 = out$knots, 
+                C = temp.c)))
+        temp <- out$W2%d*%temp
+        temp.d <- qr.coef(out$matrices$qr.T, temp)
+    }
+#
+# case with knots
+# any lambda
+#    
     if (out$decomp == "DR") {
       
-    # X is the monster matrix ...
+    # X is the monster matrix ...  X = [ M | K] 
 
       X <- cbind(
-        out$make.tmatrix(out$xM, out$m),
-        do.call(call.name, c(out$args, list(x1 = out$xM, x2 =out$knots)))
-           )
+        do.call(out$null.function.name, 
+              c(out$null.args,list(x=out$xM, Z= out$ZM)  )  ),
+        do.call(call.name, c(out$args, list(x1 = out$xM, x2 =out$knots) )  )
+                )
 
         u <- t(out$matrices$G) %*% t(X) %*% (out$weightsM * 
             temp.yM)
@@ -39,25 +63,18 @@ function (out, lambda = out$lambda, y = NULL, yM=NULL, verbose=FALSE)
         temp <- sum(out$weightsM * (temp.yM - temp)^2)
         out2$pure.ss <- temp + out2$pure.ss
     }
-    if (out$decomp == "WBW") {
-        u <- c(rep(0, out$nt), t(out$matrices$V) %*% qr.q2ty(out$matrices$qr.T, 
-            sqrt(out$weightsM) * temp.yM))
-        beta <- out$matrices$G %*% ((1/(1 + lambda * out$matrices$D)) * 
-            u)
-        temp.c <- c(qr.qy(out$matrices$qr.T, c(rep(0, nt), beta[(nt + 
-            1):np])))
-        temp.c <- temp.c * sqrt(out$weightsM)
-        temp <- temp.yM - lambda * temp.c - do.call(call.name, 
-            c(out$args, list(x1 = out$knots, x2 = out$knots, 
-                C = temp.c)))
-        temp <- sqrt(out$weightsM) * temp
-        temp.d <- qr.coef(out$matrices$qr.T, temp)
-    }
+
+#
+# fixed lambda knots == unique x's 
+#    
     if (out$decomp == "cholesky") {
         if (lambda != out$matrices$lambda) {
             stop("New lambda can not be used with cholesky decomposition")
         }
-        Tmatrix <- out$make.tmatrix(out$knots, out$m)
+
+        Tmatrix <-  do.call(out$null.function.name, 
+                         c(out$null.args, list(x=out$knots, Z=out$ZM) ) )
+
         temp.d <- qr.coef(out$matrices$qr.VT, 
          forwardsolve(out$matrices$Mc, 
             transpose = TRUE, temp.yM, upper.tri=TRUE))
@@ -65,6 +82,10 @@ function (out, lambda = out$lambda, y = NULL, yM=NULL, verbose=FALSE)
             temp.yM - Tmatrix %*% temp.d, upper.tri=TRUE)
         temp.c <- backsolve(out$matrices$Mc, temp.c)
     }
+
+#
+# fixed lambda with knots
+#
     if (out$decomp == "cholesky.knots") {
         if (lambda != out$matrices$lambda) {
             stop("New lambda can not be used with cholesky decomposition")
@@ -72,9 +93,9 @@ function (out, lambda = out$lambda, y = NULL, yM=NULL, verbose=FALSE)
     # form K matrix
          K<-  do.call( call.name,
             c(out$args, list(x1 = out$xM, x2 = out$knots) ) )
-#
 
-        Tmatrix <- out$make.tmatrix(out$xM, out$m)
+        Tmatrix <-  do.call(out$null.function.name, 
+                       c(out$null.args, list(x=out$xM, Z=out$ZM) ) )
 
         wY <- out$weightsM * temp.yM
         temp0 <- t(K) %*% (out$weightsM * Tmatrix)
@@ -92,6 +113,10 @@ function (out, lambda = out$lambda, y = NULL, yM=NULL, verbose=FALSE)
             temp1, upper.tri=TRUE)
         temp.c <- backsolve(out$matrices$Mc, temp.c)
     }
-    return(c(out2, list(c = c(temp.c), d = c(temp.d), u = c(u))))
+
+    
+    return(
+           c(out2, list(c = c(temp.c), d = c(temp.d), u = c(u)))
+           )
 }
 

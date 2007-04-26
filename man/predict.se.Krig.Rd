@@ -83,7 +83,7 @@ Krig, predict.Krig, predict.surface.se
 # Note: in these examples predict.se will default to predict.se.Krig using 
 # a Krig object  
 
-  fit<- Krig(ozone$x,ozone$y,exp.cov, theta=10)    # krig fit 
+  fit<- Krig(ozone$x,ozone$y,cov.function="Exp.cov", theta=10)    # Krig fit 
   predict.se.Krig(fit)      # std errors of predictions at obs.
 
 # make a  grid of X's  

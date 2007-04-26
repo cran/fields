@@ -1,7 +1,12 @@
 "predict.Krig" <-
-function (object, x = NULL, lambda = NA, df = NA, model = NA, 
-    eval.correlation.model = TRUE, y = NULL, yM= NULL, verbose = FALSE, ...) 
+function (object, x = NULL, Z=NULL, drop.Z=FALSE,
+  just.fixed=FALSE, lambda = NA, df = NA, model = NA, 
+    eval.correlation.model = TRUE, y = NULL, yM= NULL,
+          verbose = FALSE,...) 
 {
+
+#NOTE: most of this function is figuring out what to do!
+# 
 
 # y is full data yM are the data collapsed to replicate means
 
@@ -12,15 +17,32 @@ function (object, x = NULL, lambda = NA, df = NA, model = NA,
         temp.d <- object$d
     }
 
+# check for passed x but no Z -- this is an error if there Z covariates
+# in model and drop.Z is FALSE
+
+    if( !is.null(x) & is.null(Z) & !is.null( object$Z) & !drop.Z ){
+       stop("Need to specifify drop.Z as TRUE or pass Z values")}
+    
+
+
 # default is to predict at data x's
     if (is.null(x)) {
-        x <- object$x
+        x <- object$x      
     }
-    x <- as.matrix(x)
- 
-    if (verbose) 
-        print(x)
+    else{
+        x <- as.matrix(x)}
 
+# default is to predict at data Z's
+    if (is.null(Z)) {
+        Z <- object$Z      
+    }
+    else{
+        Z <- as.matrix(Z)}
+     
+    if (verbose) {
+        print(x)
+        print(Z)}
+    
 # transformations of x values used in Krig
 
     xc <- object$transform$x.center
@@ -79,24 +101,38 @@ function (object, x = NULL, lambda = NA, df = NA, model = NA,
 #
 # this is the fixed part of predictor 
 #
-     temp <- c( object$make.tmatrix(x, object$m) %*% temp.d )
+     Tmatrix<- do.call(object$null.function.name, 
+                 c(object$null.args,list(x=x, Z=Z, drop.Z=drop.Z)  )  )
+
+     if( drop.Z){
+       temp <- Tmatrix %*% temp.d[object$ind.drift]}
+     else{
+       temp <-  Tmatrix %*% temp.d }
+
+# add in spatial piece
+
+  if( !just.fixed){     
 #
-# now find sum of covariance functions times coefficients
+# Now find sum of covariance functions times coefficients
 # Note that the multiplication of the cross covariance matrix
 # by the coefficients is done implicitly in the covariance function
 # 
-     temp<- temp + 
-      do.call(
-        object$cov.function.name, 
-       c( object$args, list(x1 = x, x2 = object$knots, C = temp.c)))
+      temp<- temp + 
+       do.call(
+         object$cov.function.name, 
+         c( object$args, list(x1 = x, x2 = object$knots, C = temp.c)))
 
 # coerce to vector      
-       temp<- c( temp)
-    
+   }    
+
+      temp<- c( temp)
+ 
+
 #
 # transform back into raw scale if this is a correlation model.
 # if y's are in the scale of correlations 
 # if so scale by sd and add back in mean 
+
 
     correlation.model <- ( object$correlation.model & eval.correlation.model)
 

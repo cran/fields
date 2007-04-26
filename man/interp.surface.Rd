@@ -1,14 +1,17 @@
 \name{interp.surface}
 \alias{interp.surface}
+\alias{interp.surface.grid}
 \title{
   Fast bilinear interpolator from a grid.
 }
 \description{
 Uses bilinear weights to interpolate values on a rectangular
-grid to arbitrary locations. 
+grid to arbitrary locations or to another grid.
 }
 \usage{
 interp.surface(obj, loc)
+interp.surface.grid(obj, grid.list)
+
 }
 \arguments{
 \item{obj}{
@@ -20,11 +23,14 @@ with the corresponding values of the surface
 A matrix of (irregular) locations to interpolate. First column of loc
 isthe X coordinates and second is the Y's. 
 }
+\item{grid.list}{ A list with components x and y 
+describing the grid to interpolate}
+
 }
 \value{
  An vector of interpolated values.  NA are returned for
 regions of the obj\$z that are NA and also for locations outside of the
-range of the grid. 
+range of the parent grid. 
 }
 \details{
 Here is a brief explanation of
@@ -38,6 +44,17 @@ interpolant is
 ( 1-ex)(1-ey)*z11 + (1- ex)(ey)*z12 + ( ex)(1-ey)*z21 + ( ex)(ey)*z22  
 
 Where the z's are the corresponding elements of the Z matrix. 
+
+Note that bilinear interpolation can produce some artifacts related to
+the grid and not reproduce higher behavior in the surface. For, example
+the extrema of the interpolated surface will always be at the parent
+grid locations.  There is nothing special about about interpolating to
+another grid, this function just includes a \code{for} loop over one
+dimension and a call to the function for irregular locations. It was
+included in fields for convenience. since the grid format is so common. 
+
+See also the akima package for fast interpolation from irrgeular locations. 
+
 }
 \seealso{
 image.smooth, as.surface, as.image, image.plot, krig.image,Tps

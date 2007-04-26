@@ -2,9 +2,7 @@
 \alias{[.spatial.design}
 \alias{COR}
 \alias{D4transform.image}
-\alias{rad.image.cov}
 \alias{Krig.df.to.lambda}
-\alias{Krig.discretize}
 \alias{Krig.fdf}
 \alias{Krig.fgcv}
 \alias{Krig.fgcv.model}
@@ -50,7 +48,7 @@
 \alias{double.exp}
 \alias{draw.bplot}
 \alias{draw.bplot.obj}
-\alias{exp.earth.cov}
+\alias{Exp.earth.cov}
 \alias{fast.1way}
 \alias{find.upcross}
 \alias{gauss.cov}
@@ -131,8 +129,6 @@ COR (dat)
 D4transform.image (x, inv = FALSE, transpose = FALSE, cut.min = 8) 
  
 Krig.df.to.lambda (df, D, guess = 1, tol = 1e-05) 
-Krig.discretize (x, m = 64, n = 64, xg = NULL, yg = NULL, grid 
-    = NULL,  expand = c(1, 1)) 
 Krig.fdf (llam, info) 
 Krig.fgcv (lam, obj) 
 Krig.fgcv.model (lam, obj) 
@@ -202,9 +198,9 @@ draw.bplot (temp, width, xpos, outlier = TRUE, style = "tukey")
 draw.bplot.obj (obj, width, xpos, outlier = TRUE, 
              horizontal = FALSE,lwd=NA,col=NA) 
  
-exp.earth.cov (x1, x2, theta = 1) 
+Exp.earth.cov (x1, x2, theta = 1) 
  
-fast.1way (lev, y, w = rep(1, length(y))) 
+fast.1way  (lev, y, w = rep(1, length(y))) 
  
 find.upcross (fun, fun.info, upcross.level = 0, guess = 1, tol = 
 1e-05) 
@@ -236,8 +232,6 @@ krig.image.parameters (out)
 lonlat2xy (lnlt, miles = FALSE) 
  
 make.surface.grid (grid.list)
-
-rad.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...)
 
 minimax.crit (obj, des = TRUE, R) 
  

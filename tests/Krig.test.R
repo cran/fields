@@ -9,7 +9,7 @@ options( echo=FALSE)
 Krig( ozone$x, ozone$y, theta=50)-> fit
 
 x<- ozone$x
-K<- exp.cov(x, x,theta=50)
+K<- Exp.cov(x, x,theta=50)
 T<- fields.mkpoly(x, 2)
 W<- diag( 20)
  lambda<- fit$lambda
@@ -72,16 +72,16 @@ knots<- x[1:5,]
 weights<- runif(15)*10
 
 # compare to 
-Krig( x,y, knots=knots, cov.function=exp.cov,weights=weights)-> out.new
-Krig( x,y, knots=knots, cov.function=exp.cov,weights=weights, lambda=1)-> out.new2
-
+Krig( x,y, knots=knots, cov.function=Exp.cov,weights=weights)-> out.new
+Krig( x,y, knots=knots, cov.function=Exp.cov,weights=weights, 
+          lambda=1)-> out.new2
 
 # compute test using linear algebra
 
-K<- exp.cov( knots, knots)
+K<- Exp.cov( knots, knots)
 H<- matrix(0, 8,8)
 H[4:8, 4:8]<- K
-X<- cbind( fields.mkpoly( x, 2), exp.cov( x, knots))
+X<- cbind( fields.mkpoly( x, 2), Exp.cov( x, knots))
 lambda<-1
 
 
@@ -127,12 +127,12 @@ lam.test <- 1.0
 
 ynew<- 1:15
 
-Krig( x,y, knots=knots, cov.function=exp.cov,weights=weights)-> out.new
-Krig( x,y, knots=knots, cov.function=exp.cov,weights=weights, 
+Krig( x,y, knots=knots, cov.function=Exp.cov,weights=weights)-> out.new
+Krig( x,y, knots=knots, cov.function=Exp.cov,weights=weights, 
                  lambda=lam.test)-> out.new2
 ### compare to 
-##Krig( x,ynew, knots=knots, cov.function=exp.cov,weights=weights)-> out.new
-##Krig( x,ynew, knots=knots, cov.function=exp.cov,weights=weights, 
+##Krig( x,ynew, knots=knots, cov.function=Exp.cov,weights=weights)-> out.new
+##Krig( x,ynew, knots=knots, cov.function=Exp.cov,weights=weights, 
 ##                 lambda=lam.test)-> out.new2
 
 c(   solve(t(X)%*%(weights*X) + lam.test*H)%*% t(X)%*% (weights*ynew) )-> temp
@@ -173,17 +173,17 @@ y[20] <- y[20] + 1
 weights<- runif( nrow( x))*10 
 knots<- x[1:10,]
 
-Krig( x,y, knots=knots,  weights=weights, cov.function=exp.cov)-> out.new
+Krig( x,y, knots=knots,  weights=weights, cov.function=Exp.cov)-> out.new
 
 
 
 lambda<- 1.0
 NP<- out.new$np
 NK <- nrow( knots)
-K<- exp.cov( knots, knots)
+K<- Exp.cov( knots, knots)
 H<- matrix(0, NP,NP)
 H[(1:NK)+3 , (1:NK)+3]<- K
-X<- cbind( fields.mkpoly( x, 2), exp.cov( x, knots))
+X<- cbind( fields.mkpoly( x, 2), Exp.cov( x, knots))
 
 # compare to 
 test<- c(   solve(t(X)%*%diag(weights)%*%X + lambda*H)%*% 
@@ -193,7 +193,7 @@ test[1:3]-> temp.d
 test[(1:NK)+3]-> temp.c
 
 Krig( x,y, knots=knots,  weights=weights,lambda=lambda,
- cov.function=exp.cov)-> out.new
+ cov.function=Exp.cov)-> out.new
 
 # test for d coefficients
 test.for.zero( temp.d, out.new$d, tag=" d reps")
@@ -201,7 +201,7 @@ test.for.zero( temp.d, out.new$d, tag=" d reps")
 test.for.zero( temp.c, out.new$c, tag="c reps" )
 
 
-Krig( x,y, knots=knots,  weights=weights, cov.function=exp.cov)-> out.new
+Krig( x,y, knots=knots,  weights=weights, cov.function=Exp.cov)-> out.new
 
 #compare to
 test<-  sum(weights*
@@ -227,7 +227,7 @@ y[20] <- y[20] + 1
 weights<- runif( nrow( x))*10
 knots<- x[1:10,]
 
-Krig( x,y, knots=knots,  weights=weights, cov.function=exp.cov)-> out.new
+Krig( x,y, knots=knots,  weights=weights, cov.function=Exp.cov)-> out.new
 
 
 
@@ -309,7 +309,5 @@ test2<- (1/M)*sum(
 test.for.zero( test,test2,tag="GCV model")
 
 #cat("done with GCV case", fill=TRUE)
-#cat("done with Krig tests", fill=TRUE)
-#options( echo=TRUE)
-
-
+cat("done with Krig tests", fill=TRUE)
+options( echo=TRUE)

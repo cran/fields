@@ -11,9 +11,7 @@ The \code{BD} data frame has 89 rows and 5 columns. There are 89 runs with
 four buffer components (KCL, MgCl2, KP04, dnTP) systematically varied in 
 a space-filliing design. The response is the DNA amplification rate.  
 }
-\usage{
-data(BD)
-}
+
 \format{
 This data frame contains the following columns: 
 

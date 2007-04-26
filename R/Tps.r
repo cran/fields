@@ -20,8 +20,8 @@ function (x, Y, m = NULL, p = NULL, scale.type = "range",
                   See help(Tps) for details")
 
     Tpscall <- match.call()
-    Tpscall$cov.function <- "Thin plate spline radial basis functions (rad.cov) "
-    Krig(x, Y, cov.function = rad.cov, m = m, 
+    Tpscall$cov.function <- "Thin plate spline radial basis functions (Rad.cov) "
+    Krig(x, Y, cov.function = Rad.cov, m = m, 
         scale.type = scale.type, outputcall = Tpscall, p = p, 
         ...)
 }

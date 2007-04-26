@@ -3,9 +3,12 @@
 \alias{grid.list}
 \alias{fields.x.to.grid}
 \alias{parse.grid.list}
+\alias{fields.convert.grid}
+\alias{discretize.image}
 
 \title{
-  Grid list format for describing equally spaced grids
+  Grid list format for describing equally spaced grids and some related
+functions. 
 }
 \description{
     
@@ -19,9 +22,14 @@ functions that evaluate function estimates and plot surfaces.}
 \usage{
 parse.grid.list( grid.list, order.variables="xy")
 fields.x.to.grid(x,nx=80, ny=80, xy=c(1,2))
+fields.convert.grid( midpoint.grid )
+discretize.image( x, m = 64, n = 64,  grid = NULL,
+        expand = c(1, 1), boundary.grid=FALSE )
+
 }
 \arguments{
-\item{grid.list}{ No surprises here -- a grid list!}
+\item{grid.list}{ No surprises here -- a grid list! These can be unequally 
+spaced.}
 \item{order.variables}{ If "xy" the x variable will be subsequently plotted
 as the horizontal variable. If "yx" the x variable will be on the vertical 
 axis.}
@@ -29,11 +37,22 @@ axis.}
 observations given to Krig.}
 \item{nx}{Number of grid points for x variable.}
 \item{ny}{Number of grid points for y variable.}
+\item{m}{Number of grid points for x variable.}
+\item{n}{Number of grid points for y variable.}
 \item{xy}{The column positions that locate the x and y variables for the 
 grid.} 
+\item{grid}{ A grid list!}
+\item{expand}{ 
+A scalar or two column vector that will expand the
+grid beyond the range of the observations.}
+
+\item{midpoint.grid}{ Grid midpoints to convert to grid boundaries.}
+
+\item{boundary.grid}{ If TRUE interpret grid points as boundaries  of 
+grid boxes. If FALSE interpret as the midpoints of the boxes. }
+
+
 }
-
-
 \details{
 The form of a grid.list is  
 list( var.name1= what1  , var.name2=what2 , ... var.nameN=what3)  
@@ -42,8 +61,12 @@ The what options describe what should be done with this variable when
 generating the grid. These should either an increasing sequence of points
 or a single vaules. Obviously there should be only be two variables with 
 sequences to define a grid for a surface.
+
 Most of time the gridding  sequences  are equally  
-spaced and are easily generated using the seq function.  
+spaced and are easily generated using the seq function. Also throughout fields
+the grid points are typically the midpoints of the grid rather the grid box
+boundaries. However, these functions can handle unequally spaced grids and the
+logical boundary.grid can indicate a grid being the box boundaries. 
 
 The variables in the list components are assumed  
 to be in the same order as they appear in the data matrix. 
@@ -66,14 +89,32 @@ points in the range \code{x[, xy[2]]}.
 form that is easy to use. This is used, for example, by predict.surface
 to figure out what to do!
 
+
+\code{fields.convert.grid}:
+ Takes a vector of n values assumed to be midpoints of a grid and 
+returns the n+1 boundaries. See how this is used in discretize.image 
+with the cut function. This function will handle unequally spaced
+grid values. 
+
+ \code{discretize.image}: Takes a vector of locations and a 2-d grid and
+figures out to which boxes they belong. The output matrix ind has the
+grid locations. If boundary.grid is FALSE then the grid list (grid) is
+assumed to be grid midpoints. The grid boundaries are taken to be the
+point half way between these midpoints. The first and last boundaries
+points are determined by extrapolating so that the first and last box
+has the midpoint in its center. (See the code in fields.convert.grid for
+details.) If grid is NULL then midpoints are found from m and n and the
+range of the x matrix. 
+
 }
 
 \seealso{
 as.surface, predict.surface, plot.surface, surface, 
-expand.grid 
+expand.grid, as.image 
 }
 
 \examples{
+
 #Given below are some examples of grid.list objects and the results  
 #when they are used with make.surface.grid. Note that  
 #make.surface.grid returns a matrix that retains the grid.list  
@@ -106,6 +147,16 @@ surface( out, grid.list=grid.l)
 #                       over the square [0,2] and [0,2]   
 #                       holding X2 equal to 1.0. 
 #
+
+discretize.image( RMprecip$x, m=15, n=15)-> look
+Z<- matrix( 0, 15,15)
+
+Z[look$ind]<- 1
+
+image( look$grid$x, look$grid$y, Z) # indicator image of discretized locations. 
+points( RMprecip$x,col="magenta") # actual locations
+# (there may be more than one location in the grid boxes)
+
 }
 \keyword{misc}
 % docclass is function

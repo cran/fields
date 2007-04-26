@@ -1,7 +1,7 @@
 \name{fields.hints}
 \alias{fields.hints}
 \alias{fields.style}
-
+\alias{fields.color.picker}
 \title{
 fields - graphics hints  
 }
@@ -13,6 +13,7 @@ readable figures . These use the standard graphics environment.
 }
 \usage{
 fields.style()
+fields.color.picker()
 }
 \details{
 \code{fields.style} is a simple 
@@ -83,6 +84,8 @@ for ( k in 1:6){
 par( oma=c(0,0,0,0))
 image.plot( zlim=zr, legend.only=TRUE, horizontal=TRUE, legend.mar=5)
 
+# reset panel 
+set.panel()
 
 
 ####
@@ -101,38 +104,27 @@ image(seq(.5,M+.5,,M+1), seq(.5,N+.5,,N+1)
        , z,  col=clab, axes=FALSE, xlab="", ylab="")
 
 
-# function to locate colors
-#
-show.color<- function(ind=NA){
- c( mar=c(0,0,3,0) )
-
- clab<- colors()
- n<- length( clab)
- N<- ceiling( sqrt(n) )
- M<- N
- temp<- rep( NA,M*N)
- temp[1:n] <- 1:n
- z<- matrix(temp, M,N)
-
- image(seq(.5,M+.5,,M+1), seq(.5,N+.5,,N+1)
-       , z,  col=clab, axes=FALSE, xlab="", ylab="")
-
- if( is.na(ind)){
-  cat("Use mouse to identify color",fill=TRUE)
-  locator( 1)-> loc; i<- round( loc$x);j<- round( loc$y);
-  ind<- z[i,j] }
-
- cat("ID ", ind," name ",clab[ind],fill=TRUE)
- cat( "RGB", col2rgb(clab[ind])/256, fill=TRUE)
-
- points( i,j,  col= clab[ind], cex=4, pch="O")
- points( i,j, pch="+", col= "black", cex=1)
-
- mtext( side=3, text=clab[ind], col=clab[ind], line=1, cex=2)}
+# see the  function  fields.color.picker() to locate colors
 
 
 
+# dumping out colors by name for a latex document
+# this creates text strings that are the LaTeX color definitions
+# using the definecolor function. 
+
+clab<- colors()
+for( nn in clab){
+  temp<- signif(col2rgb(nn)/256, 3)
+   cat(
+    "\\definecolor{", 
+                nn, "}",
+    "{rgb}{", temp[1], 
+          ",", temp[2], 
+          ",", temp[3], 
+           "}", fill=TRUE , sep="")
 }
+}
+
 
 
 \keyword{hplot}

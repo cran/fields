@@ -19,7 +19,10 @@ C  J F MONAHAN        TRANSCRIBED FROM KNUTH, VOL 2, PP 146-7.
   3   J=L                                                            
   4   I=J                                                            
       J=2*J                                                          
-      IF(J-R) 5,6,8                                                  
+C     IF(J-R) 5,6,8                                                  
+      if((J-R).gt.0) go to 8
+      if((J-R).eq.0) go to 6
+C
   5   IF(K(J).LT.K(J+1)) J=J+1                                       
   6   IF(KK.GT.K(J)) GO TO 8                                         
   7   K(I)=K(J)                                                      
