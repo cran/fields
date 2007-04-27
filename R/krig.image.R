@@ -35,7 +35,7 @@ function (x, Y, cov.function, m = NULL, n = NULL, lambda = 0,
         cov.obj <- cov.function(grid = out$grid, setup = TRUE, ...)
     }
     out$cov.obj <- cov.obj
-    out <- c(out, Krig.discretize(out$xraw, grid = out$grid, 
+    out <- c(out, discretize.image(out$xraw, grid = out$grid, 
         expand = expand))
     if (verbose) {
         cat("row and columns of grid", fill = TRUE)

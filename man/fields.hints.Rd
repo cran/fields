@@ -84,6 +84,8 @@ for ( k in 1:6){
 par( oma=c(0,0,0,0))
 image.plot( zlim=zr, legend.only=TRUE, horizontal=TRUE, legend.mar=5)
 
+# reset panel 
+set.panel()
 
 
 ####
@@ -104,7 +106,11 @@ image(seq(.5,M+.5,,M+1), seq(.5,N+.5,,N+1)
 
 # see the  function  fields.color.picker() to locate colors
 
+
+
 # dumping out colors by name for a latex document
+# this creates text strings that are the LaTeX color definitions
+# using the definecolor function. 
 
 clab<- colors()
 for( nn in clab){
@@ -117,9 +123,8 @@ for( nn in clab){
           ",", temp[3], 
            "}", fill=TRUE , sep="")
 }
-
-
 }
+
 
 
 \keyword{hplot}

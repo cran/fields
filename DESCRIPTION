@@ -1,6 +1,6 @@
 Package: fields
-Version: 3.3.1
-Date: January 2 2007
+Version: 3.5
+Date: April 26 2007
 Title: Tools for spatial data
 Author: Doug Nychka
 Maintainer: Doug Nychka <nychka@ucar.edu> 
@@ -16,4 +16,4 @@ Description: Fields is a collection of programs for curve and function
 License: GPL Version 2 or later. 
 URL: http://www.image.ucar.edu/GSP/Software/Fields
 Depends: methods
-Packaged: Fri Jan  5 16:27:53 2007; nychka
+Packaged: Fri Apr 27 10:16:25 2007; nychka

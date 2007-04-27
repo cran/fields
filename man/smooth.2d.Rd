@@ -104,7 +104,7 @@ matrix where the (i,j) element is K( x1[i,]- x2[j,]).  Optional arguments
 that are included in the ... arguments are passed to this function when it
 is used. The default kernel is the Gaussian and the argument theta is the
 bandwidth. It is easy to write other other kernels, just use 
-exp.cov.simple as
+Exp.cov.simple as
 a template. 
 }
 \examples{
@@ -131,7 +131,7 @@ Mwidth=32)
 
 
 # bandwidth changed to .25, exponential kernel   
-look2<- smooth.2d( RMprecip$y, x=RMprecip$x, cov.function=exp.cov,theta=.25)
+look2<- smooth.2d( RMprecip$y, x=RMprecip$x, cov.function=Exp.cov,theta=.25)
 # 
 
 

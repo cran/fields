@@ -21,15 +21,15 @@ weights<- runif(15)*10
 # double check that just diagonals work. 
 
 lambda.test<- .6
-Krig( x,y,cov.function=exp.cov,weights=weights)-> out
-Krig( x,y,cov.function=exp.cov,weights=weights, lambda=lambda.test)-> out2
+Krig( x,y,cov.function=Exp.cov,weights=weights)-> out
+Krig( x,y,cov.function=Exp.cov,weights=weights, lambda=lambda.test)-> out2
 Krig.coef( out, lambda=lambda.test)-> test
 
 W<- diag( weights)
 W2<- diag( sqrt(weights))
 
 
-K<- exp.cov(x,x) 
+K<- Exp.cov(x,x) 
 M<- (lambda.test*solve(W)  + K);T<- fields.mkpoly(x, 2)
 temp.d<- c(solve( t(T) %*% solve( M)%*%T) %*% t(T)%*% solve( M) %*%y)
 temp.c<- solve( M)%*% (y - T%*% temp.d)
@@ -47,10 +47,10 @@ test.for.zero( temp.c, out2$c, tag="c coef  diag W " )
 # the full monty
 
 temp.wght<- function(x, alpha=.1){
-  exp.cov( x, theta=alpha) }
+  Exp.cov( x, theta=alpha) }
 
 Krig( x,y,
-     cov.function=exp.cov,weights=weights, wght.function= temp.wght,
+     cov.function=Exp.cov,weights=weights, wght.function= temp.wght,
     )-> out.new
 
 W2<-out.new$W2
@@ -60,14 +60,14 @@ W<- out.new$W
 
 test.for.zero( c( W2%*%W2), c( W), tag=" sqrt of W")
 
-Krig( x,y, cov.function=exp.cov,weights=weights, W= out.new$W)-> temp
+Krig( x,y, cov.function=Exp.cov,weights=weights, W= out.new$W)-> temp
 
 test.for.zero( predict(temp, y= y), predict(out.new,y=y), 
 tag=" Test of passing W explicitly")
 
 
 
-K<- exp.cov(x,x); lambda.test<- .6; 
+K<- Exp.cov(x,x); lambda.test<- .6; 
 M<- (lambda.test*solve(W)  + K);T<- fields.mkpoly(x, 2)
 temp.d<- c(solve( t(T) %*% solve( M)%*%T) %*% t(T)%*% solve( M) %*%y)
 temp.c<- solve( M)%*% (y - T%*% temp.d)

@@ -13,7 +13,7 @@ sim.rf(obj)
 \item{obj}{
 A covariance object that includes information about the covariance function 
 and the grid for evaluation. Usually this created by a setup call to 
-exp.image.cov. (See details below.) 
+Exp.image.cov. (See details below.) 
 }
 \item{\dots}{
 Additional arguments passed to a particular method.}
@@ -41,7 +41,7 @@ the grid point values for x and y N and M is the size of the larger grid
 that is used for simulation ( usually M= 2*m and N=2*n) to minimize 
 periodic effects. wght is a matrix from the FFT of the covariance 
 function.  The easiest way to create this object is to use for example 
-exp.image.cov with setup=T ( see below). 
+Exp.image.cov with setup=T ( see below). 
 
 The classic reference for this algorithm is 
 Wood, A.T.A. and Chan, G. (1994).
@@ -50,14 +50,14 @@ Computational and Graphical Statistics, 3, 409-432.
 
 }
 \seealso{
-exp.image.cov, matern.image.cov  
+Exp.image.cov, matern.image.cov  
 }
 \examples{
 #Simulate a Gaussian random field with an exponential covariance function,  
 #range parameter = 2.0 and the domain is  [0,5]X [0,5] evaluating the 
 #field at a 100X100 grid.  
 grid<- list( x= seq( 0,5,,100), y= seq(0,5,,100)) 
-obj<-exp.image.cov( grid=grid, theta=.5, setup=TRUE)
+obj<-Exp.image.cov( grid=grid, theta=.5, setup=TRUE)
 look<- sim.rf( obj)
 # Now simulate another ... 
 look2<- sim.rf( obj)

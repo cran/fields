@@ -1,4 +1,4 @@
-"rad.simple.cov" <-
+"Rad.simple.cov" <-
 function (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, 
 C= NA,marginal=FALSE) {
 

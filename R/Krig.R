@@ -64,7 +64,7 @@ function (x, Y,
 #    
     C.arg.missing<- all( names( formals( get( out$cov.function.name)))!="C")
     if( C.arg.missing) stop("Need to have C argument in covariance function 
-                                 see exp.cov.simple as an example")
+                                 see Exp.cov.simple as an example")
 
 #
 # save parameters values possibly passed to the covariance function

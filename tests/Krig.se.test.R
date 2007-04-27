@@ -1,3 +1,4 @@
+
 library( fields)
 
 # tests of predict.se
@@ -8,16 +9,16 @@ options( echo=FALSE)
 x0<- expand.grid( c(-8,-4,0,20,30), c(10,8,4,0))
 
 
-Krig( ozone$x, ozone$y, cov.function = "exp.cov", theta=50)-> out
+Krig( ozone$x, ozone$y, cov.function = "Exp.cov", theta=50)-> out
 
 
 # direct calculation
 Krig.Amatrix( out, x=x0)-> A
 test.for.zero( A%*%ozone$y, predict( out, x0),tag="Amatrix vs. predict")
 
-Sigma<- out$rhohat*exp.cov( ozone$x, ozone$x, theta=50)
-S0<- out$rhohat*c(exp.cov( x0, x0, theta=50))
-S1<- out$rhohat*exp.cov( out$x, x0, theta=50)
+Sigma<- out$rhohat*Exp.cov( ozone$x, ozone$x, theta=50)
+S0<- out$rhohat*c(Exp.cov( x0, x0, theta=50))
+S1<- out$rhohat*Exp.cov( out$x, x0, theta=50)
 
 #yhat= Ay
 #var( f0 - yhat)=    var( f0) - 2 cov( f0,yhat)+  cov( yhat)
@@ -32,7 +33,7 @@ look<- S0 - t(S1)%*% t(A) - A%*%S1 +
 test2<- predict.se( out, x= x0) 
 test.for.zero( sqrt(diag(  look)), test2,tag="Marginal predict.se")
 
-out2<- Krig( ozone$x, ozone$y, cov.function = "exp.cov", theta=50,
+out2<- Krig( ozone$x, ozone$y, cov.function = "Exp.cov", theta=50,
             lambda=out$lambda)
 
 test2<- predict.se( out2, x= x0) 

@@ -1,4 +1,4 @@
-exp.simple.cov<- function (x1, x2, theta = 1, C=NA, marginal=FALSE) 
+Exp.simple.cov<- function (x1, x2, theta = 1, C=NA, marginal=FALSE) 
 {
 
 # different locations are the different rows of x1 and x2. 

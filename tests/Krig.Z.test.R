@@ -18,15 +18,15 @@ knots<- x[1:5,]
 
 # first without knots compare default to fixed
 
-Krig( x,y,Z=Z, cov.function=exp.cov, give.warnings=FALSE)-> out.new
+Krig( x,y,Z=Z, cov.function=Exp.cov, give.warnings=FALSE)-> out.new
 
-Krig( x,y,Z=Z, cov.function=exp.cov,lambda=1)-> out.new2
+Krig( x,y,Z=Z, cov.function=Exp.cov,lambda=1)-> out.new2
 
 
 ##########
 ## compute test using linear algebra
 
-K<- exp.cov( x,x)
+K<- Exp.cov( x,x)
 lambda<-1
 M<- (lambda* diag(nrow( x)) + K)
 T<- cbind( rep(1,15), x, Z)
@@ -84,10 +84,10 @@ weights<- runif(15)*10
 y[5] <- y[5] + 3 # avoids GCV warning 
 
 # compare to 
-Krig( x,y,Z=Z, knots=knots, cov.function=exp.cov,weights=weights,
+Krig( x,y,Z=Z, knots=knots, cov.function=Exp.cov,weights=weights,
 verbose=FALSE, give.warnings=FALSE)-> out.new
 
-Krig( x,y,Z=Z, knots=knots, cov.function=exp.cov,weights=weights, 
+Krig( x,y,Z=Z, knots=knots, cov.function=Exp.cov,weights=weights, 
           lambda=1)-> out.new2
 
 # compare to each other
@@ -100,10 +100,10 @@ test.for.zero( out.new2$c, look$c, tag="knots/weights fixed/default c coef" )
 
 # compute test using linear algebra
 
-K<- exp.cov( knots, knots)
+K<- Exp.cov( knots, knots)
 
 T<- cbind( rep(1,15), x, Z)
-X<- cbind( T, exp.cov( x, knots))
+X<- cbind( T, Exp.cov( x, knots))
 lambda<-1.0
 NN<- ncol( X)
 H<- matrix( 0, NN, NN)

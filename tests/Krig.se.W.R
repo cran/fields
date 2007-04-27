@@ -20,11 +20,11 @@ x0<- cbind( c(.1,.2,.6,.65,.8), c(.05,.5,.73,.9,.95))
 
 
 temp.wght<- function(x, alpha=.3){
-  exp.cov( x, theta=.1) }
+  Exp.cov( x, theta=.1) }
 
-Krig( x,y, cov.function=exp.cov,weights=weights,
+Krig( x,y, cov.function=Exp.cov,weights=weights,
      wght.function= "temp.wght")-> out
-Krig( x,y, cov.function=exp.cov,weights=weights,W= out$W)-> out2
+Krig( x,y, cov.function=Exp.cov,weights=weights,W= out$W)-> out2
 
 
 # direct calculation test for A matrix
@@ -38,9 +38,9 @@ test.for.zero( A%*%y, predict( out, x0),tag="Amatrix vs. predict")
 W2<-out$W2
 W<- out$W
 
-Sigma<- out$rhohat*exp.cov( out$x,out$x)
-temp0<- out$rhohat*(exp.cov( x0, x0))
-S1<- out$rhohat*exp.cov( out$x, x0)
+Sigma<- out$rhohat*Exp.cov( out$x,out$x)
+temp0<- out$rhohat*(Exp.cov( x0, x0))
+S1<- out$rhohat*Exp.cov( out$x, x0)
 
 #yhat= Ay
 #var( f0 - yhat)=    var( f0) - 2 cov( f0,yhat)+  cov( yhat)

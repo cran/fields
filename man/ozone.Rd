@@ -10,9 +10,7 @@ component is longitude and latitude position of each of the 20
 Chicago monitoring stations, y is the average 
 daily ozone values over the time period 6/3/87-8/30/87.
 }
-\usage{
-data(ozone)
-}
+
 \format{
 This data set is a list containing the following components: 
 

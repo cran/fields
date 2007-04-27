@@ -10,11 +10,14 @@ into two parts. Putting the image in one and the legend in the other.
 }
 \usage{
 
-image.plot(..., add = FALSE, nlevel = 64, legend.shrink = 0.9, 
-legend.width = 1.2, legend.mar = NULL, 
-graphics.reset = FALSE, horizontal = FALSE, bigplot = NULL
-, smallplot = NULL, legend.only = FALSE, col = tim.colors(nlevel),
-lab.breaks=NULL, axis.args=NULL)} 
+image.plot(..., 
+                 add = FALSE, nlevel = 64, horizontal = FALSE,
+                 legend.shrink = 0.9, legend.width = 1.2, legend.mar =
+                 ifelse(horizontal, 3.1, 5.1), legend.lab = NULL,
+                 graphics.reset = FALSE, bigplot = NULL, smallplot =
+                 NULL, legend.only = FALSE, col = tim.colors(nlevel),
+                 lab.breaks = NULL, axis.args = NULL, legend.args =
+                 NULL)}
 
 \arguments{ \item{\dots}{
 The usual arguments to the image function. This includes the use of 
@@ -37,6 +40,8 @@ that the width of a character. }
 \item{legend.mar}{
 Width in characters of legend margin that has the axis. Default is 5.1 
 for a vertical legend and 3.1 for a horizontal legend.}
+\item{legend.lab}{ Label for the axis of the color legend. Default is no
+label as this is usual evident from the plot title.}
 
 \item{graphics.reset}{
  If
@@ -76,6 +81,11 @@ to put at each break value. This is intended to label axis on a
 transformed scale such as logs.}
 \item{axis.args}{Additional arguments for the axis function used to 
 create the legend axis. (See example below adding a log scaling.)}
+
+\item{legend.args}{Arguments for a complete specification of the 
+legend label. This is in the form of list and is just passed to the 
+mtext function. Usually this will not be needed. 
+(See example below.)}
 
 }
 \section{Side Effects}{
@@ -167,6 +177,7 @@ image.plot(x,y,z)
 # now add some points on diagonal with some clipping anticipated 
    points( 5:12, 5:12, pch="X", cex=3)
 
+image.plot(x,y,z, legend.lab="inches")
 
 # adding breaks and distinct colors
 #        (lab.breaks are optional)
@@ -174,10 +185,32 @@ image.plot(x,y,z)
 brk<- quantile( c(z))
 image.plot(x,y,z, breaks=brk, col=rainbow(4), 
              lab.breaks=names(brk))
+#
+# compare to 
+
+quantile(c(z), c( .05, .1,.5, .9,.95))-> zp
+
+image.plot(x,y,z, 
+   axis.args=list( at=zp, labels=names(zp) ) )
+
+
+# a log scaling for the colors
+ticks<- c( 1, 2,4,8,16,32)
+image.plot(x,y,log(z), axis.args=list( at=log(ticks), labels=ticks))
+
 
 #
 #fat (5 characters wide) and short (50\% of figure)  color bar on the bottom
    image.plot( x,y,z,legend.width=5, legend.shrink=.5, horizontal=TRUE) 
+
+# adding label with all kinds of additional arguments.
+# use side=4 for vertical legend and side= 1 for horizontal legend
+# to be paralell to axes. See help(mtext).
+
+image.plot(x,y,z, 
+       legend.args=list( text="unknown units",
+     col="magenta", cex=1.5, side=4, line=2))
+
 
 
 set.panel()

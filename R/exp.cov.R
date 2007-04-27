@@ -1,4 +1,4 @@
-"exp.cov" <-
+"Exp.cov" <-
 function (x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA,marginal=FALSE) 
 {
     if (!is.matrix(x1)) 

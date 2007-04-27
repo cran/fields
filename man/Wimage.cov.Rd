@@ -97,7 +97,7 @@ and at these grid locations.
 }
 \author{Doug Nychka }
 
-\seealso{Wtransform.image, Wimage.info, exp.image.cov, matern.image.cov}
+\seealso{Wtransform.image, Wimage.info, Exp.image.cov, matern.image.cov}
 \examples{
 
 # This example  creates a block/diagonal for H that is close to a 

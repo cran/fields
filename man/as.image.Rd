@@ -10,7 +10,7 @@ value the average is used.
 }
 \usage{
 as.image(Z, ind=NULL, grid=NULL, x=NULL, nrow=64, ncol=64,weights=NULL,
- na.rm=FALSE, nx=NULL,ny=NULL)
+ na.rm=FALSE, nx=NULL,ny=NULL, boundary.grid=FALSE)
 }
 \arguments{
 \item{Z}{
@@ -43,7 +43,8 @@ equal weights.
 If true NA's are removed from the Z vector.}
 \item{nx}{ Same as nrow}
 \item{ny}{ Same as ncol}
-
+\item{boundary.grid} { If FALSE grid points are assumed to be the 
+midpoints. If TRUE they are the grid box boundaries.}
 }
 \value{
 An list in image format with a few more components. Components x and y are 

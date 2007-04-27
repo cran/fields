@@ -93,7 +93,7 @@ The drape plot is also drawn by the fields \code{surface} function with
 \examples{
 
 # an obvious choice:
-# Mr. R's favorite New  Zealand Volcano!
+# Dr. R's favorite New  Zealand Volcano!
 data( volcano)
 M<- nrow( volcano)
 N<- ncol( volcano)
@@ -103,9 +103,10 @@ y<- seq( 0,1,,N)
 drape.plot( x,y,volcano, col=terrain.colors(128))-> pm 
 
 # use different range for color scale and persp plot
+# setting of border omits the mesh lines
 
- drape.plot( x,y,volcano, col=terrain.colors(128),zlim=c(0,500),
-                     zlim2=c( 120,180))
+ drape.plot( x,y,volcano, col=terrain.colors(128),zlim=c(0,300),
+                     zlim2=c( 120,165), border=NA)
 
 # note tranparent color for facets outside the zlim2 range
 

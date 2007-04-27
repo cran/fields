@@ -53,7 +53,7 @@ response in a regression.
 }
 \item{cov.function}{
 Covariance function for data in the form of an R function (see 
-exp.simple.cov as an example).  
+Exp.simple.cov as an example).  
 Default assumes that correlation is an exponential function of distance.
 See also \code{stationary.cov} for more general choice of covariance 
 shapes. \code{exponential.cov} will be faster if only the exponential 
@@ -497,7 +497,7 @@ test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
 #  In the example below p = 2*2 - 2 = 2  
 #
 
- out<- Krig( ozone$x, ozone$y,cov.function="rad.cov", 
+ out<- Krig( ozone$x, ozone$y,cov.function="Rad.cov", 
                        m=2,p=2,scale.type="range") 
 
 # See also the Fields function Tps
@@ -520,7 +520,7 @@ test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
 #
  xknots<- cover.design( x, 50, num.nn= 75)$design  # select 50 knot points
 
- out<- Krig( x, y, knots=xknots,  cov.function="exp.cov", theta=300)  
+ out<- Krig( x, y, knots=xknots,  cov.function="Exp.cov", theta=300)  
  summary( out)
 # note that that trA found by GCV is around 17 so 50>17  knots may be a 
 # reasonable approximation to the full estimator. 

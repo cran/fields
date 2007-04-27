@@ -5,6 +5,9 @@ BD                      Data frame of the effect of buffer compositions
                         regression data set with with replication. This
                         is a useful test data set for exercising
                         function fitting methods.
+Exp.cov                 Exponential covariance family, radial basis
+                        functions and a general function for stationary
+                        covariances.
 Exponential             Covariance functions
 Krig                    Kriging surface estimate
 Krig.Amatrix            Smoother (or "hat") matrix relating predicted
@@ -39,9 +42,6 @@ cover.design            Computes Space-Filling "Coverage" designs using
                         Swapping Algorithm
 drape.plot              Perspective plot draped with colors in the
                         facets.
-exp.cov                 Exponential covariance family, radial basis
-                        functions and a general function for stationary
-                        covariances.
 fields                  fields - tools for spatial data
 fields tests            Testing fields functions
 fields.diagonalize      Fields supporting functions
@@ -50,7 +50,7 @@ flame                   Response surface experiment ionizing a reagent
 gcv.Krig                Finds profile likelihood and GCV estimates of
                         smoothing parameters
 grid list               Grid list format for describing equally spaced
-                        grids
+                        grids and some related functions.
 image.plot              Draws image plot with a legend strip for the
                         color scale.
 image.smooth            Kernel smoother for irregular 2-d data

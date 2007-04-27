@@ -1,6 +1,7 @@
 \name{image.cov}
 \alias{stationary.image.cov}
-\alias{exp.image.cov}
+\alias{Exp.image.cov}
+\alias{Rad.image.cov}
 \alias{matern.image.cov}
 \title{
 Exponential, Matern and general covariance functions for 2-d 
@@ -8,14 +9,16 @@ gridded locations.
 }
 \description{
 Given two sets of locations defined on a 2-d grid efficiently multiplies a 
-cross covariance with a vector.  exp.image.cov and matern.image.cov will be  
+cross covariance with a vector.  Exp.image.cov and matern.image.cov will be  
 depreciated functions and are replaced by stationary.image.cov.
 }
 \usage{
 stationary.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, 
 grid, M=NULL,N=NULL, Covariance="Matern", Distance="rdist",...) 
 
-exp.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...)
+Exp.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...)
+
+Rad.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...)
 
 matern.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid,
 M=NULL,N=NULL,...)
@@ -95,7 +98,7 @@ the indices.  e.g.  cbind( grid\$x[ ind1[,1]], grid\$y[ind1[,2])) will give
 the coordinates associated with ind1. Clearly it is better just to work
 with ind1!
   
-Functional Form: Following the same form as exp.cov and matern.cov for 
+Functional Form: Following the same form as Exp.cov and matern.cov for 
 irregular
 locations, the covariance is defined as phi( D.ij) where D.ij is
 the Euclidean distance between x1[i,] and x2[j,] but having first been

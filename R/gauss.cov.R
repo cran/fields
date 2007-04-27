@@ -1,2 +1,2 @@
 "gauss.cov" <-
-function( ...){ exp.cov(..., p=2)}
+function( ...){ Exp.cov(..., p=2)}
