@@ -9,7 +9,7 @@ quick way to look at the fitted function over reasonable default
 ranges.  
 }
 \usage{
-surface.Krig(obj, grid.list = NA, extrap = FALSE, graphics.reset =
+\method{surface}{Krig}(obj, grid.list = NA, extrap = FALSE, graphics.reset =
                  NULL, xlab = NULL, ylab = NULL, main = NULL, zlab =
                  NULL, zlim = NULL, levels = NULL, type = "C", nx =
                  80, ny = 80, ...)

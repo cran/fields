@@ -48,8 +48,10 @@ function( object, grid.list=NA, M=1, nx = 40, ny = 40, xy=c(1,2),
   xs <- object$transform$x.scale
 #  xpM <- scale(xp, xc, xs)
 
-     if( verbose){ 
-       print( x)
+     if( verbose){
+       cat( "center and scale", fill=TRUE) 
+       print( xc)
+       print( xs)
      }
 
 #

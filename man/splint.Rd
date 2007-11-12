@@ -7,7 +7,7 @@
 A fast, FORTRAN based function for cubic spline interpolation. 
 }
 \usage{
-splint(x, y, xgrid, derivative=0)
+splint(x, y, xgrid, wt=NULL, derivative=0,lam=0, df=NA)
 }
 \arguments{
 \item{x}{
@@ -24,15 +24,31 @@ The grid to evaluate the fitted cubic interpolating curve.
 Indicates whether the function or a a first or second derivative 
 should be evaluated. 
 }
+\item{wt}{Weights for different obsrevations in the scale of reciprocal 
+variance.}
+\item{lam}{ Value for smoothing parameter. Default value is zero giving 
+interpolation.}
+
+\item{df}{ Effective degrees of freedom. Default is to use lambda =0 or a  
+df equal to the number of observations.}
+
 }
 \value{
-A vector consisting of the spline evaluated at the grid values. 
+A vector consisting of the spline evaluated at the grid values in \code{xgrid}. 
 }
 \details{
-Fits a piecewise interpolating cubic polynomial to the x and y values
-assuming that the second and third derivatives are zero at the range of the x 
-values. For this reason extrapolation outside the range of the x 
+Fits a piecewise interpolating or smoothing cubic 
+polynomial to the x and y values. 
+This code is designed to be fast but does not many options in  
+\code{sreg} or other more statistical implementations.  
+To make the solution well posed the
+the second and third derivatives are set to zero at the limits of the  x 
+values. Extrapolation outside the range of the x 
 values will be a linear function. 
+
+It is assumed that there are no repeated x values; use sreg followed by
+predict if you do have replicated data. 
+
 }
 \section{References}{
 See Additive Models by Hastie and Tibshriani. 
@@ -43,11 +59,29 @@ sreg,  Tps
 \examples{
 x<- seq( 0, 120,,200)
 
+# an interpolation
 splint(rat.diet$t, rat.diet$trt,x )-> y
 
 plot( rat.diet$t, rat.diet$trt)
 lines( x,y)
-#( this is weird!)
+#( this is weird and not appropriate!)
+
+# the following two smooths should be the same
+
+splint( rat.diet$t, rat.diet$con,x, df= 7)-> y1
+
+# sreg function has more flexibility than splint but will
+# be slower for larger data sets. 
+
+sreg( rat.diet$t, rat.diet$con, df= 7)-> obj
+predict(obj, x)-> y2 
+
+# in fact predict.sreg interpolates the predicted values using splint!
+
+# the two predicted lines (should) coincide
+lines( x,y1, col="red",lwd=2)
+lines(x,y2, col="blue", lty=2,lwd=2)
+ 
 }
 \keyword{smooth}
 % docclass is function

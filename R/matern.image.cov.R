@@ -11,7 +11,9 @@ ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid,M=NULL,N=NULL,...)
         xg <- make.surface.grid(list((1:M) * dx, (1:N) * dy))
         center <- matrix(c((dx * M)/2, (dy * N)/2), nrow = 1,
             ncol = 2)
-        out <- matern.cov(xg, center, ...)
+        out <- stationary.cov(xg, center, 
+                       Covariance="Matern",
+                       Distance="rdist", ...)
         out <- as.surface(xg, c(out))$z
         temp <- matrix(0, nrow = M, ncol = N)
         temp[M/2, N/2] <- 1

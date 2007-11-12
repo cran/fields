@@ -50,10 +50,10 @@ function (object, x = NULL, Z=NULL, drop.Z=FALSE,
 
     x <- scale(x, xc, xs)
 
-# NOTE knots are already scaceld in Krig object and are used 
+# NOTE knots are already scaled in Krig object and are used 
 # in transformed scale. 
 
-#    knots <- scale( object$knots, xc, xs)
+#  i.e.   knots <- scale( object$knots, xc, xs)
 
 #
 # figure out if the coefficients for the surface needto be recomputed. 

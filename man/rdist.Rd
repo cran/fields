@@ -1,14 +1,19 @@
 \name{rdist}
 \alias{rdist}
+\alias{fields.rdist.near}
+
 \title{
   Euclidean distance matrix 
 }
 \description{
-Given two sets of locations computes the Euclidean distance  matrix
-among all pairings. 
+Given two sets of locations computes the full Euclidean distance  matrix
+among all pairings or a sparse version for points within a fixed threshhold distance.
 }
 \usage{
 rdist(x1, x2)
+
+fields.rdist.near(x1,x2, delta, max.points= NULL, mean.neighbor = 50)
+
 }
 \arguments{
 \item{x1}{
@@ -20,27 +25,94 @@ point.
 Matrix of second set of locations where each row gives the coordinates of
 a particular point. If this is missing x1 is used. 
 }
+\item{delta}{ Threshhold distance. All pairs of points that separated by more than 
+delta in distance are ignored. }
+
+\item{max.points}{Size of the expected number of pairs less than or equal to 
+delta. The default is set to the nrow(x1)*mean.neighbor. }
+
+\item{mean.neighbor}{ Sets the temp space for max.points}
+ 
 }
-\value{
-The distance matrix if nrow(x1)=m and nrow(
-x2)=n then the returned matrix will be mXn. 
-}
-\details{
-Let D be the mXn distance matrix.  The elements are 
+\section{Returned values}{
+Let D be the mXn distance matrix, 
+with m= nrow(x1) and n=nrow( x2). The elements are 
 the Euclidean distances between the all locations x1[i,] and x2[j,].
+That is,
 
-D.ij = sqrt(  sum.k (( x1[i,k] - x2[j,k]) **2 ).
+D.ij = sqrt( sum.k (( x1[i,k] - x2[j,k]) **2 ).
 
+\code{rdist}
+The distance matrix D is returned. 
+
+\code{fields.rdist.near}
+The elements of D that are less than or equal to delta are returned in 
+the form of a list.
+
+List components:
+\describe{
+\item{ind}{ Row  and column indices of elements }
+\item{ra}{ (Distances ( D.ij)}
+\item{da}{ Dimensions of full distance matrix. }
+}
+
+This is a simple sparse format that can be manipulated by several fields
+functions. E.g. ind2spam will convert this list to the format used by
+the spam sparse matrix package. ind2full will convert this to an
+ordinary matrix with zeroes. 
 
 }
-\seealso{
-  Exp.cov, rdist.earth 
+
+\details{
+
+More about fields.rdist.near:
+
+The sparse version is designed to work with the sparse covariance
+functions in fields and anticipates that the full matrix, D is too large
+to store. The argument max.points is set as a default to nrow( x1)*100
+and allocates the space to hold the sparse elements. In case that there
+are more points that are within delta the function stops with an error
+but lists the offending rows. Just rerun the function with a larger
+choice for max.points
+
+It possible that for certain x1 points there are no x2 points within a distance 
+delta. This situation will cause an error if the list is converted to spam format. 
+
 }
+
+\seealso{  Exp.cov, rdist.earth, ind2spam, ind2full }
 \examples{
+
 out<- rdist( ozone$x)
 # out is a 20X20 matrix.
+
 out2<- rdist( ozone$x[1:5,], ozone$x[11:20,])
 #out2 is a 5X10 matrix
+
+set.seed(123)
+x1<- matrix( runif( 20*2), 20,2)
+x2<-  matrix( runif( 15*2), 15,2)
+
+out3<- fields.rdist.near( x1,x2, delta=.5)
+# out3 is a sparse structure in list format
+
+# or to "save"  work space decrease size of temp array
+
+ out3<- fields.rdist.near( x1,x2, delta=.5,max.points=20*15)
+
+# explicitly reforming as a full matrix 
+temp<- matrix( NA, nrow=out3$da[1], ncol= out3$da[2])
+temp[ out3$ind] <- out3$ra 
+
+#       or justuse 
+
+  temp<- spind2full( out3)
+  image( temp)
+
+# this is  identical to 
+ temp2<- rdist( x1,x2)
+ temp2[ temp2<= .5] <- NA
+
 }
 \keyword{spatial}
 % docclass is function

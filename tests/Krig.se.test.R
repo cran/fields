@@ -6,6 +6,8 @@ library( fields)
 
 options( echo=FALSE)
 
+# test.for.zero.flag<- TRUE
+
 x0<- expand.grid( c(-8,-4,0,20,30), c(10,8,4,0))
 
 
@@ -133,9 +135,13 @@ cov", tol=1e-8)
 glist<- list( x= dtemp$x, y=dtemp$y)
 
 set.seed( 233)
-sim.Krig.grid( out, grid= glist, M=400)-> look
+# with extrap TRUE this finesses problems with
+# how NAs are handled in var below
 
-predict.surface.se( out, grid=glist)-> test
+sim.Krig.grid( out, grid= glist, M=400, extrap=TRUE)-> look
+
+predict.surface.se( out, grid=glist,extrap=TRUE)-> test
+
 
 look2<- matrix( NA, 20,24)
 

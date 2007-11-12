@@ -1,17 +1,18 @@
 \name{colorbar.plot}
 \alias{colorbar.plot}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{ Plots one or more color scale strips as a symbol}
+\title{ Adds color scale strips to an existing plot.}
 \description{
-Adds one or more color scales (a strip) in either a horizontal or 
-vertical orientation to an existing plot. 
-The strips can either use a 
-common color range or be scaled separately. 
+Adds one or more color scales in a horizontal orientation, 
+vertical orientation to an existing plot.
 }
 \usage{
+
 colorbar.plot(x, y, strip, strip.width = 0.1, strip.length = 4 * strip.width, 
 zrange = NULL, adj.x = 0.5, adj.y = 0.5, col = tim.colors(256), 
 horizontal = TRUE, ...)
+
+
 }
 \arguments{
   \item{x}{x position of strip  in user coordinates }

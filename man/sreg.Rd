@@ -219,7 +219,7 @@ available (css.f).
  
 }
 \seealso{
-Krig, Tps  
+Krig, Tps, splint
 }
 \examples{
 # fit a GCV spline to  

@@ -15,7 +15,6 @@ drape.plot(x, y, z, z2=NULL, col = tim.colors(64), zlim = range(z, na.rm=TRUE),
 
 drape.color(z, col = tim.colors(64), zlim = NULL,
    transparent.color = "white")
-
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -37,6 +36,7 @@ plot, if FALSE it is placed vertically on the right side.  }
   \item{theta}{ x-y rotation angle for perspective. }
   \item{phi}{ z-angle for perspective. }
   \item{transparent.color}{ Color to use when given an NA in z} 
+
   \item{\dots}{ Other arguments that will be passed to the 
           persp function. The most common is zlim the z limits for the
 	  3-d  plot and also the limits to set up the color scale. The

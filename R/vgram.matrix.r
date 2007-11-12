@@ -1,40 +1,77 @@
-"vgram.matrix" <-
-function (dat, R = 5, nsum = 1:8, collapse = TRUE, dx=1,dy=1) 
+`vgram.matrix` <-
+function (dat, R = 5,  dx = 1, dy = 1) 
 {
 
-    if (collapse& (dx==dy)) {
-        variogram.matrix(dat, round(R/dx),dx)
-    }
-    else {
+# useful function for matching shifted indices
+       SI<- function( ntemp, delta){
+           n1<- 1:ntemp
+           n2<-  n1 + delta
+           good<- (n2>=1) & (n2<= ntemp)   
+           cbind( n1[good], n2[good]) }
+
+# create all possible separations for a grid up to a distance R
         N <- ncol(dat)
         M <- nrow(dat)
-        m <- round(R/dx)
-        n <- round(R/dy)
+        m <- min(c(round(R/dx),M) )
+        n <-  min(c(round(R/dy),N))
+#
+# all relavent combinations:  note that negative increments are 
+# needed as well as  positive ones
 
-        ind <- cbind(rep(0:m, n + 1), rep(0:n, rep(m + 1, n + 
-            1)))
-        d <- sqrt((dx*ind[, 1])^2 + (dy*ind[, 2])^2)
-        ind <- ind[(d > 0) & (d <= R), ]
-        d <- d[(d > 0) & (d <= R)]
+        ind<-   rbind(
+                       as.matrix( expand.grid( 0,1:n)),
+                       as.matrix( expand.grid( 1:m,0)),
+                       as.matrix(expand.grid(c(-(m:1),1:m ),1:n))  )
+# distances - only take those within a distance R. 
+# and trim everything to this bound
+        d <- sqrt((dx * ind[, 1])^2 + (dy * ind[, 2])^2)
+        good<-  (d > 0) & (d <= R)
+        ind <- ind[good, ]
+        d <- d[good]
         ind <- ind[order(d), ]
         d <- sort(d)
+
+#
+# arrays to hold statistics
+
         nbin <- nrow(ind)
-        ns <- length(nsum)
-        hold <- matrix(NA, ncol = ns, nrow = nbin)
-        hold2 <- rep(NA, nbin)
+        holdVG <- rep(NA, nbin)
+        holdRVG <- rep(NA, nbin)
+        holdN <- rep(NA, nbin)
+
+# loop over each separation 
+ 
         for (k in 1:nbin) {
-            m1 <- M - ind[k, 1]
-            m2 <- ind[k, 1] + 1
-            n1 <- N - ind[k, 2]
-            n2 <- ind[k, 2] + 1
-            hold[k, ] <- c(describe(0.5 * (dat[1:m1, 1:n1] - 
-                dat[m2:M, n2:N])^2))[nsum]
-            hold2[k] <- mean((0.5 * (abs(dat[1:m1, 1:n1] - dat[m2:M, 
-                n2:N]))^0.5))
+            # indices for original and shifted image that are within array bounds 
+            MM<- SI(M, ind[k,1])
+            NN<- SI(N, ind[k,2])
+            # number of differences and their values 
+             holdN[k] <- length(MM) * length(NN)
+             BigDiff<- (dat[MM[,1], NN[,1]] -  dat[MM[,2], NN[,2] ]  )
+            # standard and the  Cressie robust version. 
+             holdVG[k] <- mean( 0.5 * (BigDiff)**2) 
+             holdRVG[k] <-  mean(abs(BigDiff)^0.5)
         }
-        cst <- (0.457 + 0.494/nbin)
-        hold2 <- hold2^4/cst
-        list(d = d, ind = ind, stats = hold, vgram = hold[, 2], 
-            vgram.robust = hold2)
+
+        # finish robust estimate Cressie (1993) formula 2.4.12 
+        holdRVG<- .5* (holdRVG**4)/( .457 + .494*holdN)  
+
+
+# collapsed variogram to common distances this what one would look
+# at under the stationary case. 
+                tapply( holdVG* holdN, d, FUN="sum")-> top
+                tapply( holdN, d, FUN="sum")-> bottom
+                dcollapsed<- as.numeric( names(bottom))
+                
+        vgram<- top/bottom
+#  wipe out pesky row names
+        dimnames( vgram) <- NULL
+    
+
+        list(vgram=vgram, d = dcollapsed, 
+               ind = ind, d.full=d, vgram.full = holdVG, 
+                   robust.vgram= holdRVG, 
+                   N= holdN, dx=dx, dy=dy)
+
     }
-}
+

@@ -70,7 +70,6 @@
 \alias{plot.qsreg}
 \alias{plot.sim.krig.image}
 \alias{plot.spatial.design}
-\alias{plot.vgram.matrix}
 \alias{predict.interp.surface}
 \alias{predict.krig.image}
 \alias{predict.qsreg}
@@ -114,7 +113,6 @@
 \alias{surface.krig.image}
 \alias{surface.surface}
 \alias{unscale}
-\alias{variogram.matrix}
 \alias{world.dat}
 \title{
   Fields internal and secondary functions 
@@ -124,11 +122,11 @@ Listed below are supporting fucntions for the major methods in fields.
 }
 \usage{
 
-COR (dat) 
+COR(dat) 
  
-D4transform.image (x, inv = FALSE, transpose = FALSE, cut.min = 8) 
+D4transform.image(x, inv = FALSE, transpose = FALSE, cut.min = 8) 
  
-Krig.df.to.lambda (df, D, guess = 1, tol = 1e-05) 
+Krig.df.to.lambda(df, D, guess = 1, tol = 1e-05) 
 Krig.fdf (llam, info) 
 Krig.fgcv (lam, obj) 
 Krig.fgcv.model (lam, obj) 
@@ -163,8 +161,8 @@ WQS.periodic(x)
 WQS.periodic.T(x)
 WQS.periodic.basis(N, cut.n = 8)
 WQS.periodic.T(x)
-WQS2d.cylinder(x, transpose = FALSE, byX=T)
-WQS2di.cylinder(x, transpose = FALSE, byX=T)
+WQS2d.cylinder(x, transpose = FALSE, byX=TRUE)
+WQS2di.cylinder(x, transpose = FALSE, byX=TRUE)
 WQSi.periodic(x)
 WQSi.periodic.T(x)
 
@@ -183,7 +181,7 @@ cat.to.list (x, a)
  
 ceiling2 (m) 
  
-conjugate.gradient (b, multAx, start = NULL, tol = 1e-05, kmax = 
+conjugate.gradient (b, multAx, start, tol = 1e-05, kmax = 
              25, verbose = TRUE,    ...) 
  
 describe (x) 
@@ -244,21 +242,20 @@ plot.krig.image (x, main = NA, digits = 4, which = rep(TRUE, 4),
 plot.qsreg (x, pch = "*", main = NA,...) 
 plot.sim.krig.image (x,...) 
 plot.spatial.design (x,...) 
-plot.vgram.matrix (x, ...)
  
 predict.interp.surface (object, loc,...) 
-predict.krig.image (object, x, ...) 
-predict.qsreg (object, x, derivative = 0, model = object$ind.cv.ps,...)
-predict.sreg (object, x, derivative = 0, model = 1,...) 
+\method{predict}{krig.image} (object, x, ...) 
+\method{predict}{qsreg}(object, x, derivative = 0, model = object$ind.cv.ps,...)
+\method{predict}{sreg}(object, x, derivative = 0, model = 1,...) 
  
-print.krig.image(x,...) 
-print.qsreg (x, ...) 
-print.spatial.design (x,...) 
-print.sreg (x, ...) 
-print.summary.Krig (x, ...) 
-print.summary.krig.image (x, ...) 
-print.summary.spatial.design (x, digits = 4,...) 
-print.summary.sreg (x, ...) 
+\method{print}{krig.image}(x,...) 
+\method{print}{qsreg} (x, ...) 
+\method{print}{spatial.design} (x,...) 
+\method{print}{sreg}(x, ...) 
+\method{print}{summary.Krig} (x, ...) 
+\method{print}{summary.krig.image} (x, ...) 
+\method{print}{summary.spatial.design} (x, digits = 4,...) 
+\method{print}{summary.sreg} (x, ...) 
  
 qr.q2ty (qr, y) 
  
@@ -291,28 +288,25 @@ sreg.trace (h, info)
 stats.bplot (x, by, style = "tukey", outlier = TRUE) 
 stats.sim.krig.image (obj) 
  
-summary.gcv.Krig (object, lambda, cost = 1, verbose = FALSE, 
+summary.gcv.Krig(object, lambda, cost = 1, verbose = FALSE, 
                 offset = 0, y = NULL, ...)
 summary.gcv.sreg (object, lambda, cost = 1, nstep.cv = 20, 
         offset = 0, verbose = TRUE,...) 
-summary.krig.image (object, digits = 4, ...) 
-summary.qsreg (object, ...) 
-summary.spatial.design (object, digits = 4, ...) 
-summary.sreg (object, digits = 4, ...) 
+\method{summary}{krig.image} (object, digits = 4, ...) 
+\method{summary}{qsreg} (object, ...) 
+\method{summary}{spatial.design} (object, digits = 4, ...) 
+\method{summary}{sreg} (object, digits = 4, ...) 
 
 surface(obj , ...) 
-surface.default (obj, ...) 
-surface.krig.image (obj, grid.list = NA, extrap = TRUE, 
+\method{surface}{default} (obj, ...) 
+\method{surface}{krig.image}(obj, grid.list = NA, extrap = TRUE, 
       graphics.reset = FALSE, xlab = NULL, ylab = NULL, main = NULL,
       zlab = NULL,zlim = NULL,levels = NULL, ptype = "I", ...) 
  
-surface.surface (obj, ...)
- 
+\method{surface}{surface} (obj, ...)
+
 unscale (x, x.center, x.scale) 
- 
-variogram.matrix (dat, R = 5, dx) 
- 
-world.dat 
+
 }
 \keyword{internal}
 % docclass is function

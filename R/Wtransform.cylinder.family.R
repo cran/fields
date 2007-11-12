@@ -64,7 +64,7 @@ function (x)
     tmp
 }
 "WQS2d.cylinder" <-
-function (x, transpose = FALSE, byX=T) 
+function (x, transpose = FALSE, byX=TRUE) 
 {
 if( byX){
     if (!transpose) 
@@ -83,7 +83,7 @@ else{
 
 }
 "WQS2di.cylinder" <-
-function (x, transpose = FALSE, byX=T) 
+function (x, transpose = FALSE, byX=TRUE) 
 {
    if( byX){
  if (!transpose) 

@@ -17,7 +17,7 @@
     if (missing(x2)) 
         x2 <- x1
 
-    if( is.data.frame( x2)) x2<- as.matrix(x1)
+    if( is.data.frame( x2)) x2<- as.matrix(x2)
 
     if (!is.matrix(x2)) 
         x2 <- matrix(c(x2), ncol=1)

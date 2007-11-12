@@ -160,3 +160,4 @@ hold<-T[,1:3]%*%temp.d[1:3]
 test.for.zero( hold, hold4, tag="predict for null" )
 
 options( echo=TRUE)
+cat("All done with Z tests and Krig!", fill=TRUE)

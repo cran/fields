@@ -22,17 +22,19 @@ regression (including GCV)
 }
 
 The Krig function allow you to supply a covariance function that is
-written in native S/R code. 
-See (\code{stationary.cov}) that includes several families of 
-covariances and distance metrics including the Matern and great circle
-distance.  
+written in native R code.  See (\code{stationary.cov}) that includes
+several families of covariances and distance metrics including the
+Matern and great circle distance. Also check out \code{mKrig} (micro Krig)
+a fast Kriging routine, that can take advantage of sparse covariance
+functions and thus handle very large numbers of spatial locations. 
 
 Some other noteworthy functions are
 \itemize{
-\item \code{cover.design}  Space-filling designs where the distance 
+\item \code{cover.design}  Gnerates space-filling designs where the distance 
 function is expresed in R/S code
 
 \item \code{as.image}, \code{image.plot}, \code{drape.plot}, \code{quilt.plot}
+\code{add.image}, \code{crop.image}, \code{half.image}.
  
 convenient functions for working with image data and rationally (well,
 maybe reasonably) placing a color scale on an image plot. 
@@ -55,7 +57,7 @@ these methods such as
 
 To get started, try some of the examples from help files for \code{Tps} or 
 \code{Krig}. See also the manual/tutorial at 
-\url{http://www.cgd.ucar.edu/stats/Software/fields}
+\url{http://www.image.ucar.edu/Software/Fields}
 
 Graphics tips:
 \code{help( fields.hints)}
@@ -73,11 +75,11 @@ this package. Any changes to the software should not be made without the
 authors permission.
 }
 \examples{
-set.panel()
-# some air quality data:
+
+# some air quality data,daily surface ozone for the Midwest:
 data(ozone2)
 x<-ozone2$lon.lat
-y<- ozone2$y[16,]
+y<- ozone2$y[16,] # June 18, 1987
 
 # pixel plot of spatial data
 quilt.plot( x,y)
@@ -94,6 +96,7 @@ plot(fit) # four diagnostic plots of  fit and residuals.
 
 surface(fit) # contour/image plot of the fitted surface
 US( add=TRUE, col="magenta", lwd=2) # US map overlaid
-title("Daily max 8 hour ozone in PPB,  June 19th, 1987")
+title("Daily max 8 hour ozone in PPB,  June 18th, 1987")
+
 }
 \keyword{datasets}

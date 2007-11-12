@@ -8,7 +8,7 @@ Plots a surface object in several different ways to give 3-d
 information e.g. a contour plots, perspective plots.  
 }
 \usage{
-plot.surface(x, main = NULL, type = "C", zlab = NULL, xlab = NULL,
+\method{plot}{surface}(x, main = NULL, type = "C", zlab = NULL, xlab = NULL,
     ylab = NULL, levels = NULL, zlim = NULL, graphics.reset = NULL,
      labcex = 0.6, add.legend=TRUE, ...)
 }

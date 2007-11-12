@@ -7,7 +7,7 @@ function (ind1, ind2=ind1,Y, cov.obj)
 # taking advantage of the block diagonal form 
 #  
 
-    Mult.H <- function(u, cov.obj) {
+    Mult.H <- function(u, H.obj) {
         IND <- H.obj$ind0
         u[IND] <- H.obj$H0 %*% c(u[IND])
         u * H.obj$H1

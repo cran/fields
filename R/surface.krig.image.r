@@ -7,7 +7,7 @@ function (obj, grid.list = NA, extrap = TRUE, graphics.reset = FALSE,
     if (graphics.reset) 
         on.exit(par(old.par))
     if (is.na(grid.list)) {
-        out.p <- out$surface
+        out.p <- obj$surface
     }
     else {
         out.p <- predict.surface(obj, grid.list = grid.list, 

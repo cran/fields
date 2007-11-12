@@ -123,7 +123,6 @@ look<- image.smooth( matrix( rnorm(128**2), 128,128), wght)
 # take a look: image.plot( look)
 
 }
-}
 \keyword{smooth}
 % docclass is function
 % Converted by Sd2Rd version 1.21.

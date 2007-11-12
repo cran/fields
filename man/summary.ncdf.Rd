@@ -7,7 +7,7 @@ Provides a summary of the variable names and sizes from the handle
 returned from netCDF file. 
 }
 \usage{
-summary.ncdf(object,...)
+\method{summary}{ncdf}(object,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

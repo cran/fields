@@ -8,8 +8,14 @@ function (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE,
 # usually called with p 2m-d
 
 #  marginal dummy argument 
+#  this should only be called within predict.se.Krig
+#  and provides the correct calculation. Because this is 
+#  a generalized covariance the marginal variance is not really 
+#  defined. 
+#
+
     if( marginal){
-    return( rep( 1, nrow( x1)) )}
+    return( rep( 0, nrow( x1)) )}
 
 
         if (!is.matrix(x1)) 

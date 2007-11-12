@@ -99,16 +99,11 @@ function (Z, ind = NULL, grid = NULL, x = NULL, nrow = 64, ncol = 64,
 
 # over write Z with  weighted means
         Z <- temp$means
-        Ncell <- temp$n
-        temp2 <- matrix(0, nrow = nrow, ncol = ncol)
-        temp2[ind] <- Ncell
-        temp3 <- matrix(NA, nrow = nrow, ncol = ncol)
+         temp3 <- matrix(NA, nrow = nrow, ncol = ncol)
         temp3[ind] <- temp$w.means
     }
     else {
-        temp2 <- matrix(0, nrow = nrow, ncol = ncol)
-        temp2[ind] <- 1
-        temp3 <- matrix(NA, nrow = nrow, ncol = ncol)
+         temp3 <- matrix(NA, nrow = nrow, ncol = ncol)
         temp3[ind] <- 1
     }
 
@@ -118,6 +113,6 @@ function (Z, ind = NULL, grid = NULL, x = NULL, nrow = 64, ncol = 64,
 
     call <- match.call()
     list(x = grid$x, y = grid$y, z = temp, call = call, ind = ind, 
-        N = temp2, weights = temp3)
+        weights = temp3)
 }
 
