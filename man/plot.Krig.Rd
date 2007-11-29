@@ -8,8 +8,8 @@
 Plots a series of four diagnostic plots that summarize the fit. 
 }
 \usage{
-plot.Krig(x, digits=4, which= 1:4,...)
-plot.sreg(x, digits = 4, which = 1:4, ...)
+\method{plot}{Krig}(x, digits=4, which= 1:4,...)
+\method{plot}{sreg}(x, digits = 4, which = 1:4, ...)
 
 
 }

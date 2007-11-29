@@ -9,7 +9,7 @@ variance (sigma) and the smoothing
 parameter (lambda). This list is usually printed using print.summary.Krig.
 }
 \usage{
-summary.Krig(object, digits=4,...)
+\method{summary}{Krig}(object, digits=4,...)
 }
 \arguments{
 \item{object}{

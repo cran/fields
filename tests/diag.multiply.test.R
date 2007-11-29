@@ -15,5 +15,5 @@ test.for.zero( (diag(vec)%*% mat), (vec%d*%mat), tol=1e-8 )
 test.for.zero (mat2 %*% vec, mat2%d*%vec, tol=1e-8 )
 
 test.for.zero( diag(vec)%*% vec2, vec%d*%vec2,tol=1e-8)
-
+cat("All done with testing diag multiply", fill=TRUE)
 options(echo=TRUE)

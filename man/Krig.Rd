@@ -34,9 +34,9 @@ x, Y, cov.function = "stationary.cov", lambda = NA, df
                  chol.args = NULL, null.args = NULL, wght.args = NULL,
                  W = NULL, give.warnings = TRUE, ...)
 
-fitted.Krig(object,...)
+\method{fitted}{Krig}(object,...)
 
-coef.Krig(object,...)
+\method{coef}{Krig}(object,...)
 
 resid.Krig(object,...)
 

@@ -9,7 +9,7 @@ points, new data (Y) or other values of the smoothing parameter (lambda)
 including a GCV estimate. 
 }
 \usage{
-predict.Krig(
+\method{predict}{Krig}(
 object, x = NULL, Z = NULL, drop.Z = FALSE, just.fixed
                  = FALSE, lambda = NA, df = NA, model = NA,
                  eval.correlation.model = TRUE, y = NULL, yM = NULL,

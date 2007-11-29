@@ -7,7 +7,9 @@ gauss.cov,
     temp <- as.image(Y, ind, grid = grid, nrow = nrow, ncol = ncol, 
         x = x)
     Y <- temp$z
-    NN <- temp$N
+
+    NN <- temp$weights # cheat should actually be number in each cell
+
     grid <- list(x = temp$x, y = temp$y)
     if (is.null(weight.obj)) {
         dx <- grid$x[2] - grid$x[1]

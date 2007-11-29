@@ -1,16 +1,21 @@
 "plot.vgram.matrix" <-
 function(x,...){
-# check if just radil distance has been used for vgram
-collapse<- is.null( x$ind)
-#
-if( !collapse){
 
-nx<- max( x$ind[,1])
-ny<- max(  x$ind[,2])
-temp<-  matrix( NA,nrow=nx+1, ncol=ny+1)
-temp[ x$ind+1] <- x$vgram
-image.plot( 0:nx, 0:ny, temp, xlab="X", ylab="Y",...)
-}
-else( plot( x$d, x$vgram))
+ind<- x$ind
+
+ir<- range( ind[,1])
+jr<- range( ind[,2])
+ 
+# x and y grid values 
+temp.list<- list( x= (ir[1]:ir[2])*x$dx, y=(jr[1]:jr[2])*x$dy)
+
+# fill in a matrix with variogram values
+ind2<-  cbind( ind[,1] - min(ind[,1]) + 1, ind[,2] - min(ind[,2]) + 1)
+temp<- matrix( NA, nrow = max(ind2[,1]), ncol = max( ind2[,2]) )
+temp[ind2] <- x$vgram.full
+temp.list$z<- temp
+
+# plot it! 
+image.plot(temp.list,...)  
 
 }

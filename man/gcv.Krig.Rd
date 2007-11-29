@@ -113,8 +113,5 @@ hold[k,]<-  gcv.Krig(obj,  y=y, give.warnings=FALSE)$lambda.est[1,]
 plot( hold[,2], hold[,4], xlab="estimated eff. df", ylab="sigma hat")
 yline( sigma, col=2)
 # note some occaisional flaky behaviour with GCV ( eff df > 20!)
-
-  }
-
 }
 \keyword{spatial}

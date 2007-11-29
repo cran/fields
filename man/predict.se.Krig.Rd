@@ -12,7 +12,7 @@ provisions to use a different covariance for evaluation than the one used
 to define the BLUE.  
 }
 \usage{
-predict.se.Krig(object, x = NULL, cov = FALSE, verbose = FALSE,...)
+\method{predict.se}{Krig}(object, x = NULL, cov = FALSE, verbose = FALSE,...)
  }
 \arguments{
 \item{object}{

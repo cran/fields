@@ -75,7 +75,7 @@ c                     the x's will just be a linear function.
 c  
 c
 c
-c         c=0    X's are sorted 
+c         c=0    X's may not be in sorted order 
 c         c=1    Assume that the X's are in sorted order
 c         c=2 Do not sort the X's use the  current set of keys
 c              Should only be used on a second call to smooth

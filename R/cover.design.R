@@ -4,11 +4,13 @@ function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL,
     start = NULL, DIST = NULL, return.grid = TRUE, return.transform = TRUE, 
     max.loop = 20, verbose=FALSE) 
 {
+    
     if (!is.null(start) && is.matrix(start)) {
-        if (any(duplicated.array(start))) 
+        if (any(duplicated(start))) 
             stop("Error: start must not have duplicate rows")
-        start <- rowmatch(start, R)
-        if (any(is.na(start))) 
+
+        test <- duplicated(start, R)
+        if ( sum(test)<nrow(start) ) 
             stop("Error: Starting design must be a subset of R")
     }
     R.orig <- R
@@ -78,7 +80,7 @@ function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL,
             for (i in 1:nd) {
 # loop over current design points looking for a productive swap
                 Dset.i <- matrix(R[Dset[i], ], nrow = 1)
-if( verbose) { cat( "design point", i, Dset.i,fill=T)}
+if( verbose) { cat( "design point", i, Dset.i,fill=TRUE)}
                 partial.newrow <- sum(DIST(Dset.i, R[Dset[-i], 
                   ])^P)
                 rs.without.i <- rs - c(DIST(Dset.i, R[-Dset, 
@@ -99,11 +101,11 @@ if( verbose) { cat( j," ")}
 
                 best.spot <- Cset[CRIT == best][!is.na(Cset[CRIT == 
                   best])][1]
-if( verbose) { cat( i,"best found ", best," at",  best.spot, fill=T)}
+if( verbose) { cat( i,"best found ", best," at",  best.spot, fill=TRUE)}
                 crit.old <- crit.i
 # check if the best swap is really better thatn what you already have. 
                 if (best < crit.i) {
-if( verbose) { cat( i,"best swapped ",fill=T)}
+if( verbose) { cat( i,"best swapped ",fill=TRUE)}
                   crit.i <- best
                   hist <- rbind(hist, c(Dset[i], best.spot, crit.i))
                   Dset[i] <- best.spot

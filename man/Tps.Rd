@@ -168,6 +168,9 @@ knots argument where one can use a reduced set of basis functions. This is
 mainly to simplify and a good alternative using knots would be to use a
 valid covariance from the Matern family and a large range parameter. 
 
+See also the mKrig function for handling larger data sets and also for an example
+of combining Tps and mKrig for evaluation on a larger grid. 
+
  }
 
 \section{References}{
@@ -176,7 +179,7 @@ by Green and Silverman.
 See "Additive Models" by Hastie and Tibshirani. 
 }
 \seealso{
-Krig, summary.Krig, predict.Krig, predict.se.Krig, plot.Krig,  
+Krig, summary.Krig, predict.Krig, predict.se.Krig, plot.Krig, mKrig  
 \code{\link{surface.Krig}}, 
 \code{\link{sreg}} 
 }

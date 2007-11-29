@@ -7,17 +7,23 @@
 \alias{discretize.image}
 
 \title{
-  Grid list format for describing equally spaced grids and some related
-functions. 
+Some simple functions for working with gridded data and 
+the grid format (grid.list) used in fields.
 }
 \description{
     
-The object grid.list refers to a list that contains information for  
-evaluating a function on a 2-dimensional grid of points. If a function  
-has more than two independent variables then one also needs to specify  
-the constant levels for the variables that are not being varied. 
-This format is used in several places in  fields  for 
-functions that evaluate function estimates and plot surfaces.}
+The object grid.list refers to a list that contains
+information for evaluating a function on a 2-dimensional
+grid of points. If a function has more than two
+independent variables then one also needs to specify the
+constant levels for the variables that are not being
+varied.  This format is used in several places in fields
+for functions that evaluate function estimates and plot
+surfaces. These functions provide some default conversions
+among information and the gird.list. The function 
+\code{discretize.image} is a useful tool for "registering"
+irregular 2-d points to a grid. 
+}
 
 \usage{
 parse.grid.list( grid.list, order.variables="xy")

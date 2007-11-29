@@ -6,12 +6,11 @@ Krig.make.W<- function( out, verbose=FALSE){
 #
 # create W from scratch or grab it from passed object
 
-        if( is.null(out$W)){
+    if( is.null(out$W)){
          if( verbose){ print( out$wght.function.name)}
          W<- do.call( out$wght.function.name, 
                         c( list( x=out$xM), out$args.wght))
-#
-# possibly adjust W based on diagional weight terms 
+#       adjust W based on diagonal weight terms 
 #          
          W<- sqrt( out$weightsM)* t( sqrt(out$weightsM)*W) }
         else{ 
@@ -24,13 +23,15 @@ Krig.make.W<- function( out, verbose=FALSE){
    
    else{
 #
-#  If W is diagonal include  as a vector. 
-#  Subsequent multiplies use %d*% to handle the diagonal and nondiagonal cases
-#  together   e.g.  W%d*%yM will worrk for both diag and nondiag W's. 
-#
-      return(
-             list( W= out$weightsM, W2=sqrt(out$weightsM))
-             )}
+#  These are created only for use with default method to stay
+#   consistent with nondiagonal elements.
+    
+   if(out$fixed.model){ 
+            return(list( W=NULL, W2=NULL))}
+        else{
+     return(
+        list( W=diag(out$weightsM), W2=diag(sqrt(out$weightsM)))) }
 
+    }
    
 }

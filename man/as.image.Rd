@@ -54,17 +54,22 @@ with the Z values. NA's are placed at cell locations where Z data has
 not been supplied.  
 Component ind is a 2 column matrix with subscripts for the locations of 
 the values in the image matrix.  
-Component N is an image matrix with the number of original values that 
-fall within each grid box. 
 Component weights is an image matrix with the  sum of the
-individual weights for each cell.  
+individual weights for each cell. If no weights are specified the
+default for each observation is one and so the weights will be the
+number of observations in each bin. 
+
 }
 \details{
 The discretization is straightforward once the grid is determined.  
-If two or more Z values have locations in the same cell the average value 
-is 
-taken as the value.  See the source code to modify this to get more 
+If two or more Z values have locations in the same cell the weighted 
+average value is taken as the value. The weights component that is
+returned can be used to account for means that have different numbers
+(or precisions) of observations contributing to the grid point averages. 
+The default weights are taken to be one for each observation. 
+See the source code to modify this to get more 
 information about coincident locations. (See the call to fast.1way) 
+
 }
 \seealso{
 image.smooth, image.plot, Krig.discretize, Krig.replicates  
@@ -74,8 +79,10 @@ image.smooth, image.plot, Krig.discretize, Krig.replicates
 look<- as.image( RMprecip$y, x= RMprecip$x, nrow=50, ncol=50)
 image.plot( look) 
 
-# number of obs in each cell.
-image.plot( look$x ,look$y, look$N, col=terrain.colors(50)) 
+# number of obs in each cell -- in this case equal to the 
+# aggregated weights because each obs had equal wieght in the call
+
+image.plot( look$x ,look$y, look$weights, col=terrain.colors(50)) 
 # hot spot is around Denver
 }
 \keyword{manip}

@@ -1,4 +1,4 @@
-\name{Exponential}
+\name{Exponential, Matern}
 \alias{Exponential}
 \alias{Matern}
 \title{Covariance functions}
@@ -10,6 +10,7 @@ distance between locations.
 Exponential(d, range = 1, alpha = 1/range, phi = 1)
 Matern (d , scale = 1, range = 1,alpha=1/range,
      smoothness = 0.5, nu= smoothness, phi=scale) 
+
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -60,6 +61,6 @@ A vector of covariances.
 }
 \references{ Stein's book}
 \author{Doug Nychka}
-\seealso{stationary.cov, stationary.image.cov}
-}
+\seealso{stationary.cov, stationary.image.cov, Wendland,stationary.taper.cov}
+
 \keyword{spatial}% at least one, from doc/KEYWORDS

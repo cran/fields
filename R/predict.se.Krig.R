@@ -90,7 +90,11 @@ if ( !cov){
     temp2 <- colSums(wght.vec * (Cov.y %*% wght.vec) )
 #
 # find marginal variances -- trival in the stationary case!
-# 
+# Note that for the case of the general covariances
+# as radial basis functions (RBFs) temp0 should be zero.
+# Positivity results from the generalized divided difference
+# properties of RBFs. 
+    
     temp0 <- rho * do.call(
                    call.name, 
                  c(object$args, list(x1 = x, marginal=TRUE)) ) 

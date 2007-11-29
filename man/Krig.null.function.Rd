@@ -26,6 +26,5 @@ spatial model. The arguments x, Z and drop.Z are required but other arguments
 can  be passed as part of a list in null.args  in the call to Krig. 
 }
 \author{Doug Nychka }
-}
-\seealso{ Krig  }
+\seealso{Krig}
 \keyword{ spatial}% at least one, from doc/KEYWORDS

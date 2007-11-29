@@ -1,10 +1,10 @@
 library(fields)
+options( echo=FALSE)
 #
 #
 #  test of off diagonal weight matrix for obs
 #  Check against linear algebra
 #
-options( echo=FALSE)
 #cat("A very nasty case with off diagonal weights",fill=TRUE)
 
 set.seed(123)
@@ -14,7 +14,6 @@ y<- rnorm( 15)*.01 + x[,1]**2 +  x[,2]**2
 #weights<- rep( 1, 15)
 
 weights<- runif(15)*10
-
 
 
 # WBW

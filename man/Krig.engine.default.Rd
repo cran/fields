@@ -1,4 +1,4 @@
-\name{The Krig engines and support}
+\name{The Engines:}
 \alias{Krig.engine.default}
 \alias{Krig.engine.knots}
 \alias{Krig.engine.fixed}

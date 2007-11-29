@@ -64,7 +64,5 @@ US( add=TRUE, col="grey", lwd=2)
 par( mar=c( 5,5,5,10)) # save some room for the legend
 quilt.plot( ozone2$lon.lat, ozone2$y[16,], add.legend=FALSE)
 image.plot(ozone2$lon.lat, ozone2$y[16,],legend.only=TRUE)
-
   }
-}
 \keyword{hplot}% at least one, from doc/KEYWORDS

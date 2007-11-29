@@ -7,7 +7,7 @@
 Prints the results from a fitting a spatial process estimate (Krig)
 }
 \usage{
-print.Krig(x,digits=4,...)
+\method{print}{Krig}(x,digits=4,...)
 }
 \arguments{
 \item{x}{

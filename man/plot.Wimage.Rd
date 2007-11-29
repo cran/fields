@@ -8,7 +8,7 @@ wavelet coefficients from a
 multiresolution by location, resolution level and type. 
 }
 \usage{
-plot.Wimage(x, cut.min, graphics.reset = TRUE, common.range = FALSE, 
+\method{plot}{Wimage}(x, cut.min, graphics.reset = TRUE, common.range = FALSE, 
     color.table = tim.colors(128), Nlevel = NULL, with.lines = FALSE, 
     omd.width = 0.2, ...)
 }
