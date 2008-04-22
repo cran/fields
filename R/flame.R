@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "flame" <-
 structure(list(x = structure(c(3, 5, 7, 9, 11, 4, 6, 8, 10, 12, 
 4, 6, 8, 10, 12, 14, 5, 7, 9, 11, 13, 15, 5, 7, 9, 11, 13, 15, 

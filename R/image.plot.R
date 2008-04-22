@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "image.plot" <-
 function (..., add=FALSE, nlevel = 64, 
     horizontal = FALSE, 
@@ -6,7 +11,8 @@ function (..., add=FALSE, nlevel = 64,
     legend.lab=NULL, 
     graphics.reset = FALSE, 
     bigplot = NULL, smallplot = NULL, legend.only = FALSE, 
-    col = tim.colors(nlevel), lab.breaks=NULL, axis.args=NULL, legend.args=NULL) 
+    col = tim.colors(nlevel), 
+    lab.breaks=NULL, axis.args=NULL, legend.args=NULL, midpoint=FALSE) 
 {
 
 # Thanks to S. Koehler and  S. Woodhead
@@ -46,12 +52,17 @@ function (..., add=FALSE, nlevel = 64,
 
 #
 # draw the image in bigplot, just call the R base function 
-#
+# or poly.image for polygonal cells note logical switch
+# for poly.grid parsed out of call from image.plot.info
+
     if (!legend.only) {
         if (!add) {
             par(plt = bigplot) }
 
-        image(..., add = add, col = col)
+     if( !info$poly.grid){
+        image(..., add = add, col = col)}
+     else{ 
+        poly.image( ..., add = add, col = col, midpoint=midpoint)}
 
         big.par <- par(no.readonly = TRUE)
     }

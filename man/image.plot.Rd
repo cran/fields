@@ -1,7 +1,13 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 \name{image.plot}
 \alias{image.plot}
 \title{
-  Draws image plot with a legend strip for the color scale.  
+  Draws image plot with a legend strip for the color scale based on either
+a regular grid or a grid of quadrilaterals.  
 }
 \description{
 This function combines the R image function with some automatic 
@@ -17,11 +23,13 @@ image.plot(...,
                  graphics.reset = FALSE, bigplot = NULL, smallplot =
                  NULL, legend.only = FALSE, col = tim.colors(nlevel),
                  lab.breaks = NULL, axis.args = NULL, legend.args =
-                 NULL)}
+                 NULL, midpoint=FALSE)}
 
 \arguments{ \item{\dots}{
-The usual arguments to the image function. This includes the use of 
-the breaks argument for an unequal color scale. 
+ The usual arguments to the image function. This includes the use of the
+breaks argument for an unequal color scale.  If a quadrateral grid
+arguments must be explcitly x,y and z with x, and y being matrices of
+dimension equal or one more than z giving the grid locations.
 }
 \item{add}{
 If true add image and a legend strip to the existing plot. 
@@ -86,7 +94,11 @@ create the legend axis. (See example below adding a log scaling.)}
 legend label. This is in the form of list and is just passed to the 
 mtext function. Usually this will not be needed. 
 (See example below.)}
-
+\item{midpoint}{ 
+ If FALSE (default) for quadrilateral grids grid point will be extended
+to include z locations as midpoints. If true z values will be averaged
+to yield a midpoint value. (See help on poly.image for details). In most cases
+midpoint should be FALSE to preserve exact values for z. }
 }
 \section{Side Effects}{
 After exiting, the
@@ -165,7 +177,7 @@ number of colors.
 
 }
 
-\seealso{ image,filled.contour, quilt.plot, plot.surface, 
+\seealso{ image,poly.image,filled.contour, quilt.plot, plot.surface, 
 add.image, colorbar.plot, tim.colors } 
 
 \examples{
@@ -211,7 +223,12 @@ image.plot(x,y,z,
        legend.args=list( text="unknown units",
      col="magenta", cex=1.5, side=4, line=2))
 
+#### example using a irregular quadrilateral grid
+data( RCMexample)
+image.plot( RCMexample$x, RCMexample$y, RCMexample$z[,,1])
 
+
+#### multiple images with a common legend
 
 set.panel()
 

@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 Krig.transform.xY<- function(obj,knots, verbose=FALSE ){
 
 # find all replcates and  collapse to unique locations and mean response 
@@ -8,7 +13,8 @@ out<- Krig.replicates( obj, verbose=verbose)
 #
 # save information about knots.
 
-    if (is.na(knots[1])) {
+
+    if (is.na(knots[1]) ) {
         out$knots <- out$xM
         out$mle.calc <- TRUE
         out$knot.model <- FALSE

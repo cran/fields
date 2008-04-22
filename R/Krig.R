@@ -1,6 +1,12 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig" <-
 function (x, Y, 
-    cov.function = "stationary.cov", lambda = NA, df = NA, 
+    cov.function = "stationary.cov", 
+    lambda = NA, df = NA, GCV=FALSE, 
     Z=NULL,
     cost = 1, knots=NA, weights = NULL,
     m = 2, 
@@ -101,16 +107,34 @@ function (x, Y,
     
 #
 # the offset is the effective number of parameters used in the GCV 
-# calculations
+# calculations -- unless this is part of an additive model this
+# is likely zero 
     out$offset <- offset
 
 #
 # the cost is the multiplier applied to the GCV eff.df
-# sigma2 is error variance and rho the multiplier for covariance
+# lambda and df are two ways of parameterizing the smoothness
+# and are related by a monotonic function that unfortunately
+# depends on the locations of the data. 
+# lambda can be used directly in the linear algebra, df
+# must be transformed to lambda numerically using the monotonic trransformation
+# sigma2 is the error variance and rho the multiplier for the covariance
+# method is how to determine lambda
+# the GCV logical forces the code to do the more elaborate decompositions
+# that faclitate estimating lambda -- even if a specific lambda value is
+# given.
+    
     out$cost <- cost
+    out$lambda <- lambda
+    out$eff.df<- df
     out$sigma2<- sigma2
     out$rho<- rho
-#
+
+    out$method<- method
+
+    out$GCV<- GCV
+
+#  
 # correlation model information
 #
     out$mean.obj<- mean.obj
@@ -134,11 +158,18 @@ function (x, Y,
 
 ###############################################################
 # Begin modifications and transformations of input information
+# note that many of these manipulations follow a strategy
+# of passing the Krig object (out) to a function and
+# then appending the information from this function to
+# the Krig object. In this way the Krig object  is built up
+# in steps and it is hoped easier to follow. 
 ###############################################################
  
 # various checks on x and  Y including removal of NAs in Y
    if( verbose){ cat("checks on x,Y, and Z", fill=TRUE)}
 
+# Here is an instance of adding to the Krig object
+# in this case some onerous bookkeeping making sure arguments are consistent
    out2<- Krig.check.xY( x,Y,Z, weights, na.rm, verbose=verbose)
    out<- c( out, out2)
 
@@ -151,7 +182,7 @@ function (x, Y,
    if( out$correlation.model){
                out$y<- Krig.cor.Y(out, verbose=verbose)}
 
-   if( verbose){ cat("transform x", fill=TRUE)}
+   if( verbose){ cat("Transform x and knots: ", fill=TRUE)}
 
    out2<- Krig.transform.xY(out,knots, verbose=verbose)
    out<- c( out, out2)
@@ -162,42 +193,25 @@ function (x, Y,
 #############################################################
 #  Figure out what to do 
 #############################################################
-
 #
-# determine the method for finding lambda 
-#  Note order 
+# this functions works through the logic of
+# what has been supplied for lambda
+      
+    out2<- Krig.which.lambda( out)
+    out[names(out2)]<-  out2 # this will replace arguments in out 
+    
+# verbose block
+    if( verbose){
+         cat( "Modified values for smoothing controls", fill=TRUE)
+         print(out2)}
 
-    out$method<- method
-
-    if (!is.na(lambda)  ){
-# this indicates lambda has been supplied and leads to 
-# the cholesky type computational approaches. 
-        out$method <- "user"
-        out$lambda<- lambda
-    }
-
-    if (!is.na(rho) & !is.na(sigma2)) {
-        out$method <- "user"
-        out$lambda <- sigma2/rho
-    }
-
-#
-# NOTE: method="user" means that a value of lambda has been supplied
-#        and so GCV etc to determine lambda is not needed. 
-#     
-   out$fixed.model<- (out$method=="user")
-
-# set lambda.est matrix to NA because no estimates are found
-# (see alternative in gcv block)
-
-    if( out$fixed.model) { out$lambda.est<- NA}
-
-#
+    
 # verbose block 
    if (verbose){ 
         cat("lambda, fixed? ", lambda, out$fixed.model, fill = TRUE)}
 
 
+    
 # Make weight matrix for observations
 #    ( this is proportional to the inverse square root of obs covariance)
 #     if a weight function or W has not been passed then this is
@@ -299,7 +313,8 @@ function (x, Y,
 #################################################
 # Do GCV and REML search over lambda if not fixed
 #################################################
-  if( !out$fixed.model){
+    
+  if( !out$fixed.model|out$GCV){
 
     if(verbose){ cat("call to gcv.Krig", fill=TRUE)}
 
@@ -317,17 +332,39 @@ function (x, Y,
        }
 #
 # assign the preferred lambda either from GCV/REML/MSE or the user value
-#
-       out$lambda <- gcv.out$lambda.est[out$method, 1]
-       out$eff.df<- out$lambda.est[out$method, 2] 
-        
-       if (verbose) {
-            cat("trace of A", fill = TRUE)
-            print(out$eff.df)
-        }
-    }
-# end GCV/REML block 
+# NOTE: gcv/reml can be done but the estimate is
+# still evaluted at the passed  user values of lambda (or df)
+# If df is passed need to calculate the implied lambda value
 
+      if( out$method !="user"){
+         out$lambda <- gcv.out$lambda.est[out$method, 1]
+         out$eff.df<- out$lambda.est[out$method, 2] }
+      else{
+         
+         if( !is.na( out$eff.df)){
+             out$lambda<- Krig.df.to.lambda(out$eff.df, out$matrices$D)}
+         else{
+             out$eff.df<- Krig.ftrace( out$lambda,  out$matrices$D)}
+         }
+                                        
+     
+
+      if (verbose) {
+            cat("lambda set in GCV block", fill = TRUE)
+            print(out$lambda)
+            cat("trace of A", fill = TRUE)
+            print(out$eff.df)}
+    
+}
+##########################
+# end GCV/REML block
+##########################    
+
+    
+#    
+# Now we clean up what has happen and stuff into output object.
+#    
+    
 ##########################################
 # find coefficients at prefered lambda 
 # and evaluate the solution at observations
@@ -339,10 +376,13 @@ function (x, Y,
     if( verbose){
      cat("Krig.coef:", fill=TRUE)
      print( out2)}
-#
-# fitted values and residuals and predicted values on null space (fixed 
-# effects). But be sure to do this at the nonmissing x's
-#
+
+#######################################################################
+# fitted values and residuals and predicted values for full model and
+# also on the null space (fixed 
+# effects). But be sure to do this at the nonmissing x's.
+##################################################################
+    
     out$fitted.values <- predict.Krig(out, x=out$x, Z=out$Z, 
                             eval.correlation.model = FALSE)
     out$residuals <- out$y - out$fitted.values
@@ -360,16 +400,16 @@ function (x, Y,
         cat("residuals", out$residuals, fill = TRUE)
     }
 #
-
 # find various estimates of sigma and rho 
 
       out2<-Krig.parameters(out)
       out<- c( out, out2)
-#
+    
+################################################
 # assign the "best" model as a default choice 
 # either use the user supplied values or the results from 
 # optimization
-#
+################################################
 
       passed.sigma2 <- (!is.na(out$sigma2))
       if(out$method=="user" & passed.sigma2 ) {

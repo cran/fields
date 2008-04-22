@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "RMprecip" <-
 structure(list(x = structure(list(lon = c(-110.53, -109.53, -109.55, 
 -109.23, -110.1, -109.77, -109.4, -109.1, -109.05, -110.73, -104.65, 

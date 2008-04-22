@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "as.image" <-
 function (Z, ind = NULL, grid = NULL, x = NULL, nrow = 64, ncol = 64, 
     weights = NULL, na.rm = FALSE,nx=NULL,ny=NULL, boundary.grid=FALSE) 

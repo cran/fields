@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "BD" <-
 structure(list(KCl = c(30, 30, 20, 50, 25, 10, 40, 15, 50, 10, 
 20, 45, 50, 35, 40, 35, 30, 15, 40, 30, 10, 50, 20, 10, 25, 45, 

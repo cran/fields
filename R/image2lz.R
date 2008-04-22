@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "crop.image" <-function(obj, loc=NULL,...){
 
  if( is.null(loc)){
@@ -96,27 +101,39 @@ if( !is.null(text))
 { text( Sxy2$x, Sxy2$y, label=text, adj=adj, cex=cex,...)}
 }
 
+designer.colors<- 
+function( n=256, col= c("darkgreen", "white", "darkred"), 
+                   x= seq(0,1,, length(col)) )
+{
+
+# distribute the colors at equal spacing if q is NULL
+xg<- seq( 0,1,,n)
+
+# matrix to hold RGB color values
+y.rgb<- t(col2rgb(col))
+temp<-matrix( NA, ncol=3, nrow=n)
+
+# spline interpolation of color values
+for ( k in 1:3){
+hold <- splint( x,y.rgb[,k], xg)
+# fix up to be integer in [0,255]
+ hold[ hold<0] <- 0
+ hold[ hold>255] <- 255
+temp[,k]<- round( hold)
+}
+# convert back to hex 
+rgb( temp[,1], temp[,2], temp[,3],maxColorValue = 255)
+}
+
+#boulder.colors<- c("darkred", "darkorange", 
+#                   "white", "darkgreen", "darkblue")
+
+
+
 "two.colors" <-
 function (n=256, 
  start="darkgreen" , 
 end="red", middle="white")
 {
-n1<- n/2
-n2<- n- n1
-col2rgb( end)-> col2 
-col2rgb( start)-> col1 
-col2rgb(middle)-> mid.col
-e1<- seq( 1,0,,n1)
-e2<- seq( 0,1,,n2)
-
-temp<-rbind( e1* matrix( col1, nrow=n1, ncol=3,byrow=TRUE) 
-       + (1-e1)* matrix( mid.col, nrow=n1, ncol=3,byrow=TRUE),
-
-             e2* matrix( col2, nrow=n1, ncol=3,byrow=TRUE) 
-       + (1-e2)* matrix( mid.col, nrow=n1, ncol=3,byrow=TRUE))
-
-temp<- temp/256
-rgb( temp[,1], temp[,2], temp[,3])
-
+designer.colors(n, c(start,middle,end))
 }
-

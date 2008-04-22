@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 Krig.check.xY<- function( x,Y,Z, weights, na.rm,verbose=FALSE){
 
 #
@@ -52,7 +57,7 @@ Krig.check.xY<- function( x,Y,Z, weights, na.rm,verbose=FALSE){
         ind <- is.na(Y)
         if (any(ind)) {
             Y <- Y[!ind]
-            x <- x[!ind, ]
+            x <- as.matrix(x[!ind, ])
             if( !is.null(Z)){  Z <- Z[!ind,] }
             weights <- weights[!ind]
 #            warning("NA's have been removed from Y ")

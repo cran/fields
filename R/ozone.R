@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "ozone" <-
 structure(list(x = structure(c(10.2420950223404, 3.80376523711237, 
 9.10894898014071, 9.62401536295848, -2.42853799498812, -12.626852374789, 

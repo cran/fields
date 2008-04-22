@@ -1,8 +1,8 @@
 Package: fields
-Version: 4.1
-Date: November 12, 2007
+Version: 4.3
+Date: April 22, 2008
 Title: Tools for spatial data
-Author: Doug Nychka
+Author: Reinhard Furrer, Douglas Nychka and Stephen Sain
 Maintainer: Doug Nychka <nychka@ucar.edu> 
 Description: Fields is for curve, surface and function
  fitting with an emphasis on splines, spatial data and spatial statistics. The
@@ -15,6 +15,6 @@ Description: Fields is for curve, surface and function
  sparse matrix (spam) package for testing (but not for the standard spatial 
  functions.) Use help(fields) to get started and for an overview. 
 License: GPL (>= 2) 
-URL: http://www.image.ucar.edu/GSP/Software/Fields
+URL: http://www.image.ucar.edu/Software/fields
 Depends: methods, spam
-Packaged: Thu Nov 29 09:39:12 2007; nychka
+Packaged: Tue Apr 22 10:20:46 2008; nychka

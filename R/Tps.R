@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Tps" <-
 function (x, Y, m = NULL, p = NULL, scale.type = "range", 
     ...) 
@@ -15,14 +20,10 @@ function (x, Y, m = NULL, p = NULL, scale.type = "range",
         }
     }
 
-    if (!is.null(list(...)$lambda)) stop(
-     "Tps does not currently support the fixed lambda option. 
-                  See help(Tps) for details")
-
     Tpscall <- match.call()
     Tpscall$cov.function <- "Thin plate spline radial basis functions (Rad.cov) "
     Krig(x, Y, cov.function = Rad.cov, m = m, 
-        scale.type = scale.type, outputcall = Tpscall, p = p, 
+        scale.type = scale.type, outputcall = Tpscall, p = p, GCV=TRUE,
         ...)
 }
 

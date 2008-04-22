@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 
 wendland2.2 <- function(d, theta=1.0)
 {
@@ -11,7 +16,7 @@ wendland2.2 <- function(d, theta=1.0)
 
 # Tapering function
 
-Wendland<- function( d,theta=1.0, dimension,k, derivative=0){
+Wendland<- function( d,theta=1.0, dimension,k, derivative=0, phi=1){
     # d = dimension k = order. see wendland.coef for details
 
     if( missing( dimension)){ 
@@ -27,7 +32,7 @@ Wendland<- function( d,theta=1.0, dimension,k, derivative=0){
         coef<- coef[2:L]* (1:(L-1))/theta 
       }
     
-   ifelse( d<=theta, fields.evlpoly( d/theta, coef), 0)
+   ifelse( d<=theta, phi*fields.evlpoly( d/theta, coef), 0)
 
   }
 

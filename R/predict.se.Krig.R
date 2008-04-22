@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "predict.se.Krig" <-
 function (object, x=NULL, cov = FALSE, verbose=FALSE,...) 
 {
@@ -46,7 +51,7 @@ function (object, x=NULL, cov = FALSE, verbose=FALSE,...)
 
     nx <- nrow(xM)
 
-    wght.vec <- t(Krig.Amatrix(object, xraw, lambda))
+    wght.vec <- t(Krig.Amatrix(object, xraw, lambda,...))
 
     if( verbose) {
              cat("wght.vector", fill=TRUE)

@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "sim.Krig.grid" <-
 function( object, grid.list=NA, M=1, nx = 40, ny = 40, xy=c(1,2),
            verbose=FALSE, sigma2=NA, rho=NA, extrap=FALSE) {

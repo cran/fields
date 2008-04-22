@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "golden.section.search" <-
 function (ax, bx, cx, f, niter = 25, f.extra = NA, tol = 1e-05) 
 {

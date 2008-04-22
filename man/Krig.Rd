@@ -1,3 +1,8 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 \name{Krig}
 \alias{Krig}
 \alias{resid.Krig}
@@ -24,7 +29,7 @@ and marginal variances are supplied.
 \usage{
 Krig(
 x, Y, cov.function = "stationary.cov", lambda = NA, df
-                 = NA, Z = NULL, cost = 1, knots = NA, weights = NULL,
+                 = NA, GCV=FALSE, Z = NULL, cost = 1, knots = NA, weights = NULL,
                  m = 2, nstep.cv = 80, scale.type = "user", x.center =
                  rep(0, ncol(x)), x.scale = rep(1, ncol(x)), rho = NA,
                  sigma2 = NA, method = "GCV", verbose = FALSE, mean.obj
@@ -74,12 +79,21 @@ method below).
 The effective number of parameters for the fitted surface. Conversely, 
 N- df, where N is the total number of observations is the degrees of
 freedom associated with the residuals. 
-This is an alternative to specifying lambda and much more interpretable. 
+This is an alternative to specifying lambda and much more interpretable.
+NOTE: GCV argument defaults to TRUE if this argument is used.
 }
+
+\item{GCV}{ If TRUE matrix decompositions are done to allow estimating 
+lambda by GCV or REML and specifying smoothness by the effective degrees of
+freedom. So the GCV switch does more than just supply a GCV estimate. Also if
+lambda or df are passed the estimate will be evaluated at those values, 
+not at the GCV/REML estimates of lambda. 
+If FALSE Kriging  estimate is found under a fixed lambda model. }
+
 \item{cost}{
 Cost value used in GCV criterion. Corresponds to a penalty for  
 increased number of parameters. The default is 1.0 and corresponds to the
-usual GCV. 
+usual GCV function. 
 }
 
 \item{knots}{
@@ -433,6 +447,10 @@ surface( fit, type="C") # look at the surface
 
 # predict at data
 predict( fit)
+
+# predict using 7.5 effective degrees of freedom:
+predict( fit, df=7.5)
+
 
 # predict on a grid ( grid chosen here by defaults)
  out<- predict.surface( fit)

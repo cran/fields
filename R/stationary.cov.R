@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "stationary.cov" <-
  function (x1, x2, Covariance="Exponential", Distance="rdist",
                Dist.args=NULL, theta=1.0,C=NA, marginal=FALSE,...)

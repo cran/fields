@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "conjugate.gradient" <-
 function (b, multAx, start, tol = 1e-05, kmax = 25, verbose = TRUE, 
     ...) 

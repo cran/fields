@@ -1,3 +1,8 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 \name{drape.plot}
 \alias{drape.color}
 \alias{drape.plot}
@@ -14,7 +19,7 @@ drape.plot(x, y, z, z2=NULL, col = tim.colors(64), zlim = range(z, na.rm=TRUE),
  zlim2 = NULL, add.legend = TRUE, horizontal = TRUE, theta = 30, phi = 20, ...)
 
 drape.color(z, col = tim.colors(64), zlim = NULL,
-   transparent.color = "white")
+   transparent.color = "white", midpoint)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -36,7 +41,8 @@ plot, if FALSE it is placed vertically on the right side.  }
   \item{theta}{ x-y rotation angle for perspective. }
   \item{phi}{ z-angle for perspective. }
   \item{transparent.color}{ Color to use when given an NA in z} 
-
+  \item{midpoint}{ If TRUE color scale is formed for midpoints of z
+       obtained by averaging 4 corners.}
   \item{\dots}{ Other arguments that will be passed to the 
           persp function. The most common is zlim the z limits for the
 	  3-d  plot and also the limits to set up the color scale. The

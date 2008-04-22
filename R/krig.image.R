@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "krig.image" <-
 function (x, Y, cov.function, m = NULL, n = NULL, lambda = 0, 
     start = NULL, tol = 1e-05, kmax = 25, cov.obj = NULL, grid = NULL, 

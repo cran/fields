@@ -15,6 +15,11 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+> # fields, Tools for spatial data
+> # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+> # University Corporation for Atmospheric Research
+> # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+> 
 > library(fields)
 Loading required package: spam
 Package 'spam' is loaded.  Version 0.13 (2007-10-10).

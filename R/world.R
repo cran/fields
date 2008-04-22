@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "world" <-
 function(ylim = c(-90, 90), xlim = NULL, add = FALSE, asp = 1, 
     xlab = "", ylab = "", xaxt = "n", yaxt = "n", eps = 0.1,col=1, 
@@ -55,6 +60,7 @@ world.color<- function( xlim=c(-180, 180), ylim=c(-90,90),col.water="white",
 {
 # load world dat set of land outlines 
 # (should not reload if it is already loaded)
+
               data(world.dat)
 
 # logicals for land and lakes in case these need to 
