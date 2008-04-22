@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 library(fields)
 #
 #
@@ -60,7 +65,30 @@ test.for.zero( test.c, test$c, tag=" c coef new y fixed"  )
 #cat("done with simple Krig data", fill=TRUE)
 
 
+# These tests are about whether decompositions 
+# handle just a fixed lambda or are more general 
 
+# checking passing lambda or df to Krig
+
+Tps( ozone$x, ozone$y,lambda=.001 )-> out
+predict( out, lambda=.001)-> out2
+test.for.zero( out2, predict( out), tag="Tps with fixed lam")
+
+Tps( ozone$x, ozone$y, df=5)-> out
+predict( out, df=5)-> out2
+test.for.zero( out2, predict( out), tag="Tps with fixed df")
+
+# same for Krig
+
+Krig( ozone$x, ozone$y, theta=50,lambda=.5)-> out0
+Krig( ozone$x, ozone$y, theta=50,lambda=.5,GCV=TRUE)-> out
+test.for.zero( 
+      predict(out0), predict( out), tag="Krig with fixed lam argument")
+
+Krig( ozone$x, ozone$y, theta=50)-> out0
+Krig( ozone$x, ozone$y, theta=50, df=6,GCV=TRUE)-> out
+predict( out0, df=6)-> out2
+test.for.zero( out2, predict( out), tag="Krig with fixed lam argument")
 
 
 #cat("A very nasty case with knots and weights",fill=TRUE)

@@ -1,31 +1,40 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 \name{gcv.Krig}
 \alias{gcv.Krig}
-%- Also NEED an '\alias' for EACH other topic documented here.
+\alias{gcv.sreg}
+
 \title{Finds profile likelihood and GCV estimates of 
-smoothing parameters}
+smoothing parameters for splines and Kriging.}
 \description{
-This is a secondary function that will use the computed Krig 
-object and find various estimates of the 
-smoothing parameter lambda. These are several different flavors of cross-validation,
-a moment matching strategy  and
-the profile likelihood. 
-This function can also be used independently
-with different data sets  (the y's) if the covariates ( the x's) are the same and
-thus reduce the computation. 
+ This is a secondary function that will use the computed Krig object and
+find various estimates of the smoothing parameter lambda. These are
+several different flavors of cross-validation, a moment matching
+strategy and the profile likelihood.  This function can also be used
+independently with different data sets (the y's) if the covariates ( the
+x's) are the same and thus reduce the computation. 
 }
 \usage{
 gcv.Krig(out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA, 
                   verbose = FALSE, tol = 1e-05, offset = 0, 
                   y = NULL, give.warnings = TRUE, give.warnings.REML = FALSE)
+
+gcv.sreg (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse =
+     NA, offset = 0, trmin = NA, trmax = NA, verbose = FALSE, tol = 1e-05)
+
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{out}{ A Krig object}
+  \item{out}{ A Krig or sreg object.}
   \item{lambda.grid}{ Grid of lambdas for coarse search. The default is 
 equally spaced on effective degree of freedom scale. }
   \item{cost}{ Cost used in GCV denominator }
-  \item{nstep.cv}{ Number of gird points in coarse search. }
-  \item{rmse}{ Target root mean squared error to mathc with the estimate of sigma**2 }
+  \item{nstep.cv}{ Number of grid points in coarse search. }
+  \item{rmse}{ Target root mean squared error to match with 
+                  the estimate of sigma**2 }
   \item{verbose}{ If true prints intermediate results.  }
   \item{tol}{ Tolerance in delcaring convergence of golden section search or bisection search. }
   \item{offset}{ Additional degrees of freedom to be added into the GCV denominator.
@@ -37,6 +46,9 @@ range for various estimates based on GCV.}
   \item{give.warnings.REML}{ If FALSE will suppress warnings about grid search being 
 out of 
 range when finding REML estimate of lambda.}
+\item{trmin}{Minimum value of lambda for grid search specified in terms
+of effective degrees of freedom.}
+\item{trmax}{Maximum value for grid search.}
 
 }
 \details{
@@ -89,6 +101,9 @@ summary( obj)
 
 gcv.Krig( obj)-> out
 print( out$lambda.est) # results agree with Tps summary
+
+sreg( rat.diet$t, rat.diet$trt)-> out
+gcv.sreg( out, tol=1e-10) # higher tolerance search for minimum 
 
 # a simulation example
 x<- seq( 0,1,,150)

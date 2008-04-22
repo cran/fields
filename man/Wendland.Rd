@@ -1,3 +1,8 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 \name{Wendland}
 \alias{Wendland}
 \alias{wendland2.2}
@@ -12,7 +17,7 @@ sparse covariance matrices.
 }
 
 \usage{
-Wendland(d, theta = 1, dimension, k,derivative=0)
+Wendland(d, theta = 1, dimension, k,derivative=0, phi=1)
 
 wendland2.2(d, theta=1)
 
@@ -27,6 +32,8 @@ range parameter.}
 \item{dimension}{Dimension of the locations}
 \item{k}{Order of covariance function.}
 \item{derivative}{Indicates derivative of covariance function}
+\item{phi}{Scale factor to multiply the function. Equivalent to the
+marginal variance or sill if viewed as a covariance function.}
 }
 \details{
  This is the basic function applied to distances and called by the

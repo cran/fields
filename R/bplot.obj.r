@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "bplot.obj" <-
 function (data, pos = NA, width = NULL, labels = NULL, las = NULL, 
     add = FALSE, space = 0.25, sort.names = FALSE, xlab = "", 

@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "colorbar.plot" <-
 function (x,y,strip, strip.width = 0.1, strip.length=4*strip.width, 
 zrange=NULL, adj.x=.5,adj.y=.5,col=tim.colors(256),horizontal=TRUE,...) 

@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
  "smooth.2d" <-
 function (Y, ind = NULL, weight.obj = NULL, setup = FALSE, grid = NULL, 
     x = NULL, nrow = 64, ncol = 64, surface = TRUE, cov.function = 

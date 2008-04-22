@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "surface.Krig" <-
 function(obj, grid.list = NA, extrap = FALSE, graphics.reset = NULL, xlab = NULL,
 	ylab = NULL, main = NULL, zlab = NULL, zlim = NULL, levels = NULL,

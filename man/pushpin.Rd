@@ -1,13 +1,14 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 \name{pushpin}
 \alias{pushpin}
-%- Also NEED an '\alias' for EACH other topic documented here.
- \title{ Adds a "push pin" to an existing  3-d plot} 
- \description{ Adds  to an existing 3-d perspective plot 
+\title{ Adds a "push pin" to an existing  3-d plot} 
+\description{Adds  to an existing 3-d perspective plot 
 a push pin to locate a  specific point.}
-}
 \usage{
 pushpin( x,y,z,p.out, height=.05,col="black",text=NULL,adj=-.1,cex=1.0,...)
-
 }
 
 \arguments{
@@ -15,7 +16,8 @@ pushpin( x,y,z,p.out, height=.05,col="black",text=NULL,adj=-.1,cex=1.0,...)
   \item{y}{y location}
   \item{z}{z location}
   \item{p.out} {Projection information returned by persp}   
-  \item{height}{Height of pin in device coordinates (default is about 5\%). }
+  \item{height}{Height of pin in device coordinates (default is about
+  5\% of the vertical distance ). }
   \item{col}{Color of pin head}
   \item{text}{Optional text to go next to pin head}
   \item{adj}{Position of text relative to pin head.}
@@ -49,7 +51,6 @@ the \code{adj} argument and other options for placing text.
 
 pushpin( xsummit,ysummit,zsummit,pm, text="Summit")
 
-
 }
 
-\keyword{ hplot }% at least one, from doc/KEYWORDS
+\keyword{hplot}

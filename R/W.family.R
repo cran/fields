@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "plot.Wimage" <-
 function (x, cut.min , graphics.reset = TRUE, common.range = FALSE,
 color.table=tim.colors(128),Nlevel=NULL,with.lines=FALSE,omd.width=.2,...) 

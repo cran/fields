@@ -1,3 +1,8 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 \name{Krig.null.function}
 \alias{Krig.null.function}
 \title{Default function to create fixed matrix part of spatial process model.}

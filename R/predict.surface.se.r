@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "predict.surface.se" <-
 function (object, grid.list = NA, extrap = FALSE, chull.mask=NA, 
      nx = 80, ny = 80, xy=c(1,2),order.variables="xy",verbose =FALSE, ...) 

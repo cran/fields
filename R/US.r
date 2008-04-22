@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "US" <-
 function (xlim = c(-124.7, -67.1), ylim = c(25.2, 49.4), add = FALSE, 
     shift = FALSE, ...) 

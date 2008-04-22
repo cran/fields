@@ -1,5 +1,10 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "quilt.plot" <-
-function(x,y,z,nrow=64, ncol=64, grid=NULL, add.legend=TRUE,add=FALSE,...){
+function(x,y,z,nrow=64, ncol=64, grid=NULL, add.legend=TRUE, add=FALSE,...){
 
 
 x<- as.matrix(x)

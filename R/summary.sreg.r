@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "summary.sreg" <-
 function(object, digits = 4, ...)
 {
@@ -13,10 +18,10 @@ function(object, digits = 4, ...)
 		method = x$method, lambda.est = x$lambda.est[!is.na(x$
 		lambda.est[, 1]),  ], shat.pure.error = x$shat.pure.error)
 	class(summary) <- "summary.sreg"
-	summary$covariance <- cor(x$fitted.values * sqrt(x$wt.raw), (x$yraw) *
-		sqrt(x$wt.raw))^2
-	hold <- (sum((x$yraw - mean(x$yraw))^2) - sum(x$residuals^2))/(sum(
-		(x$yraw - mean(x$yraw))^2))
+	summary$covariance <- cor(x$fitted.values * sqrt(x$weights), (x$y) *
+		sqrt(x$weights))^2
+	hold <- (sum((x$y - mean(x$y))^2) - sum(x$residuals^2))/(sum(
+		(x$y - mean(x$y))^2))
 	summary$adjr2 <- 1 - ((length(x$residuals) - 1)/(length(x$residuals) -
 		x$eff.df)) * (1 - hold)
 	summary$digits <- digits

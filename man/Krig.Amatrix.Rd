@@ -1,3 +1,8 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 \name{Krig.Amatrix}
 \alias{Krig.Amatrix}
 \title{
@@ -16,7 +21,7 @@ linear smoothers the matrix A may depend on the smoothing parameter (
 or covariance function and the independent variables (X) but NOT on Y.    
 }
 \usage{
-Krig.Amatrix(object, x0 = object$x, lambda=NULL)
+Krig.Amatrix(object, x0 = object$x, lambda=NULL,...)
 }
 \arguments{
 Output object from fitting a data set using a FIELD regression
@@ -32,6 +37,8 @@ Locations for prediction default is the observation locations.
 \item{lambda}{
 Value of the smoothing parameter.
 }
+\item{\dots}{ Other arguments that can used by predict.Krig.}
+
 }
 \value{
 A matrix where the number of rows is equal to the number of predicted points 
@@ -52,16 +59,17 @@ points Amatrix.Krig does not have such restrictions. This
 is possible
 because any value of the estimated curve will be a linear function of Y.  
 
-The actual calculation in this function is not high tech. It invovles 
+The actual calculation in this function is simple. It invovles 
 loop through the unit vectors at each observation and computation of the
-prediction for each of these delta functions. 
+prediction for each of these delta functions. This approach makes it easy to 
+handle different options such as including covariates. 
 
 }
 \section{References}{
 Nychka (2000) "Spatial process estimates as smoothers." 
 }
 \seealso{
-Krig, Tps 
+Krig, Tps, predict.Krig 
 }
 \examples{
 # Compute the A matrix or "hat" matrix for a thin plate spline 

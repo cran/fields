@@ -1,6 +1,12 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 \name{tim.colors}
 \alias{tim.colors}
 \alias{two.colors}
+\alias{designer.colors}
 \title{ Some useful color tables for images. }
 \description{
 Two color scales useful for image plots:
@@ -11,6 +17,8 @@ colors passing through white.
 \usage{
 tim.colors(n = 64)
 two.colors(n=256, start="darkgreen", end="red", middle="white")
+designer.colors( n=256, col= c("darkgreen", "white", "darkred"),
+                              x= seq(0,1,, length(col)) )
 
 }
 \arguments{
@@ -19,16 +27,29 @@ definition.}
 \item{start}{Starting color for lowest values in color scale}
 \item{end}{ Ending color.}
 \item{middle}{Color scale passes through this color at halfway}
+\item{col}{A list of colors (names or hex values) to interpolate}
+\item{x}{Positions of colors on a [0,1] scale. Default is to assume that
+the x values are equally spacesd from 0 to 1.}
 }
 
 \details{
-Ask Tim about tim.colors! 
-\code{two.colors} is really about three different colors. For other 
-colors try \code{fields.color.picker} to view possible choices. 
-\code{start="darkgreen", end="azure4"} are the options 
-used to get a nice color scale for rendering aerial photos of ski trails. 
-(See \url{http://www.image.ucar.edu/Data/MJProject}.)
+ The color in R can be represented as three vectors in RGB coordinates
+and these coordinates are interpolated separately using a cubic spline
+to give color values that intermediate to the specified colors.  
 
+ Ask Tim Hoar about tim.colors! He is a matlab black belt and this is
+his favorite scale in that system.  \code{two.colors} is really about
+three different colors. For other colors try \code{fields.color.picker}
+to view possible choices.  \code{start="darkgreen", end="azure4"} are
+the options used to get a nice color scale for rendering aerial photos
+of ski trails.  (See \url{http://www.image.ucar.edu/Data/MJProject}.)
+
+ \code{designer.color} is the master function for two.colors and
+tim.colors.  It can be useful if one wants to customize the color table
+to match quantiles of a distribution.  e.g. if the median of the data is
+at .3 with respect to the range then set \code{x} equal to c(0,.3,1) and
+specify three colors to provide a transtion that matches the median
+value. 
  
 }
 \value{
@@ -43,11 +64,17 @@ tim.colors(10)
 #e.g. (red, green,  blue) values of   (16,255, 239)
 # translates to "#10FFEF" .
 
+# veiw some color table choices
+set.panel( 1,3)
+par( pty="s")
 
-image( outer( 1:20,1:20,"+"), col=tim.colors( 75)) # 75 levels
+image( outer( 1:20,1:20,"+"), col=tim.colors( 200)) # 200 levels
 
 image( outer( 1:20,1:20,"+"), col=two.colors() )
+coltab<- designer.colors(col=c("blue", "grey", "green"),  x= c( 0,.3,1) ) 
 
+image( outer(1:20, 1:20, "+"), col= coltab )
+set.panel()
 
 }
 \keyword{ aplot}

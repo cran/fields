@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "rat.diet" <-
 structure(list(t = c(0, 1, 3, 7, 8, 10, 14, 15, 17, 21, 22, 24, 
 28, 29, 31, 35, 36, 38, 42, 43, 45, 49, 50, 52, 56, 57, 59, 63, 

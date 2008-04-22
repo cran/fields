@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 library(fields)
 #
 #
@@ -159,5 +164,108 @@ test.for.zero( hold, hold3, tag="predict for null" )
 hold<-T[,1:3]%*%temp.d[1:3]               
 test.for.zero( hold, hold4, tag="predict for null" )
 
+
+####### tests using predict.se
+ x<- ozone$x
+ y<- ozone$y
+ Zcov<-  x[,1]**3 + x[,2]**3
+
+
+tps.fit<-Tps( x,y, scale.type="unscaled", Z= Zcov)
+
+# here is lazy way to get a grid.list
+   fields.x.to.grid( x, nx=20,ny=20)-> gridlist
+
+   xg<- make.surface.grid(gridlist)
+   Zcov.grid<- xg[,1]**3 + xg[,2]**3
+
+########### tests on just predict have been commented out to 
+########### indicate that they are redundant given 
+########### previous tests however, they couldbe useful for 
+########### future debugging ...
+
+# full surface with covariate
+#   curv.mean1 <- predict.surface(tps.fit, grid.list = gridlist, extrap = TRUE,
+##        Z =Zcov.grid, drop.Z = FALSE)$z
+
+# just the spline surface
+#   curv.mean2 <- predict.surface(tps.fit, grid.list = gridlist,
+#                   extrap = TRUE,drop.Z=TRUE)$z
+
+# explicitly here is the difference surface of curv.mean1 and curv.mean2
+#   curv.mean0<- as.surface( gridlist, Zcov.grid* tps.fit$d[4])$z
+#   test.for.zero( curv.mean1- curv.mean2, curv.mean0)
+
+## new tests
+
+   predict.surface.se( tps.fit, grid.list=gridlist, extrap=TRUE,
+               drop.Z=TRUE)$z-> curv.var1
+
+   predict.se( tps.fit, xg, drop.Z=TRUE)-> curv.var2
+     test.for.zero( curv.var1, curv.var2)
+
+# SE with covariates included
+   predict.se( tps.fit, xg, Z=Zcov.grid, drop.Z=FALSE)**2-> curv.var1
+#   as.surface( gridlist, curv.var1)$z-> curv.var1
+
+# SE for just the spline part
+   predict.se( tps.fit, xg, drop.Z=TRUE)**2-> curv.var2
+#   as.surface( gridlist, curv.var2)$z-> curv.var2
+
+# SE for just the fixed part
+ predict.se( tps.fit, xg,Z=Zcov.grid, drop.Z=FALSE,
+                            just.fixed=TRUE )**2-> curv.var3
+# as.surface( gridlist, curv.var3)$z-> curv.var3
+
+
+# calculating from more basic functions
+## these tests assume that Krig.Amatrix is working correctly!
+
+out<- tps.fit
+
+A<- Krig.Amatrix( tps.fit,x= xg, drop.Z=TRUE)
+Sigma<- out$rhohat*Rad.cov( out$x, out$x, p=2)
+S0<- out$rhohat*Rad.cov(xg, xg, p=2)
+S1<- out$rhohat*Rad.cov(out$x, xg, p=2)
+
+#yhat= Ay
+#var( f0 - yhat)=    var( f0) - 2 cov( f0,yhat)+  cov( yhat)
+
+   look<- S0 - t(S1)%*% t(A) - A%*%S1 +
+       A%*% ( Sigma + diag(out$shat.MLE**2/out$weightsM))%*% t(A)
+   look<- diag( look)
+   test.for.zero(curv.var2 ,look,tag="SE w/o covariate")
+
+
+A<- Krig.Amatrix( tps.fit,x= xg, drop.Z=FALSE,Z=Zcov.grid)
+# see tps.fit$args for value of p
+Sigma<- out$rhohat*Rad.cov( out$x, out$x, p=2)
+S0<- out$rhohat*Rad.cov(xg, xg, p=2)
+S1<- out$rhohat*Rad.cov(out$x, xg, p=2)
+
+#yhat= Ay
+#var( f0 - yhat)=    var( f0) - 2 cov( f0,yhat)+  cov( yhat)
+
+   look<- S0 - t(S1)%*% t(A) - A%*%S1 +
+       A%*% ( Sigma + diag(out$shat.MLE**2/out$weightsM))%*% t(A)
+   look<- diag( look)
+   test.for.zero(curv.var1 ,look,tag="SE with covariate")
+
+
+A<- Krig.Amatrix( tps.fit,x= xg, drop.Z=FALSE,Z=Zcov.grid, just.fixed=TRUE)
+# see tps.fit$args for value of p
+Sigma<- out$rhohat*Rad.cov( out$x, out$x, p=2)
+S0<- out$rhohat*Rad.cov(xg, xg, p=2)
+S1<- out$rhohat*Rad.cov(out$x, xg, p=2)
+
+#yhat= Ay
+#var( f0 - yhat)=    var( f0) - 2 cov( f0,yhat)+  cov( yhat)
+
+   look<- S0 - t(S1)%*% t(A) - A%*%S1 +
+       A%*% ( Sigma + diag(out$shat.MLE**2/out$weightsM))%*% t(A)
+   look<- diag( look)
+   test.for.zero(curv.var3 ,look, tag="SE for fixed part")
+
+cat("All done with Z tests and Krig/Tps including predict and predict.se !", 
+          fill=TRUE)
 options( echo=TRUE)
-cat("All done with Z tests and Krig!", fill=TRUE)

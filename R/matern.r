@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Matern" <-
 function (d , scale = 1, range = 1,alpha=1/range, 
     smoothness = 0.5, nu= smoothness, phi=scale) 

@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "minitri" <-
 structure(list(swim = c(13.77, 14.25, 12.4, 13.6, 11.23, 14.6, 
 15.63, 13.62, 17.03, 13.1, 16.5, 15.57, 14.28, 16.13, 14.98, 

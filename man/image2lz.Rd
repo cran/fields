@@ -1,11 +1,14 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 \name{image2lz}
 \alias{crop.image}
 \alias{half.image}
 \alias{get.rectangle}
- \title{ Some simple functions for subsetting images} 
-\description{ These function help in subsetting a image or reducing it
+ \title{Some simple functions for subsetting images} 
+\description{These function help in subsetting a image or reducing it
 size by averaging adjecent cells.}
-}
 \usage{
 
 crop.image(obj, loc=NULL,...)

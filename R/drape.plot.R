@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "drape.plot" <- function (x, y, z, z2 = NULL, col = tim.colors(64), zlim = range(z, na.rm=TRUE), zlim2 = NULL, add.legend = TRUE, horizontal = TRUE, theta = 30, phi = 20, ...) 
 {
 #

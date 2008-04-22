@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "add.image" <-
 function(xpos,ypos,z,adj.x=.5,adj.y=.5,image.width=.15, 
 image.height= NULL, col=tim.colors(256), ...) 

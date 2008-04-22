@@ -1,3 +1,8 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 \name{Tps}
 \alias{Tps}
 \title{
@@ -127,11 +132,13 @@ to be included  to reflect other model degrees of freedom.
 }
 }
 }
+
 \value{
 A list of class Krig. This includes the predicted surface of 
 fitted.values and the residuals. The results of the grid 
 search minimizing the generalized cross validation function is 
-returned in gcv.grid. 
+returned in gcv.grid. Note that the GCV/REML optimization is 
+done even if lambda or df is given. 
 Please see the documentation on Krig for details of the returned 
 arguments.  
 }
@@ -194,6 +201,37 @@ set.panel()
 
 summary(fit)
 
+# NOTE: the predict function is quite flexible:
+
+     look<- predict( fit, lambda=2.0)
+#  evaluates the estimate at lambda =2.0  _not_ the GCV estimate
+#  it does so very efficiently from the Krig fit object.
+
+     look<- predict( fit, df=7.5)
+#  evaluates the estimate at the lambda values such that 
+#  the effective degrees of freedom is 7.5
+ 
+
+# compare this to fitting a thin plate spline with 
+# lambda chosen so that there are 7.5 effective 
+# degrees of freedom in estimate
+# Note that the GCV function is still computed and minimized
+# but the spline estimate is uses 7.5 df.
+
+fit1<- Tps(ozone$x, ozone$y,df=7.5)
+
+set.panel(2,2)
+plot(fit1) # four diagnostic plots of  fit and residuals.
+          # GCV function (lower left) has vertical line at 7.5 df.
+set.panel()
+
+# The basic matrix decompositions are the same for 
+# both fit and fit1 objects. 
+
+# predict( fit1) is the same as predict( fit, df=7.5)
+# predict( fit1, lambda= fit$lambda) is the same as predict(fit) 
+
+
 # predict onto a grid that matches the ranges of the data.  
 
 out.p<-predict.surface( fit)
@@ -202,6 +240,8 @@ surface(out.p) # perspective and contour plots of GCV spline fit
 # predict at different effective 
 # number of parameters 
 out.p<-predict.surface( fit,df=10)
+
+
 
 #1-d example 
 out<-Tps( rat.diet$t, rat.diet$trt) # lambda found by GCV 

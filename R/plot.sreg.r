@@ -1,10 +1,15 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "plot.sreg" <-
 function(x, digits = 4, which = 1:4,...)
 {
         out<- x # hack S3
 
 	if(any(which==1)) {
-		plot(out$xraw, out$yraw, ylab = "predicted", xlab = " X", bty
+		plot(out$x, out$y, ylab = "predicted", xlab = " X", bty
 			 = "n", ...)
 		matlines(out$predicted$x, out$predicted$y, lty = 1)
 	}

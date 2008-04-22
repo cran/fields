@@ -1,3 +1,8 @@
+% fields, Tools for spatial data
+% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% University Corporation for Atmospheric Research
+% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 \name{fields internal }
 \alias{[.spatial.design}
 \alias{COR}
@@ -15,6 +20,7 @@
 \alias{Krig.parameters}
 \alias{Krig.replicates}
 \alias{Krig.updateY}
+\alias{Krig.which.lambda}
 \alias{Krig.ynew}
 \alias{WD4}
 \alias{WD42d}
@@ -52,7 +58,6 @@
 \alias{fast.1way}
 \alias{find.upcross}
 \alias{gauss.cov}
-\alias{gcv.sreg}
 \alias{golden.section.search}
 \alias{grey.level}
 \alias{image.plot.info}
@@ -141,6 +146,7 @@ Krig.ftrace (lam, D)
 Krig.parameters (obj, mle.calc=obj$mle.calc)
 Krig.replicates (out, verbose = FALSE) 
 Krig.updateY (out, Y, verbose = FALSE, yM=NA) 
+Krig.which.lambda(out)
 Krig.ynew (out, y=NULL, yM=NULL ) 
  
 
@@ -206,10 +212,6 @@ find.upcross (fun, fun.info, upcross.level = 0, guess = 1, tol =
 gauss.cov (...) 
 
 
-gcv.sreg (out, lambda.grid = NA, cost = 1, nstep.cv = 20, rmse = 
-     NA, offset = 0, trmin = NA, trmax = NA, verbose = TRUE, tol = 1e-05, 
-     find.min = TRUE, method = "GCV") 
- 
 golden.section.search (ax, bx, cx, f, niter = 25, f.extra = NA, 
      tol = 1e-05) 
  
@@ -237,14 +239,14 @@ periodic.cov.1d (x1, x2, a, b)
 periodic.cov.cyl (x1, x2, a = 0, b = 365, theta = 1) 
 periodic.plane.3d (x1, x2, a = 0, b = 365, theta = 1) 
  
-plot.krig.image (x, main = NA, digits = 4, which = rep(TRUE, 4), 
+\method{plot}{krig.image}(x, main = NA, digits = 4, which = rep(TRUE, 4), 
       graphics.reset = TRUE, ...) 
-plot.qsreg (x, pch = "*", main = NA,...) 
-plot.sim.krig.image (x,...) 
-plot.spatial.design (x,...) 
+\method{plot}{qsreg}(x, pch = "*", main = NA,...) 
+\method{plot}{sim.krig.image}(x,...) 
+\method{plot}{spatial.design}(x,...) 
  
-predict.interp.surface (object, loc,...) 
-\method{predict}{krig.image} (object, x, ...) 
+\method{predict}{interp.surface}(object, loc,...) 
+\method{predict}{krig.image}(object, x, ...) 
 \method{predict}{qsreg}(object, x, derivative = 0, model = object$ind.cv.ps,...)
 \method{predict}{sreg}(object, x, derivative = 0, model = 1,...) 
  
@@ -281,7 +283,7 @@ sreg.fdf (h, info)
 sreg.fgcv (lam, obj) 
 sreg.fgcv.model (lam, obj) 
 sreg.fgcv.one (lam, obj) 
-sreg.fit (lam, info) 
+sreg.fit (lam, obj, verbose=FALSE) 
 sreg.fs2hat (lam, obj) 
 sreg.trace (h, info) 
 

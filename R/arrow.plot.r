@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "arrow.plot" <-
 function (a1, a2, u = NA, v = NA, arrow.ex = 0.05, 
      xpd = TRUE, true.angle = FALSE, arrowfun=arrows,...) 

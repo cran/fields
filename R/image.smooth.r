@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "image.smooth" <-
 function (x, wght = NULL, dx = 1, dy = 1, Nwidth = nrow(Y), Mwidth = 
 ncol(Y), 

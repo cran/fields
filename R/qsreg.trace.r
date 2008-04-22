@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "qsreg.trace" <-
 function(x, y, lam, maxit = 50, maxit.cv = 10, tol = 0.0001, offset = 0, sc = 
 	sqrt(var(y)) * 9.9999999999999995e-08, alpha = 0.5, wt = rep(1, length(

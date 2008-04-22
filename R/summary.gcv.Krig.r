@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "summary.gcv.Krig" <-
 function (object, lambda, cost = 1, verbose = FALSE, offset = 0, 
     y = NULL, ...) 

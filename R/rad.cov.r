@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Rad.cov" <-
 function (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, 
             C = NA,marginal=FALSE) 

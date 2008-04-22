@@ -1,3 +1,8 @@
+# fields, Tools for spatial data
+# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 dyadic.2check<- function( m,n,cut.p=2){
 # checks that n is of the form 
 # n=p*2^m where p <= cut.p
