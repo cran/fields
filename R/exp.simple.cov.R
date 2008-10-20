@@ -6,6 +6,10 @@
 Exp.simple.cov<- function (x1, x2, theta = 1, C=NA, marginal=FALSE) 
 {
 
+# this is a simple exponential covariance function 
+# with the calling format and behaviour used in fields. 
+
+#
 # different locations are the different rows of x1 and x2. 
 
 # this function can return three different results 

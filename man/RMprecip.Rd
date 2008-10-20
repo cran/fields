@@ -17,7 +17,7 @@ locations. See www.image.ucar.edu/Data for the source of these data.
 \code{PRISMelevation} and \code{RMelevation} are gridded elevations for the 
 continental US and Rocky Mountain region at 4km resolution. 
 Note that the gridded elevations from the PRISM data product are
-different than the exact station elevations. 
+different than the exact station elevations. (See example below.)
 }
 
 \format{
@@ -92,13 +92,20 @@ abline( 0,1,col="blue")
 #
 # view of Rockies looking from theSoutheast
 
+save.par<- par(no.readonly=TRUE)
+
 par( mar=c(0,0,0,0))
 persp( RMelevation, theta=75, phi= 15, 
           box=FALSE, axes=FALSE, xlab="", ylab="", 
          border=NA,
          shade=.95, lphi= 10, ltheta=80,
          col= "wheat4", 
-         scale=FALSE, expand=.00005)
+         scale=FALSE, expand=.00025)
+
+par( save.par)
+image.plot(RMelevation, col=topo.colors(256))
+US( add=TRUE, col="grey", lwd=2)
+title("PRISM elevations (m)")
 
 } 
 \keyword{datasets}

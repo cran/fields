@@ -116,9 +116,9 @@ y<- f + rnorm( 150)*sigma
 
 Tps( x,y)-> obj # create Krig object
 
-hold<- matrix( NA, ncol=4, nrow=20)
+hold<- matrix( NA, ncol=4, nrow=100)
 
-for( k in 1:20){
+for( k in 1:100){
 # look at GCV estimates of lambda
 # new data simulated
    y<- f + rnorm(150)*sigma 

@@ -139,7 +139,8 @@ fill=TRUE)
                 upcross.level = shat.pure.error^2, guess = guess, 
                 tol = tol * shat.pure.error^2)
             lambda.est[5, 1] <- lambda.pure.error
-            cat("results of matching with pure error sigma", fill=TRUE) 
+            if(verbose){
+            cat("results of matching with pure error sigma", fill=TRUE) }
         }
         else {
             warning("Value of pure error estimate   
@@ -176,11 +177,12 @@ fill=TRUE)
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 "sreg" <-
-function(x, y, lam = NA, df = NA, offset = 0, 
+function(x, y, lambda = NA, df = NA, offset = 0, 
         weights = rep(1, length(x)), cost = 1, 
-	nstep.cv = 80, find.diagA = TRUE, trmin = 2.01, trmax = 
-	length(unique(x)) * 0.95, lammin = NA, lammax = NA,
-	verbose = FALSE, do.cv = TRUE, method = "GCV", rmse = NA, lambda = NA,
+	nstep.cv = 80, tol=1e-5,find.diagA = TRUE, 
+        trmin = 2.01, trmax =NA, 
+        lammin = NA, lammax = NA,
+	verbose = FALSE, do.cv = TRUE, method = "GCV", rmse = NA, 
         na.rm=TRUE)
 {
 	call <- match.call()
@@ -191,49 +193,48 @@ function(x, y, lam = NA, df = NA, offset = 0,
 	out$cost <- cost
 	out$offset <- offset
 	out$method <- method
-## some obscure components so that some of the Krig functions
-## work with out
-# size of "null space" 
+#        
+# some obscure components so that some of the Krig functions
+# work without size of "null space"        
 	out$nt <- 2
         out$knots<-NULL
 #
 # various checks on x and y including looking for NAs.
-
         out2<- Krig.check.xY( x,y,NULL, weights, na.rm, verbose=verbose)
         out<- c( out,out2)
         
-	## find duplicate rows of the x vector
-        ## unique x values are now in out$xM and the means of 
-        ## y are in out$yM.
+# find duplicate rows of the x vector
+# unique x values are now in out$xM and the means of 
+# y are in out$yM.
         out<- Krig.replicates( out, verbose=verbose)
         out<- c( out,out2)
 
 # number of unique locations
         out$np<- length( out$yM)
-
+# now set maximum of trace for upper bound of GCV grid search
+        if(is.na(trmax)){
+          trmax<-out$np*.99}
+        
         if( verbose) { print(out)}
-	#
-
-        # sorted unique values for prediction to make line plotting quick
+#
+# sorted unique values for prediction to make line plotting quick
         xgrid <- sort(out$xM)
 	out$trace <- NA
         
-	#
-	# figure out if the GCV function should be minimized
-	# and that value of lambda should be used for the estimate
-	#
-	if(!is.na(lambda[1])) {
+#
+# figure out if the GCV function should be minimized
+# and which value of lambda should be used for the estimate
+# old code used lam as argument, copy it over from lambda
 		lam <- lambda
-	}
+
 	if(is.na(lam[1]) & is.na(df[1])) {
 		do.cv <- TRUE
 	}
 	else {
 		do.cv <- FALSE
 	}
-
-        # find lambda's if df's are given
-        #
+#
+# find lambda's if df's are given
 	if(!is.na(df[1])) {
 		lam <- rep(0, length(df))
 		for(k in 1:length(df)) {
@@ -242,18 +243,17 @@ function(x, y, lam = NA, df = NA, offset = 0,
 		}
 	}
 
-############################
+#
         if( verbose) { 
            cat("lambda grid",fill=TRUE)
            print(lam)}
-############################
 
 	if(do.cv) {
 		a <- gcv.sreg(out, lambda = lam, cost = cost, offset = offset,
 			nstep.cv = nstep.cv, verbose = verbose, trmin = trmin,
 			trmax = trmax,rmse = rmse)
 
-		# if the spline should be evaluated at the GCV solution 
+		# if the spline is evaluated at the GCV solution 
                 # wipe out lam grid
 		# and just use GCV lambda.
 		out$gcv.grid <- a$gcv.grid
@@ -264,8 +264,8 @@ function(x, y, lam = NA, df = NA, offset = 0,
 		out$shat.GCV <- a$lambda.est[method, "shat"]
 	}
 
+#
 # now evaluate spline at lambda either from specified grid or GCV value.
-
 	b <- list()
 	# lam can either be  a grid or just the GCV value 
 	NL <- length(lam)
@@ -343,7 +343,7 @@ function(x, y, lam = NA, df = NA, offset = 0,
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 "sreg.df.to.lambda" <-
-function(df, x, wt, guess = 1, tol = 1.0000000000000001e-05)
+function(df, x, wt, guess = 1, tol = 1.0e-05)
 {
 
 	if(is.na(df))

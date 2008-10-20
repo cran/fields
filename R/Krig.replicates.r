@@ -17,7 +17,8 @@ function(out, verbose = FALSE)
                 shat.rep <- NA
                 shat.pure.error <- NA
                 pure.ss <- 0
-                yM <- out$y
+# coerce "y" data vector as a single column matrix
+                yM <- as.matrix(out$y)
                 weightsM <- out$weights
                 xM <- as.matrix(out$x[uniquerows,  ])
                 ZM<- out$Z
@@ -26,7 +27,8 @@ function(out, verbose = FALSE)
                 rep.info.aov <- fast.1way(rep.info, out$y, out$weights)
                 shat.pure.error <- sqrt(rep.info.aov$MSE)
                 shat.rep <- shat.pure.error
-                yM <- rep.info.aov$means
+# copy  replicate means as a single column matrix
+                yM <- as.matrix(rep.info.aov$means)
                 weightsM <- rep.info.aov$w.means
                 xM <- as.matrix(out$x[uniquerows,  ])
 

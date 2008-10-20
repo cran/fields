@@ -7,6 +7,7 @@
 
 library( fields)
 options(echo=FALSE)
+test.for.zero.flag<- 1
 
 DD<- cbind( seq(.01,2,,50))
 look2<- Wendland(DD, theta=1.5, dimension=2,k=3,derivative=1) 
@@ -39,8 +40,7 @@ x<- make.surface.grid( list(x=seq( -1,1,,40), y=seq( -1,1,,40)))
 
 y<- (.123*x[,1] + .234*x[,2])
 
-obj<- mKrig( x,y, lambda=0, cov.function="wendland.cov", k=3, theta=.2,
-             mean.neighbor=200)
+obj<- mKrig( x,y, lambda=0, cov.function="wendland.cov", k=3, theta=.2)
 
 xp<- make.surface.grid( list(x=seq(-.5,.5,,24),y= seq( -.5,.5,,24)) )
 predict( obj, xp, derivative=1)-> outd
@@ -48,8 +48,8 @@ test.for.zero( outd[,1],.123)
 test.for.zero( outd[,2],.234)
 
 y<- (x[,1]**2 - 2* x[,1]*x[,2] +  x[,2]**2)/2
-obj<- mKrig( x,y, lambda=0, cov.function="wendland.cov", k=3, theta=.2,
-             mean.neighbor=200)
+obj<- mKrig( x,y, lambda=0, cov.function="wendland.cov", k=3, theta=.2)
+
 predict( obj, xp, derivative=1)-> outd
 
 

@@ -12,6 +12,8 @@ library(fields)
 
 options( echo=FALSE)
 
+test.for.zero.flag<-1
+
 #cat("A very nasty case with knots and weights",fill=TRUE)
 
 set.seed(123)
@@ -181,7 +183,7 @@ tps.fit<-Tps( x,y, scale.type="unscaled", Z= Zcov)
 
 ########### tests on just predict have been commented out to 
 ########### indicate that they are redundant given 
-########### previous tests however, they couldbe useful for 
+########### previous tests however, they could be useful for 
 ########### future debugging ...
 
 # full surface with covariate

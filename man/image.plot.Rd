@@ -13,6 +13,9 @@ a regular grid or a grid of quadrilaterals.
 This function combines the R image function with some automatic 
 placement of a legend. This is done by splitting the plotting region  
 into two parts. Putting the image in one and the legend in the other.  
+It also allows for plotting quadrilateral cells in the image format that
+often arise from regular grids transformed with a map projection. 
+
 }
 \usage{
 
@@ -27,8 +30,8 @@ image.plot(...,
 
 \arguments{ \item{\dots}{
  The usual arguments to the image function. This includes the use of the
-breaks argument for an unequal color scale.  If a quadrateral grid
-arguments must be explcitly x,y and z with x, and y being matrices of
+breaks argument for an unequal color scale.  If a quadrilateral grid
+arguments must be explicitly x,y and z with x, and y being matrices of
 dimension equal or one more than z giving the grid locations.
 }
 \item{add}{
@@ -107,28 +110,55 @@ the plot. To be explicit, \code{par()\$plt} may be changed to reflect a
 smaller plotting region that has accommodated room for the legend subplot.  
 }
 \details{
- If the z component is a matrix then the user should be aware that this
-function locates the matrix element z[i,j] at the grid locations (x[i],
-y[j]) this is very different than simply listing out the matrix in the
-usual row column tabular form. See the example below for more details of
-this difference in formatting. What does one do if you don't really have
-the "z" values on a regular grid? See the functions \code{quilt.plot.Rd}
-and \code{as.image} to discretize irregular observations to a grid. 
+Relationship of x, y and z:
+ If the z component is a matrix then the user should be aware that
+this function locates the matrix element z[i,j] at the grid locations
+(x[i], y[j]) this is very different than simply listing out the
+matrix in the usual row column tabular form. See the example below
+for more details of this difference in formatting. What does one do
+if you don't really have the "z" values on a regular grid? See the
+functions \code{quilt.plot.Rd} and \code{as.image} to discretise
+irregular observations to a grid.  
+
+If x and y are matrices then
+z[i,j] is rendered at a quadrilateral that is centered at x[i,j] and
+y[i,j] (\code{midpoint} TRUE). The details of how this cell is found
+are buried in \code{poly.image}. If \code{midpoint} is FALSE then x
+and y are interpreted as the corners of the quadrilateral cells. But
+what about z? The four values of z are now averaged to represent a
+value at the midpoint of the cell and this is what is used for
+plotting. Quadrilateral grids was added to help with plotting 
+the gridded output of geophysical models where the regular grid is
+defined according to one map projection by the plotting is required
+in another projection. Typically the regular grid becomes distorted in 
+a smooth way when this happens. See the regional climate example for
+a illustration of this application. 
+
+ Fine tuning color scales: This function gives some flexibility in
+tuning the color scale to fit the rendering of z values. This can
+either be specially designed color scale with specific colors ( see
+help on \code{designer.colors}), positioning the colors at specific
+points on the [0,1] scale, or mapping distinct colors to intervals of
+z. The examples below show how to do each of these. In addition by
+supplying \code{lab.break} strings or axis parameters one can
+annotate the legend axis in an informative matter. 
 
 
-It is surprising how hard it is just to automatically add the
+ 
+Dividing up the plotting real estate:
+It is surprising how hard it is to automatically add the
 legend! All "plotting coordinates" mentioned here are in device
 coordinates. The plot region is assumed to be [0,1]X[0,1] and plotting
 regions are defined as rectangles within this square. We found these
 easier to work with than user coordinates.  
 
-\code{legend.width} and \code{legend.mar} are in character spaces. These
-units are helpful in thinking about axis labels that will be put into
-these areas. To add more or less space between the legend and the image
-plot alter the mar parameters. The default mar settings (5.1,5.1,5.1,2.1)
-leaves 2.1 spaces for vertical legends and 5.1 spaces for horizontal
-legends. Changing the plot margins directly replaces the offset 
-argument in the older version of this function. 
+\code{legend.width} and \code{legend.mar} are in units of character
+spaces. These units are helpful in thinking about axis labels that
+will be put into these areas. To add more or less space between the
+legend and the image plot alter the mar parameters. The default mar
+settings (5.1,5.1,5.1,2.1) leaves 2.1 spaces for vertical legends and
+5.1 spaces for horizontal legends. Changing the plot margins directly
+replaces the \code{offset} argument in the older version of this function. 
 
 There are always problems with
 default solutions to placing information on graphs but the choices made
@@ -136,7 +166,7 @@ here may be useful for most cases. The most annoying thing is that after
 using plot.image and adding information the next plot that is made may
 have the slightly smaller plotting region set by the image plotting.
 The user should set \code{reset.graphics=TRUE} to avoid the plotting size 
-some from changing. The disadvantage, however, of resetting the graphics 
+from changing. The disadvantage, however, of resetting the graphics 
 is that one can no longer add additional graphics elements to the image 
 plot. Note that filled.contour always resets the graphics but provides 
 another mechanism to pass through plotting commands. Apparently 
@@ -144,6 +174,7 @@ filled.contour, while very pretty, does not work for multiple plots.
 \code{levelplot} that is part of the lattice package has a very 
 similar function to image.plot and a formula syntax in the call. 
 
+How this function works:
 The strategy for \code{image.plot} is simple, divide the plotting region
 into two smaller regions \code{bigplot} and \code{smallplot}. The image
 goes in one and the legend in the other. This way there is always room for
@@ -160,20 +191,22 @@ same color scale. (See the image help file.)  One useful technique for a
 panel of images is to just draw the images with \code{image} 
 and then use image.plot to add a legend to the last plot. (See example 
 below for messing with the outer margins to make this work.) 
-Usually a square plot (pty="s") done in a rectangular plot region will
+Usually a square plot (\code{pty="s"}) done in a rectangular plot region will
 have room for the legend stuck to the right side without any other 
-adjustments. See the example below and the code for \code{plot.Wimage} 
+adjustments. See the examples below and the code for \code{plot.Wimage} 
 for more complicated arrangements of multiple image plots and summary 
 legends.  
 
-Note that to add just the legend strip all the numerical information one 
-needs is the zlim argument! 
-We like \code{tim.colors} as a default color scale. 
-The the topographic color scale 
-(\code{topo.colors}) is also a close second showing our geophysical basis. 
-See also \code{terrain.colors} for a subset. For using other color choices 
-see how the \code{nlevels} argument figures into the legend and main plot
-number of colors. 
+Adding just the legend strip:
+Note that to add just the legend strip all the numerical information one
+needs is the \code{zlim} argument!  We like \code{tim.colors} as a default
+color scale.  The the topographic color scale (\code{topo.colors}) is
+also a close second showing our geophysical basis.  See also
+\code{terrain.colors} for a subset and \code{designer.colors} to "roll
+your own". One nice option of this last one is to fix colors at
+particular quantiles of the data rather than at equally spaced
+intervals. For color choices see how the \code{nlevels} argument figures
+into the legend and main plot number of colors. 
 
 }
 
@@ -183,19 +216,24 @@ add.image, colorbar.plot, tim.colors }
 \examples{
 x<- 1:10; y<- 1:15; z<- outer( x,y,"+") 
 
-
 image.plot(x,y,z) 
+
 # or obj<- list( x=x,y=y,z=z); image.plot(obj)
+
 # now add some points on diagonal with some clipping anticipated 
    points( 5:12, 5:12, pch="X", cex=3)
 
+
 image.plot(x,y,z, legend.lab="inches")
 
-# adding breaks and distinct colors
-#        (lab.breaks are optional)
+# adding breaks and distinct colors for intervals of z
+# with and without lab.breaks
 
 brk<- quantile( c(z))
-image.plot(x,y,z, breaks=brk, col=rainbow(4), 
+image.plot(x,y,z, breaks=brk, col=rainbow(4))
+
+# annotate legend strip just at break values
+image.plot(x,y,z, breaks=brk, col=rainbow(4),
              lab.breaks=names(brk))
 #
 # compare to 
@@ -210,6 +248,8 @@ image.plot(x,y,z,
 ticks<- c( 1, 2,4,8,16,32)
 image.plot(x,y,log(z), axis.args=list( at=log(ticks), labels=ticks))
 
+# see help file for designer.colors to generate a color scale that adapts to 
+# quantiles of z. 
 
 #
 #fat (5 characters wide) and short (50\% of figure)  color bar on the bottom
@@ -217,7 +257,7 @@ image.plot(x,y,log(z), axis.args=list( at=log(ticks), labels=ticks))
 
 # adding label with all kinds of additional arguments.
 # use side=4 for vertical legend and side= 1 for horizontal legend
-# to be paralell to axes. See help(mtext).
+# to be parallel to axes. See help(mtext).
 
 image.plot(x,y,z, 
        legend.args=list( text="unknown units",

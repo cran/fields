@@ -74,6 +74,10 @@ function(out, verbose=FALSE, lambda=NA){
  VT<- forwardsolve( Mc, x=Tmatrix, transpose=TRUE, upper.tri=TRUE)
  qr( VT)-> qr.VT
 
+# find GLS covariance matrix of null space parameters. 
+ solve(qr.R(qr.VT))-> Rinv
+ Omega<- Rinv%*% t(Rinv)
+
 #
 # now do generalized least squares for d 
 # and then find c. 
@@ -92,7 +96,7 @@ function(out, verbose=FALSE, lambda=NA){
 return(
   list(  qr.VT = qr.VT, d=c(d.coef), c=c(c.coef), 
          Mc = Mc, decomp = "cholesky", 
-            nt=nt, np=np,lambda.fixed=lambda)
+            nt=nt, np=np,lambda.fixed=lambda, Omega=Omega)
  )}
  else { 
 ####################################################
@@ -115,7 +119,6 @@ return(
             call.name,
             c(out$args, list(x1 = out$xM, x2 = out$knots) ) )
 # 
-  
      Mc<- do.call("chol",
        c(list( x=t( K) %*%(out$weightsM * K) + lambda*H ), out$chol.args) )
 
@@ -129,7 +132,7 @@ return(
     
     temp0<- t(K)%*% wY
     temp3<- t(Tmatrix)%*% wY - 
-                 t(temp1)%*%forwardsolve( Mc, temp0, transpose=TRUE , upper.tri=TRUE)
+           t(temp1)%*%forwardsolve( Mc, temp0, transpose=TRUE , upper.tri=TRUE)
 
      d.coef<- qr.coef( qr.Treg, temp3)
 
@@ -139,7 +142,7 @@ return(
 
   list(  qr.Treg=qr.Treg, d=c(d.coef), c=c(c.coef), 
          Mc= Mc, decomp = "cholesky.knots", 
-            nt=nt, np=np,lambda.fixed=lambda)
+            nt=nt, np=np,lambda.fixed=lambda, Omega=NA)
 
 }
 #

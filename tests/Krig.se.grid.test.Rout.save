@@ -1,6 +1,6 @@
 
-R version 2.6.0 (2007-10-03)
-Copyright (C) 2007 The R Foundation for Statistical Computing
+R version 2.7.2 (2008-08-25)
+Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -22,22 +22,18 @@ Type 'q()' to quit R.
 > 
 > library( fields)
 Loading required package: spam
-Package 'spam' is loaded.  Version 0.13 (2007-10-10).
+Package 'spam' is loaded. Spam version 0.15-2 (2008-09-10).
 
-Type demo( spam) for some demos, help( Spam) for an overview of this library.
-
-
-Attaching package: 'spam'
-
-
-	The following object(s) are masked _by_ .GlobalEnv :
-
-	 .Spam 
+Type demo( spam) for some demos, help( Spam) for an overview of this package.
 
  Try help(fields) for an overview of this library 
 > # tests of predict.se
 > # using approximations for conditional simulation on a grid. 
 > #
 > options( echo=FALSE)
+testing:  Conditional simulation marginal se for grid
+    PASSED test at tolerance  0.05
+testing:  Conditional simulation correlations for grid (RMSE) 
+    PASSED test at tolerance  0.05
 all done with grid based se tests
 > 

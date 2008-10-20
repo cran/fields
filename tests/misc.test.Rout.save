@@ -28,7 +28,9 @@ Type demo( spam) for some demos, help( Spam) for an overview of this package.
 
  Try help(fields) for an overview of this library 
 > options( echo=FALSE)
+testing:  fast.1way means
     PASSED test at tolerance  1e-08
+testing:  fast.1way vectorized means
     PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-Done testing polynomial evaluation
+All done with testing misc functions
+> 

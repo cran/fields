@@ -9,7 +9,9 @@ library(fields)
 #  test of fixed lambda case
 #  Check against linear algebra
 #
+
 options( echo=FALSE)
+test.for.zero.flag<-1
 
 Krig( ozone$x, ozone$y, theta=50)-> fit
 
@@ -61,6 +63,12 @@ test.for.zero( test.c, test$c, tag="c coef new y" )
 Krig.coef( fit2, y= ynew)->test
 test.for.zero( test.d, test$d, tag= "d coef new y fixed" )
 test.for.zero( test.c, test$c, tag=" c coef new y fixed"  )
+
+# test for multiple new y's
+Krig.coef( fit2, y= cbind( ynew+ rnorm(fit2$N), ynew))->test2
+test.for.zero( test.d, test2$d[,2], tag= "d coef several new y fixed" )
+test.for.zero( test.c, test2$c[,2], tag=" c coef several new y fixed"  )
+
 
 #cat("done with simple Krig data", fill=TRUE)
 
@@ -336,6 +344,28 @@ test2<- (1/M)*sum(
 
 test.for.zero( test,test2,tag="GCV model")
 
+####### tests with higher level gcv.Krig
+
+data( ozone2)
+x<- ozone2$lon.lat
+y<- ozone2$y[16,]
+Tps( x,y)-> out
+gcv.Krig( out)-> out2
+
+test.for.zero(out$lambda.est[1,], 
+       out2$lambda.est[1,], tag="Tps/gcv for ozone2")
+
+# try with "new" data (linear transform should give identical 
+# results for GCV eff df
+
+gcv.Krig( out, y=(11*out$y + 5) )-> out3
+
+test.for.zero(out$lambda.est[1,2], 
+       out3$lambda.est[1,2], tag="Tps/gcv for ozone2 new data")
+
 #cat("done with GCV case", fill=TRUE)
+
+
+
 cat("done with Krig tests", fill=TRUE)
 options( echo=TRUE)

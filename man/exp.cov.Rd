@@ -11,15 +11,17 @@
 \alias{stationary.cov}
 \alias{stationary.taper.cov}
 \alias{wendland.cov}
+\alias{cubic.cov}
 \title{
   Exponential  family, radial basis 
-functions, compactly  supported Wendland family and 
+functions,cubic spline,  compactly  supported Wendland family and 
 stationary covariances. }
 \description{
 Given two sets of locations computes the cross covariance matrix for
 some covariance families. In addition these functions can take advantage 
-of spareness and implement more efficient multiplcation of the 
-cross covariance by a vector or matrix.  
+of spareness, implement more efficient multiplcation of the 
+cross covariance by a vector or matrix and also return a marginal 
+variance to be consistent with calls by the Krig function.  
 
 Note: These functions have been been renamed from the previous fields functions
 using 'Exp' in place of 'exp' to avoid conflict with the generic exponential 
@@ -33,6 +35,8 @@ Exp.simple.cov(x1, x2, theta =1, C=NA,marginal=FALSE)
 Rad.cov(x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, 
                C=NA,marginal=FALSE)
 
+cubic.cov(x1, x2, theta = 1, C=NA, marginal=FALSE) 
+
 Rad.simple.cov(x1, x2, p=1, with.log = TRUE, with.constant = TRUE, 
                C = NA, marginal=FALSE)
 
@@ -40,13 +44,13 @@ stationary.cov(x1, x2, Covariance="Exponential", Distance="rdist",
                Dist.args=NULL, theta=1.0,C=NA, marginal=FALSE,...)
 
 stationary.taper.cov(x1, x2, Covariance="Exponential", 
-           Distance="rdist",Taper="Wendland", 
+           Taper="Wendland", 
            Dist.args=NULL, Taper.args=NULL, 
            theta=1.0, C=NA, marginal=FALSE,
-           max.points=NULL, mean.neighbor = 50, spam.format=TRUE,...)
+           spam.format=TRUE,...)
 
 wendland.cov(x1, x2, theta = rep(1, ncol(x1)), k = 2, C = NA, 
-             marginal =FALSE, max.points = NULL, mean.neighbor = 50, 
+             marginal =FALSE,Dist.args = NULL, 
              spam.format = TRUE, derivative = 0)
 }
 \arguments{
@@ -118,18 +122,6 @@ function.}
 \item{Taper.args}{ A list of optional arguments to pass to the Taper 
 function. \code{theta} should always be the name for the range (or scale)
 paremeter.}
-
-\item{max.points}{ The maximum number of nonzero elements in the tapered
-form of the covariance. This is a detailed argument that makes a work
-array large enough for finding the nearest neighbor points (see
-field.rdist.near). The default, set within field.rdist.near is
-\code{ nrow( x1)* mean.neighbor}. }
-
-\item{mean.neighbor}{ Average number of neighbors expected for each
-location in sparse covariance matrix. This argument controls the temp
-space for finding neighbors of location within a specified distance
-(e.g. theta of taper) and will depend on the particular configuration of
-points. The default value is 50.} 
 
 \item{spam.format}{If TRUE returns matrix in sparse matrix format implemented in the
 spam package. If FALSE just returns a full matrix. }

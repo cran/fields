@@ -9,6 +9,7 @@ library( fields)
 
 options( echo=FALSE)
 
+test.for.zero.flag<- 1
 
 # a nasty example with off diagonal weights.
 

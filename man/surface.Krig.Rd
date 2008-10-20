@@ -5,6 +5,8 @@
 
 \name{surface.Krig}
 \alias{surface.Krig}
+\alias{surface.mKrig}
+
 \title{
   Plots a surface and contours 
 }
@@ -18,10 +20,15 @@ ranges.
                  NULL, xlab = NULL, ylab = NULL, main = NULL, zlab =
                  NULL, zlim = NULL, levels = NULL, type = "C", nx =
                  80, ny = 80, ...)
+
+\method{surface}{mKrig}(obj,
+grid.list = NA, extrap = FALSE, graphics.reset = NULL, xlab = NULL,
+        ylab = NULL, main = NULL, zlab = NULL, zlim = NULL, levels = NULL,
+        type = "C", nx=80, ny=80, ...)
 }
 \arguments{
 \item{obj}{
-A Krig object. 
+A Krig object or an mKrig object.
 }
 \item{grid.list}{
 A list with as many components as variables describing the surface. 

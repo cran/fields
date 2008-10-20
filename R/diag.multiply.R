@@ -18,10 +18,16 @@ setMethod("%d*%",signature(x="matrix",y="matrix"),
 function(x,y){x%*%y} )
 
 setMethod("%d*%",signature(x="matrix",y="numeric"),
-function(x,y){ x%*%y} )
+function(x,y){
+  if( length(y)!= ncol(x)){
+    stop("non-conformable arguments in %d*% ")}
+    matrix(t(y*t(x)), ncol=ncol(x), nrow=nrow(x))} )
 
 setMethod("%d*%",signature(x="numeric",y="matrix"),
-function(x,y){x*y} )
+function(x,y){
+  if( length(x)!= nrow(y)){
+    stop("non-conformable arguments in %d*%")}
+    matrix(x*y, ncol=ncol(y), nrow=nrow(y))} )
 
 setMethod("%d*%",signature(x="numeric",y="numeric"),
 function(x,y){cbind(x*y)} )

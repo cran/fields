@@ -14,85 +14,85 @@ smoothness can be specified or estimated from the data by GCV.
 <!--brief description-->
 }
 \usage{
-sreg(x, y, lam = NA, df = NA, offset = 0, 
+sreg(x, y, lambda = NA, df = NA, offset = 0, 
      weights = rep(1, length(x)), cost = 1, 
-     nstep.cv = 80, find.diagA = TRUE, trmin = 2.01,
-     trmax = length(unique(x)) * 0.95, lammin = NA, 
+     nstep.cv = 80, tol=1e-5,find.diagA = TRUE, trmin = 2.01,
+     trmax = NA, lammin = NA, 
      lammax = NA, verbose = FALSE,
-     do.cv = TRUE, method = "GCV", rmse = NA, lambda = NA,
+     do.cv = TRUE, method = "GCV", rmse = NA,
       na.rm =  TRUE)
 }
+
 \arguments{
 \item{x}{
-Vector of x value
-}
+Vector of x value}
+
 \item{y}{
-Vector of y values
-}
-\item{lam}{
+Vector of y values}
+
+\item{lambda}{
 Single smoothing parameter or a vector of values . If omitted 
 smoothing parameter estimated by GCV. NOTE: lam here is equivalent to 
 the value lambda*N  in Tps/Krig  where N is the number of unique observations.
-See example below.
-}
+See example below.}
+
 \item{df}{
 Amount of smoothing in term of effective degrees of freedom for the
-spline 
-}
+spline}
+
 \item{offset}{
 an offset added to the term cost*degrees of freedom in the denominator of
 the GCV function. (This would be used for adjusting the df from fitting
-other models such as in back-fitting additive models.)
-}
+other models such as in back-fitting additive models.)}
+
 \item{weights}{
 A vector that is proportional to the reciprocal variances of the
-errors.
-}
+errors.}
+
 \item{cost}{
-Cost value to be used in the GCV criterion.
-}
+Cost value to be used in the GCV criterion.}
+
 \item{nstep.cv }{
-Number of grid points of smoothing parameter for GCV grid search
-}
+Number of grid points of smoothing parameter for GCV grid search.}
+
+\item{tol} {Tolerance for convergence in minimizing the GCV or other
+criteria to estimate the smoothing parameter.}
 \item{find.diagA}{
 If TRUE  calculates the diagonal elements of the smoothing matrix. The
 effective
 number of degrees of freedom is the sum of these diagonal elements.
 Default is true. This requires more stores if a grid of smoothing
-parameters is passed. ( See returned values below.)
- 
-}
+parameters is passed. ( See returned values below.)}
+
 \item{trmin}{
 Sets the minimum of the smoothing parameter range  for the GCV grid
-search in terms of effective degrees of freedom.
-}
+search in terms of effective degrees of freedom.}
+
 \item{trmax}{
 Sets the maximum of the smoothing parameter range  for the GCV grid
-search in terms of effective degrees of freedom.
-}
+search in terms of effective degrees of freedom. If NA the range is set
+to .99 of number of unique locations.}
+
 \item{lammin}{
-Same function as trmin but in the lambda scale.
-}
+Same function as trmin but in the lambda scale.}
+
 \item{lammax}{
-Same function as trmax but in the lambda scale.
-}
+Same function as trmax but in the lambda scale.}
+
 \item{verbose}{
-Print out all sorts of debugging info. Default is false! 
-}
+Print out all sorts of debugging info. Default is falseof course!}
+
 \item{do.cv}{
-Evaluate the spline at the GCV minimum. Default is true.
-}
+Evaluate the spline at the GCV minimum. Default is true.}
+
 \item{method}{
 A character string giving the 
 method for determining the smoothing
 parameter. Choices are
-"GCV", "GCV.one", "GCV.model", "pure error", "RMSE". Default is "GCV"
-}
+"GCV", "GCV.one", "GCV.model", "pure error", "RMSE". Default is "GCV". }
+
 \item{rmse}{
-Value of the root mean square error to match by varying lambda. 
-}
-\item{lambda}{
-Another name for lam. This is just for consistency with Krig, Tps. }
+Value of the root mean square error to match by varying lambda.}
 
 \item{na.rm}{If TRUE NA's are removed from y before analysis.}
 

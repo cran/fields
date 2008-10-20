@@ -4,5 +4,5 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 fitted.Krig<- function(object,...){
-       predict.Krig( object,...)}
+                 object$residuals}
 

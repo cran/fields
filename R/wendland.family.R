@@ -4,7 +4,7 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 
-wendland2.2 <- function(d, theta=1.0)
+Wendland2.2 <- function(d, theta=1.0)
 {
 # Cari's test function  with explicit form  for d=2 k=2
 # taper range is 1.0
@@ -16,11 +16,11 @@ wendland2.2 <- function(d, theta=1.0)
 
 # Tapering function
 
-Wendland<- function( d,theta=1.0, dimension,k, derivative=0, phi=1){
+Wendland<- function( d,theta=1.0, dimension=2,k, derivative=0, phi=1){
     # d = dimension k = order. see wendland.coef for details
 
-    if( missing( dimension)){ 
-      stop("need to give a dimension argument to Wendland function")}
+#    if( missing( dimension)){ 
+#      stop("need to give a dimension argument to Wendland function")}
      
     if( any(d<0) ){
       stop("some distances are negative")}
@@ -37,31 +37,30 @@ Wendland<- function( d,theta=1.0, dimension,k, derivative=0, phi=1){
   }
 
 # the monster
-
 "wendland.cov" <-
 function (x1, x2, theta = rep(1, ncol(x1)), k=2,
           C = NA, marginal=FALSE,
-          max.points=NULL, mean.neighbor=50, 
+          Dist.args=NULL,
           spam.format=TRUE,
-           derivative=0) 
+           derivative=0)
 {
 
 #
 #   if marginal variance is needed
 #  this is a quick return
-  
+
     if( marginal){
     return( rep( 1, nrow(x1)) )}
 
 #  the rest of the possiblities require some computing
-   
-     if (!is.matrix(x1)) 
+
+     if (!is.matrix(x1))
         x1 <- as.matrix(x1)
-    if (missing(x2)) 
+    if (missing(x2))
         x2 <- x1
-    if (!is.matrix(x2)) 
+    if (!is.matrix(x2))
         x2 <- as.matrix(x2)
-    if (length(theta) == 1) 
+    if (length(theta) == 1)
         theta <- rep(theta, ncol(x1))
     d <- ncol(x1)
     n1 <- nrow(x1)
@@ -72,89 +71,91 @@ function (x1, x2, theta = rep(1, ncol(x1)), k=2,
     x2 <- scale(x2 , center=FALSE, scale=theta)
 
 # once scaling is done taper is applied with default range of 1.0
-    
+
 # find polynomial coeffients that define
 # wendland on [0,1]
 #  d dimension and  k is the order
 
-  
+
 
 #  find sparse matrix of Euclidean distances
-#  ||x1-x2||**2  
-# max.points plays the role of a work array
-# may need to be larger if  there are many points within 1 unit distance
-# of each x1,
-    
-     sM <- fields.rdist.near(x1, x2, delta = 1.0, 
-            max.points = max.points, mean.neighbor=mean.neighbor)
-    
+#  ||x1-x2||**2 (or any other distance that may be specified by
+#  Dist.args    
+
+   sM <- do.call('nearest.dist',c(list(x1, x2, delta = 1, upper = NULL,
+                     diag=TRUE), Dist.args))
+
+#    diag(sM) <- 0    # required as passing two matrices
+
 # equivalent to sM<- rdist( x1,x2) but sM is in sparse index format
 
-    
+
 #
 # there are two possible actions listed below:
 
 # find cross covariance matrix
 # return either in sparse or matrix format
 
-    
-    if (is.na(C[1]) ) {
-      
-       sM$ra<- Wendland( sM$ra, theta=1.0,k=k, dimension=d)
 
-       if( spam.format){
-                 return( spind2spam(sM) )}
+    if (is.na(C[1]) ) {
+
+       sM@entries<- Wendland( sM@entries, theta=1.0,k=k, dimension=d)
+
+       if(!spam.format){
+                 return( as.matrix(sM) )}
             else{
-                 return( spind2full(sM) )}
+                 return(  sM )}
     }
      else{
 #
 # multiply cross covariance matrix by C
-#  note multiply happens in spam matrix format 
+#  note multiply happens in spam matrix format
 #
 
-       
-        if( derivative ==0){
-           sM$ra<- Wendland( sM$ra,dimension=d, theta=1.0,k=k)
-          return( spind2spam(sM)%*%C) }
 
-#        otherwise evaluate partial derivatives with respect to x1 
-#        Big mess of code and an explicit for loop! 
+        if( derivative ==0){
+           sM@entries <- Wendland( sM@entries,dimension=d, theta=1.0,k=k)
+          return( sM%*%C) }
+
+#        otherwise evaluate partial derivatives with respect to x1
+#        Big mess of code and an explicit for loop!
 
         else {
-          
-          L<- length( coef)
-#         loop over dimensions and accumulate partial derivative matrix. 
 
-          tempD<- sM$ra           # save nonzero  distances
-          
+          L<- length( coef)
+#         loop over dimensions and accumulate partial derivative matrix.
+
+          tempD<- sM@entries           # save nonzero  distances
+
           tempW<- Wendland( tempD, theta=1.0,k=k,dimension=d,
-                                            derivative=derivative) 
-          
+                                            derivative=derivative)
+
 # loop over dimensions and knock out each partial accumalte these in
 # in  temp
 
           temp<- NULL
-
-          for( kd in 1:d){ 
+# Create rowindices vector          
+          sMrowindices <- rep(1:n1, diff(sM@rowpointers))
+          for( kd in 1:d){
 #
 #            Be careful if the distance (tempD) is close to zero.
-#            Also adjust for the fact that the x1 and x2 are scaled 
+#            Also adjust for the fact that the x1 and x2 are scaled
 
-            
-             sM$ra<- ifelse( tempD== 0, 0,
-              ( x1[sM$ind[,1],kd]- x2[sM$ind[,2],kd] )/ (theta[kd]*tempD)*tempW )
-             
+
+             sM@entries <- ifelse( tempD== 0, 0,
+              ( x1[sMrowindices,kd]- x2[sM@colindices,kd] )/ (theta[kd]*tempD)*tempW )
+
 # accumlate the new partial
-             temp<- cbind( temp, ( spind2spam(sM)%*%C) )  }
+             temp<- cbind( temp, sM%*%C )  }
 
         return( temp)}
 
-   } # end of  C evaluation block 
+   } # end of  C evaluation block
 
 
 # should not get here!
   }
+
 
 
 `wendland.coef` <-

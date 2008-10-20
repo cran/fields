@@ -27,7 +27,7 @@ function (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA,
     else {
 
 #with new data need to update some statistics. 
-        out2 <- Krig.coef(out, y=y)
+        out2 <- Krig.make.u(out, y=y)
         u <- out2$u
         shat.pure.error <- out2$shat.pure.error
         pure.ss <- out2$pure.ss
@@ -84,7 +84,7 @@ function (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA,
         lplike)
     gcv.grid <- as.data.frame(gcv.grid)
     names(gcv.grid) <- c("lambda", "trA", "GCV", "GCV.one", "GCV.model", 
-        "shat", "-Log Profile ")
+        "shat", "-lnLike Prof")
 
 # at this point the lazy data analyst could stop
 # and just pick the minimum over the grid
@@ -99,9 +99,9 @@ function (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA,
 #
 # setup output matrix for refined values
 
-    lambda.est <- matrix(ncol = 4, nrow = 6, dimnames = list(c("GCV", 
-        "GCV.model", "GCV.one", "RMSE", "pure error", "-Log Profile (REML)"), 
-        c("lambda", "trA", "GCV", "shat")))
+    lambda.est <- matrix(ncol = 4, nrow = 6, dimnames = list(
+         c("GCV","GCV.model", "GCV.one", "RMSE", "pure error", "REML"), 
+         c("lambda", "trA", "GCV", "shat")))
 
 #
 # now step through the many different ways to find lambda
@@ -127,13 +127,14 @@ function (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA,
         Krig.fgcv.one, tol = tol, verbose = verbose, give.warnings = give.warnings)
 #
 # REML 
-    lambda.est[6, 1] <- Krig.find.REML(info, lambda.grid, gcv.grid$"-Log Profile", 
+    lambda.est[6, 1] <- Krig.find.REML(info, lambda.grid, gcv.grid$"-lnLike Prof", 
         Krig.flplike, tol = tol, verbose = verbose, give.warnings = give.warnings.REML)
     if (verbose) {
         cat(" mle estimate", lambda.est[6, 1], fill = TRUE)
     }
 # 
-# This is the most obscure Perry Haaland likes this one ....
+# This is the most obscure way to choose lambda but
+# Perry Haaland likes this one ....
 # Find the values of lambda so that the 
 # usual estimate of sigma**2 is equal to either the 
 # value estimated from replicates and  from an external value (rmse) if

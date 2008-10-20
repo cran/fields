@@ -7,13 +7,13 @@
 \alias{mKrig}
 \alias{predict.mKrig}
 \alias{print.mKrig}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{Spatial process estimate of a curve or surface, 
-"kriging" with a known covariance function  }
+
+\title{"micro Krig"  Spatial process estimate of a curve or surface, 
+"kriging" with a known covariance function. }
 \description{
 This is a simple version of the Krig function that is 
 optimized for large data sets and a clear exposition of the
-computations. 
+computations. Lambda, the smoothing parameter must be fixed. 
 }
 \usage{
 mKrig(x, y, weights = rep(1, nrow(x)), 
@@ -26,8 +26,8 @@ mKrig(x, y, weights = rep(1, nrow(x)),
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{ Matrix of unique spatial locations ( or in print the returned 
-mKrig object.) }
+  \item{x}{ Matrix of unique spatial locations ( or in print or surface 
+       the returned mKrig object.) }
   \item{y}{ Vector of observations at spatial locations, missing values
           are not allowed! }
   \item{weights}{Precision  ( 1/variance) of each observation }
@@ -45,7 +45,7 @@ calls to the covariance function.}
 
   \item{\dots}{ In \code{mKrig} and \code{predict} additional arguments that will be passed to the covariance 
                  function. }
-   \item{object}{ The object returned from mKrig}
+  \item{object}{Object returned by mKrig. (Same as "x" in the print function.)}
    \item{xnew} {Locations for predictions.}
    \item{derivative} { If zero the surface will be evaluated. If 
     not zero the matrix of partial derivatives will be computed.}
@@ -59,35 +59,6 @@ is done and the spatial locations are not transformed before the
 estimation.  Sparse matrix methods are handled through overloading the
 usual linear algebra functions with sparse versions. 
 
-The sparse methods rely on two types of temporary workspace. The
-max.points or mean.neighbor arguments used in 
-\code{fields.rdist.near} to find nearest
-neighboring points  and tmpmax connected with the sparse Cholesky
-decompostion. The default values for each of these is a small multiple
-of the number of rows of the full matrix. If either of these is too
-small reset them to something larger. This is typically the total number
-of nonzero elements in the data covariance matrix. 
-
-The temp space for finding near neighbors is 
- max.points = nrow(x1)* mean.neighbor. It is better to set mean.neighbor
-rather than max.points because this may then appropriate for different
-size matrices that key off of the same distribution of points. This will
-be the case in creating the mKrig object and then using this result to
-predict to a grid. 
-
-To explicitly reset mean.neighbor as an additional argument to sparse
-covariance functions add the argument.
-
-e.g. \code{mean.neighbor =100}
-
-
-To reset tmpmax include a component in the chol.args list.
-
-e.g. \code{chol.args=list( memory=list( tmpmax=5e5) )}
-
-will reset temp space to 500,000. 
-
-See the example below for more details. 
 
 
 \code{predict.mKrig} will evaluate the derivatives of the estimated
@@ -112,8 +83,8 @@ For example the wendland.cov function supports derivatives.
  \item{non.zero.entries}{ Number of nonzero entries in the covariance
 matrix for the process at the observation locations.}
 }
-\author{Doug Nychka }
-\seealso{Krig }
+\author{Doug Nychka, Reinhard Furrer }
+\seealso{Krig, surface.mKrig, Tps, fastTps }
 \examples{
 #
 # Midwest ozone data  'day 16' stripped of missings 
@@ -142,40 +113,107 @@ predict.surface( out2)-> out.p
 surface( out.p)
 
 
-# here is a bigger problem 
+# here is a series of examples with a bigger problem 
 # using a compactly supported covariance directly
-# 
-# Also note increase in the temp space sie for the
-# Cholesky decomposition. Default size (1e5) is too small
-#
 
 set.seed( 334)
 N<- 1000
 x<- matrix( 2*(runif(2*N)-.5),ncol=2)
-y<- sin( 1.8*pi*x[,1])*sin( 2.5*pi*x[,2]) + rnorm( 1000)*.01
+y<- sin( 1.8*pi*x[,1])*sin( 2.5*pi*x[,2]) + rnorm( 1000)*.1
   
-mKrig( x,y, cov.function="wendland.cov",k=2, theta=.1, 
-            lambda=1e2)-> look2
+mKrig( x,y, cov.function="wendland.cov",k=2, theta=.2, 
+            lambda=.1)-> look2
 
-# The following will fail for theta=.2 because tmpmax and max.points are too
-# small. (Here theta controls the support of the covariance and so 
-# indirectly the  number of nonzero elements in the sparse matrix
-
-# mKrig( x,y, cov.function="wendland.cov",k=2, theta=.3, lambda=1e2)-> look2
-
-# as a guess on the size of tmpmax this was set to mean.neighbor* nrow(x)
-
- mKrig( x,y, 
-            cov.function="wendland.cov",k=2, theta=.3, 
-            lambda=1e2, mean.neighbor=150, 
-            chol.args=list( memory=list( tmpmax=150*1000)) 
-             )-> look2
-
-
-
-predict.surface( look2)-> out.p
+# take a look at fitted surface
+predict.surface(look2)-> out.p
 surface( out.p)
 
+# this works because the number of nonzero elements within distance theta
+# are less than the default maximum allocated size of the 
+# sparse covariance matrix. 
+#  see  spam.options() for the default values 
+
+# The following will give a warning for theta=.9 because 
+# allocation for the  covariance matirx storage is too small. 
+# Here theta controls the support of the covariance and so 
+# indirectly the  number of nonzero elements in the sparse matrix
+
+\dontrun{
+ mKrig( x,y, cov.function="wendland.cov",k=2, theta=.9, lambda=.1)-> look2
+}
+
+# The warning resets the memory allocation  for the covariance matirx according the 
+# values   'spam.options(nearestdistnnz=c(416052,400))'
+# this is inefficient becuase the preliminary pass failed. 
+
+# the following call completes the computation in "one pass"
+# without a warning and without having to reallocate more memory. 
+
+spam.options(nearestdistnnz=c(416052,400))
+mKrig( x,y, cov.function="wendland.cov",k=2, theta=.9, lambda=1e-2)-> look2
+
+# as a check notice that 
+#   print( look2)
+# report the number of nonzero elements consistent with the specifc allocation
+# increase in spam.options
+
+
+# new data set of 1500 locations
+set.seed( 234)
+N<- 1500
+x<- matrix( 2*(runif(2*N)-.5),ncol=2)
+y<- sin( 1.8*pi*x[,1])*sin( 2.5*pi*x[,2]) + rnorm( N)*.01
+  
+# the following is an example of where the allocation  (for nnzR) 
+# for the cholesky factor is too small. A warning is issued and 
+# the allocation is increased by 25% in this example
+#
+\dontrun{ 
+ mKrig( x,y, 
+            cov.function="wendland.cov",k=2, theta=.1, 
+            lambda=1e2  )-> look2
+}
+# to avoid the warning 
+ mKrig( x,y, 
+            cov.function="wendland.cov",k=2, theta=.1, 
+            lambda=1e2,
+            chol.args=list(memory=list(nnzR= 450000))  )-> look2
+
+# success!
+
+##################################################
+# finding a good choice for theta 
+##################################################
+# Suppose the target is a spatial prediction using roughly 50 nearest neighbors
+# (tapering covariances is effective for rouhgly 20 or more in the situation of 
+#  interpolation) see Furrer, Genton and Nychka (2006).
+
+# take a look at a random set of 100 points to get idea of scale
+
+set.seed(223)
+ ind<- sample( 1:N,100)
+ hold<- rdist( x[ind,], x)
+ dd<- (apply( hold, 1, sort))[65,]
+ dguess<- max(dd)
+# dguess is now a reasonable guess at finding cutoff distance for
+# 50 or so neighbors
+
+# full distance matrix excluding distances greater than dguess
+# but omit the diagonal elements -- we know these are zero!
+
+ hold<- nearest.dist( x, delta= dguess,upper=NULL, diag=FALSE)
+# exploit spam format to get quick of number of nonzero elements in each row
+
+ hold2<-  diff( hold@rowpointers)
+ #  min( hold2) = 55   which we declare close enough 
+
+# now the following will use no less than 55 nearest neighbors 
+# due to the tapering. 
+
+\dontrun{
+ mKrig( x,y, cov.function="wendland.cov",k=2, theta=dguess, 
+            lambda=1e2) ->  look2
+}
 
 #
 #    Using mKrig for evaluating  a solution on a big grid.
@@ -189,7 +227,7 @@ Tps( x,y)-> obj
 # make up an 80X80 grid that has ranges of observations
 # use same coordinate names as the x matrix
 
-glist<- fields.x.to.grid(x, nx=80, ny=80) # this is a cute way to get a defautl grid that covers x
+glist<- fields.x.to.grid(x, nx=80, ny=80) # this is a cute way to get a default grid that covers x
 
 # convert grid list to actual x and y values ( try plot( Bigx, pch="."))
     make.surface.grid(glist)-> Bigx 

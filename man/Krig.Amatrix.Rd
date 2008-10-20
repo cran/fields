@@ -21,7 +21,8 @@ linear smoothers the matrix A may depend on the smoothing parameter (
 or covariance function and the independent variables (X) but NOT on Y.    
 }
 \usage{
-Krig.Amatrix(object, x0 = object$x, lambda=NULL,...)
+Krig.Amatrix(object, x0 = object$x, lambda=NULL,
+      eval.correlation.model = FALSE,...)
 }
 \arguments{
 Output object from fitting a data set using a FIELD regression
@@ -37,6 +38,13 @@ Locations for prediction default is the observation locations.
 \item{lambda}{
 Value of the smoothing parameter.
 }
+\item{eval.correlation.model}{This applies to a correlation model 
+where the observations have been standardized -- e.g. 
+  y standardized  = (yraw - mean) / (standard deviation). If TRUE the 
+prediction in the correlation scale is transformed by the standard
+deviation and mean to give a  prediction in the raw scale. 
+If FALSE predictions are left in the correlation  scale.}
+
 \item{\dots}{ Other arguments that can used by predict.Krig.}
 
 }

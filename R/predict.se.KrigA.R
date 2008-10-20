@@ -3,7 +3,7 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
-"predict.se.Krig" <-
+"predict.se.KrigA" <-
 function (object, x=NULL, cov = FALSE, verbose=FALSE,...) 
 {
 #
@@ -41,9 +41,7 @@ function (object, x=NULL, cov = FALSE, verbose=FALSE,...)
          temp.sd <- c(predict(object$sd.obj, xraw))}
    else{
          temp.sd <- 1}
-   if( verbose){
-     print( temp.sd)}
-   
+
 # Default is to use parameters in best.model 
 
    lambda <- object$best.model[1]
@@ -52,10 +50,9 @@ function (object, x=NULL, cov = FALSE, verbose=FALSE,...)
 
    nx <- nrow(xM)
 
-   wght.vec <- t(Krig.Amatrix(object, xraw,
-                       lambda, eval.correlation.model = FALSE,...))
+   wght.vec <- t(Krig.Amatrix(object, xraw, lambda,...))
 
-   if( verbose){
+   if( verbose) {
          cat("wght.vector", fill=TRUE)
          print( wght.vec)}
 

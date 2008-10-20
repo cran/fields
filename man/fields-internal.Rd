@@ -62,7 +62,6 @@
 \alias{grey.level}
 \alias{image.plot.info}
 \alias{image.plot.plt}
-\alias{image.smooth.setup}
 \alias{in.poly}
 \alias{krig.image.parameters}
 \alias{lonlat2xy}
@@ -221,10 +220,6 @@ image.plot.info (...)
 image.plot.plt(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
 horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
 
-image.smooth.setup (x,nrow = 64, ncol = 64, dx = 1, dy = 1, 
-     kernel.function = double.exp, 
-     theta = 1, Mwidth = nrow, Nwidth = ncol, ...) 
- 
 in.poly (xd, xp, convex.hull = FALSE, inflation=1e-7) 
  
 krig.image.parameters (out) 

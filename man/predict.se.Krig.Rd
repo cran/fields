@@ -5,6 +5,7 @@
 
 \name{predict.se.Krig}
 \alias{predict.se.Krig}
+\alias{predict.se.KrigA}
 \title{
   Standard errors of predictions for Krig spatial process estimate 
 }
@@ -68,17 +69,12 @@ fields given the data.
  There are two useful extensions supported by this function.  Adding
 the variance to the estimate of the spatial mean if this is a correlation
 model. (See help file for Krig)  and calculating the variances under
-covariance misspecification.  Note that the linear combination is based
-on the covariance function from the Krig object. One can view this first
-step as simply defining a spatial estimator. If the covariance used is
-correct it is BLUE, otherwise the MSE for the spatial estimate will be
-larger than optimal.  The 'cov.function' argument in this function defaults
-to the same covariance used to determine the spatial prediction but
-it also can be specified separately, in this case it is interpreted as the true
-covariance and the prediction variances are evaluated accordingly. 
-}
-\section{References}{
-See Case Studies in Environmental Statistics  
+covariance misspecification.  The function \code{predict.se.KrigA} uses the
+A matrix to find the standard errors or covariances directly from the 
+linear combination of the spatial predictor. Currently this is also 
+the calculation in \code{predict.se.Krig} although a shortcut using the
+Kriging equations is planned for a later verion of fields. 
+
 }
 \seealso{
 Krig, predict.Krig, predict.surface.se  

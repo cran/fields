@@ -14,7 +14,7 @@ image-like plot where the locations are discretized to a grid  and the z
 values are coded as a color level from a color scale. }
 \usage{
 quilt.plot(x, y, z, nrow = 64, ncol = 64, grid = NULL, 
-                     add.legend=TRUE,add=FALSE,...)
+                     add.legend=TRUE,add=FALSE,col=tim.colors(256),...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,8 +26,10 @@ in x the z vector  }
   \item{nrow}{ Number of grid boxes in x.}
   \item{ncol}{ Number of grid boxes in y. }
   \item{grid}{ A grid in the form of a \code{grid list}.  }
-   \item{add.legend} { If TRUE a legend color strip is added}
-  \item{add}{ If FALSE add to existing plot.}
+  \item{add.legend} { If TRUE a legend color strip is added}
+  \item{add}{If FALSE add to existing plot.}
+  \item{col}{Color scale for the image, the default is tim.colors --
+    a pleasing spectrum.}
   \item{\dots}{ arguments to be passed to the image.plot function }
 }
 \details{
