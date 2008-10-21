@@ -14,7 +14,7 @@ function (lam, obj)
     lD <- obj$matrices$D * lam
     nn<- length( lD)
 # 
-    num<-  log( sum( (obj$matrices$u**2) * lD/(1 + lD) ) )/(nn-obj$nt)
+    num<-  log( sum( (obj$matrices$u**2) * lD/(1 + lD) ) )*(nn-obj$nt)
 
 # note subtle differences between den and RSS in Krig.fgcv 
 
@@ -22,7 +22,7 @@ function (lam, obj)
 #   log det is the sum of the logs of the eigenvalues
 
     den<- sum( ifelse( lD>0, log(lD/(1 + lD)),0))
-# NOTE: minus the likelihood! 
+# NOTE: minus the log likelihood! 
    .5* ( num-den) 
  
 }

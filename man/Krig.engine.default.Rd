@@ -11,6 +11,7 @@
 \alias{Krig.check.xY}
 \alias{Krig.cor.Y}
 \alias{Krig.transform.xY}
+\alias{Krig.make.u}
 \alias{Krig.make.W}
 \alias{Krig.make.Wi}
 \alias{\%d*\%}
@@ -29,6 +30,7 @@ Krig.engine.knots(out, verbose = FALSE)
 Krig.engine.fixed( out, verbose=FALSE, lambda=NA)
 
 Krig.coef(out, lambda = out$lambda, y = NULL, yM = NULL, verbose = FALSE) 
+Krig.make.u(out, y = NULL, yM = NULL, verbose = FALSE) 
 Krig.check.xY(x, Y,Z, weights, na.rm, verbose = FALSE) 
 Krig.cor.Y(obj, verbose = FALSE) 
 Krig.transform.xY(obj, knots, verbose = FALSE)
@@ -128,6 +130,12 @@ lambda values. If new y values are not passed to this function then the yM
 vector in the Krig object is used. The internal function 
 \code{Krig.ynew} sorts out the logic of what to do and use based on the 
 passed arguments. 
+
+\code{Krig.make.u} Computes the "u" vector, a transformation of the collapsed
+observations that allows for rapid evaluation of the GCV function and 
+prediction. This only makes sense when the decomposition is WBW or DR, i.e. 
+an eigen decomposition. If the decompostion is the Cholesky based then this
+function returns NA for the u component in the list.  
 
 \code{Krig.check.xY} Checks for removes missing values (NAs).
 

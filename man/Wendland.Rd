@@ -5,7 +5,7 @@
 
 \name{Wendland}
 \alias{Wendland}
-\alias{wendland2.2}
+\alias{Wendland2.2}
 \alias{wendland.coef}
 \title{Wendland family of covariance functions}
 
@@ -19,7 +19,7 @@ sparse covariance matrices.
 \usage{
 Wendland(d, theta = 1, dimension, k,derivative=0, phi=1)
 
-wendland2.2(d, theta=1)
+Wendland2.2(d, theta=1)
 
 wendland.coef(d,k)
 }
@@ -48,7 +48,7 @@ coefficients are computed recursively based on the values of \code{k}
 and \code{dimension} in the function \code{wendland.coef}. The
 polynomial is evaluated using \code{fields.evlpoly}. 
 
-A specific example of the Wendland family is \code{wendland2.2} and this 
+A specific example of the Wendland family is \code{Wendland2.2} and this 
 is included mainly for testing. 
 }
 
@@ -68,7 +68,8 @@ plot( DD, y, type="l")
 
 # should agree with 
 
-y.test<- wendland2.2( DD)
+y.test<- Wendland2.2( DD)
+
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

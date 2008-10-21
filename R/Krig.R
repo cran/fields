@@ -371,8 +371,13 @@ function (x, Y,
 ##########################################
 #   pass replicate group means -- no need to recalculate these. 
 
-    out2 <- Krig.coef(out, yM= out$yM)
+    
+    if( verbose){
+     cat("Call to Krig.coef:", fill=TRUE)}
+    
+    out2 <- Krig.coef(out, yM= out$yM, verbose=verbose)
     out<- c( out, out2)
+
     if( verbose){
      cat("Krig.coef:", fill=TRUE)
      print( out2)}

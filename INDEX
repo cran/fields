@@ -5,9 +5,11 @@ BD                      Data frame of the effect of buffer compositions
                         regression data set with with replication. This
                         is a useful test data set for exercising
                         function fitting methods.
-Exp.cov                 Exponential family, radial basis functions,
-                        compactly supported Wendland family and
-                        stationary covariances.
+CO.elev                 Monthly surface meterology for Colorado
+                        1895-1997
+Exp.cov                 Exponential family, radial basis
+                        functions,cubic spline, compactly supported
+                        Wendland family and stationary covariances.
 Exponential             Covariance functions
 Krig                    Kriging surface estimate
 Krig.Amatrix            Smoother (or "hat") matrix relating predicted
@@ -64,8 +66,9 @@ interp.surface          Fast bilinear interpolator from a grid.
 krig.image              Spatial process estimate for large irregular
                         2-d dats sets.
 lennon                  Gray image of John Lennon.
-mKrig                   Spatial process estimate of a curve or surface,
-                        "kriging" with a known covariance function
+mKrig                   "micro Krig" Spatial process estimate of a
+                        curve or surface, "kriging" with a known
+                        covariance function.
 minitri                 Mini triathlon results
 ozone                   Data set of ozone measurements at 20 Chicago
                         monitoring stations.

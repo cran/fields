@@ -5,10 +5,10 @@
 
 
 # test of sreg and related functions
-# test.for.zero.flag<- 1
 
 library( fields)
 options(echo=FALSE)
+ test.for.zero.flag<- 1
 
 set.seed(123)
 
@@ -26,18 +26,21 @@ test.for.zero( out, out2, tag="predict at lambda sreg/Tps")
 
 #### GCV test
 
-sreg( x,y)-> out
-gcv.sreg( out, tol=1e-12)$lambda.est[1,2] -> look
+sreg( x,y, tol=1e-12)-> out
+gcv.sreg( out, tol=1e-12)$lambda.est -> look0
+
+test.for.zero( out$lambda.est[1,2], look0[1,2], tol=5e-4)
 
 Tps( x,y)-> out2
 gcv.Krig( out2, tol=1e-12)$lambda.est[1,2]-> look2
+gcv.sreg( out, tol=1e-12)$lambda.est[1,2] -> look
 
 test.for.zero( look, look2, tol=1.5e-6, tag="GCV sreg/Tps")
 
 #### replications
 set.seed( 123)
 x<-  rep(rat.diet$t,3)
-y<- rep( rat.diet$trt,3) + rnorm(39*3)*.2
+y<- rep( rat.diet$trt,3) + rnorm(39*3)*5
 
 sreg( x,y)-> out
 gcv.sreg( out, tol=1e-12)$lambda.est -> look

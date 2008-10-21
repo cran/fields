@@ -5,6 +5,7 @@
 
 library( fields)
 options( echo=FALSE)
+test.for.zero.flag<- 1
 
 # test data
 data( ozone2)
@@ -62,12 +63,12 @@ predict.surface( look2)-> temp2
 good<- !is.na( temp2$z)
 test.for.zero( temp$z[good], temp2$z[good])
 
-# testing stationary taper covariance with max.points option
+# testing stationary taper covariance 
 # and also surface prediction
 
 N<- length( y)
 mKrig( x,y, cov.function="stationary.taper.cov", theta=2, 
-spam.format=FALSE, lambda=.35, mean.neighbor=100 )-> look
+spam.format=FALSE, lambda=.35 )-> look
 
 Krig( x,y, cov.function="stationary.taper.cov", theta=2, 
 spam.format=FALSE, lambda=.35)-> look2
@@ -105,8 +106,8 @@ N<- 1000
 x<- matrix( runif(2*N),ncol=2)
 y<- rnorm( N)
 
-mKrig( x,y, cov.function="wendland.cov",k=2, theta=.1, lambda=.3,
-max.points= 1e5)-> look2
+mKrig( x,y, cov.function="wendland.cov",k=2,
+            theta=.1, lambda=.3)-> look2
 
 
 test.for.zero( look2$non.zero.entires, 30146)
@@ -131,7 +132,7 @@ data( ozone2)
 
       test.for.zero( temp, temp2)
 
-# test passing arguments for chol and max.points
+# test passing arguments for chol 
 
 set.seed( 334)
 N<- 300
@@ -147,7 +148,6 @@ y<- sin( 3*pi*x[,1])*sin( 3.5*pi*x[,2]) + rnorm( N)*.01
  mKrig( x,y, 
             cov.function="wendland.cov",k=2, theta=.8, 
             lambda=1e2, 
-            mean.neighbor=150, 
             chol.args=list( memory=list( tmpmax=1e5)), 
              )-> out2
 

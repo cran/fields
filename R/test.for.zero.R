@@ -13,7 +13,7 @@ tag=NULL){
    test.value<- sum( abs(c(xtest) - c( xtrue) ) ) /denom
   if(   test.value < tol ){
     
-      if( exists( "test.for.zero.flag")){
+if( exists( "test.for.zero.flag")){
  
        if( !is.null(tag)){ cat( "testing: ", tag, fill=TRUE)}
              cat("    PASSED test at tolerance ", tol, fill=TRUE)}}

@@ -5,6 +5,7 @@
 
 library( fields)
 options( echo=FALSE)
+test.for.zero.flag<-1
 
 set.seed( 245)
 

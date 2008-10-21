@@ -30,13 +30,13 @@ function (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE,
         d <- ncol(x1)
         n1 <- nrow(x1)
         n2 <- nrow(x2)
-        m <- (d + p)/2
+            m <- (d + p)/2
         par <- c(p/2, ifelse((d%%2 == 0) & (with.log), 1, 0))
 
 # compute matrix in FORTRAN
    
  if (is.na(C[1])) {
-        temp <- .Fortran("radbas", nd = as.integer(d), x1 = as.double(x1), 
+   temp <- .Fortran("radbas", nd = as.integer(d), x1 = as.double(x1), 
             n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
             par = as.double(par), k = as.double(rep(0, n1 * n2)), 
             PACKAGE="fields")
@@ -47,13 +47,17 @@ function (x1, x2, p = 1, with.log = TRUE, with.constant = TRUE,
 #
 # do cross covariance matrix multiplication in FORTRAN
     else {
-
-        temp<- .Fortran("multrb", nd = as.integer(d), x1 = as.double(x1),
-              n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2),
+      C<- as.matrix(C)
+      n3<-ncol( C)
+      temp<- .Fortran("multrb",
+              nd = as.integer(d),
+              x1 = as.double(x1),n1 = as.integer(n1),
+              x2 = as.double(x2), n2 = as.integer(n2),
               par = as.double(par), 
-              c = as.double(C), h = as.double(rep(0, n1)), 
+              c = as.double(C),n3=as.integer(n3),
+              h = as.double(rep(0, n1*n3)), 
               work = as.double(rep(0, n2)), PACKAGE="fields")$h
-
+    temp<- matrix( temp, nrow=n1,ncol=n3) 
     }
 
 #

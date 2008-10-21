@@ -5,6 +5,7 @@
 
 \name{Tps}
 \alias{Tps}
+\alias{fastTps}
 \title{
   Thin plate spline regression 
 }
@@ -12,10 +13,12 @@
 Fits a thin plate spline surface to irregularly spaced data. The 
 smoothing parameter is chosen by generalized cross-validation. The assumed 
 model is additive  Y = f(X) +e  where f(X) is a d dimensional surface. 
-This is a special case of the spatial process estimate.   
+This is a special case of the spatial process estimate.  A "fast" version of this function uses a compactly supported Wendland covariance and computes the estimate for a fixed smoothing pararmeter.
 }
 \usage{
 Tps(x, Y, m = NULL, p = NULL, scale.type = "range", ...)
+
+fastTps(x, Y, m = NULL, p = NULL,  theta,  ...)
 }
 \arguments{
 To be helpful, a more complete list of arguments are described that are the 
@@ -50,6 +53,9 @@ the
 user. The default for "user" is mean 0 and standard deviation 1. Scale 
 type of "unscaled" does not scale the data.  
 }
+\item{theta}{The tapering range that is passed to the Wendlend compactly 
+supported covariance. The covariace (i.e. the radial bais function) is 
+zero beyond range theta.}
 
 \item{\dots}{
 Any argument that is valid for the Krig function. Some of the main ones
@@ -178,6 +184,16 @@ valid covariance from the Matern family and a large range parameter.
 See also the mKrig function for handling larger data sets and also for an example
 of combining Tps and mKrig for evaluation on a larger grid. 
 
+The function \code{fastTps} is really a convenient
+wrapper function that calls
+\code{mKrig} with the Wendland covariance function. This is experimental 
+and some care needs to exercised in specifying the taper range and
+power ( \code{p}) which describes the behavior of the Wendland at the 
+origin. Note that unlike Tps the locations are not scaled to unit range and this can cause havoc in smoothing problems with variables in 
+very different units.
+So  \code{ x<-  scale(x)} might be a good idea for putting the 
+varaibles on a common sacel for smoothing.  This function does have the potential to approximate estimates of  Tps for very large spatial data sets. See \code{wendland.cov} and  help on the SPAM package for more background. 
+
  }
 
 \section{References}{
@@ -260,6 +276,21 @@ Tps( RMprecip$x,RMprecip$y, Z=RMprecip$elev)-> out
 
 surface( out, drop.Z=TRUE)
 US( add=TRUE, col="grey")
+
+### 
+### fast Tps
+
+# m=2   p= 2m-d= 2
+#
+# Note: theta =3 degrees is a very generous taper range. 
+# Use trials with rdist.nearest to sort an efficient tapre range 
+# for large spatial problems 
+
+fastTps( RMprecip$x,RMprecip$y,m=2,lambda= 1e-2, p=2, theta=3.0) -> out2
+
+
+
+
 
 #
 # simulation reusing Tps/Krig object

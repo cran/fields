@@ -88,7 +88,9 @@ function (..., add=FALSE, nlevel = 64,
 
     iz <- matrix(iy, nrow = 1, ncol = length(iy))
 
-# extract the breaks
+# extract the breaks from the ... arguments
+# note the breaks delineate intervals of common color
+    
     breaks<- list(...)$breaks
    
 # draw either horizontal or vertical legends. 
@@ -96,31 +98,33 @@ function (..., add=FALSE, nlevel = 64,
 # 
    
 # next par call sets up a new plotting region just for the legend strip
-# at the plot coordinates 
+# at the smallplot coordinates 
          par(new = TRUE, pty = "m", plt = smallplot, err = -1)
 
                                         
 # create the argument list to draw the axis
 #  this avoids 4 separate calls to axis and allows passing extra
 # arguments.
+# then add axis with specified lab.breaks at specified breaks
 
-    if( is.null( breaks)){
-           axis.args<- c( list( side= ifelse(horizontal,1,4),
-                            mgp = c(3, 1, 0),
-                            las = ifelse(horizontal, 0,2)),
-                           axis.args)}
-    else{
-# add axis but only put label where there are breaks
-# default labels for breaks are just the numeric values
-                              
-           if( is.null(lab.breaks)){ lab.breaks<- format( breaks)}
+    if (!is.null(breaks) & !is.null(lab.breaks)) {
+# axis with labels at break points
+      axis.args <- c(list(side = ifelse(horizontal, 1, 4), 
+            	mgp = c(3, 1, 0), 
+            	las = ifelse(horizontal, 0, 2), 
+            	at = breaks, labels = lab.breaks), 
+            	axis.args)}
+    else {
+  	
+# If lab.breaks is not specified, with or without breaks, pretty
+# tick mark locations and labels are computed internally,
+# or as specified in axis.args at the function call
 
-           axis.args<- c( list( side= ifelse(horizontal,1,4),
-                                  mgp = c(3, 1, 0),
-                                 las = ifelse(horizontal, 0,2),
-                                 at=breaks,
-                                 labels=lab.breaks) ,
-                          axis.args)}    
+        axis.args <- c(list(side = ifelse(horizontal, 1, 4), 
+            mgp = c(3, 1, 0), 
+            las = ifelse(horizontal, 0, 2)), 
+            axis.args)
+    }  
 # 
 # draw color scales the four cases are horizontal/vertical breaks/no breaks
 # add a label if this is passed.
@@ -150,29 +154,28 @@ function (..., add=FALSE, nlevel = 64,
 # 
 #
 # now add the axis to the legend strip.
-             
+# notice how all the information is in the list axis.args
+#          
         do.call( "axis", axis.args)
-
 
 # add a box around legend strip
         box() 
-#
+
 #
 # add a label to the axis if information has been  supplied
 # using the mtext function. The arguments to mtext are
 # passed as a list like the drill for axis (see above)
 #
             if( !is.null( legend.lab) ){         
-             legend.args<-list( 
+                 legend.args<-list( 
                     text= legend.lab,side= ifelse(horizontal, 1, 4), 
                     line=legend.mar - 2)
-#                    just guessing at a good default for line! 
+#                    just guessing at a good default for line argument! 
             }
 #
 # add the label using mtext function             
-
             if( !is.null( legend.args)){
-            do.call( mtext, legend.args) }
+                    do.call( mtext, legend.args) }
 #
 #
 # clean up graphics device settings

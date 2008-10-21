@@ -14,7 +14,7 @@ Krig.make.W<- function( out, verbose=FALSE){
     if( is.null(out$W)){
          if( verbose){ print( out$wght.function.name)}
          W<- do.call( out$wght.function.name, 
-                        c( list( x=out$xM), out$args.wght))
+                        c( list( x=out$xM), out$wght.args ))
 #       adjust W based on diagonal weight terms 
 #          
          W<- sqrt( out$weightsM)* t( sqrt(out$weightsM)*W) }

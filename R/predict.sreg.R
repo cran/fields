@@ -11,6 +11,6 @@ function(object, x, derivative = 0, model = 1,...)
 		x <- object$x}
 	c(
     splint(object$predicted$x, object$predicted$y[, model], x, 
-             derivative = derivative)
+             derivative = derivative,...)
 )
 }

@@ -28,7 +28,7 @@ poly.image.regrid<- function( x){
 `poly.image` <-
 function(x,y,z,col=tim.colors(64),transparent.color="white", midpoint=FALSE,
          zlim=range(z, na.rm=TRUE), xlim=range(x), 
-         ylim=range(y),add=FALSE,...){
+         ylim=range(y),add=FALSE,border=NA,...){
 
 # check dimensions
   Dx<- dim( x)
@@ -74,7 +74,7 @@ function(x,y,z,col=tim.colors(64),transparent.color="white", midpoint=FALSE,
                                          rep(NA, Nm1) )
      xp <- c( t( xp))
      yp<-  c( t( yp))
-     polygon(xp,yp,border=NA,col=c(zcol[i,1:Nm1]) )
+     polygon(xp,yp,border= NA,col=c(zcol[i,1:Nm1]) )
     }
 
 }

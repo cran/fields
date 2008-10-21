@@ -11,7 +11,7 @@ library( fields)
 
 options( echo=FALSE)
 
-# test.for.zero.flag<- TRUE
+test.for.zero.flag<- 1
 
 x0<- expand.grid( c(-8,-4,0,20,30), c(10,8,4,0))
 

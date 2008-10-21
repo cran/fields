@@ -22,8 +22,10 @@ Krig.check.xY<- function( x,Y,Z, weights, na.rm,verbose=FALSE){
 #
 # coerce Y to be a vector
 #
-   Y <- c(Y)
-
+   Y <- as.matrix(Y)
+    if( ncol(Y)!=1){
+      stop("Krig can handle matrix Y data")} 
+   
 
 #
 #default weights ( reciprocal variance of errors). 

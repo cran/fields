@@ -4,7 +4,8 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 
-Krig.Amatrix<- function (object, x0 = object$x, lambda=NULL,...)
+Krig.Amatrix<- function (object, x0 = object$x, lambda=NULL,
+                          eval.correlation.model = FALSE,...)
 {
 
   if( is.null( lambda)){ lambda<- object$lambda}
@@ -24,7 +25,8 @@ Krig.Amatrix<- function (object, x0 = object$x, lambda=NULL,...)
     for( k in 1: M){
      ytemp<- rep( 0,M)
      ytemp[k] <- 1
-     out[,k] <- predict(object, x= x0, yM= ytemp, lambda=lambda,...)
+     out[,k] <- predict(object, x= x0, yM= ytemp, lambda=lambda,
+                 eval.correlation.model = eval.correlation.model,...)
     } 
 
     return(out)

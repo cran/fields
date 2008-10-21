@@ -1,16 +1,21 @@
 C** evaluates radial basis functions 
 c**** K_ij= radfun( distance( x1_i, x2_j))
-c
-       subroutine multrb( nd,x1,n1, x2,n2, par, c,h,work)
+c**** and does the multplication  h= Kc
+c****  K is n1Xn2
+c****  h is n1Xn3
+c***** c is n2xn3
+ 
+
+       subroutine multrb( nd,x1,n1, x2,n2, par, c,n3,h,work)
        implicit double precision (a-h,o-z)
-       integer nd,n1,n2,ic
+       integer nd,n1,n2,n3,ic, jc,j
        
-       real*8 par(1),x1(n1,nd), x2(n2,nd), c(n2), h(n1),sum
+       real*8 par(1),x1(n1,nd), x2(n2,nd), c(n2,n3), h(n1,n3),sum
        real*8 work( n1), ddot
 
-c****** work aray must be dimensioned to size n2
+c****** work aray must be dimensioned to size n1
 c **** loop through columns of output matrix K
-c*** outer most loop over columns of x1 and x2 should reduce paging 
+c*** outer most loop over columns of x1 and x2 should reduce swapping
 
        do 5 ir= 1, n1
 
@@ -37,9 +42,12 @@ C**** evaluate squared distances  with basis functions.
 
           call radfun( n2,work(1),par)
 c
-c***** now the dot product you have all been waiting for!
+c***** now the dot products you have all been waiting for!
 c
-          h(ir)= ddot( n2, work(1), 1, c(1),1)
+       do 30 jc=1,n3
+          h(ir,jc)= ddot( n2, work(1), 1, c(1,jc),1)
+30     continue
+  
  5      continue
 
        return

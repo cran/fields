@@ -5,6 +5,7 @@
 
 \name{image.smooth}
 \alias{image.smooth}
+\alias{setup.image.smooth}
 \title{
   Kernel smoother for irregular 2-d data 
 }
@@ -13,81 +14,70 @@ Takes an image matrix and applies a kernel smoother to it. Missing values
 are handled using the Nadaraya/Watson normalization of the kernel. 
 }
 \usage{
-image.smooth(x, wght = NULL, dx = 1, dy = 1, Nwidth = nrow(Y), Mwidth = 
-ncol(Y),
+image.smooth(x, wght = NULL, dx = 1, dy = 1,
     kernel.function = double.exp,
- theta = 1, grid = NULL, tol = 1e-08, xwidth = NULL, ywidth = NULL,
+    theta = 1, grid = NULL, tol = 1e-08, xwidth = NULL, ywidth = NULL,
     weights = NULL,...)
-}
+
+setup.image.smooth(nrow = 64, ncol = 64, dx = 1, dy = 1,
+                   kernel.function = double.exp,
+                   theta = 1, xwidth = nrow * dx, ywidth = ncol * dx, ...)}
 \arguments{
 \item{x}{
-A matrix image. Missing values can be indicated by NAs. 
-}
+A matrix image. Missing values can be indicated by NAs. }
 \item{wght}{
 FFT of smoothing kernel. If this is NULL the default is to compute this
-object. 
-}
+object. }
 \item{grid}{
-A list with x and y components. Each are equally spaced and define the rectangular. ( see grid.list)
-}
+A list with x and y components. Each are equally spaced and define the rectangular. ( see grid.list)}
 \item{dx}{
-Grid spacing in x direction 
-}
+Grid spacing in x direction }
 \item{dy}{
-Grid spacing in x direction 
-}
-\item{Nwidth}{
-Half the width of the kernel in the y direction in numbers of grid 
-points.  
-Default is half the number of columns of Y 
-}
-
-\item{Mwidth}{
-Half the width of the kernel in the x direction in numbers of grid 
-points.
-Default is half the number of columns of Y 
-}
+Grid spacing in x direction }
 \item{kernel.function}{
-An R function that takes as its argument the \emph{squared} distance 
-between two 
-points divided by the bandwidth. The default is exp( -abs(x)) yielding a 
-normal kernel 
-}
-\item{theta}{
-The bandwidth 
-}
-\item{\dots}{
-Other arguments to be passed to the kernel function 
-}
+ An R function that takes as its argument the \emph{squared} distance 
+between two points divided by the bandwidth. The default is exp(
+-abs(x)) yielding a normal kernel}
+\item{theta}{the bandwidth or scale parameter.}
 \item{xwidth}{
-This has the same function as Mwidth but is in the scale of the x grid.
-If specified  then  Mwidth = xwidth/ ( grid$x[2]- grid$x[1])
-}
+ Amount of zero padding in horizontal dimension in units of the grid spacing.
+If NULL the default value is equal to the width of the image the most 
+conservative value but possibly inefficient for computation.
+Set this equal to zero to get periodic wrapping of the smoother. This is
+useful to smooth a Mercator map projection. }
 \item{ywidth}{
-This has the same function as Nwidth but is in the scale of the x grid.
-If specified  then  Nwidth = xwidth/ ( grid$x[2]- grid$x[1])
-}
+ Same as xwidth but for the vertical dimension. }
 \item{weights}{
 Weights to apply when smoothing.}
 \item{tol} {
-Tolerance for the weights of the N-W kernel. This avoids kernel estimates that are "far" away from data.
-Grid points with weights less than tol are set to NA.
- }
-
-
+Tolerance for the weights of the N-W kernel. This avoids kernel
+estimates that are "far" away from data. Grid points with weights
+less than tol are set to NA.}
+\item{nrow}{X dimension of image in setting up smoother weights}
+\item{ncol}{Y dimension of image}
+\item{\dots}{
+ Other arguments to be passed to the kernel function}
 }
+
 \value{
-The smoothed matrix. 
-}
+The smoothed image in R image format. ( A list with components x, y
+and z.)  \code{setup.image.smooth} returns a list with components W a
+matrix being the FFT of the kernel, dx, dy, xwidth and ywidth.}
+
 \details{
-The function works by taking convolutions using an FFT. The missing pixels 
-are taken into account and the kernel smoothing is correctly normalized
-following the classical Nadaraya-Watson estimator. If the kernel has 
-limited support then the width arguments can be set to reduce the amount 
-of computation. (See example below.) }
-\seealso{
-image.smooth.setup, as.image  
+ The function works by taking convolutions using an FFT. The missing
+pixels are taken into account and the kernel smoothing is correctly
+normalized for the edge effects following the classical Nadaraya-Watson
+estimator. For this reason the kernel doe snot have to be a desity as it
+is automatically normalized when the kernel weight function is found for
+the data.  If the kernel has limited support then the width arguments
+can be set to reduce the amount of computation. (See example below.) 
+For multiple smoothing compute the fft of the kernel just once using
+\code{setup.image.smooth} and pass this as the wght argument to
+image.smooth.  this will save an FFT in computations. 
 }
+\seealso{ as.image, sim.rf, image.plot}
+
 \examples{
 # first convert precip data to the 128X128 discretized image format ( with 
 # missing  values to indicate where data is not observed) 
@@ -97,35 +87,66 @@ out<- as.image( RMprecip$y, x= RMprecip$x, nrow=128, ncol=128)
 
 dx<- out$x[2]- out$x[1] 
 dy<-  out$y[2] - out$y[1] 
-#  
-look<- image.smooth( out$z, dx=dx, dy=dy, theta= .25) 
 
-# grid scale in degree and so kernel bandwidth is .25 degrees. 
-image.plot( x= out$x, y=out$y, z= look) 
+#  
+# grid scale in degrees and choose kernel bandwidth to be .25 degrees. 
+
+look<- image.smooth( out, theta= .25) 
+
+image.plot(look) 
 points( RMprecip$x)
+US( add=TRUE, col="grey", lwd=2)
 
 # to save on computation, decrease the padding with zeroes 
+# only pad 32 grid points around the margins ofthe image. 
 
-look<- image.smooth( out$z, dx=dx, dy=dy, theta= .25, Mwidth=32,Nwidth=32) 
+look<- image.smooth(out$z, dx=dx, dy=dy, theta= .25, xwidth=32*dx,ywidth=32*dy) 
 
-# the range of these data is ~ 10 and so  32*( 10/128) =  2.5 
+# the range of these data is ~ 10 degrees  and so 
+# with a padding of 32 grid points  32*( 10/128) =  2.5 
 # about 10 standard deviations of the normal kernel so there is still 
 # lots of room for padding  
-# a minimal choice might be  Mwidth = 4* (.25/dx)  4 SD for the normal  
-# 
+# a minimal choice might be  xwidth = 4*(.25)= 1  4 SD for the normal kernel
 # creating weighting object outside the call  
 # this is useful when one wants to smooth different data sets but on the 
 # same grid with the same kernel function 
 # 
 
-wght<- image.smooth.setup( nrow=128, ncol=128,  dx=dx, dy=dy, theta= .25,
-Mwidth=32, Nwidth=32)
-
 #
 #  random fields from smoothing white noise with this filter.
 #
-look<- image.smooth( matrix( rnorm(128**2), 128,128), wght)
-# take a look: image.plot( look)
+set.seed(123)
+test.image<- matrix( rnorm(128**2),128,128)
+
+
+wght<- setup.image.smooth( nrow=128, ncol=128,  dx=dx, dy=dy,
+             theta=.25, xwidth=2.5, ywidth=2.5)
+#
+look<- image.smooth( test.image, dx=dx, dy=dy, wght)
+
+# NOTE:   this is the same as using 
+#
+#     image.smooth( test.image , 128,128), xwidth=2.5,
+#                        ywidth=2.5, dx=dx,dy=dy, theta=.25)
+#
+#   but the call to image.smooth is faster because fft of kernel
+#   has been precomputed.
+
+
+
+# periodic smoothing in the horizontal dimension
+
+look<- image.smooth( test.image , xwidth=1.5,
+                        ywidth=2.5, dx=dx,dy=dy, theta=1.5)
+look2<- image.smooth( test.image , xwidth=0,
+                        ywidth=2.5, dx=dx,dy=dy, theta=1.5)
+# compare these two
+set.panel( 1,2)
+image.plot( look)
+title("free boundaries")
+image.plot( look2) # look for periodic continuity at edges!
+title("periodic boundary in horizontal")
+set.panel(1,1)
 
 }
 \keyword{smooth}

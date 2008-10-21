@@ -40,7 +40,7 @@ to give color values that intermediate to the specified colors.
  Ask Tim Hoar about tim.colors! He is a matlab black belt and this is
 his favorite scale in that system.  \code{two.colors} is really about
 three different colors. For other colors try \code{fields.color.picker}
-to view possible choices.  \code{start="darkgreen", end="azure4"} are
+to view possible choices.   \code{start="darkgreen", end="azure4"} are
 the options used to get a nice color scale for rendering aerial photos
 of ski trails.  (See \url{http://www.image.ucar.edu/Data/MJProject}.)
 
@@ -49,14 +49,21 @@ tim.colors.  It can be useful if one wants to customize the color table
 to match quantiles of a distribution.  e.g. if the median of the data is
 at .3 with respect to the range then set \code{x} equal to c(0,.3,1) and
 specify three colors to provide a transtion that matches the median
-value. 
+value. In fields language this function interpolates between a set of
+colors at locations x. While you can be creative about these colors just
+using another color scale as the basis is easy. For example
+
+\code{designer.color( 256, rainbow(4), x= c( 0,.2,.8,1.0))}
+
+leaves the choice of the colors to Dr. R after a thunderstorm.
  
 }
 \value{
-A vector of character strings giving the colors in a hexadecimal format. 
+A vector giving the colors in a hexadecimal format. 
 
 }
-\seealso{ topo.colors, terrain.colors, image.plot, quilt.plot, grey.scale }
+\seealso{ topo.colors, terrain.colors, image.plot, quilt.plot, grey.scale,
+fields.color.picker }
 \examples{
 
 tim.colors(10) 
@@ -67,13 +74,27 @@ tim.colors(10)
 # veiw some color table choices
 set.panel( 1,3)
 par( pty="s")
+z<- outer( 1:20,1:20, "+")
 
-image( outer( 1:20,1:20,"+"), col=tim.colors( 200)) # 200 levels
+image( z, col=tim.colors( 200)) # 200 levels
 
-image( outer( 1:20,1:20,"+"), col=two.colors() )
+image( z, col=two.colors() )
+
 coltab<- designer.colors(col=c("blue", "grey", "green"),  x= c( 0,.3,1) ) 
+image( z, col= coltab )
 
-image( outer(1:20, 1:20, "+"), col= coltab )
+# peg colors at some desired quantiles  of data.
+# NOTE need 0 and 1 for the color scale to make sense
+x<- quantile( c(z), c(0,.25,.5,.75,1.0) )
+# scale these to [0,1]
+zr<- range( c(z))
+x<- (x-zr[1])/ (zr[2] - zr[1])  
+
+coltab<- designer.colors(256,rainbow(5), x)
+image( z, col= coltab ) # see image.plot for adding all kinds of legends
+
+# colors now change at quantiles of data
+
 set.panel()
 
 }

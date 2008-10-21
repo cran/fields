@@ -1,6 +1,6 @@
 
-R version 2.6.0 (2007-10-03)
-Copyright (C) 2007 The R Foundation for Statistical Computing
+R version 2.7.2 (2008-08-25)
+Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -22,17 +22,9 @@ Type 'q()' to quit R.
 > 
 > library(fields)
 Loading required package: spam
-Package 'spam' is loaded.  Version 0.13 (2007-10-10).
+Package 'spam' is loaded. Spam version 0.15-2 (2008-09-10).
 
-Type demo( spam) for some demos, help( Spam) for an overview of this library.
-
-
-Attaching package: 'spam'
-
-
-	The following object(s) are masked _by_ .GlobalEnv :
-
-	 .Spam 
+Type demo( spam) for some demos, help( Spam) for an overview of this package.
 
  Try help(fields) for an overview of this library 
 > #
@@ -40,6 +32,91 @@ Attaching package: 'spam'
 > #  test of fixed lambda case
 > #  Check against linear algebra
 > #
+> 
 > options( echo=FALSE)
+testing:  Compare d coef
+    PASSED test at tolerance  1e-08
+testing:  Compare c coef
+    PASSED test at tolerance  1e-08
+testing:  Compare d coef fixed lambda
+    PASSED test at tolerance  1e-08
+testing:  Compare c coef fixed lambda
+    PASSED test at tolerance  1e-08
+testing:  d coef Krig.coef
+    PASSED test at tolerance  1e-08
+testing:  c coef Krig.coef
+    PASSED test at tolerance  1e-08
+testing:  d coef Krig.coef fixed
+    PASSED test at tolerance  1e-08
+testing:  c coef Krig.coef fixed
+    PASSED test at tolerance  1e-08
+testing:  d coef new y
+    PASSED test at tolerance  1e-08
+testing:  c coef new y
+    PASSED test at tolerance  1e-08
+testing:  d coef new y fixed
+    PASSED test at tolerance  1e-08
+testing:   c coef new y fixed
+    PASSED test at tolerance  1e-08
+testing:  d coef several new y fixed
+    PASSED test at tolerance  1e-08
+testing:   c coef several new y fixed
+    PASSED test at tolerance  1e-08
+testing:  Tps with fixed lam
+    PASSED test at tolerance  1e-08
+testing:  Tps with fixed df
+    PASSED test at tolerance  1e-08
+testing:  Krig with fixed lam argument
+    PASSED test at tolerance  1e-08
+testing:  Krig with fixed lam argument
+    PASSED test at tolerance  1e-08
+testing:   d coef
+    PASSED test at tolerance  1e-08
+testing:  c coef
+    PASSED test at tolerance  1e-08
+testing:  d new y Krig.coef
+    PASSED test at tolerance  1e-08
+testing:  c new y Krig.coef
+    PASSED test at tolerance  1e-08
+testing:  d fixed case
+    PASSED test at tolerance  1e-08
+testing:   c fixed case
+    PASSED test at tolerance  1e-08
+testing:   d new y
+    PASSED test at tolerance  1e-08
+testing:  c new y
+    PASSED test at tolerance  1e-08
+testing:  d new y fixed
+    PASSED test at tolerance  1e-08
+testing:  c new y fixed
+    PASSED test at tolerance  1e-08
+testing:   d reps
+    PASSED test at tolerance  1e-08
+testing:  c reps
+    PASSED test at tolerance  1e-08
+testing:   pure sums of squares
+    PASSED test at tolerance  1e-08
+testing:  Amatrix prediction
+    PASSED test at tolerance  1e-08
+    PASSED test at tolerance  1e-08
+testing:   trace from A matrix
+    PASSED test at tolerance  1e-08
+    PASSED test at tolerance  1e-08
+testing:  A matrix predict with new y
+    PASSED test at tolerance  1e-08
+testing:  A matrix predict compared to collapsed yM
+    PASSED test at tolerance  1e-08
+testing:  pure sums of squares
+    PASSED test at tolerance  1e-08
+testing:   check trace
+    PASSED test at tolerance  1e-08
+testing:  GCV one
+    PASSED test at tolerance  1e-08
+testing:  GCV model
+    PASSED test at tolerance  1e-08
+testing:  Tps/gcv for ozone2
+    PASSED test at tolerance  1e-08
+testing:  Tps/gcv for ozone2 new data
+    PASSED test at tolerance  1e-08
 done with Krig tests
 > 

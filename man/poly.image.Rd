@@ -14,10 +14,9 @@ explicitly for every grid point.
 \usage{
 poly.image(x, y, z, col = tim.colors(64), transparent.color = "white", 
  midpoint = FALSE, zlim = range(z, na.rm = TRUE), 
- xlim = range(x), ylim = range(y), add = FALSE, ...)
+ xlim = range(x), ylim = range(y), add = FALSE, border=NA,...)
 
 poly.image.regrid(x)
-
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -38,6 +37,8 @@ corners. (See poly.image.regrid.) }
   \item{xlim}{Plotting limits for x. }
   \item{ylim}{Plotting limits for y.}
   \item{add}{ If TRUE will add image onto current plot. }
+  \item{border}{Color of the edges of the quadrilaterals, the default is
+no color.}
   \item{\dots}{ If add is FALSE, additional graphical arguments that
  will be supplied to the plot function. }
 }
@@ -65,8 +66,6 @@ extrapolation  of the grid locations to shift from midpoints to
 corners.  In the interior grid corners are found by the average of the
 4 closest midpoints. For the edges the corners are just extrapolated
 based on the separation of nieghboring grid cells. 
-
-
 }
 \author{Doug Nychka }
 \seealso{image.plot}
@@ -94,8 +93,6 @@ points( RCMexample$x[i,i], RCMexample$y[i,i],col="red")
  
 
   }
-}
-
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{spatial}

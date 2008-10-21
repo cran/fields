@@ -4,6 +4,5 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 resid.Krig<- function( object,...){
-    object$y- predict.Krig(object,...)
- }
+                object$residuals}
 

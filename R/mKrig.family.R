@@ -104,7 +104,9 @@ mKrig<- function (x,y,
                 call= match.call(), 
                 nonzero.entries= nzero)
 #       
-   out$residuals<-  y - predict.mKrig( out)
+   out$fitted.values<- predict.mKrig( out)
+   out$residuals<-  y - out$fitted.values
+   
 
 class(out)<- "mKrig"    
 

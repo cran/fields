@@ -9,6 +9,9 @@ Krig.transform.xY<- function(obj,knots, verbose=FALSE ){
 # and pooled variances and weights. 
 
 out<- Krig.replicates( obj, verbose=verbose)
+    if( verbose){
+      cat("yM from Krig.transform.xY", fill=TRUE)
+      print(out$yM)}
 
 #
 # save information about knots.

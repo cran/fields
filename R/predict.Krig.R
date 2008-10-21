@@ -127,11 +127,8 @@ function (object, x = NULL, Z=NULL, drop.Z=FALSE,
          object$cov.function.name, 
          c( object$args, list(x1 = x, x2 = object$knots, C = temp.c)))
 
-# coerce to vector      
-   }    
 
-      temp<- c( temp)
- 
+   }      
 
 #
 # transform back into raw scale if this is a correlation model.

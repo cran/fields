@@ -4,7 +4,8 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 "quilt.plot" <-
-function(x,y,z,nrow=64, ncol=64, grid=NULL, add.legend=TRUE, add=FALSE,...){
+function(x,y,z,nrow=64, ncol=64, grid=NULL, add.legend=TRUE, add=FALSE,
+              col=tim.colors(256),...){
 
 
 x<- as.matrix(x)
@@ -27,10 +28,10 @@ as.image( z, x=x, nrow=nrow, ncol=ncol, na.rm=TRUE)-> out.p
 
 #plot it 
 if( add.legend){
-image.plot( out.p,col=tim.colors(64),add=add,...)
+image.plot( out.p,col=col, add=add,...)
 }
 else{
-image(out.p, col=tim.colors(64),add=add,...)
+image(out.p, col=col, add=add,...)
 }
 
 

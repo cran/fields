@@ -8,6 +8,7 @@ library( fields)
 # using approximations for conditional simulation on a grid. 
 #
 options( echo=FALSE)
+test.for.zero.flag<-1
 
 data( ozone2)
 as.image(ozone2$y[16,], x= ozone2$lon.lat, ncol=24, nrow=20, 
