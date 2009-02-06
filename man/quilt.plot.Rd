@@ -18,15 +18,15 @@ quilt.plot(x, y, z, nrow = 64, ncol = 64, grid = NULL,
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{ A vector of the x coordinates of the locations -or- a
+  \item{x}{A vector of the x coordinates of the locations -or- a
      a 2 column matrix of the x-y coordinates. }
-  \item{y}{ A vector of the y coordinates -or- if the locations are passed 
+  \item{y}{A vector of the y coordinates -or- if the locations are passed 
 in x the z vector  }
-  \item{z}{ Values of the variable to be plotted.}
-  \item{nrow}{ Number of grid boxes in x.}
-  \item{ncol}{ Number of grid boxes in y. }
-  \item{grid}{ A grid in the form of a \code{grid list}.  }
-  \item{add.legend} { If TRUE a legend color strip is added}
+  \item{z}{Values of the variable to be plotted.}
+  \item{nrow}{Number of grid boxes in x.}
+  \item{ncol}{Number of grid boxes in y. }
+  \item{grid}{A grid in the form of a \code{grid list}.  }
+  \item{add.legend}{If TRUE a legend color strip is added}
   \item{add}{If FALSE add to existing plot.}
   \item{col}{Color scale for the image, the default is tim.colors --
     a pleasing spectrum.}

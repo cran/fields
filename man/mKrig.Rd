@@ -33,39 +33,54 @@ mKrig(x, y, weights = rep(1, nrow(x)),
   \item{weights}{Precision  ( 1/variance) of each observation }
   \item{lambda}{ Smoothing parameter or equivalently the 
 ratio between the nugget and process varainces.}
-  \item{cov.function}{ The name, a text string of the covariance function.}
-  \item{m}{ The degree of the polynomial used in teh fixed part is 
+  \item{cov.function}{The name, a text string of the covariance function.}
+  \item{m}{The degree of the polynomial used in teh fixed part is 
 (m-1) }
-  \item{chol.args}{ A list of optional arguments that will be used with
-the call to the cholesky decomposition. This is useful in some cases for
-sparse covariance functions to reset tmpmax. (See example below.) }
+  \item{chol.args}{A list of optional arguments (pivot, nnzR)
+ that will be used with
+the call to the cholesky decomposition. Pivoting is done by default to 
+make use of sparse matrices when they are generated. 
+This argument is useful in some cases for
+sparse covariance functions to reset the memory parameter nnzR.
+ (See example below.) }
 
-  \item{cov.args}{ A list of optional arguments that will be used in
+  \item{cov.args}{A list of optional arguments that will be used in
 calls to the covariance function.}
 
-  \item{\dots}{ In \code{mKrig} and \code{predict} additional arguments that will be passed to the covariance 
+  \item{\dots}{In \code{mKrig} and \code{predict} additional arguments that will be passed to the covariance 
                  function. }
   \item{object}{Object returned by mKrig. (Same as "x" in the print function.)}
-   \item{xnew} {Locations for predictions.}
-   \item{derivative} { If zero the surface will be evaluated. If 
+  \item{xnew}{Locations for predictions.}
+  \item{derivative}{If zero the surface will be evaluated. If 
     not zero the matrix of partial derivatives will be computed.}
 }
 \details{
  This function is an abridged version of Krig that focuses on the
 computations in Krig.engine.fixed done for a fixed lambda parameter
- for unique spatial locations and for data without missing values. These
-restriction simply the code for reading. Note that also little checking
-is done and the spatial locations are not transformed before the
-estimation.  Sparse matrix methods are handled through overloading the
-usual linear algebra functions with sparse versions. 
-
-
+ for unique spatial locations and for data without missing values. These 
+restriction simply the code for reading. Note that also little checking 
+is done and the spatial locations are not transformed before the 
+estimation.  
 
 \code{predict.mKrig} will evaluate the derivatives of the estimated
-function if derivatives are supported in the covariance function. 
+function if derivatives are supported in the covariance function.
 For example the wendland.cov function supports derivatives.
 
-\code{print.mKrig} is a simple summary function for the object. 
+\code{print.mKrig} is a simple summary function for the object.
+
+Sparse matrix methods are handled through overloading the 
+usual linear algebra functions with sparse versions. But to take 
+advantage of some additional options in the sparse methods the list 
+argument chol.args is a device for changing some default values. The 
+most important of these is \code{nnzR}, the number of nonzero elements 
+anticipated in the Cholesky factorization of the postive definite linear 
+system used to solve for the basis coefficients. The sparse of this 
+system is essentially the same as the covariance matrix evalauted at the 
+observed locations.
+As an example of resetting \code{nzR} to 450000 one would use the following 
+argument for chol.args in mKrig:
+
+\code{ chol.args=list(pivot=TRUE,memory=list(nnzR= 450000))}
 
 }
 \value{
@@ -177,7 +192,7 @@ y<- sin( 1.8*pi*x[,1])*sin( 2.5*pi*x[,2]) + rnorm( N)*.01
  mKrig( x,y, 
             cov.function="wendland.cov",k=2, theta=.1, 
             lambda=1e2,
-            chol.args=list(memory=list(nnzR= 450000))  )-> look2
+            chol.args=list(pivot=TRUE,memory=list(nnzR= 450000))  )-> look2
 
 # success!
 

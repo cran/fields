@@ -103,10 +103,10 @@ cubic smoothing splines) that use the constant. Also a negative value
 for the constant may be necessary to make the radial basis positive
 definite as opposed to negative definite. }
 
-\item{with.log}{ If TRUE include a log term for even dimensions. 
+\item{with.log}{If TRUE include a log term for even dimensions. 
 This is needed to be a thin plate spline of integer order. }
 
-\item{Covariance} { Character string that is the name of the covariance 
+\item{Covariance}{Character string that is the name of the covariance 
 shape function for the distance between 
 locations. Choices in fields are \code{Exponential}, \code{Matern}}
 

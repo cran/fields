@@ -99,6 +99,7 @@ summary(fit) #diagnostic summary of the fit
 set.panel(2,2)
 plot(fit) # four diagnostic plots of  fit and residuals.
 
+set.panel()
 surface(fit) # contour/image plot of the fitted surface
 US( add=TRUE, col="magenta", lwd=2) # US map overlaid
 title("Daily max 8 hour ozone in PPB,  June 18th, 1987")

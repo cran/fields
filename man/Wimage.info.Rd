@@ -73,35 +73,33 @@ forms.
 
 }
 \value{
-  Wimage.info returns a list where all indices pertain to location or
+  Wimage.info returns a list where all indices pertain to a location or
 subsets of the mXn matrix of wavelet coefficients.
 
   \item{m}{Number of rows in image}
   \item{n}{Number of columns of image}
   \item{cut.min}{cut.min}
-  \item{S}{ A vector with 4 elements.  S[1]:S[2] range of rows for father wavelets
-and S[3]:S[4] range of columns for father wavelets.
-\item{H}{A matrix where each row is a resolution level and cloumns give s ranges of 
-row and column indices. e.g.   H[k,1:4] gives the ranges for the rows 
-and columns for the horizontal basis functions at level k. }
-\item{V}{ A matrix in teh same format as H that gives subsets for the vertical 
-basis 
-functions.}
-\item{Di}{ A matrix in the same format as H that gives subsets for the 
-diagonal basis functions.}
-\item{L}{ A column matrix where rows index resolutaion and column give the 
-grid size for each level of resolution.} 
-\item{Lmax}{ Total number of resolution levels.}
-\item{offset.m}{A 3 column matrix that has the row offsets that indicate the 
-begining of a block of coeffiecients.
-Rows are levels of resolution and columns are H,V,Di.}
-
-\item{offset.n}{A 3 column matrix that has the column offsets that indicate the 
-begining of a block of coeffiecients.
-Rows are levels of resolution and columns are H,V,Di.}
-       }
-  
-}
+  \item{S}{ A vector with 4 elements.  
+     S[1],S[2] give the min/max  row indices for the father wavelets
+    and S[3],S[4] give the min/max  column indices for the father wavelets.}
+  \item{H}{A matrix where each row is a resolution level and cloumns give s ranges of 
+   row and column indices. e.g.   H[k,1:4] gives the ranges for the rows 
+   and columns for the horizontal basis functions at level k. }
+  \item{V}{A matrix in teh same format as H that gives subsets for the vertical 
+   basis functions.}
+  \item{Di}{ A matrix in the same format as H that gives subsets for the 
+   diagonal basis functions.}
+  \item{L}{ A column matrix where rows index resolutaion and column give the 
+   grid size for each level of resolution.} 
+  \item{Lmax}{ Total number of resolution levels.}
+  \item{offset.m}{A 3 column matrix that has the row offsets that indicate the 
+   begining of a block of coeffiecients.
+   Rows are levels of resolution and columns are H,V,Di.}
+  \item{offset.n}{A 3 column matrix that has the column offsets that 
+   indicate the
+   begining of a block of coeffiecients.
+   Rows are levels of resolution and columns are H,V,Di.}
+ }
 \author{Doug Nychka }
 \seealso{ \code{plot.Wimage}, \code{Wtransform.image} }
 

@@ -15,13 +15,13 @@ pushpin( x,y,z,p.out, height=.05,col="black",text=NULL,adj=-.1,cex=1.0,...)
   \item{x}{x location}
   \item{y}{y location}
   \item{z}{z location}
-  \item{p.out} {Projection information returned by persp}   
+  \item{p.out}{Projection information returned by persp}   
   \item{height}{Height of pin in device coordinates (default is about
   5\% of the vertical distance ). }
-  \item{col}{Color of pin head}
-  \item{text}{Optional text to go next to pin head}
+  \item{col}{Color of pin head.}
+  \item{text}{Optional text to go next to pin head.}
   \item{adj}{Position of text relative to pin head.}
-  \item{cex}{Character size for in head and/or text}
+  \item{cex}{Character size for pin head and/or text}
   \item{\dots}{Additional graphics arguments that are passed to the text 
                      function.}
 }

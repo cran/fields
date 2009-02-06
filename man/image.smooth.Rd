@@ -49,7 +49,7 @@ useful to smooth a Mercator map projection. }
  Same as xwidth but for the vertical dimension. }
 \item{weights}{
 Weights to apply when smoothing.}
-\item{tol} {
+\item{tol}{
 Tolerance for the weights of the N-W kernel. This avoids kernel
 estimates that are "far" away from data. Grid points with weights
 less than tol are set to NA.}

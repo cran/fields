@@ -44,7 +44,7 @@ spaced.}
 \item{order.variables}{ If "xy" the x variable will be subsequently plotted
 as the horizontal variable. If "yx" the x variable will be on the vertical 
 axis.}
-\item{x} { A matrix of independent variables such as the locations of 
+\item{x}{ A matrix of independent variables such as the locations of 
 observations given to Krig.}
 \item{nx}{Number of grid points for x variable.}
 \item{ny}{Number of grid points for y variable.}

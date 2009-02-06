@@ -51,27 +51,15 @@ but must be ordered.
 }
 }
 \value{
-
 A list with these components. 
-
-\item{vgram}
-variogram values 
-
-\item{d} pairwise distances 
-
-
-\item{call}
-calling string 
-
-\item{stats}
-Matrix of statistics for values in each bin. 
-Rows are the summaries returned by the stats function or describe.  
-If not either breaks or N arguments are not supplied then this
-component is not computed. 
-
-\item{centers}
-Bin centers
-
+\item{vgram}{Variogram values} 
+\item{d}{Pairwise distances} 
+\item{call}{Calling string} 
+\item{stats}{Matrix of statistics for values in each bin. 
+  Rows are the summaries returned by the stats function or describe.  
+  If not either breaks or N arguments are not supplied then this
+  component is not computed.} 
+\item{centers}{Bin centers.}
 }
 
 \section{References}{

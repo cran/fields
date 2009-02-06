@@ -25,9 +25,9 @@ drape.color(z, col = tim.colors(64), zlim = NULL,
 \arguments{
   \item{x}{ grid values for x coordinate (or if x is a list the 
 components x y and z are used.)}
-  \item{y} { grid values for y coordinate}
+  \item{y}{grid values for y coordinate}
   \item{z}{A matrix of z heights }
-  \item{z2} { A matrix of z values to use for coloring facets. If NULL 
+  \item{z2}{ A matrix of z values to use for coloring facets. If NULL 
 then z is used for this purpose}
   \item{col}{ A color table for the z values that will be used for draping}
   \item{zlim}{the z limits for \code{z} these are used to set up

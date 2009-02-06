@@ -1,6 +1,6 @@
 
-R version 2.7.2 (2008-08-25)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.9.0 Under development (unstable) (2009-02-02 r47821)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -28,6 +28,16 @@ Package 'spam' is loaded. Spam version 0.15-2 (2008-09-10).
 
 Type demo( spam) for some demos, help( Spam) for an overview of this package.
 
+
+Attaching package: 'spam'
+
+
+	The following object(s) are masked from package:base :
+
+	 backsolve,
+	 forwardsolve,
+	 kronecker 
+
  Try help(fields) for an overview of this library 
 > options(echo=FALSE)
     PASSED test at tolerance  1e-06
@@ -39,3 +49,6 @@ Type demo( spam) for some demos, help( Spam) for an overview of this package.
 done with dervative tests
 > 
 > 
+> proc.time()
+   user  system elapsed 
+  1.719   0.285   3.124 

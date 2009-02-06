@@ -25,7 +25,7 @@ Krig(x,y, cov.function = "stationary.taper.cov", lambda=2.0, theta=1.5,
 
 temp1<- predict( out1,lambda=2.0)
 temp2<- predict( out2)
-test.for.zero( temp1, temp2)
+test.for.zero( temp1, temp2, tag="spam vs no spam")
 
 #
 # Omit the NAs
@@ -34,29 +34,30 @@ x<- x[good,]
 y<- y[good]
 
 # now look at mKrig w/o sparse matrix 
-mKrig( x,y, cov.function="stationary.cov", theta=100, lambda=.3)-> look
+mKrig( x,y, cov.function="stationary.cov", theta=10, lambda=.3,
+       chol.args=list( pivot=FALSE))-> look
 
-Krig( x,y, cov.function="stationary.cov", theta=100, lambda=.3)-> look2
+Krig( x,y, cov.function="stationary.cov", theta=10, lambda=.3) -> look2
 
-test.for.zero( look$d, look2$d)
-test.for.zero( look$c, look2$c)
+test.for.zero( look$d, look2$d, tag="Krig mKrig d coef")
+test.for.zero( look$c, look2$c, tag="Krig mKrig c coef")
 
 
 set.seed(123)
 xnew<- cbind( (runif(20)-.5)*5, (runif(20)-.5)*5)
  temp<- predict( look, xnew)
  temp2<- predict( look2, xnew)
-test.for.zero( temp, temp2)
+test.for.zero( temp, temp2, tag="test of predict at new locations")
 
 # test of matrix of obs
 N<- length( y)
 Y<- cbind( runif(N), y,runif(N), y)
 
 mKrig( x,Y, cov.function="stationary.cov", 
-        theta=100, lambda=.3)-> lookY
+        theta=10, lambda=.3)-> lookY
 temp3<-  predict( lookY, xnew)[,4]
 
-test.for.zero( temp, temp3)
+test.for.zero( temp, temp3, tag="test of matrix Y predicts" )
 predict.surface( look)-> temp
 predict.surface( look2)-> temp2
 
@@ -77,7 +78,7 @@ predict.surface( look, nx=50, ny=45)-> temp
 predict.surface( look2, nx=50, ny=45)-> temp2
 
 good<- !is.na( temp2$z)
-test.for.zero( temp$z[good], temp2$z[good])
+test.for.zero( temp$z[good], temp2$z[good], tag="predict.surface with mKrig")
 
 # 
 # Use Wendland with sparse off and on.
@@ -91,26 +92,28 @@ mKrig( x,y, cov.function="wendland.cov",k=2, theta=2.8,
 mKrig( x,y, cov.function="wendland.cov",k=2, theta=2.8,
       spam.format=TRUE, lambda=.3)-> look3
 
-# final tests is predict.
+# final tests for  predict.
 set.seed(223)
 xnew<- cbind(runif( N)*.5 + x[,1], runif(N)*.5 + x[,2])
  temp<- predict( look, xnew)
  temp2<- predict( look2, xnew)
  temp3<- predict( look3, xnew)
-test.for.zero( temp, temp2)
-test.for.zero( temp2, temp3)
+test.for.zero( temp, temp2, tag="Wendland/no spam")
+test.for.zero( temp2, temp3, tag="Wendland/spam")
 
 ### bigger sample size
 set.seed( 334)
 N<- 1000
 x<- matrix( runif(2*N),ncol=2)
 y<- rnorm( N)
+nzero <- length( wendland.cov(x,x, k=2,theta=.1)@entries)
+
 
 mKrig( x,y, cov.function="wendland.cov",k=2,
             theta=.1, lambda=.3)-> look2
 
 
-test.for.zero( look2$non.zero.entires, 30146)
+test.for.zero( look2$non.zero.entires, nzero, tag="nzero in call to mKrig")
 
 ###### 
 ### test out passing to chol
@@ -130,7 +133,7 @@ data( ozone2)
       temp<- predict( out)
       temp2<- predict( out2)
 
-      test.for.zero( temp, temp2)
+      test.for.zero( temp, temp2, tag="mKrig vs. Krig for ozone2")
 
 # test passing arguments for chol 
 
@@ -148,7 +151,7 @@ y<- sin( 3*pi*x[,1])*sin( 3.5*pi*x[,2]) + rnorm( N)*.01
  mKrig( x,y, 
             cov.function="wendland.cov",k=2, theta=.8, 
             lambda=1e2, 
-            chol.args=list( memory=list( tmpmax=1e5)), 
+            chol.args=list( memory=list( nnzR=1e5)), 
              )-> out2
 
  temp<- predict( out)
