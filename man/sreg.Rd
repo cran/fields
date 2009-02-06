@@ -55,7 +55,7 @@ Cost value to be used in the GCV criterion.}
 \item{nstep.cv }{
 Number of grid points of smoothing parameter for GCV grid search.}
 
-\item{tol} {Tolerance for convergence in minimizing the GCV or other
+\item{tol}{Tolerance for convergence in minimizing the GCV or other
 criteria to estimate the smoothing parameter.}
 \item{find.diagA}{
 If TRUE  calculates the diagonal elements of the smoothing matrix. The

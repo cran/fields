@@ -3,9 +3,10 @@
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
-\name{Exponential, Matern}
+\name{Exponential, Matern, Radial Basis}
 \alias{Exponential}
 \alias{Matern}
+\alias{RadialBasis}
 \title{Covariance functions}
 \description{
 Functional form of covariance function assuming the argument is a
@@ -15,6 +16,7 @@ distance between locations.
 Exponential(d, range = 1, alpha = 1/range, phi = 1)
 Matern (d , scale = 1, range = 1,alpha=1/range,
      smoothness = 0.5, nu= smoothness, phi=scale) 
+RadialBasis(d,M,dimension)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -37,6 +39,9 @@ of derivatives in the process. Default is 1/2 corresponding to an exponential
 covariance.}
 
   \item{nu}{ Same as smoothness}
+  \item{M}{Interpreted as a spline M is the order of the derivatives in the
+    penalty.}
+  \item{dimension}{Dimension of function} 
 
 }
 
@@ -58,6 +63,14 @@ check for negative distances
 \code{con} is a constant that normalizes the expression to be 1.0  when phi=1.0
 and d=0. 
 
+Radial basis functions:
+
+   C.m,d  d\^(2m-dim)        dim- odd
+
+   C.m,d  d\^(2m-dim)ln( d)  dim-even
+ 
+where C.m.d is a constant based on spline theory. See \code{radbas.constant}.
+
 }
 \value{
 
@@ -66,6 +79,7 @@ A vector of covariances.
 }
 \references{ Stein's book}
 \author{Doug Nychka}
-\seealso{stationary.cov, stationary.image.cov, Wendland,stationary.taper.cov}
+\seealso{stationary.cov, stationary.image.cov, Wendland,stationary.taper.cov
+  rad.cov}
 
 \keyword{spatial}% at least one, from doc/KEYWORDS

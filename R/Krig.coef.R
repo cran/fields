@@ -59,8 +59,7 @@ function (out, lambda = out$lambda, y = NULL, yM=NULL, verbose=FALSE)
         temp.c <- out$W2%d*%temp.c
 
         temp <- temp.yM - do.call(call.name, 
-                c(out$args, list(x1 = out$knots, x2 = out$knots, 
-                   C = temp.c)))
+                c(out$args, list(x1 = out$knots, x2 = out$knots, C = temp.c)))
         temp <- out$W2%d*%temp
         temp.d <- qr.coef(out$matrices$qr.T, temp)
     }

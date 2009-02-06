@@ -19,10 +19,6 @@ mKrig<- function (x,y,
 # default values for Cholesky decomposition, these are important
 # for sparse matrix decompositions 
 
-    if( is.null( chol.args)) {
-        chol.args<- list( pivot= FALSE)}
-    else{
-         chol.args<- chol.args}
     
 # check for duplicate x's.
 # stop if there are any
@@ -42,16 +38,27 @@ mKrig<- function (x,y,
 
          tempM<-  do.call(
              cov.function, c(cov.args, list(x1 = x, x2 = x))  )
+#
+# decide how to handle the pivoting.
+# one wants to do pivoting if the matrix is sparse. 
+# if tempM is not a matrix assume that it is in sparse format. 
+#
+    sparse.flag<- !is.matrix( tempM)
+
+#
+# set arguments that are passed to cholesky
+#
+    if( is.null( chol.args)) {
+             chol.args<- list( pivot= sparse.flag)}
+    else{
+         chol.args<- chol.args}
 
 # record sparsity of tempM 
 
-        if( !is.matrix( tempM)) {  
-             nzero<- length( tempM@entries) }
-         else{
-              nzero<- np^2}
+        nzero <- ifelse( sparse.flag, length( tempM@entries), np^2) 
 
 # add diagonal matrix that is the observation error Variance 
-# NOTE: diag should be an overloaded function for  tempM sparse.
+# NOTE: diag must be a overloaded function to handle  sparse format.
 
       if( lambda != 0) {
         diag(tempM) <-   (lambda/weights) + diag(tempM)

@@ -1,6 +1,6 @@
 
-R version 2.7.2 (2008-08-25)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.9.0 Under development (unstable) (2009-02-02 r47821)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -26,6 +26,16 @@ Package 'spam' is loaded. Spam version 0.15-2 (2008-09-10).
 
 Type demo( spam) for some demos, help( Spam) for an overview of this package.
 
+
+Attaching package: 'spam'
+
+
+	The following object(s) are masked from package:base :
+
+	 backsolve,
+	 forwardsolve,
+	 kronecker 
+
  Try help(fields) for an overview of this library 
 > # tests of predict.se using 
 > # off diag weight matrix for obs (W)
@@ -41,3 +51,6 @@ testing:  Full covariance predict.se explicit W
     PASSED test at tolerance  1e-08
 all done
 > 
+> proc.time()
+   user  system elapsed 
+  1.543   0.067   2.556 

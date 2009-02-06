@@ -9,9 +9,10 @@ function(ylim = c(-90, 90), xlim = NULL, add = FALSE, asp = 1,
     shift = FALSE, 
     fill=FALSE, col.water="white", col.land="darkgrey", ...) 
 {
-# load world dat set of land outlines 
+#
+# load world data set of land outlines 
 # (should not reload if it is already loaded)
-  
+         
        data(world.dat)
 
 # check some options   

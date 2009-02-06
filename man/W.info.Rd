@@ -38,14 +38,14 @@ locations and levels. W.s2i is the inverse transformation from a list
 structure to an integer index. }
 \value{
 Return list for W.info
-  \item{m }{length of series }
+  \item{m}{length of series }
   \item{cut.min}{cut.min (what else!)}
   \item{S}{first and last indices for father wavelets}
   \item{H}{a matrix where rows are levels of resolution and columns are the first 
 and last indices for the mother basis functions.}
   \item{L}{number of basis funcion in each level of the mother wavelets.}
-   \item{Lmax} {the number of levels of resolution}
-   \item{offset}{a matrix where rows are levels of resolution and the columns is the 
+   \item{Lmax}{The number of levels of resolution}
+   \item{offset}{A matrix where rows are levels of resolution and the columns is the 
 offset index for the beginning of the indices for basis funtion at that resolution 
 level.
 }   

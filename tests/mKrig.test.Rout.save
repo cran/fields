@@ -1,6 +1,6 @@
 
-R version 2.7.2 (2008-08-25)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.9.0 Under development (unstable) (2009-02-02 r47821)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -26,6 +26,16 @@ Package 'spam' is loaded. Spam version 0.15-2 (2008-09-10).
 
 Type demo( spam) for some demos, help( Spam) for an overview of this package.
 
+
+Attaching package: 'spam'
+
+
+	The following object(s) are masked from package:base :
+
+	 backsolve,
+	 forwardsolve,
+	 kronecker 
+
  Try help(fields) for an overview of this library 
 > options( echo=FALSE)
 Warning messages:
@@ -35,21 +45,31 @@ grid search
 2: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, Krig.fgcv.one,  :
   GCV search gives a minimum at the endpoints of the 
 grid search
+testing:  spam vs no spam
+    PASSED test at tolerance  1e-08
+testing:  Krig mKrig d coef
+    PASSED test at tolerance  1e-08
+testing:  Krig mKrig c coef
+    PASSED test at tolerance  1e-08
+testing:  test of predict at new locations
+    PASSED test at tolerance  1e-08
+testing:  test of matrix Y predicts
     PASSED test at tolerance  1e-08
     PASSED test at tolerance  1e-08
+testing:  predict.surface with mKrig
     PASSED test at tolerance  1e-08
+testing:  Wendland/no spam
     PASSED test at tolerance  1e-08
+testing:  Wendland/spam
     PASSED test at tolerance  1e-08
+testing:  nzero in call to mKrig
     PASSED test at tolerance  1e-08
+testing:  mKrig vs. Krig for ozone2
     PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-Warning message:
-The component(s) 'tmpmax' of the argument 'memory'
-passed to function 'chol' not meaningful and hence ignored. 
     PASSED test at tolerance  1e-08
 all done with mKrig tests
 > 
 > 
+> proc.time()
+   user  system elapsed 
+  2.852   0.678   5.425 

@@ -1,6 +1,6 @@
 
-R version 2.7.2 (2008-08-25)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.9.0 Under development (unstable) (2009-02-02 r47821)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -26,6 +26,16 @@ Package 'spam' is loaded. Spam version 0.15-2 (2008-09-10).
 
 Type demo( spam) for some demos, help( Spam) for an overview of this package.
 
+
+Attaching package: 'spam'
+
+
+	The following object(s) are masked from package:base :
+
+	 backsolve,
+	 forwardsolve,
+	 kronecker 
+
  Try help(fields) for an overview of this library 
 > # tests of predict.se
 > # using approximations for conditional simulation on a grid. 
@@ -37,3 +47,6 @@ testing:  Conditional simulation correlations for grid (RMSE)
     PASSED test at tolerance  0.05
 all done with grid based se tests
 > 
+> proc.time()
+   user  system elapsed 
+ 41.555   4.337  66.474 

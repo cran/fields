@@ -56,16 +56,16 @@ required by this function.
 A grid list giving the X and Y grids for the image. (See example below.)
 This is only required if setup is true. 
 }
-\item{M} {
+\item{M}{
 Size of x-grid used to compute multiplication (see notes on image.smooth 
 for details) by the FFT. If NULL, the default for M is the largest power 
 of 2 
-greater than or equal to 2*m where m= length( grid$x). 
+greater than or equal to 2*m where m= length( grid\$x). 
 This  will give an exact 
 result but  smaller values of M will yield an approximate, faster result. 
 }
 
-\item{N} {Size of y-grid used to compute multiplication by the FFT.}
+\item{N}{Size of y-grid used to compute multiplication by the FFT.}
 \item{Covariance}{Covariance function that is apllied to the distance 
 between locations. (see stationary.cov) Default is the Matern model.
 (with smoothness=.5) the expontential. }

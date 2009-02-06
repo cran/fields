@@ -15,7 +15,7 @@ c*** outer most loop over columns of x1 and x2 should reduce paging
             xtemp= x2(j,ic)
             do  15 i= 1, n1
 c
-c** accumulate sqared differences
+c** accumulate squared differences
 c 
                k(i,j)=  (x1(i,ic)- xtemp)**2 + k(i,j)
  15             continue
