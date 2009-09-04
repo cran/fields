@@ -91,13 +91,9 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)),
     # leaving a profile for just lambda.
     # note that this is _not_  -2*loglike just the log and
     # includes the constants
-    lnProfileLike <- -np/2 - log(2 * pi) * (np/2) - (np/2) * 
-        log(rho.MLE) - (1/2) * lnDetCov
+    lnProfileLike <- (-np/2 - log(2*pi)*(np/2)
+                      - (np/2)*log(rho.MLE) - (1/2) * lnDetCov)
     #
-    # find fitted.values  for iid N(0,1) 'data' to calculate the
-    # the Monte Carlo estimate of tr A(lambda)
-    # basically repeat the steps above but take some
-    # short cuts because we only need fitted.values
     # return coefficients and   include lambda as a check because
     # results are meaningless for other values of lambda
     # returned list is an 'object' of class mKrig (micro Krig)
@@ -108,11 +104,13 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)),
         args = cov.args, m = m, chol.args = chol.args, call = match.call(), 
         nonzero.entries = nzero, shat.MLE = shat.MLE, rho.MLE = rho.MLE, 
         sigma.MLE, rhohat = rhohat, lnProfileLike = lnProfileLike, 
-        lnDetCov = lnDetCov, Omega = Omega, qr.VT = qr.VT, Mc = Mc, 
+        lnDetCov = lnDetCov,quad.form = quad.form, Omega = Omega, qr.VT = qr.VT, Mc = Mc, 
         Tmatrix = Tmatrix)
     #
-    out$fitted.values <- predict.mKrig(out)
-    out$residuals <- y - out$fitted.values
+    # find the residuals directly from solution 
+    # to avoid a call to predict 
+    out$residuals<- -lambda*c.coef
+    out$fitted.values <- y - out$residuals
     # estimate effective degrees of freedom using Monte Carlo trace method.
     if (find.trA) {
         out2 <- mKrig.trace(out, iseed, NtrA)
@@ -135,7 +133,6 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)),
     return(out)
 }
 mKrig.trace <- function(object, iseed, NtrA) {
-    # create random normal 'data'
     set.seed(iseed)
     # if more tests that number of data points just
     # find A exactly by np predicts.
@@ -147,6 +144,11 @@ mKrig.trace <- function(object, iseed, NtrA) {
     }
     else {
         # if fewer tests then use random trace method
+        # find fitted.values  for iid N(0,1) 'data' to calculate the
+        # the Monte Carlo estimate of tr A(lambda)
+        # basically repeat the steps above but take some
+        # short cuts because we only need fitted.values
+        # create random normal 'data'
         Ey <- matrix(rnorm(object$np * NtrA), nrow = object$np, 
             ncol = NtrA)
         trA.info <- colSums(Ey * (predict.mKrig(object, ynew = Ey)))
@@ -183,8 +185,20 @@ mKrig.coef <- function(object, y) {
     return(out)
 }
 print.mKrig <- function(x, digits = 4, ...) {
+
+       if( is.matrix(x$residuals)){
+         n<- nrow(x$residuals)
+         m<- ncol(x$residuals)}
+       else{
+         n<- length( x$residuals)
+         m<-1 }
+
     c1 <- "Number of Observations:"
-    c2 <- length(x$residuals)
+    c2 <- n
+
+    if( m>1){
+    c1<- c( c1,"Number of data sets fit:")
+    c2<- c( c2, m)}
     c1 <- c(c1, "Degree of polynomial null space ( base model):")
     c2 <- c(c2, x$m - 1)
     c1 <- c(c1, "Number of parameters in the null space")
@@ -200,9 +214,12 @@ print.mKrig <- function(x, digits = 4, ...) {
     }
     c1 <- c(c1, "Smoothing parameter")
     c2 <- c(c2, signif(x$lambda.fixed, digits))
+
+    if( m==1){
     c1 <- c(c1, "MLE sigma ")
     c2 <- c(c2, signif(x$shat.MLE, digits))
-    c1 <- c(c1, "MLE rho")
+    c1 <- c(c1, "MLE rho")}
+
     c2 <- c(c2, signif(x$rho.MLE, digits))
     c1 <- c(c1, "Nonzero entries in covariance")
     c2 <- c(c2, x$nonzero.entries)
@@ -213,22 +230,26 @@ print.mKrig <- function(x, digits = 4, ...) {
     print(sum, quote = FALSE)
     cat("Covariance Model:", x$cov.function, fill = TRUE)
     if (x$cov.function == "stationary.cov") {
+#  this unattractive line is to handle the name of the Covariance
+#  in the case it is the default or passed as a function (not quoted).
         cat("  Covariance function is ", ifelse(is.null(x$args$Covariance), 
             "Exponential", x$args$Covariance), fill = TRUE)
     }
     if (!is.null(x$args)) {
-        cat("  Names of non-default covariance arguments and first 10 values ", 
+        cat("  Names of non-default covariance arguments and their values ", 
             fill = TRUE)
         nlist <- as.character(names(x$args))
         NL <- length(nlist)
         for (k in 1:NL) {
-            cat("      ", nlist[k], ": ", fill = TRUE)
+            cat("Argument named: ", nlist[k], " is ", fill=TRUE)
             ifelse(length(x$args[[k]]) < 11, print(x$args[[k]]), 
-                cat((x$args[[k]])(1:10), "...", fill = TRUE))
+                cat( "first 10 values: ", 
+                      (x$args[[k]])(1:10), "...", fill = TRUE))
         }
     }
     invisible(x)
 }
+
 predict.mKrig <- function(object, xnew = NULL, ynew = NULL, 
     derivative = 0, ...) {
     # the main reason to pass new args to the covariance is to increase

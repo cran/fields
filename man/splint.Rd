@@ -12,7 +12,7 @@
 A fast, FORTRAN based function for cubic spline interpolation. 
 }
 \usage{
-splint(x, y, xgrid, wt=NULL, derivative=0,lam=0, df=NA)
+splint(x, y, xgrid, wt=NULL, derivative=0,lam=0, df=NA, lambda=NULL)
 }
 \arguments{
 \item{x}{
@@ -33,7 +33,7 @@ should be evaluated.
 variance.}
 \item{lam}{ Value for smoothing parameter. Default value is zero giving 
 interpolation.}
-
+\item{lambda}{Same as \code{lam} just to make this easier to remember.}
 \item{df}{ Effective degrees of freedom. Default is to use lambda =0 or a  
 df equal to the number of observations.}
 

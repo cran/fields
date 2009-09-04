@@ -32,7 +32,7 @@ Exp.cov(x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA, marginal=FALSE)
 
 Exp.simple.cov(x1, x2, theta =1, C=NA,marginal=FALSE)
 
-Rad.cov(x1, x2, p = 1, with.log = TRUE, with.constant = TRUE, 
+Rad.cov(x1, x2, p = 1, m=NA, with.log = TRUE, with.constant = TRUE, 
                C=NA,marginal=FALSE, derivative=0)
 
 cubic.cov(x1, x2, theta = 1, C=NA, marginal=FALSE) 
@@ -41,7 +41,7 @@ Rad.simple.cov(x1, x2, p=1, with.log = TRUE, with.constant = TRUE,
                C = NA, marginal=FALSE)
 
 stationary.cov(x1, x2, Covariance="Exponential", Distance="rdist",
-               Dist.args=NULL, theta=1.0,V=NULL,C=NA, marginal=FALSE,...)
+               Dist.args=NULL, theta=1.0,V=NULL,C=NA, marginal=FALSE,derivative = 0,...)
 
 stationary.taper.cov(x1, x2, Covariance="Exponential", 
            Taper="Wendland", 
@@ -86,6 +86,9 @@ with Krig.}
 exponential and p=2 gives a Gaussian.  Default is the exponential
 form.  For the radial basis function this is the exponent applied to
 the distance between locations.}
+\item{m}{For the radial basis function p = 2m-d, with d being the dimension of the
+locations, is the exponent applied to
+the distance between locations. (m is a common way of parametrizing this exponent.)}
 
 \item{with.constant}{ If TRUE includes complicated constant for radial
  basis functions.  See the function \code{radbad.constant} for more
@@ -125,7 +128,7 @@ matrix. }
  Wendland.}
 
  \item{derivative}{ If nonzero evaluates the partials of the
-covariance function at locations x1. This must be used with "C" option
+covariance function at locations x1. This must be used with  the "C" option
 and is mainly called from within a predict function.  The partial
 derivative is taken with respect to \code{x1}.  }
 
@@ -195,7 +198,7 @@ Some details on particular covariance functions:
 
 \describe{ \item{Radial basis functions (\code{Rad.cov}:}{The
 functional form is Constant* rdist(u, v)**p for odd dimensions and
-Constant* rdist(u,v)**p * log( rdist(u,v) For an m th order thin plate
+Constant* rdist(u,v)**p * log( rdist(u,v) ) For an m th order thin plate
 spline in d dimensions p= 2*m-d and must be positive. The constant,
 depending on m and d, is coded in the fields function
 \code{radbas.constant}. This form is only a generalized covariance

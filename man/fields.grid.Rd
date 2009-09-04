@@ -53,7 +53,9 @@ glist<- fields.x.to.grid(x, nx=80, ny=80) # this is a cute way to get a default 
     mKrig( Bigx,Bigy, cov.function="wendland.cov",k=4, V=V, 
                  lambda=0)->out2 
 # the big evaluation this takes about 45 seconds on a Mac G4 latop
+\dontrun{
     predict.surface( out2, nx=400, ny=400)-> look
+}
 
 # the nice surface
 \dontrun{    

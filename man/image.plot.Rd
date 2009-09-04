@@ -19,7 +19,7 @@ often arise from regular grids transformed with a map projection.
 }
 \usage{
 
-image.plot(..., 
+image.plot(...,
                  add = FALSE, nlevel = 64, horizontal = FALSE,
                  legend.shrink = 0.9, legend.width = 1.2, legend.mar =
                  ifelse(horizontal, 3.1, 5.1), legend.lab = NULL,
@@ -29,11 +29,15 @@ image.plot(...,
                  NULL, midpoint=FALSE)}
 
 \arguments{ \item{\dots}{
- The usual arguments to the image function. This includes the use of the
-breaks argument for an unequal color scale.  If a quadrilateral grid
-arguments must be explicitly x,y and z with x, and y being matrices of
-dimension equal or one more than z giving the grid locations. The basic concept is that the coordinates of x and y still define a grid but the cells are 
-just quadrilaterals raterh being restricted to rectangles.
+ The usual arguments to the \code{image} function as x,y,or z or as a list with x,y,z as components. One can also include a
+ \code{breaks} argument for an unequal color scale with color scale 
+boundaries at the breaks (see example below).  If a quadrilateral grid, 
+arguments must be explicitly x,y and z with x, and y being matrices of 
+dimension equal or one more than z giving the grid locations. The basic 
+concept is that the coordinates of x and y still define a grid but the image
+cells are general quadrilaterals rather than being restricted to rectangles.
+See details below as to how one handles whether the quads are specified by their
+vertices or by their midpoints. 
 }
 \item{add}{
 If true add image and a legend strip to the existing plot. 
@@ -297,20 +301,15 @@ set.panel() # reset plotting device
 #
 # Here is a more learned strategy to add a common legend to a panel of
 # plots  consult the split.screen help file for more explanations.
-# For this example we  draw two
+# For this example we draw two
 # images top and bottom and add a single legend color bar on the right side 
 
-
-
-# first divide screen into the figure region and legend colorbar on the 
-# right to put a legend. 
-
+# first divide screen into the figure region (left) and legend region (right)
    split.screen( rbind(c(0, .8,0,1), c(.8,1,0,1)))
 
-# now divide up the figure region 
+# now subdivide up the figure region into two parts
    split.screen(c(2,1), screen=1)-> ind
-
-zr<- range( 2,35)
+   zr<- range( 2,35)
 # first image
    screen( ind[1])
    image( x,y,z, col=tim.colors(), zlim=zr)

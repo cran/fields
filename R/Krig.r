@@ -213,6 +213,8 @@
     # For fixed lambda the decompositions with and without knots
     # are surprisingly similar and so are in one engine.
     ###########################################################
+    if (verbose){
+      cat("Beginning of Engine block", fill=TRUE)}
     if (out$fixed.model) {
         out$matrices <- Krig.engine.fixed(out, verbose = verbose)
         # can't find the trace of A matrix in fixed lambda case so set this to NA.

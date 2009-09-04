@@ -4,6 +4,7 @@
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 \name{fields}
+\alias{fields-package}
 \alias{fields}
 \title{
 fields - tools for spatial data 
@@ -16,8 +17,7 @@ fields - tools for spatial data
  Kriging and Kriging for large data sets. One main feature is any
  covariance function implemented in R code can be used for spatial prediction. Another important feature is that fields will take advantage of compactly supported covariance functions in a seamless way through 
 the spam package. See \code{library( help=fields)} for a listing of all the
-fields contents. To load fields with the comments retained in the source
-use \code{ keep.source = TRUE} in the \code{library} command. 
+fields contents. 
 
 fields stives to have readable and tutorial code. Take a look at the 
 source code for \code{Krig} and \code{mKrig} to see how things work 
@@ -31,7 +31,7 @@ browse the directory
 page for html formatted help files. (If you obtain the source version of the
 package (file ends in .gz) the commented source code is the R subdirectory.) 
 
-Some major methods in fields include: 
+\strong{Major methods} 
 \itemize{ \item \code{Tps} Thin Plate spline
 regression (including GCV) 
 \item \code{Krig} Spatial process estimation
@@ -46,18 +46,18 @@ Matern and great circle distance. Also check out \code{mKrig} (micro Krig) and
 a fast Kriging and spline-like functions, that can take advantage of sparse covariance
 functions and thus handle very large numbers of spatial locations. 
 
-Some other noteworthy functions are
+\strong{Other noteworthy functions}
 \itemize{
 \item \code{cover.design}  Gnerates space-filling designs where the distance 
 function is expresed in R/S code
 
 \item \code{as.image}, \code{image.plot}, \code{drape.plot}, \code{quilt.plot}
-\code{add.image}, \code{crop.image}, \code{half.image}, \code{average.image} 
-\code{designer.colors}.
+\code{add.image}, \code{crop.image}, \code{half.image}, \code{average.image}, 
+\code{designer.colors}, \code{color.scale}
  
 convenient functions for working with image data and rationally (well,
-maybe reasonably) creating and  placing a color scale on an image plot. See also 
-\code{help(grid.list)} for how fields works with grids and \code{US}
+maybe reasonably) creating and  placing a color scale on an image plot. 
+See also  \code{help(grid.list)} for how fields works with grids and \code{US}
 and \code{world} for adding a map quickly. 
 
 \item \code{sreg},  \code{qsreg} \code{splint}   Fast 1-D smoothing 
@@ -66,8 +66,8 @@ quantile/robust and interpolating cubic splines.
 
 }
 
-There are also generic functions that support 
-these methods such as 
+
+\strong{ Generic functions that support the methods} 
 
 \code{plot} - diagnostic plots of fit \cr
 \code{summary}- statistical summary of fit \cr
@@ -77,19 +77,37 @@ these methods such as
 \code{predict.se}- prediction standard errors at arbitrary points. \cr
 \code{sim.rf}- Simulate a random fields on a 2-d grid.
 
-To get started, try some of the examples from help files for \code{Tps} or 
+\strong{Getting Started}
+
+ Try some of the examples from help files for \code{Tps} or 
 \code{Krig}. 
 
-Graphics tips:
+\strong{Graphics tips}
+
 \code{help( fields.hints)}
  gives some R code tricks for setting up common legends and axes. 
 And has little to do with this package!
 
-Testing:
+\strong{Testing}
 See \code{help(fields.tests)} for testing fields. 
 
-DISCLAIMER:
+\strong{Some fields datasets}
+\itemize{
+\item \code{CO2} Global satelite CO2 concentrations (simulated field)
+\item \code{RCMexample} Regional climate model output
+\item \code{lennon} Image of John Lennon
+\item \code{COmonthlyMet} Monthly mean temperatures and precip for Colorado
+\item \code{RMelevation} Digital elevations for the Rocky Mountain Empire
+\item \code{ozone2}  Daily max 8 hour ozone concentrations for the US midwest 
+for summer 1987.
+\item \code{PRISMelevation} Digital elevations for the 
+   continental US at approximately 4km resolution
+\item \code{rat.diet} Small paired study on rat food intake over time.
+\item \code{WorldBank} Demographic and carbon emission data 
+ for 75 countries and for 1999. 
+}
 
+\strong{DISCLAIMER:}
 This is software for statistical research and not for commercial uses. The
 authors do not guarantee the correctness of any function or program in
 this package. Any changes to the software should not be made without the
@@ -97,7 +115,7 @@ authors permission.
 }
 \examples{
 
-# some air quality data,daily surface ozone for the Midwest:
+# some air quality data, daily surface ozone measurements for the Midwest:
 data(ozone2)
 x<-ozone2$lon.lat
 y<- ozone2$y[16,] # June 18, 1987

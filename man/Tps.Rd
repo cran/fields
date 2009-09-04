@@ -222,6 +222,7 @@ set.panel(2,2)
 plot(fit) # four diagnostic plots of  fit and residuals. 
 set.panel()
 
+# summary of fit and estiamtes of lambda the smoothing parameter
 summary(fit)
 
 surface( fit) # Quick image/contour plot of GCV surface.
@@ -241,7 +242,7 @@ surface( fit) # Quick image/contour plot of GCV surface.
 # lambda chosen so that there are 7.5 effective 
 # degrees of freedom in estimate
 # Note that the GCV function is still computed and minimized
-# but the spline estimate is uses 7.5 df.
+# but the lambda values used correpsonds to 7.5 df.
 
 fit1<- Tps(ozone$x, ozone$y,df=7.5)
 
@@ -278,7 +279,7 @@ plot( out$x, out$y)
 lines( out$x, out$fitted.values)
 
 # 
-# compare to the ( much faster) one spline algorithm 
+# compare to the ( much faster) B spline algorithm 
 
   sreg(rat.diet$t, rat.diet$trt) 
 
@@ -287,21 +288,34 @@ lines( out$x, out$fitted.values)
 
 set.panel( 1,2)
 # without elevation covariate
-Tps( RMprecip$x,RMprecip$y)-> out0 
-
-surface( out0)
-US( add=TRUE, col="grey")
+  Tps( RMprecip$x,RMprecip$y)-> out0 
+  surface( out0)
+  US( add=TRUE, col="grey")
 
 # with elevation covariate
+  Tps( RMprecip$x,RMprecip$y, Z=RMprecip$elev)-> out
+# NOTE: out$d[4] is the estimated elevation coeficient
+  out.p<-predict.surface( out, drop.Z=TRUE)
+  surface( out.p)
+  US( add=TRUE, col="grey")
+  
+# decomposing into the different pieces:
+  fit<- predict( out)
+  fit0<- predict( out, drop.Z=TRUE, just.fixed=TRUE)
+  fit.elev<- predict( out, just.fixed=TRUE) - fit0
+  fit1<- predict(out, drop.Z=TRUE) - fit0
 
-Tps( RMprecip$x,RMprecip$y, Z=RMprecip$elev)-> out
-
-out.p<-predict.surface( out, drop.Z=TRUE)
-surface( out.p)
-US( add=TRUE, col="grey")
-
-# elevation does not matter too much for this example.
-
+  set.panel( 2,2)
+  quilt.plot( out$x, fit0)
+  title("spatial drift")
+  quilt.plot( out$x, fit.elev)
+  title("elevation")
+  quilt.plot( out$x, fit1)
+  title("spatial nonparametric")
+  quilt.plot( out$x, fit)
+  US( add=TRUE)
+  title("full prediction")
+  set.panel()
 
 ### 
 ### fast Tps

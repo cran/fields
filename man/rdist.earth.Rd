@@ -45,11 +45,15 @@ Surprisingly this all done efficiently in R by dot products of the
 direction cosines. Thanks to Qing Yang for pointing this out a long time 
 ago. }
 \seealso{
-  rdist, stationary.cov 
+  rdist, stationary.cov,  fields.rdist.near 
 }
 \examples{
-out<- rdist.earth ( ozone$lon.lat)
-#out is a 20X20 distance matrix
+data(ozone2)
+out<- rdist.earth ( ozone2$lon.lat)
+#out is a 153X153 distance matrix
+upper<-  col(out)> row( out)
+# histogram of all pairwise distances. 
+hist( out[upper])
 }
 \keyword{spatial}
 % docclass is function

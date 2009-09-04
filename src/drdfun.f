@@ -11,7 +11,10 @@
          do 6 k=1,n
           dtemp= d2(k)
           if( dtemp.GE.1e-35)  then
-           d2(k)=  (par(1)*log(dtemp) +1)*(dtemp)**( par(1)-1)
+c
+c NOTE factor of 2 adjusts for log being applied to 
+c distance rather than squared distance
+           d2(k)=  (par(1)*log(dtemp) +1)*(dtemp)**( par(1)-1)/2
           else
            d2(k)=0.0
           endif

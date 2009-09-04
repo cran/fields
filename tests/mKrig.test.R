@@ -179,26 +179,25 @@ y<- sin( 3*pi*x[,1])*sin( 3.5*pi*x[,2]) + rnorm( N)*.01
 
 
 # test of fastTps
-nx<- 100
-ny<- 120
+nx<- 50
+ny<- 60
 x<- seq( 0,1,,nx)
 y<- seq( 0,1,,ny)
 gl<- list( x=x, y=y)
 xg<- make.surface.grid(gl)
-ztrue<- sin( xg[,1]*pi*6)* cos(xg[,2]*pi*5)
+ztrue<- sin( xg[,1]*pi*3)* cos(xg[,2]*pi*2.5)
 #image.plot(x,y,matriz( ztrue, nx,ny)) 
 set.seed( 222)
-ind<- sample( 1:(nx*ny), 5000)
+ind<- sample( 1:(nx*ny), 600)
 xdat<- xg[ind,]
 ydat <- ztrue[ind]
-out<- fastTps(xdat, ydat, theta=.1)
+out<- fastTps(xdat, ydat, theta=.3)
 out.p<-predict.surface( out, grid=gl, extrap=TRUE)
 # perfect agreement at data
 test.for.zero( ydat, c( out.p$z)[ind])
 #image.plot(x,y,matrix( ztrue, nx,ny)- out.p$z) 
 rmse<- sqrt(mean( (ztrue- c( out.p$z))^2)/ mean( (ztrue)^2))
-test.for.zero( rmse,0,, tol=.007, relative=FALSE)
-
+test.for.zero( rmse,0,, tol=.01, relative=FALSE)
 
 
 cat("all done with mKrig tests", fill=TRUE)

@@ -21,7 +21,7 @@ poly.image.regrid <- function(x) {
     x <- t(temp.addcol(x))
     t(temp.addcol(x))
 }
-poly.image <- function(x, y, z, col = tim.colors(64), 
+poly.image <- function(x, y, z, col = tim.colors(64), breaks, 
     transparent.color = "white", midpoint = FALSE, zlim = range(z, 
         na.rm = TRUE), xlim = range(x), ylim = range(y), add = FALSE, 
     border = NA, ...) {
@@ -39,10 +39,15 @@ poly.image <- function(x, y, z, col = tim.colors(64),
         x <- poly.image.regrid(x)
         y <- poly.image.regrid(y)
     }
+    # figure out the breaks make sure that missing breaks are passed as NA.
+    if ( missing( breaks)) {
+           breaks<- NA}
+    
     # code values in z based on range to colors.
     # if midpoint is true z values will be averaged first
-    zcol <- drape.color(z, col = col, midpoint = midpoint, zlim = zlim, 
-        transparent.color = transparent.color)
+    zcol <- drape.color(z, col = col, midpoint = midpoint,
+                        zlim = zlim, transparent.color = transparent.color,
+                        breaks=breaks)$color.index
     # blank if not adding to an exising plot
     if (!add) {
         plot(xlim, ylim, type = "n", ...)
@@ -61,6 +66,9 @@ poly.image <- function(x, y, z, col = tim.colors(64),
             y[i, 2:N], rep(NA, Nm1))
         xp <- c(t(xp))
         yp <- c(t(yp))
-        polygon(xp, yp, border = NA, col = c(zcol[i, 1:Nm1]))
+        pcol<- c(zcol[i, 1:Nm1])
+    # draw each poly with different color including the border
+    # to avoid missing some space on some output devices.
+        polygon(xp, yp, border = pcol, col = pcol)
     }
 }

@@ -134,9 +134,9 @@ theta=1.0,smoothness=1.0, na.rm=TRUE)-> out
 #six missing data locations
  xp<-  ozone2$lon.lat[ is.na(ozone2$y[16,]),]
 
-# 50 draws from process at xp given the data 
+# 5 draws from process at xp given the data 
 # this is an exact calculation
- sim.Krig.standard( out,xp, M=50)-> sim.out
+ sim.Krig.standard( out,xp, M=5)-> sim.out
 
 # Compare: stats(sim.out)[3,] to  Exact: predict.se( out, xp)
 

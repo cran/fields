@@ -6,6 +6,7 @@
 \name{predict.Krig}
 \alias{predict.Krig}
 \alias{predict.derivative.Krig}
+
 \title{
   Evaluation of Krig spatial process estimate.  
 }
@@ -20,7 +21,7 @@ object, x = NULL, Z = NULL, drop.Z = FALSE, just.fixed
                  = FALSE, lambda = NA, df = NA, model = NA,
                  eval.correlation.model = TRUE, y = NULL, yM = NULL,
                  verbose = FALSE, ...)
-predict.derivative.Krig (object, x = NULL,  verbose = FALSE,...)
+\method{predict.derivative}{Krig}(object, x = NULL,  verbose = FALSE,...)
 
 }
 \arguments{
@@ -100,9 +101,18 @@ Krig, predict.surface gcv.Krig
 Krig(ozone$x,ozone$y, theta=50) ->fit
 predict( fit) # gives predicted values at data points
 
+# find the partial derivatives at observation locations
+# returned object is a two column matrix. 
+# this does not make sense for the exponential covariance
+# but can illustrate this with a thin plate spline. 
+# 
+  fit0<- Tps( ozone$x, ozone$y, m=3)
+  look<- predict.derivative.Krig( fit0)
+
+
 # only the fixed part of the model
 
-predict( fit, just.fixed=TRUE) 
+  predict( fit, just.fixed=TRUE) 
 
 # in this case the default is a linear spatial drift  (m=2) and there 
 # are no additional covariates
@@ -113,6 +123,10 @@ look<- predict(fit,grid) # evaluate on a grid of points
 
 # some useful graphing functions
 out.p<- as.surface( grid, look) # reformat into $x $y $z image-type object
+
+#NOTE: the above steps are the same as using the "wrapper" function 
+# predict.surface(fit, grid)-> out.p
+
 contour( out.p)  
 
 
@@ -123,6 +137,8 @@ look<- predict(fit,grid, df=15)
 # refit with random data 
 
 look<- predict( fit, grid, y= rnorm( 20))
+
+
 
 }
 \keyword{spatial}

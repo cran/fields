@@ -14,8 +14,10 @@
           dtemp= d2(k)
           if( dtemp.gt.1e-20)  then
 c note: dtemp is squared distance
+c divide by 2 to have log evaluated on distance
+c as opposed to squared distance. 
 
-           d2(k)= log(dtemp)*(dtemp)**( par(1))
+           d2(k)= log(dtemp)*(dtemp)**( par(1))/2
           else
            d2(k)=0.0
           endif

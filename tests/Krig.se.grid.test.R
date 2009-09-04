@@ -10,6 +10,8 @@ library( fields)
 options( echo=FALSE)
 test.for.zero.flag<-1
 
+long.test.flag<- FALSE
+
 data( ozone2)
 as.image(ozone2$y[16,], x= ozone2$lon.lat, ncol=24, nrow=20, 
           na.rm=TRUE)-> dtemp
@@ -24,6 +26,7 @@ Krig( x, y, Covariance="Matern",
    theta=1.0, smoothness=1.0, weights=weights) -> out
 
 
+if(long.test.flag){
 
 # the grid ...
 
@@ -71,6 +74,8 @@ dd<- (c(hold)- c(test3))[upper]
 
 test.for.zero(   mean( abs(dd)) ,0, relative=FALSE,
 tol=.05, tag="Conditional simulation correlations for grid (RMSE) ")
+
+} # end long test block
 
 cat( "all done with grid based se tests", fill=TRUE)
 options( echo=TRUE)

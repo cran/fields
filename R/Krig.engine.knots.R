@@ -32,40 +32,50 @@
     #    sqrt(weightsM) * X
     XTwX <- t(X * out$weightsM) %*% X
     #
-    # Diagonalize  sum of XTwX and H to avoid having the null space be
-    # associated with the smallest eigenvectors.
-    # i.e.
-    # If G diagonalizes  A+B and B so that
-    # A+B= GDG^T and B= GG^T
-    #
-    # then  B= G(I-D)G^T
-    out2 <- fields.diagonalize((XTwX), H)
+  # then  B= G(I-D)G^T
+  # New version of diagonalize may be more stable 
+    out2 <- fields.diagonalize2((XTwX), H)
     D <- out2$D
     if (verbose) {
         cat("D;", fill = TRUE)
         cat(out2$D, fill = TRUE)
     }
-    u <- t(out2$G) %*% t(X) %*% (out$weightsM * out$yM)
+#
+#  G should satisfy:
+#     t(G) %*% XTwX %*%G = I and  t(G)%*%H%*%G = D
+#
+#     and 
+#      solve( XtwX + lambda H) =  G%*%diag( 1/(1+ lambda*D))%*%t(G)
+# 
+
+#  save XG to avoid an extra multiplication.
+    XG<- X%*% out2$G 
+
+    u <- t(XG) %*% (out$weightsM * out$yM)
     #
     # adjust pure sum of squares to be that due to replicates
     # plus that due to fitting all the basis functions without
     # any smoothing. This will be the part of the RSS that does not
     # change as lambda is varied ( see e.g. gcv.Krig)
     #
-    pure.ss <- sum(out$weightsM * (out$yM - X %*% out2$G %*% 
+    pure.ss <- sum(out$weightsM * (out$yM - XG %*% 
         u)^2) + out$pure.ss
     if (verbose) {
         cat("total pure.ss from reps, reps + knots ", fill = TRUE)
         print(out$pure.ss)
         print(pure.ss)
     }
+
     #
     # in this form  the solution is (d,c)= G( I + lambda D)^-1 u
     # fitted.values = X ( d,c)
     #
     # output list
-    # last D eigenvalues are zero due to null space of penalty
-    D[(np - nt + 1):np] <- 0
+# last D eigenvalues are zero due to null space of penalty
+# OLD code:    D[(np - nt + 1):np] <- 0
+# this should be enforced to machine precision from diagonalization. 
+
+
     list(u = u, D = D, G = out2$G, qr.T = qr.T, decomp = "DR", 
         nt = nt, np = np, pure.ss = pure.ss)
 }

@@ -17,13 +17,13 @@ y<- ozone2$y[16,]
 temp<- Rad.cov( x,x, p=2)
 temp2<- RadialBasis( rdist( x,x), M=2, dimension=2)
 
-temp3<-  rdist( x,x)**2
-temp3 <- ifelse( abs(temp3) < 1e-14, 0,log( temp3)*temp3 )
+temp3<-  rdist( x,x)
+temp3 <- ifelse( abs(temp3) < 1e-14, 0,log( temp3)*(temp3^2) )
 temp3<- radbas.constant( 2,2)*temp3
 
-test.for.zero( temp, temp2)
-test.for.zero( temp, temp3)
-test.for.zero( temp2, temp3)
+test.for.zero( temp, temp2, tag="Tps radial basis function")
+test.for.zero( temp, temp3, tag="Tps radial basis function")
+test.for.zero( temp2,temp3, tag="Tps radial basis function")
 
 #####  testing derivative formula
 C<- cbind(rnorm( length( y)))
@@ -49,6 +49,28 @@ C<- rnorm( length( y))
 temp<- Rad.cov( x,x, p=2, C=C)
 temp2<- RadialBasis( rdist( x,x), M=2, dimension=2)%*%C
 test.for.zero( temp, temp2)
+
+#### Basic matrix form for Tps as sanity check
+x<- ozone$x
+y<- ozone$y
+
+obj<-Tps( x,y, scale.type="unscaled", with.constant=FALSE)
+
+lam.test<- obj$lambda
+N<-length(y)
+
+Tmatrix<- cbind( rep( 1,N), x)
+D<- rdist( x,x)
+R<- D**2 * log(D)
+A<- rbind(
+          cbind( R+diag(lam.test,N), Tmatrix),
+          cbind( t(Tmatrix), matrix(0,3,3)))
+
+ hold<-solve( A, c( y, rep(0,3)))
+ c.coef<- hold[1:N]
+ d.coef<- hold[ (1:3)+N]
+ zhat<-  R%*%c.coef + Tmatrix%*% d.coef
+test.for.zero( zhat, obj$fitted.values, tag="Tps 2-d m=2 sanity check")
 
 
 #### test Tps verses Krig note scaling must be the same

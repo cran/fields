@@ -498,7 +498,7 @@ predict( fit, df=7.5)
  points( fit$x)
 
 
-# Using anohter stationary covariance. 
+# Using another stationary covariance. 
 # smoothness is the shape parameter for the Matern. 
 
 fit <- Krig(ozone$x, ozone$y, Covariance="Matern", theta=10, smoothness=1.0)  
@@ -579,6 +579,26 @@ test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
  points( x, col=2)
  points( xknots, cex=2, pch="O")
 
+## A quick way to deal with too much data if you intend to smooth it anyway
+##  Discretize the locations to a grid, then apply Krig 
+##  to the discretized locations:
+## 
+CO2.approx<- as.image(RMprecip$y, x=RMprecip$x, nx=20, ny=20)
+
+# take a look:
+image.plot( CO2.approx)
+# discretized data (observations averaged if in the same grid box)
+# 336 locations -- down form the  full 806
+
+# convert the image format to locations, obs and weight vectors
+yd<- CO2.approx$z[CO2.approx$ind]
+weights<- CO2.approx$weights[CO2.approx$ind] # takes into account averaging
+xd<- CO2.approx$xd
+
+obj<- Krig( xd, yd, weights=weights, theta=4)
+
+# compare to the full fit:
+# Krig( RMprecip$x, RMprecip$y, theta=4) 
 
 
 # A correlation model example

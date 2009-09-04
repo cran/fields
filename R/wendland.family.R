@@ -158,18 +158,14 @@ Wendland2.2 <- function(d, theta = 1) {
 }
 ############## basic evaluation of Wendland and its derivatives.
 ###########################
-# \tn: Wendland interpolation matrix is positive definite on R^n. Or, we could say n is the dimension of the locations.
-# \tk: Wendland function is 2k times continuously differentiable.
-#\tderivative: the derivative of wendland function.
-# Output:
-#\twendscaled: a vector evaluated by the Wendland function at distances r. It is scaled into abs([0, 1]).
-# example:
-#\tr = seq(0,1,by = 0.01)
-#\twend = wendland(r, 2, 1, derivative = 0)
-#\tplot(r, wend, type = 'l')
+# n: Wendland interpolation matrix is positive definite on R^n, i.e.  n is 
+# the dimension of the locations. 
+# k: Wendland function is 2k times continuously 
+# differentiable.
 # The proofs can be found in the work of Wendland(1995).
-# H. Wendlamd. Piecewise polynomial , positive definite and compactly supported radial functions of minimal degree. AICM 4(1995), pp 389-396.
-#########################################
+#  H. Wendland. Piecewise polynomial , positive definite and compactly supported radial 
+#  functions of minimal degree. AICM 4(1995), pp 389-396.
+ #########################################
 ## top level function:
 Wendland = function(d, theta = 1, dimension, k, derivative = 0, 
     phi = NA) {

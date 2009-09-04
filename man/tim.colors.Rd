@@ -7,18 +7,21 @@
 \alias{tim.colors}
 \alias{two.colors}
 \alias{designer.colors}
-\title{ Some useful color tables for images. }
+\alias{color.scale}
+\title{ Some useful color tables for images and tools to handle them. }
 \description{
-Two color scales useful for image plots:
+Several color scales useful for image plots:
 a pleasing rainbow style color table patterned after that used in 
-Matlab by Tim Hoar and also a simple colr interpolation between two 
-colors passing through white. 
+Matlab by Tim Hoar and also some  simple color interpolation schemes between
+two or more colors. There is also a function that converts between colors and 
+a real valued vector.
 }
 \usage{
 tim.colors(n = 64)
 two.colors(n=256, start="darkgreen", end="red", middle="white")
 designer.colors( n=256, col= c("darkgreen", "white", "darkred"),
                               x= seq(0,1,, length(col)) )
+color.scale( z, col=tim.colors(256), zlim =NULL, transparent.color="white",                     eps= 1e-8) 
 
 }
 \arguments{
@@ -30,6 +33,12 @@ definition.}
 \item{col}{A list of colors (names or hex values) to interpolate}
 \item{x}{Positions of colors on a [0,1] scale. Default is to assume that
 the x values are equally spacesd from 0 to 1.}
+\item{z}{Real vector to encode in a color table.}
+\item{zlim}{Range to use for color scale. Default is the \code{range(z)} inflated by 
+1- eps and 1+eps.}
+\item{transparent.color}{Color value to use for NA's or values outside \code{zlim}}
+\item{eps}{A small inflation of the range to avoid boundary values of \code{z} being 
+coded as NAs}
 }
 
 \details{
@@ -59,6 +68,7 @@ leaves the choice of the colors to Dr. R after a thunderstorm.
  
 }
 \value{
+
 A vector giving the colors in a hexadecimal format. 
 
 }
@@ -94,6 +104,15 @@ coltab<- designer.colors(256,rainbow(5), x)
 image( z, col= coltab ) # see image.plot for adding all kinds of legends
 
 # colors now change at quantiles of data
+
+# some random color values
+set.seed(123)
+z<- rnorm(100)
+hex.codes<- color.scale(z, col=two.colors())
+N<-length( hex.codes)
+# take a look at the coded values
+# or equivalently create some Xmas wrapping paper!
+image( 1:N, N, matrix(1:N, N,1) , col=hex.codes, axes=FALSE, xlab="", ylab="")
 
 set.panel()
 

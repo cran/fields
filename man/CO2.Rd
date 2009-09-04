@@ -1,27 +1,41 @@
 \name{CO2}
 \alias{CO2}
+\alias{CO2.true}
 \docType{data}
 \title{Simulated global CO2 observations}
 \description{
- This is an example of moderately large spatial data set and consist of 
-simulated CO2 concentrations.
-}
-\usage{data(CO2)}
+ This is an example of moderately large spatial data set and consists of 
+simulated CO2 concentrations that are irregularly sampled from a lon/lat 
+grid. Also included is the complete CO2 field  (CO2.true) used to generate the 
+synthetic observations.}
+ \usage{data(CO2)  }
 \format{
-  The format is a list with two components:
+  The format of \code{CO2} is a list with two components:
 \itemize{
 \item lon.lat: 26633x2 matrix of the longitude/latitude locations. 
  These are a subset of  a larger lon/lat grid (see example below).
 \item y:   26633 CO2 concentrations in parts per million.
 }
+ The format of \code{CO2.true}
+ is a list in  "image" format with components:
+\itemize{
+ \item x longitude grid values.
+ \item y latitude grid values.
+ \item z an image matrix with CO2 concentration in parts per million
+ \item mask a logical image that indicates with grid locations were 
+selected for the synthetic data set \code{CO2}.
+}
 
 }
-\details{
-This data was provided by Dorit Hammerling and Randy Kawa as a 
-test example for the spatial analysis of remotely sensed (i.e. satellite) and 
-irregular observations.  
+\details{ 
+This data was generously provided by Dorit Hammerling and Randy Kawa as a 
+test example for the spatial analysis of remotely sensed (i.e. 
+satellite) and irregular observations. The synthetic data is based on a 
+true CO2 field simulated from a geophysical, numerical model. 
 }
 \examples{
+\dontrun{
+
 data(CO2)
 #
 # A quick look at the observations with world map
@@ -49,24 +63,18 @@ print(out2)
 # these data are actually subsampled from a grid. 
 # create the image object that holds the data
 #
-# Note: this code below would not work if some marginal lons or lats
-# from the parent grid are missing in the obs. 
 
-x<- unique( CO2$lon.lat[,1])
-y<- unique(  CO2$lon.lat[,2])
-m<- length( x)
-n<- length(y)
-z<- matrix( NA, nrow=m, ncol=n)
-ind<- cbind( match( CO2$lon.lat[,1], x), match( CO2$lon.lat[,2], y))
-z[ind] <- CO2$y
+temp<- matrix( NA, ncol=ncol(CO2.true$z), nrow=nrow(CO2.true$z))
+temp[ CO2.true$mask] <- CO2$y
 
 # look at gridded object. 
- image.plot(x,y, z)
+ image.plot(CO2.true$x,CO2.true$y, temp)
 
 # to predict _exactly_ on this grid for the second fit;
 # (this take a while)
-look<- predict.surface( out2, grid.list=list( x=x, y=y))
+look<- predict.surface( out2, grid.list=list( x=CO2.true$x, y=CO2.true$y))
 image.plot(look)
 
+}
 }
 \keyword{datasets}

@@ -38,7 +38,7 @@ Krig.make.W <- function(out, verbose = FALSE) {
             return(list(W = NULL, W2 = NULL))
         }
         else {
-            return(list(W = diag(out$weightsM), W2 = diag(sqrt(out$weightsM))))
+            return(list(W = out$weightsM, W2 = sqrt(out$weightsM) ))
         }
     }
 }
