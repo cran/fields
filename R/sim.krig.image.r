@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"sim.krig.image" <-
-function (out, nreps = 10) 
-{
+"sim.krig.image" <- function(out, nreps = 10) {
     temp1 <- list()
     temp2 <- as.list(1:nreps)
     class(temp1) <- "sim.krig.image"

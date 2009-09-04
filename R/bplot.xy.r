@@ -2,11 +2,9 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"bplot.xy" <-
-function (x, y, N = 10, breaks = pretty(x, N,eps.correct=1), style = "tukey", 
-    outlier = TRUE, plot = TRUE, xaxt = "s", ...) 
-{
+"bplot.xy" <- function(x, y, N = 10, breaks = pretty(x, 
+    N, eps.correct = 1), style = "tukey", outlier = TRUE, plot = TRUE, 
+    xaxt = "s", ...) {
     out <- list()
     NBIN <- length(breaks) - 1
     centers <- (breaks[1:NBIN] + breaks[2:(NBIN + 1)])/2

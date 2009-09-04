@@ -2,11 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"Krig.find.gcvmin" <-
-function (info, lambda.grid, gcv, gcv.fun, tol, verbose = FALSE, 
-    give.warnings = TRUE) 
-{
+"Krig.find.gcvmin" <- function(info, lambda.grid, 
+    gcv, gcv.fun, tol, verbose = FALSE, give.warnings = TRUE) {
     ind <- !is.na(gcv)
     lambda.grid <- lambda.grid[ind]
     gcv <- gcv[ind]
@@ -15,8 +12,8 @@ function (info, lambda.grid, gcv, gcv.fun, tol, verbose = FALSE,
     lambda.gcv <- lambda.grid[il]
     gcv.raw <- min(gcv)
     if (verbose) {
-        cat( "#### Call for refined search using", 
-               as.character(substitute( gcv.fun)), fill=TRUE)
+        cat("#### Call for refined search using", as.character(substitute(gcv.fun)), 
+            fill = TRUE)
         cat("Results of coarse search lambda and GCV:", lambda.grid[il], 
             gcv.raw, fill = TRUE)
     }
@@ -28,10 +25,8 @@ function (info, lambda.grid, gcv, gcv.fun, tol, verbose = FALSE,
     }
     else {
         if (give.warnings) {
-            warning("GCV search gives a minimum at the endpoints of the 
-grid search")
+            warning("GCV search gives a minimum at the endpoints of the\ngrid search")
         }
         return(lambda.gcv)
     }
 }
-

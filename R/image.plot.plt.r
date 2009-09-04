@@ -2,12 +2,9 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"image.plot.plt" <-
-function (x, add = FALSE, legend.shrink = 0.9, legend.width = 1, 
-    horizontal = FALSE, legend.mar = NULL, bigplot = NULL, smallplot = NULL, 
-    ...) 
-{
+"image.plot.plt" <- function(x, add = FALSE, legend.shrink = 0.9, 
+    legend.width = 1, horizontal = FALSE, legend.mar = NULL, 
+    bigplot = NULL, smallplot = NULL, ...) {
     old.par <- par(no.readonly = TRUE)
     if (is.null(smallplot)) 
         stick <- TRUE
@@ -15,20 +12,17 @@ function (x, add = FALSE, legend.shrink = 0.9, legend.width = 1,
     if (is.null(legend.mar)) {
         legend.mar <- ifelse(horizontal, 3.1, 5.1)
     }
-# compute how big a text character is 
+    # compute how big a text character is
     char.size <- ifelse(horizontal, par()$cin[2]/par()$din[2], 
         par()$cin[1]/par()$din[1])
-
-# This is how much space to work with based on setting the margins in the 
-# high level par command to leave between strip and big plot
+    # This is how much space to work with based on setting the margins in the
+    # high level par command to leave between strip and big plot
     offset <- char.size * ifelse(horizontal, par()$mar[1], par()$mar[4])
-
-# this is the width of the legned strip itself.
+    # this is the width of the legned strip itself.
     legend.width <- char.size * legend.width
-# this is room for legend axis labels
+    # this is room for legend axis labels
     legend.mar <- legend.mar * char.size
-
-# smallplot is the plotting region for the legend. 
+    # smallplot is the plotting region for the legend.
     if (is.null(smallplot)) {
         smallplot <- old.par$plt
         if (horizontal) {
@@ -41,7 +35,6 @@ function (x, add = FALSE, legend.shrink = 0.9, legend.width = 1,
         else {
             smallplot[2] <- 1 - legend.mar
             smallplot[1] <- smallplot[2] - legend.width
-       
             pr <- (smallplot[4] - smallplot[3]) * ((1 - legend.shrink)/2)
             smallplot[4] <- smallplot[4] - pr
             smallplot[3] <- smallplot[3] + pr
@@ -64,4 +57,3 @@ function (x, add = FALSE, legend.shrink = 0.9, legend.width = 1,
     }
     return(list(smallplot = smallplot, bigplot = bigplot))
 }
-

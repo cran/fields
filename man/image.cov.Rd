@@ -103,9 +103,8 @@ the indices.  e.g.  cbind( grid\$x[ ind1[,1]], grid\$y[ind1[,2])) will give
 the coordinates associated with ind1. Clearly it is better just to work
 with ind1!
   
-Functional Form: Following the same form as Exp.cov and matern.cov for 
-irregular
-locations, the covariance is defined as phi( D.ij) where D.ij is
+Functional Form: Following the same form as Exp.cov stationary.cov for 
+irregular locations, the covariance is defined as phi( D.ij) where D.ij is
 the Euclidean distance between x1[i,] and x2[j,] but having first been
 scaled by theta. Specifically,
 

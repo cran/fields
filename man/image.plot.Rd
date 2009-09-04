@@ -32,7 +32,8 @@ image.plot(...,
  The usual arguments to the image function. This includes the use of the
 breaks argument for an unequal color scale.  If a quadrilateral grid
 arguments must be explicitly x,y and z with x, and y being matrices of
-dimension equal or one more than z giving the grid locations.
+dimension equal or one more than z giving the grid locations. The basic concept is that the coordinates of x and y still define a grid but the cells are 
+just quadrilaterals raterh being restricted to rectangles.
 }
 \item{add}{
 If true add image and a legend strip to the existing plot. 
@@ -55,10 +56,8 @@ for a vertical legend and 3.1 for a horizontal legend.}
 label as this is usual evident from the plot title.}
 
 \item{graphics.reset}{
- If
-FALSE (default)  the plotting region ( plt in par) will not be reset 
-and
-one can add more information onto the image plot. (e.g. using functions
+ If FALSE (default) the plotting region ( plt in par) will not be reset 
+and one can add more information onto the image plot. (e.g. using functions
 such as points or lines.)  If TRUE will reset plot parameters to the
 values before entering the function.  
 }
@@ -98,10 +97,15 @@ legend label. This is in the form of list and is just passed to the
 mtext function. Usually this will not be needed. 
 (See example below.)}
 \item{midpoint}{ 
- If FALSE (default) for quadrilateral grids grid point will be extended
-to include z locations as midpoints. If true z values will be averaged
-to yield a midpoint value. (See help on poly.image for details). In most cases
-midpoint should be FALSE to preserve exact values for z. }
+This option for the case of unequally spaced grids with x and y being 
+matrices of grid point locations. 
+ If FALSE (default) the quadralaterals  will be extended
+to surround the  z locations as midpoints. If TRUE z values will be averaged
+to yield a midpoint value and the original grid points be used to define the
+quadralaterals. (See help on poly.image for details). In most cases
+midpoint should be FALSE to preserve exact values for z and 
+let the grid polygons be modified. }
+
 }
 \section{Side Effects}{
 After exiting, the
@@ -139,7 +143,7 @@ tuning the color scale to fit the rendering of z values. This can
 either be specially designed color scale with specific colors ( see
 help on \code{designer.colors}), positioning the colors at specific
 points on the [0,1] scale, or mapping distinct colors to intervals of
-z. The examples below show how to do each of these. In addition by
+z. The examples below show how to do each of these. In addition, by
 supplying \code{lab.break} strings or axis parameters one can
 annotate the legend axis in an informative matter. 
 

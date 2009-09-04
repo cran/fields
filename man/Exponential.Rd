@@ -6,6 +6,7 @@
 \name{Exponential, Matern, Radial Basis}
 \alias{Exponential}
 \alias{Matern}
+\alias{Matern.cor.to.range}
 \alias{RadialBasis}
 \title{Covariance functions}
 \description{
@@ -16,13 +17,14 @@ distance between locations.
 Exponential(d, range = 1, alpha = 1/range, phi = 1)
 Matern (d , scale = 1, range = 1,alpha=1/range,
      smoothness = 0.5, nu= smoothness, phi=scale) 
+Matern.cor.to.range(d, nu, cor.target=.5, guess=NULL,...)
 RadialBasis(d,M,dimension)
 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 
-  \item{d}{ Vector of distances }
+  \item{d}{ Vector of distances or for \code{Matern.cor.to.range} just a single distance. }
 
   \item{range}{ Range parameter default is one. Note 
        that the scale can also be specified  through the "theta" 
@@ -42,7 +44,9 @@ covariance.}
   \item{M}{Interpreted as a spline M is the order of the derivatives in the
     penalty.}
   \item{dimension}{Dimension of function} 
-
+   \item{cor.target}{Correlation used to match the range parameter. Default is .5.}
+   \item{guess}{An optional starting guess for solution. This should not be needed.}
+   \item{\dots}{Additional arguments to pass to the bisection search function.}
 }
 
 \details{
@@ -63,23 +67,65 @@ check for negative distances
 \code{con} is a constant that normalizes the expression to be 1.0  when phi=1.0
 and d=0. 
 
+Matern.cor.to.range: 
+    This function is useful to find  Matern covariance parameters that are 
+comparable for different smoothness parameters. Given a distance \code{d}, 
+smoothness \code{nu},  target correlation \code{cor.target} and
+range \code{theta}, this function determines numerically the value of 
+theta so that
+
+\code{Matern( d, range=theta, nu=nu) == cor.target}
+
+See the example for how this might be used.
+
 Radial basis functions:
-
-   C.m,d  d\^(2m-dim)        dim- odd
-
-   C.m,d  d\^(2m-dim)ln( d)  dim-even
- 
-where C.m.d is a constant based on spline theory. See \code{radbas.constant}.
+\eqn{
+   C.m,d  r^(2m-d)        d- odd
+   C.m,d  r^(2m-d)ln(r)  d-even
+}
+where C.m.d is a constant based on spline theory and r is the radial distance
+between points. See \code{radbas.constant}.
 
 }
 \value{
 
-A vector of covariances. 
+For the covariance functions: a vector of covariances.
+
+For Matern.cor.to.range: the value of the range parameter.  
 
 }
-\references{ Stein's book}
+\references{ Stein, M.L. (1999) Statistical Interpolation of Spatial Data: Some Theory for Kriging. Springer, New York.}
 \author{Doug Nychka}
 \seealso{stationary.cov, stationary.image.cov, Wendland,stationary.taper.cov
   rad.cov}
 
+\examples{
+# a Matern correlation function 
+ d<- seq( 0,10,,200)
+ y<- Matern( d, range=1.5, smoothness=1.0)
+ plot( d,y, type="l")
+
+# Several Materns of different smoothness with a similar correlation 
+# range
+
+# find ranges for nu = .5, 1.0 and 2.0 
+# where the correlation drops to .1 at a distance of 10 units.
+
+ r1<- Matern.cor.to.range( 10, nu=.5, cor.target=.1)
+ r2<- Matern.cor.to.range( 10, nu=1.0, cor.target=.1)
+ r3<- Matern.cor.to.range( 10, nu=2.0, cor.target=.1)
+
+# note that these equivalent ranges
+# with respect to this correlation length are quite different
+# due the different smoothness parameters. 
+
+ d<- seq( 0, 15,,200)
+ y<- cbind(  Matern( d, range=r1, nu=.5),
+             Matern( d, range=r2, nu=1.0),
+             Matern( d, range=r3, nu=2.0))
+
+ matplot( d, y, type="l", lty=1, lwd=2)
+ xline( 10)
+ yline( .1)
+}
 \keyword{spatial}% at least one, from doc/KEYWORDS

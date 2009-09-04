@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"minimax.crit" <-
-function (obj, des = TRUE, R) 
-{
+"minimax.crit" <- function(obj, des = TRUE, R) {
     R <- as.matrix(R)
     id <- 1:nrow(R)
     if (des) 

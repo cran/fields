@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"cat.to.list" <-
-function (x, a) 
-{
+"cat.to.list" <- function(x, a) {
     a <- as.character(a)
     label <- unique(a)
     out <- as.list(1:length(label))

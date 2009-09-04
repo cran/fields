@@ -14,7 +14,9 @@ fields - graphics hints
 \description{
  Here are some technical hints for assembling multiple plots with common
 legends or axes and setting the graphics parameters to make more
-readable figures . These use the standard graphics environment. 
+readable figures. Also we an index to the defaultcolors in R graphics
+and setting their definitions in LaTeX.
+All these hints use the standard graphics environment. 
 }
 \usage{
 fields.style()
@@ -24,10 +26,7 @@ fields.color.picker()
 \code{fields.style} is a simple 
 function to enlarge the characters in a plot and set the colors. List this out to modify the choices.
 
-}
-
-\examples{
-
+\preformatted{
 
 ##Two examples of concentrating a panel of plots together
 ## to conserve the white space. 
@@ -117,6 +116,32 @@ image(seq(.5,M+.5,,M+1), seq(.5,N+.5,,N+1)
 # this creates text strings that are the LaTeX color definitions
 # using the definecolor function. 
 
+# grab all of the R default colors 
+clab<- colors()
+
+for( nn in clab){
+  temp<- signif(col2rgb(nn)/256, 3)
+   cat(
+    "\\definecolor{", 
+                nn, "}",
+    "{rgb}{", temp[1], 
+          ",", temp[2], 
+          ",", temp[3], 
+           "}", fill=TRUE , sep="")
+ }
+
+# this loop prints out definitions such as 
+# \definecolor{yellowgreen}{rgb}{0.602,0.801,0.195}
+# having loaded the color package in LaTeX 
+# defining this color 
+# use the construction  {\color{yellowgreen}  THIS IS A COLOR}
+# to use this color in a talk or document. 
+
+# this loop prints out all the colors in LaTeX language
+# as their names and can be converted to a pdf for handy reference.
+
+sink( "showcolors.tex")
+
 clab<- colors()
 for( nn in clab){
   temp<- signif(col2rgb(nn)/256, 3)
@@ -127,9 +152,13 @@ for( nn in clab){
           ",", temp[2], 
           ",", temp[3], 
            "}", fill=TRUE , sep="")
+   cat( paste("{ \\color{",nn,"} ", nn," $\\bullet$ \\\\ }", sep=""),
+                    fill=TRUE)
 }
-}
+sink()
 
+} %end preformatted
 
+} 
 
 \keyword{hplot}

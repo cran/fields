@@ -10,6 +10,13 @@ options(echo=FALSE)
 test.for.zero.flag<- 1
 
 DD<- cbind( seq(.01,2,,50))
+look2<- Wendland(DD, theta=1.0, dimension=2,k=3,derivative=1) 
+
+look1<- (Wendland(DD+1e-5, theta=1.0, dimension=2,k=3)
+- Wendland(DD-1e-5, theta=1.0, dimension=2,k=3))/2e-5
+
+test.for.zero( look1, look2,tol=1e-6)
+
 look2<- Wendland(DD, theta=1.5, dimension=2,k=3,derivative=1) 
 
 look1<- (Wendland(DD+1e-5, theta=1.5, dimension=2,k=3)
@@ -27,20 +34,35 @@ look0%*% ctest->look0
 
 wendland.cov( x,x, k=2, theta=.75, C=ctest, derivative=0)-> look
 
-wendland.cov( x,x, k=2, theta=.75, C=ctest, derivative=1)-> look
+test.for.zero( look0, look)
 
-wendland.cov( x+1e-5, x, k=2, theta=.75, C=ctest)-
-wendland.cov( x-1e-5, x, k=2, theta=.75, C=ctest)-> look2
+
+wendland.cov( x,x, k=2, theta=1.0, C=ctest, derivative=1)-> look
+
+wendland.cov( x+1e-5, x, k=2, theta=1.0, C=ctest)-
+wendland.cov( x-1e-5, x, k=2, theta=1.0, C=ctest)-> look2
 look2<- look2/2e-5
  
 test.for.zero( look, look2,tol=1e-7)
 
 
+wendland.cov( x,x, k=2, theta=.75, C=ctest, derivative=1)-> look
+
+wendland.cov( x+1e-5, x, k=2, theta=.75, C=ctest)-
+wendland.cov( x-1e-5, x, k=2, theta=.75, C=ctest)-> look2
+look2<- look2/2e-5
+
+test.for.zero( look, look2,tol=1e-7)
+
+
+
 x<- make.surface.grid( list(x=seq( -1,1,,40), y=seq( -1,1,,40)))
+#x<- make.surface.grid( list(x=seq( -1,1,,20), y=seq( -1,1,,20)))
 
 y<- (.123*x[,1] + .234*x[,2])
-
 obj<- mKrig( x,y, lambda=0, cov.function="wendland.cov", k=3, theta=.2)
+#obj<- mKrig( x,y, lambda=0, m=3, theta=.2)
+
 
 xp<- make.surface.grid( list(x=seq(-.5,.5,,24),y= seq( -.5,.5,,24)) )
 predict( obj, xp, derivative=1)-> outd
@@ -57,6 +79,20 @@ true<- cbind( xp[,1] -  xp[,2], xp[,2]- xp[,1])
 
 rmse<-sqrt(mean((true[,1] - outd[,1])**2)/mean(true[,1]**2))
 test.for.zero( rmse,0, tol=1e-2,relative=FALSE)
+
+obj<- mKrig( x,y, lambda=0, cov.function="wendland.cov", k=3, V=diag(c( .2,.2) ))
+
+predict( obj, xp, derivative=1)-> outd
+rmse<-sqrt(mean((true[,1] - outd[,1])**2)/mean(true[,1]**2))
+test.for.zero( rmse,0, tol=1e-2,relative=FALSE)
+
+obj<- mKrig( x,y, lambda=0, cov.function="wendland.cov", k=3,
+             V=diag(c( .3,.3) )%*% matrix( c( .5,.5,.5, -.5), 2,2))
+
+predict( obj, xp, derivative=1)-> outd
+rmse<-sqrt(mean((true[,1] - outd[,1])**2)/mean(true[,1]**2))
+test.for.zero( rmse,0, tol=1e-2,relative=FALSE)
+
 
 
 rmse<-sqrt(mean((true[,2] - outd[,2])**2)/mean(true[,2]**2))

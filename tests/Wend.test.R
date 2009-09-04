@@ -51,10 +51,9 @@ temp1<-  spam2full( look)
 test.for.zero( temp1, temp0)
 
 stationary.taper.cov( x1,x2, Taper="Wendland",
-           Taper.args= list( theta=.8, k=2),
+           Taper.args= list( theta=.8, k=2, dimension=2),
                      spam.format=TRUE )-> look
 temp1b<-  spam2full( look)
-
 
 temp2<-  Wendland2.2(DD, theta=.8) * Exponential(DD)
 temp3<-  wendland.cov(x1,x2, k=2, theta=.8) * Exponential(DD)
@@ -68,8 +67,6 @@ test.for.zero( temp2, temp0, rel=FALSE)
 test.for.zero( temp2, temp3,rel=FALSE)
 test.for.zero( temp2, temp4,rel=FALSE)
 
-
-
 set.seed( 256)
 rv<- runif( nrow(x2))
 
@@ -82,6 +79,7 @@ test.for.zero( look, look2)
 
 temp2%*%(rv)-> look2
 test.for.zero( look, look2)
+
 
 cat( "Done with testing Wendland family", fill=TRUE)
 options( echo=TRUE)

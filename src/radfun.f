@@ -13,7 +13,9 @@
          do 6 k=1,n
           dtemp= d2(k)
           if( dtemp.gt.1e-20)  then
-           d2(k)=  log(dtemp)*(dtemp)**( par(1))
+c note: dtemp is squared distance
+
+           d2(k)= log(dtemp)*(dtemp)**( par(1))
           else
            d2(k)=0.0
           endif
@@ -21,3 +23,4 @@
        endif
         return
         end
+

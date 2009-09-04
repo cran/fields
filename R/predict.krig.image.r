@@ -2,11 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"predict.krig.image" <-
-function (object, x, ...) 
-{
-    obj<- object # hack S3
+"predict.krig.image" <- function(object, x, ...) {
+    obj <- object
     if (missing(x)) {
         temp1 <- c(obj$cov.function(obj$indexM, obj$indexM, Y = obj$delta, 
             cov.obj = obj$cov.obj))

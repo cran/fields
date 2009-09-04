@@ -62,10 +62,8 @@
 \alias{grey.level}
 \alias{image.plot.info}
 \alias{image.plot.plt}
-\alias{in.poly}
 \alias{krig.image.parameters}
 \alias{lonlat2xy}
-\alias{make.surface.grid}
 \alias{minimax.crit}
 \alias{periodic.cov.1d}
 \alias{periodic.cov.cyl}
@@ -220,14 +218,10 @@ image.plot.info (...)
 image.plot.plt(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
 horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
 
-in.poly (xd, xp, convex.hull = FALSE, inflation=1e-7) 
- 
 krig.image.parameters (out) 
  
 lonlat2xy (lnlt, miles = FALSE) 
  
-make.surface.grid (grid.list)
-
 minimax.crit (obj, des = TRUE, R) 
  
 periodic.cov.1d (x1, x2, a, b) 

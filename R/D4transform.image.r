@@ -2,10 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"D4transform.image" <-
-function (x, inv = FALSE, transpose = FALSE, cut.min = 8) 
-{
+"D4transform.image" <- function(x, inv = FALSE, transpose = FALSE, 
+    cut.min = 8) {
     if (transpose) 
         inv <- !inv
     n <- dim(x)[1]

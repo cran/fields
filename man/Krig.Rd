@@ -30,7 +30,7 @@ and marginal variances are supplied.
 Krig(
 x, Y, cov.function = "stationary.cov", lambda = NA, df
                  = NA, GCV=FALSE, Z = NULL, cost = 1, knots = NA, weights = NULL,
-                 m = 2, nstep.cv = 80, scale.type = "user", x.center =
+                 m = 2, nstep.cv = 200, scale.type = "user", x.center =
                  rep(0, ncol(x)), x.scale = rep(1, ncol(x)), rho = NA,
                  sigma2 = NA, method = "GCV", verbose = FALSE, mean.obj
                  = NA, sd.obj = NA, null.function =
@@ -119,7 +119,11 @@ model in the locations  will be fit a fixed part of the model.
 
 \item{nstep.cv}{
 Number of grid points for the coarse grid search  to 
-minimize the GCV  RMLE and other related criterian for finding lambda. 
+minimize the GCV  RMLE and other related criteria for finding lambda, 
+the smoothing parameter. 
+Default is 200, fairly large to avoid some cases of closely spaced local 
+minima. Evaluations of the GCV and related objective functions are cheap
+given the matrix decompositions described below.  
 }
 
 \item{scale.type}{
@@ -308,6 +312,7 @@ Residuals from the fit.
 }
 \item{lambda}{
 Value of the smoothing parameter used in the fit. 
+Lambda is defined as sigma**2/rho. See discussion in details.
 }
 \item{yname}{
 Name of the response. 
@@ -364,28 +369,45 @@ This function produces a object of class Krig. With this object it is
 easy to subsequently predict with this fitted surface, find standard
 errors, alter the y data ( but not x), etc. 
 
-The Kriging model is: Y.k= P(x.k) + Z(x.k) + e.k
+The Kriging model is: Y.k= f(x.k) = P(x.k) + Z(x.k) + e.k
 
-where ".k" means subscripted by k, Y is the dependent variable observed
-at location x.k, P is a low order polynomial, Z is a mean zero, Gaussian
-field with covariance function K and e is assumed to be independent
-normal errors. The estimated surface is the best linear unbiased
-estimate (BLUE) of P(x) + Z(x) given the observed data. For this
-estimate K, is taken to be rho*cov.function and the errors have variance
-sigma**2. In more conventional geostatistical terms rho is the "sill" if
-the covariance function is actually a correlation function and sigma**2
-is the nugget variance or measure error variance (the two are confounded
-in this model.)  If the weights are given then the variance of e.k is
-sigma**2/ weights.k . In the case that the weights are specified as a
-matrix, W,  using the wght.function option then the assumed covariance matrix
-for the errors is sigma**2 Wi, where Wi is the inverse of W. 
+where ".k" means subscripted by k, Y is the dependent variable observed 
+at location x.k, P is a low order polynomial, Z is a mean zero, Gaussian 
+field with covariance function K and e is assumed to be independent 
+normal errors. The estimated surface is the best linear unbiased 
+estimate (BLUE) of f(x)= P(x) + Z(x) given the observed data. For this 
+estimate K, is taken to be rho*cov.function and the errors have variance 
+sigma**2. In more conventional geostatistical terms rho is the "sill" if 
+the covariance function is actually a correlation function and sigma**2 
+is the nugget variance or measure error variance (the two are confounded 
+in this model.)  If the weights are given then the variance of e.k is 
+sigma**2/ weights.k . In the case that the weights are specified as a 
+matrix, W, using the wght.function option then the assumed covariance 
+matrix for the errors is sigma**2 Wi, where Wi is the inverse of W. It 
+is straightforward to show that the estimate of f only depends on sigma 
+and rho through the ratio lambda = sigma**2/ rho. This parameter, termed 
+the smoothing parameter plays a central role in the statistical 
+computations within \code{Krig}. See also the help for thin plate 
+splines, (\code{Tps}) to get another perspective on the smoothing 
+parameter.
 
-If these parameters rho and sigma2 are omitted in the call, then they are
+This function also supports a modest extension of the Generalized 
+Kriging model to include other covariates as fixed regression type 
+components. In matrix form Y = Zb + F + E where Z is a matrix of 
+covariates and b a fixed parameter vector, F the vector of function values at 
+the observations and E a vector of errors. The The \code{Z} argument in 
+the function is the way to specify this additional component.
+
+If the parameters rho and sigma2 are omitted in the call, then they are
 estimated in the following way. If lambda is given, then sigma2 is
 estimated from the residual sum of squares divided by the degrees of
 freedom associated with the residuals.  Rho is found as the difference
 between the sums of squares of the predicted values having subtracted off
-the polynomial part and sigma2.  
+the polynomial part and sigma2. These estimates are the MLE's under Gaussian 
+assumptions on the process and errors. 
+ If lambda is also omitted is it estimated
+from the data using a variety of approaches and then the values for sigma
+and rho are found in the same way from the estimated lambda. 
 
 A useful extension of a stationary correlation to a nonstationary
 covariance is what we term a correlation model. 
@@ -415,6 +437,13 @@ replicated data (pure error estimate in ANOVA language).
 GCV.model:
 Only considers the residual sums of squares explained by the basis
 functions.  
+
+REML: 
+The process and errors are assumed to the Gaussian and the likelihood is 
+concentrated (or profiled) with respect to lambda. The MLE of lambda is 
+found from this criterion. Restricted means that the likelihood is formed from a linear transformation  of the observations that is orthogonal to the 
+column space of P(x). 
+
 
 WARNING: The covariance functions often have a nonlinear parameter(s) that
 often control the strength of the correlations as a function of separation,

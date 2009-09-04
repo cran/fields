@@ -5,6 +5,7 @@
 
 \name{predict.Krig}
 \alias{predict.Krig}
+\alias{predict.derivative.Krig}
 \title{
   Evaluation of Krig spatial process estimate.  
 }
@@ -19,6 +20,7 @@ object, x = NULL, Z = NULL, drop.Z = FALSE, just.fixed
                  = FALSE, lambda = NA, df = NA, model = NA,
                  eval.correlation.model = TRUE, y = NULL, yM = NULL,
                  verbose = FALSE, ...)
+predict.derivative.Krig (object, x = NULL,  verbose = FALSE,...)
 
 }
 \arguments{
@@ -76,15 +78,19 @@ Print out all kinds of intermediate stuff for debugging
 \item{\dots}{Other arguments passed to predict.}
 }
 \value{
-Vector of predicted responses
+Vector of predicted responses or a matrix of the partial derivatives. 
 }
 \details{
-The main goal in this function is to reuse the Krig object to rapidly
-evaluate different estimates. Thus there is flexibility in changing the
-value of lambda and also the independent data without having to recompute
-the matrices associated with the Krig object. The reason this is possible
-is that most on the calculations depend on the observed locations not on
-lambda or the observed data.  
+ The main goal in this function is to reuse the Krig object to rapidly 
+evaluate different estimates. Thus there is flexibility in changing the 
+value of lambda and also the independent data without having to 
+recompute the matrices associated with the Krig object. The reason this 
+is possible is that most on the calculations depend on the observed 
+locations not on lambda or the observed data. Note the version for 
+evaluating partial derivatives does not provide the same flexibility as 
+\code{predict.Krig} and makes some assumptions about the null model 
+(as a low order polynomial) and can not handle the correlation model form.
+
 }
 \seealso{
 Krig, predict.surface gcv.Krig 

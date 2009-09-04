@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"qr.q2ty" <-
-function (qr, y) 
-{
+"qr.q2ty" <- function(qr, y) {
     if (!is.matrix(y)) {
         y <- as.matrix(y)
     }

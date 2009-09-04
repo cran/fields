@@ -47,7 +47,7 @@ option is equivalent to the  S sequence: par( mfrow=c(m,n)).
 The function will echo your choice of m and n to the terminal.  
 }
 \seealso{
-\code{\link{par}} 
+\code{par}  
 }
 \examples{
 set.panel(5,2) #divide screen to hold 10 plots where there are 5 rows  

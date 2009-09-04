@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"print.summary.krig.image" <-
-function (x, ...) 
-{
+"print.summary.krig.image" <- function(x, ...) {
     digits <- x$digits
     c1 <- "Number of Observations:"
     c2 <- x$num.observation

@@ -1,0 +1,70 @@
+
+R version 2.9.0 (2009-04-17)
+Copyright (C) 2009 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # fields, Tools for spatial data
+> # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+> # University Corporation for Atmospheric Research
+> # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+> 
+> # test of sreg and related functions
+> 
+> library( fields)
+Loading required package: spam
+Package 'spam' is loaded. Spam version 0.15-5 (2009-08-08).
+Type demo( spam) for some demos, help( Spam) for an overview
+of this package.
+Help for individual functions is optained byadding the
+suffix '.spam' to the function name, e.g. 'help(chol.spam)'.
+
+Attaching package: 'spam'
+
+
+	The following object(s) are masked from package:base :
+
+	 backsolve,
+	 forwardsolve 
+
+ Try help(fields) for an overview of this library
+fields web: http://www.image.ucar.edu/Software/Fields 
+> options(echo=FALSE)
+    PASSED test at tolerance  1e-08
+    PASSED test at tolerance  1e-08
+    PASSED test at tolerance  1e-08
+testing:   der of Rad.cov
+    PASSED test at tolerance  1e-06
+testing:   der of Rad.cov
+    PASSED test at tolerance  1e-06
+    PASSED test at tolerance  1e-08
+testing:  Tps vs.  Krig w/ GCV
+    PASSED test at tolerance  1e-08
+testing:  Tps vs. radial basis w Krig
+    PASSED test at tolerance  1e-08
+Warning messages:
+1: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV, Krig.fgcv,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+2: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, Krig.fgcv.one,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+    PASSED test at tolerance  0.001
+    PASSED test at tolerance  0.001
+> cat("all done testing Tps", fill=TRUE)
+all done testing Tps
+> 
+>  
+> 
+> 

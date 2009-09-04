@@ -18,7 +18,7 @@ independently with different data sets (the y's) if the covariates ( the
 x's) are the same and thus reduce the computation. 
 }
 \usage{
-gcv.Krig(out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse = NA, 
+gcv.Krig(out, lambda.grid = NA, cost = 1, nstep.cv = 200, rmse = NA, 
                   verbose = FALSE, tol = 1e-05, offset = 0, 
                   y = NULL, give.warnings = TRUE, give.warnings.REML = FALSE)
 
@@ -116,7 +116,7 @@ y<- f + rnorm( 150)*sigma
 
 Tps( x,y)-> obj # create Krig object
 
-hold<- matrix( NA, ncol=4, nrow=100)
+hold<- matrix( NA, ncol=5, nrow=100)
 
 for( k in 1:100){
 # look at GCV estimates of lambda

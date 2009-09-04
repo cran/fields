@@ -2,19 +2,14 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
- "smooth.2d" <-
-function (Y, ind = NULL, weight.obj = NULL, setup = FALSE, grid = NULL, 
-    x = NULL, nrow = 64, ncol = 64, surface = TRUE, cov.function = 
-gauss.cov, 
-    Mwidth = NULL, Nwidth = NULL, ...) 
-{
+"smooth.2d" <- function(Y, ind = NULL, weight.obj = NULL, 
+    setup = FALSE, grid = NULL, x = NULL, nrow = 64, ncol = 64, 
+    surface = TRUE, cov.function = gauss.cov, Mwidth = NULL, 
+    Nwidth = NULL, ...) {
     temp <- as.image(Y, ind, grid = grid, nrow = nrow, ncol = ncol, 
         x = x)
     Y <- temp$z
-
-    NN <- temp$weights # cheat should actually be number in each cell
-
+    NN <- temp$weights
     grid <- list(x = temp$x, y = temp$y)
     if (is.null(weight.obj)) {
         dx <- grid$x[2] - grid$x[1]

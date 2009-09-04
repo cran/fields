@@ -2,10 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"transformx" <-
-function (x, scale.type = "unit.sd", x.center, x.scale) 
-{
+"transformx" <- function(x, scale.type = "unit.sd", 
+    x.center, x.scale) {
     if (scale.type == "unscaled") {
         x.center <- rep(0, ncol(x))
         x.scale <- rep(1, ncol(x))

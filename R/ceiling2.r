@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"ceiling2" <-
-function (m) 
-{
+"ceiling2" <- function(m) {
     if (m < 1) 
         return(NA)
     M <- 1

@@ -1,5 +1,5 @@
 
-R version 2.9.0 Under development (unstable) (2009-02-02 r47821)
+R version 2.9.0 (2009-04-17)
 Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
@@ -25,10 +25,11 @@ Type 'q()' to quit R.
 > 
 > library( fields)
 Loading required package: spam
-Package 'spam' is loaded. Spam version 0.15-2 (2008-09-10).
-
-Type demo( spam) for some demos, help( Spam) for an overview of this package.
-
+Package 'spam' is loaded. Spam version 0.15-5 (2009-08-08).
+Type demo( spam) for some demos, help( Spam) for an overview
+of this package.
+Help for individual functions is optained byadding the
+suffix '.spam' to the function name, e.g. 'help(chol.spam)'.
 
 Attaching package: 'spam'
 
@@ -36,16 +37,16 @@ Attaching package: 'spam'
 	The following object(s) are masked from package:base :
 
 	 backsolve,
-	 forwardsolve,
-	 kronecker 
+	 forwardsolve 
 
- Try help(fields) for an overview of this library 
+ Try help(fields) for an overview of this library
+fields web: http://www.image.ucar.edu/Software/Fields 
 > options(echo=FALSE)
 testing:  predict at lambda sreg/Tps
     PASSED test at tolerance  1e-08
     PASSED test at tolerance  5e-04
 testing:  GCV sreg/Tps
-    PASSED test at tolerance  1.5e-06
+    PASSED test at tolerance  2.1e-06
 testing:  GCV sreg/Tps reps case
     PASSED test at tolerance  1e-06
 testing:  GCV sreg/Tps reps case
@@ -61,6 +62,3 @@ All done with sreg tests
 > 
 > 
 > 
-> proc.time()
-   user  system elapsed 
-  1.471   0.059   2.036 

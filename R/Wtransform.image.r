@@ -2,10 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"Wtransform.image" <-
-function (x, inv = FALSE, transpose = FALSE, cut.min = 8) 
-{
+"Wtransform.image" <- function(x, inv = FALSE, transpose = FALSE, 
+    cut.min = 8) {
     if (transpose) 
         inv <- !inv
     n <- dim(x)[1]
@@ -24,11 +22,10 @@ function (x, inv = FALSE, transpose = FALSE, cut.min = 8)
         stop(" number of columns of x must >= to number of\nrows")
     nn <- n
     mm <- m
-# test 
-           if( dyadic.2check( mm,nn,cut.min)==FALSE) 
-                 {stop("error in column or row dimensions")}
-
-
+    # test
+    if (dyadic.2check(mm, nn, cut.min) == FALSE) {
+        stop("error in column or row dimensions")
+    }
     if (!inv) {
         while (nn > cut.min) {
             if (!transpose) {

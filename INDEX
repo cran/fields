@@ -5,7 +5,8 @@ BD                      Data frame of the effect of buffer compositions
                         regression data set with with replication. This
                         is a useful test data set for exercising
                         function fitting methods.
-CO.elev                 Monthly surface meterology for Colorado
+CO2                     Simulated global CO2 observations
+COmonthlyMet            Monthly surface meterology for Colorado
                         1895-1997
 Exp.cov                 Exponential family, radial basis
                         functions,cubic spline, compactly supported
@@ -28,7 +29,8 @@ US                      Plot of the US with state boundaries
 US.dat                  Outline of coterminous US and states.
 W.info                  Gives indexing imfomration for a wavelet
                         decompostion
-Wendland                Wendland family of covariance functions
+Wendland                Wendland family of covariance functions and
+                        supporting numerical functions
 Wimage.cov              Functions for W-transform based covariance
                         models
 Wimage.info             Finds key indices related to a 2-d
@@ -45,7 +47,6 @@ bplot.xy                Boxplots for conditional distribution
 colorbar.plot           Adds color scale strips to an existing plot.
 cover.design            Computes Space-Filling "Coverage" designs using
                         Swapping Algorithm
-crop.image              Some simple functions for subsetting images
 drape.plot              Perspective plot draped with colors in the
                         facets.
 fields                  fields - tools for spatial data
@@ -62,6 +63,7 @@ image.plot              Draws image plot with a legend strip for the
                         color scale based on either a regular grid or a
                         grid of quadrilaterals.
 image.smooth            Kernel smoother for irregular 2-d data
+image2lz                Some simple functions for subsetting images
 interp.surface          Fast bilinear interpolator from a grid.
 krig.image              Spatial process estimate for large irregular
                         2-d dats sets.
@@ -69,6 +71,7 @@ lennon                  Gray image of John Lennon.
 mKrig                   "micro Krig" Spatial process estimate of a
                         curve or surface, "kriging" with a known
                         covariance function.
+mKrig.grid              Using MKrig for predicting on a grid.
 minitri                 Mini triathlon results
 ozone                   Data set of ozone measurements at 20 Chicago
                         monitoring stations.

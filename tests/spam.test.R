@@ -49,7 +49,7 @@ temp1<-  spam2full( look)
 test.for.zero( temp1, temp0)
 
 stationary.taper.cov( x1,x2, Taper="Wendland",
-           Taper.args= list( theta=.8, k=2),
+           Taper.args= list( theta=.8, k=2, dimension=2),
                      spam.format=TRUE )-> look
 temp1b<-  spam2full( look)
 
@@ -132,12 +132,12 @@ y<- ozone2$y[16,]
 
 Krig(x,y, cov.function = "stationary.taper.cov", theta=1.5,
       give.warnings=FALSE, 
-      cov.args= list( spam.format=FALSE, Taper.args= list( theta=2.0,k=3) )
-           ) -> out1
+      cov.args= list( spam.format=FALSE, 
+           Taper.args= list( dimension=2, theta=2.0,k=3) )    ) -> out1
 
 Krig(x,y, cov.function = "stationary.taper.cov", lambda=2.0, theta=1.5,
       cov.args= list( spam.format=TRUE,
-        Taper.args= list( theta=2.0,k=3)  )
+        Taper.args= list( theta=2.0,k=3, dimension=2)  )
            ) -> out2
 
 temp1<- predict( out1,lambda=2.0)

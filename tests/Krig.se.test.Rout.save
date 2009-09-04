@@ -1,5 +1,5 @@
 
-R version 2.9.0 Under development (unstable) (2009-02-02 r47821)
+R version 2.9.0 (2009-04-17)
 Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
@@ -23,10 +23,11 @@ Type 'q()' to quit R.
 > 
 > library( fields)
 Loading required package: spam
-Package 'spam' is loaded. Spam version 0.15-2 (2008-09-10).
-
-Type demo( spam) for some demos, help( Spam) for an overview of this package.
-
+Package 'spam' is loaded. Spam version 0.15-5 (2009-08-08).
+Type demo( spam) for some demos, help( Spam) for an overview
+of this package.
+Help for individual functions is optained byadding the
+suffix '.spam' to the function name, e.g. 'help(chol.spam)'.
 
 Attaching package: 'spam'
 
@@ -34,10 +35,10 @@ Attaching package: 'spam'
 	The following object(s) are masked from package:base :
 
 	 backsolve,
-	 forwardsolve,
-	 kronecker 
+	 forwardsolve 
 
- Try help(fields) for an overview of this library 
+ Try help(fields) for an overview of this library
+fields web: http://www.image.ucar.edu/Software/Fields 
 > 
 > # tests of predict.se
 > # against direct linear algebra 
@@ -64,6 +65,3 @@ testing:  Conditional simulation marginal se for grid
     PASSED test at tolerance  0.005
 all done testing predict.se 
 > 
-> proc.time()
-   user  system elapsed 
- 66.299   6.052 109.332 

@@ -2,15 +2,12 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"Krig.find.REML" <-
-function (info, lambda.grid, llike, llike.fun, tol, verbose = TRUE,
-    give.warnings = FALSE) 
-{
-#
-# NOTE give.warnings set to FALSE to avoid numerous messages for
-# the standard fields examples.  
-#
+"Krig.find.REML" <- function(info, lambda.grid, llike, 
+    llike.fun, tol, verbose = TRUE, give.warnings = FALSE) {
+    #
+    # NOTE give.warnings set to FALSE to avoid numerous messages for
+    # the standard fields examples.
+    #
     ind <- !is.na(llike)
     lambda.grid <- lambda.grid[ind]
     llike <- llike[ind]
@@ -20,8 +17,7 @@ function (info, lambda.grid, llike, llike.fun, tol, verbose = TRUE,
     llike.raw <- min(llike)
     if (verbose) {
         cat("Results of coarse search lambda and  restricted Log Likelihood:", 
-lambda.llike[il], 
-            llike.raw, fill = TRUE)
+            lambda.llike[il], llike.raw, fill = TRUE)
     }
     if ((il > 1) & (il < nstep.cv)) {
         out <- golden.section.search(lambda.grid[il - 1], lambda.grid[il], 
@@ -31,10 +27,8 @@ lambda.llike[il],
     }
     else {
         if (give.warnings) {
-            warning("Search for REML estimate of smoothing paramter gives a 
-maximum at the endpoints of the grid search")
+            warning("Search for REML estimate of smoothing paramter gives a\nmaximum at the endpoints of the grid search")
         }
         return(lambda.llike)
     }
 }
-

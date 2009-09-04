@@ -2,18 +2,14 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"plot.surface" <-
-function (x, main = NULL, type = "C", zlab = NULL, xlab = NULL, 
-    ylab = NULL, levels = NULL, zlim = NULL, graphics.reset = NULL, 
-    labcex = 0.6, add.legend = TRUE, ...) 
-{
+"plot.surface" <- function(x, main = NULL, type = "C", 
+    zlab = NULL, xlab = NULL, ylab = NULL, levels = NULL, zlim = NULL, 
+    graphics.reset = NULL, labcex = 0.6, add.legend = TRUE, ...) {
     obj <- x
     old.par <- par(no.readonly = TRUE)
-
-    if( is.na(match( type, c("b", "C", "I", "p") )) ) {
-        stop("plot type does not match b, C, I, or p.") }
-
+    if (is.na(match(type, c("b", "C", "I", "p")))) {
+        stop("plot type does not match b, C, I, or p.")
+    }
     if (is.null(zlim)) {
         zlim = range(obj$z, na.rm = TRUE)
     }
@@ -45,7 +41,7 @@ function (x, main = NULL, type = "C", zlab = NULL, xlab = NULL,
         if (!is.null(obj$main)) 
             main <- obj$main
     if (type == "b") 
-        set.panel(1,2, TRUE)
+        set.panel(1, 2, TRUE)
     if (type == "p" | type == "b") {
         if (type == "b") {
             add.legend <- FALSE
@@ -78,4 +74,3 @@ function (x, main = NULL, type = "C", zlab = NULL, xlab = NULL,
     }
     invisible()
 }
-

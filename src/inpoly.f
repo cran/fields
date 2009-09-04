@@ -1,13 +1,10 @@
 
       subroutine inpoly(nd, xd,yd,np,xp,yp,ind)
-C----------------------------------------------------------------------
-C     This subroutine determines whether or not an (i,j) matrix 
-C     element is inside a (closed) set of (i,j)'s AND has the desired
-C     cloud ID.
-C
-C     This is essentially the same problem as -- given a point in
-C     2D, are we inside a polygon. 
-C----------------------------------------------------------------------
+!----------------------------------------------------------------------
+!     This subroutine determines whether or not an 2-d point (xd(j),yd(j))
+!     element is inside a (closed) set of points xp,yp that
+!     are assumed to form polygon.
+!----------------------------------------------------------------------
 
       integer np      		! # of points in polygon
       integer nd		! # points to check 
@@ -15,13 +12,49 @@ C----------------------------------------------------------------------
       real yd(nd)
       real    xp(np)		! 2d-locations of polygon
       real    yp(np)		
+      real  x1, x2, y1,y2       ! min and max of x and y
+      real  temp, xt, yt
       integer ind(nd)		! THE ANSWER : ind(i)=1 if point xd(i),yd(i) is 
                                 !  in polygon 0 otherwise 
       integer in
-      do j = 1,nd
+      x1= xp(1)
+      x2= xp(2)
+      y1= yp(1)
+      y2= yp(1)
+!
+!     find the minima and maxima of the polygon coordinates
+!     i.e. the smallest rectangle containing the polygon.
+      do j = 1,np
 
-            call  inpoly2(xd(j),yd(j),np,xp,yp, in) 
-	       ind(j)=in
+        temp= xp(j)
+        if( temp.lt.x1)  then 
+           x1 = temp
+        endif
+        if( temp.gt.x2) then
+           x2 = temp
+        endif
+
+        temp= yp(j)
+        if( temp.lt.y1)  then 
+           y1 = temp
+        endif
+        if( temp.gt.y2) then
+           y2 = temp
+        endif
+      enddo
+    
+      do j = 1,nd
+      xt= xd(j)
+      yt= yd(j)
+! quick test that point is inside the bounding rectangle
+! if not it is not inside polygon
+      if( (xt.le. x2).and. (xt.ge.x1).and.
+     *       (yt.le.y2).and.(yt.ge.y1) ) then
+        call inpoly2(xt,yt,np,xp,yp, in) 
+        ind(j)=in
+      else
+        ind(j)= 0
+      endif
 
       enddo
 
