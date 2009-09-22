@@ -2,16 +2,11 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"conjugate.gradient" <-
-function (b, multAx, start, tol = 1e-05, kmax = 25, verbose = TRUE, 
-    ...) 
-{
+"conjugate.gradient" <- function(b, multAx, start, 
+    tol = 1e-05, kmax = 25, verbose = TRUE, ...) {
     call <- match.call()
-
-        x <- start
-        r <- b - multAx(x, ...)
-
+    x <- start
+    r <- b - multAx(x, ...)
     p <- r
     rho <- rep(NA, kmax + 1)
     rho[1 + (0)] <- sum(r^2)

@@ -1,0 +1,90 @@
+
+R version 2.9.0 (2009-04-17)
+Copyright (C) 2009 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # fields, Tools for spatial data
+> # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+> # University Corporation for Atmospheric Research
+> # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+> 
+> library( fields)
+Loading required package: spam
+Package 'spam' is loaded. Spam version 0.15-5 (2009-08-08).
+Type demo( spam) for some demos, help( Spam) for an overview
+of this package.
+Help for individual functions is optained byadding the
+suffix '.spam' to the function name, e.g. 'help(chol.spam)'.
+
+Attaching package: 'spam'
+
+
+	The following object(s) are masked from package:base :
+
+	 backsolve,
+	 forwardsolve 
+
+ Try help(fields) for an overview of this library
+fields web: http://www.image.ucar.edu/Software/Fields 
+> options( echo=FALSE)
+Warning messages:
+1: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV, Krig.fgcv,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+2: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, Krig.fgcv.one,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+testing:  Krig mKrig d coef
+    PASSED test at tolerance  1e-08
+testing:  Krig mKrig c coef
+    PASSED test at tolerance  1e-08
+testing:  Monte Carlo eff.df
+    PASSED test at tolerance  0.01
+testing:  Test of wendland and great circle
+    PASSED test at tolerance  1e-08
+testing:  eff.df
+    PASSED test at tolerance  0.01
+testing:  Test of sparse wendland and great circle
+    PASSED test at tolerance  8e-07
+testing:  sparse eff.df
+    PASSED test at tolerance  0.01
+testing:  exact sparse eff.df
+    PASSED test at tolerance  1e-06
+testing:  exact sparse eff.df -- fastTps
+    PASSED test at tolerance  1e-06
+testing:  initial check on d for likelihood
+    PASSED test at tolerance  1e-08
+testing:  rho hatfrom likelihood
+    PASSED test at tolerance  1e-08
+testing:  rho hatfrom likelihood
+    PASSED test at tolerance  1e-08
+    PASSED test at tolerance  1e-08
+    PASSED test at tolerance  1e-08
+Warning messages:
+1: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV, Krig.fgcv,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+2: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, Krig.fgcv.one,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98  99  100  Warning messages:
+1: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV, Krig.fgcv,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+2: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, Krig.fgcv.one,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+    PASSED test at tolerance  0.08
+    PASSED test at tolerance  0.12

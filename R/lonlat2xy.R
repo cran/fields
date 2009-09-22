@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"lonlat2xy" <-
-function (lnlt, miles = FALSE) 
-{
+"lonlat2xy" <- function(lnlt, miles = FALSE) {
     n <- nrow(lnlt)
     ctr <- c(mean(lnlt[, 1]), mean(lnlt[, 2]))
     ctx <- cbind(lnlt[, 1], rep(ctr[2], n))

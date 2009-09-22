@@ -2,12 +2,10 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"draw.bplot" <-
-function (temp, width, xpos, outlier = TRUE, style = "tukey") 
-{
-if( temp$N< 1) return()
-
+"draw.bplot" <- function(temp, width, xpos, outlier = TRUE, 
+    style = "tukey") {
+    if (temp$N < 1) 
+        return()
     if (style == "quantile") {
         temp <- temp[!is.na(temp)]
         quant <- c(0.05, 0.25, 0.5, 0.75, 0.95)

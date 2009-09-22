@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"sim.rf" <-
-function (obj) 
-{
+"sim.rf" <- function(obj) {
     n <- obj$n
     m <- obj$m
     M <- obj$M

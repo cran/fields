@@ -67,9 +67,23 @@ US( add=TRUE, col="grey", lwd=2)
 # to draw over the state boundaries. 
 #
 
-### adding a legend strip "by hand"
-par( mar=c( 5,5,5,10)) # save some room for the legend
-quilt.plot( ozone2$lon.lat, ozone2$y[16,], add.legend=FALSE)
-image.plot(ozone2$lon.lat, ozone2$y[16,],legend.only=TRUE)
+### adding a common legend strip "by hand"
+## and a custom color table
+
+coltab<- two.colors( 256, middle="grey50" )
+
+par( oma=c( 0,0,0,5)) # save some room for the legend
+set.panel(2,2)
+zr<- range( ozone2$y, na.rm=TRUE)
+
+for( k in 1:4){
+quilt.plot( ozone2$lon.lat, ozone2$y[15+k,], add.legend=FALSE,
+ zlim=zr, col=coltab, nrow=40, ncol=40)
+US( add=TRUE)
+}
+par( oma=c(0,0,0,1))
+image.plot(zlim=zr,legend.only=TRUE, col=coltab)
+# may have to adjust number of spaces in oma to make this work.
+
   }
 \keyword{hplot}% at least one, from doc/KEYWORDS

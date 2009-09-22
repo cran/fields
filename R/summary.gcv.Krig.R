@@ -2,11 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"summary.gcv.Krig" <-
-function (object, lambda, cost = 1, verbose = FALSE, offset = 0, 
-    y = NULL, ...) 
-{
+"summary.gcv.Krig" <- function(object, lambda, cost = 1, 
+    verbose = FALSE, offset = 0, y = NULL, ...) {
     out <- object
     nt <- out$nt
     np <- out$np
@@ -36,11 +33,9 @@ function (object, lambda, cost = 1, verbose = FALSE, offset = 0,
     lambda.est[2] <- Krig.ftrace(lambda, D)
     lambda.est[3] <- Krig.fgcv(lambda, info)
     lambda.est[4] <- Krig.fgcv.one(lambda, info)
-
     if (!is.na(shat.pure.error)) {
-        lambda.est[5] <- Krig.fgcv.model(lambda, info)}
-
+        lambda.est[5] <- Krig.fgcv.model(lambda, info)
+    }
     lambda.est[6] <- sqrt(Krig.fs2hat(lambda, info))
     lambda.est
 }
-

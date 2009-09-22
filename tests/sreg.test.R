@@ -35,7 +35,7 @@ Tps( x,y)-> out2
 gcv.Krig( out2, tol=1e-12)$lambda.est[1,2]-> look2
 gcv.sreg( out, tol=1e-12)$lambda.est[1,2] -> look
 
-test.for.zero( look, look2, tol=1.5e-6, tag="GCV sreg/Tps")
+test.for.zero( look, look2, tol=2.1e-6, tag="GCV sreg/Tps")
 
 #### replications
 set.seed( 123)

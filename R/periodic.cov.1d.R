@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"periodic.cov.1d" <-
-function (x1, x2, a, b) 
-{
+"periodic.cov.1d" <- function(x1, x2, a, b) {
     pairdist <- rdist(x1, x2)%%(b - a)/(b - a)
     bernoulli4 <- pairdist^4 - 2 * (pairdist^3) + pairdist^2 - 
         1/30

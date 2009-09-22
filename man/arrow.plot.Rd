@@ -77,9 +77,8 @@ An application where the absolute angles are meaningful might be the hands of a
 clock showing different times zones on a world map. Here true.angle=T is
 appropriate, the clock hands should preserve the right angles. 
 }
-\seealso{
-\code{\link{arrows}} 
-}
+\seealso{arrows} 
+
 \examples{
 #
 # 20 random directions at 20 random points

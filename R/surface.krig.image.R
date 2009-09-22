@@ -2,12 +2,10 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"surface.krig.image" <-
-function (obj, grid.list = NA, extrap = TRUE, graphics.reset = FALSE, 
-    xlab = NULL, ylab = NULL, main = NULL, zlab = NULL, zlim = NULL, 
-    levels = NULL, ptype = "I", ...) 
-{
+"surface.krig.image" <- function(obj, grid.list = NA, 
+    extrap = TRUE, graphics.reset = FALSE, xlab = NULL, ylab = NULL, 
+    main = NULL, zlab = NULL, zlim = NULL, levels = NULL, ptype = "I", 
+    ...) {
     old.par <- par("mfrow", "oma")
     if (graphics.reset) 
         on.exit(par(old.par))

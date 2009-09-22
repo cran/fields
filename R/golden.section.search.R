@@ -2,10 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"golden.section.search" <-
-function (ax, bx, cx, f, niter = 25, f.extra = NA, tol = 1e-05) 
-{
+"golden.section.search" <- function(ax, bx, cx, f, 
+    niter = 25, f.extra = NA, tol = 1e-05) {
     r <- 0.61803399
     con <- 1 - r
     x0 <- ax
@@ -19,11 +17,10 @@ function (ax, bx, cx, f, niter = 25, f.extra = NA, tol = 1e-05)
         x1 <- bx - con * (bx - ax)
     }
     f1 <- f(x1, f.extra)
-
     f2 <- f(x2, f.extra)
     iter <- niter
     for (k in 1:niter) {
-#cat( x1,f1, x2,f2, fill=TRUE)
+        #cat( x1,f1, x2,f2, fill=TRUE)
         if (f2 < f1) {
             x0 <- x1
             x1 <- x2

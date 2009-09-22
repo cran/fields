@@ -2,13 +2,10 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"krig.image" <-
-function (x, Y, cov.function, m = NULL, n = NULL, lambda = 0, 
-    start = NULL, tol = 1e-05, kmax = 25, cov.obj = NULL, grid = NULL, 
-    weights = rep(1, length(Y)), verbose = FALSE, conv.verbose = FALSE, 
-    expand = 1, ...) 
-{
+"krig.image" <- function(x, Y, cov.function, m = NULL, 
+    n = NULL, lambda = 0, start = NULL, tol = 1e-05, kmax = 25, 
+    cov.obj = NULL, grid = NULL, weights = rep(1, length(Y)), 
+    verbose = FALSE, conv.verbose = FALSE, expand = 1, ...) {
     out <- list()
     out$call <- match.call()
     out$cov.function <- cov.function
@@ -37,7 +34,8 @@ function (x, Y, cov.function, m = NULL, n = NULL, lambda = 0,
         print(out$grid)
     }
     if (is.null(cov.obj)) {
-        cov.obj <- cov.function(grid = out$grid, setup = TRUE, ...)
+        cov.obj <- cov.function(grid = out$grid, setup = TRUE, 
+            ...)
     }
     out$cov.obj <- cov.obj
     out <- c(out, discretize.image(out$xraw, grid = out$grid, 

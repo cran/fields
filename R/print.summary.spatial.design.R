@@ -2,10 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"print.summary.spatial.design" <-
-function (x, digits = 4,...) 
-{
+"print.summary.spatial.design" <- function(x, digits = 4, 
+    ...) {
     cat("Call:\n")
     dput(x$call)
     c1 <- "Number of design points:"

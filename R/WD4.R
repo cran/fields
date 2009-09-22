@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"WD4" <-
-function (x) 
-{
+"WD4" <- function(x) {
     if (!is.matrix(x)) 
         x <- matrix(x, nrow = length(x), ncol = 1)
     D4 <- c(0.482962913145, 0.836516303738, 0.224143868042, -0.129409522551)

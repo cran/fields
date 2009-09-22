@@ -2,11 +2,9 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"summary.krig.image" <-
-function (object, digits = 4, ...) 
-{
-    x<- object # S3 hack
+"summary.krig.image" <- function(object, digits = 4, 
+    ...) {
+    x <- object
     summary <- list(call = x$call, num.observation = length(x$residuals), 
         enp = x$trace, nt = x$nt, res.quantile = quantile(x$residuals, 
             seq(0, 1, 0.25)), shat.MLE = x$shat.MLE, shat.GCV = x$shat.GCV, 

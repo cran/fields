@@ -2,10 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"bisection.search" <-
-function (x1, x2, f, tol = 1e-07, niter = 25, f.extra = NA, upcross.level = 0) 
-{
+"bisection.search" <- function(x1, x2, f, tol = 1e-07, 
+    niter = 25, f.extra = NA, upcross.level = 0) {
     f1 <- f(x1, f.extra) - upcross.level
     f2 <- f(x2, f.extra) - upcross.level
     if (f1 > f2) 

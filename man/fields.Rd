@@ -9,28 +9,41 @@
 fields - tools for spatial data 
 }
 \description{
-Fields is a collection of programs for curve and function
+ Fields is a collection of programs for curve and function
  fitting with an emphasis on spatial data and spatial statistics. The
- major methods implemented include cubic and thin plate splines, universal
+ major methods implemented include cubic and thin plate splines, 
+ universal
  Kriging and Kriging for large data sets. One main feature is any
- covariance function implemented in R can be used for spatial prediction. 
+ covariance function implemented in R code can be used for spatial prediction. Another important feature is that fields will take advantage of compactly supported covariance functions in a seamless way through 
+the spam package. See \code{library( help=fields)} for a listing of all the
+fields contents. To load fields with the comments retained in the source
+use \code{ keep.source = TRUE} in the \code{library} command. 
 
-fields stives to have readable and tutorial code. Take a look at the
-source code for \code{Krig} and \code{Krig.engine.default} to see how
-things work "under the hood". 
+fields stives to have readable and tutorial code. Take a look at the 
+source code for \code{Krig} and \code{mKrig} to see how things work 
+"under the hood". 
+To load fields with the comments retained in the source
+use \code{ keep.source = TRUE} in the \code{library} command. 
+We also keep the source on-line:
+browse the directory 
+\url{http://www.image.ucar.edu/~nychka/Fields/Source} for commented source. 
+\url{http://www.image.ucar.edu/~nychka/Fields/Help/00Index.html} is a
+page for html formatted help files. (If you obtain the source version of the
+package (file ends in .gz) the commented source code is the R subdirectory.) 
 
-Some major methods include: 
+Some major methods in fields include: 
 \itemize{ \item \code{Tps} Thin Plate spline
 regression (including GCV) 
 \item \code{Krig} Spatial process estimation
 (Kriging) including support for conditional simulation. 
 }
 
-The Krig function allow you to supply a covariance function that is
+The Krig function allows you to supply a covariance function that is
 written in native R code.  See (\code{stationary.cov}) that includes
 several families of covariances and distance metrics including the
-Matern and great circle distance. Also check out \code{mKrig} (micro Krig)
-a fast Kriging routine, that can take advantage of sparse covariance
+Matern and great circle distance. Also check out \code{mKrig} (micro Krig) and
+\code{fastTps}
+a fast Kriging and spline-like functions, that can take advantage of sparse covariance
 functions and thus handle very large numbers of spatial locations. 
 
 Some other noteworthy functions are
@@ -39,14 +52,18 @@ Some other noteworthy functions are
 function is expresed in R/S code
 
 \item \code{as.image}, \code{image.plot}, \code{drape.plot}, \code{quilt.plot}
-\code{add.image}, \code{crop.image}, \code{half.image}.
+\code{add.image}, \code{crop.image}, \code{half.image}, \code{average.image} 
+\code{designer.colors}.
  
 convenient functions for working with image data and rationally (well,
-maybe reasonably) placing a color scale on an image plot. 
+maybe reasonably) creating and  placing a color scale on an image plot. See also 
+\code{help(grid.list)} for how fields works with grids and \code{US}
+and \code{world} for adding a map quickly. 
 
 \item \code{sreg},  \code{qsreg} \code{splint}   Fast 1-D smoothing 
 splines and 1-D 
-quantile/robust and interpolating cubic splines
+quantile/robust and interpolating cubic splines.
+
 }
 
 There are also generic functions that support 
@@ -61,8 +78,7 @@ these methods such as
 \code{sim.rf}- Simulate a random fields on a 2-d grid.
 
 To get started, try some of the examples from help files for \code{Tps} or 
-\code{Krig}. See also the manual/tutorial at 
-\url{http://www.image.ucar.edu/Software/Fields}
+\code{Krig}. 
 
 Graphics tips:
 \code{help( fields.hints)}
@@ -98,6 +114,7 @@ summary(fit) #diagnostic summary of the fit
 
 set.panel(2,2)
 plot(fit) # four diagnostic plots of  fit and residuals.
+
 
 set.panel()
 surface(fit) # contour/image plot of the fitted surface

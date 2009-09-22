@@ -2,10 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"Rad.image.cov" <-
-function (ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...) 
-{
+"Rad.image.cov" <- function(ind1, ind2, Y, cov.obj = NULL, 
+    setup = FALSE, grid, ...) {
     if (is.null(cov.obj)) {
         dx <- grid$x[2] - grid$x[1]
         dy <- grid$y[2] - grid$y[1]

@@ -2,11 +2,9 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"predict.interp.surface" <-
-function (object, loc,...) 
-{
-     obj<- object # hack S3
+"predict.interp.surface" <- function(object, loc, 
+    ...) {
+    obj <- object
     xg <- (obj$x)
     yg <- (obj$y)
     nx <- length(xg)

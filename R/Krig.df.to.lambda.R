@@ -2,10 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"Krig.df.to.lambda" <-
-function (df, D, guess = 1, tol = 1e-05) 
-{
+"Krig.df.to.lambda" <- function(df, D, guess = 1, 
+    tol = 1e-05) {
     if (is.list(D)) {
         D <- D$matrices$D
     }
@@ -38,4 +36,3 @@ function (df, D, guess = 1, tol = 1e-05)
         f.extra = info)$x
     +exp(out)
 }
-

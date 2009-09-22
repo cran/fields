@@ -15,12 +15,12 @@ y<- ozone2$y[16,]
 # turning spam on and off
 Krig(x,y, cov.function = "stationary.taper.cov", theta=1.5,
       cov.args= list( spam.format=FALSE,
-        Taper.args= list( theta=2.0,k=2) )
+        Taper.args= list( theta=2.0,k=2, dimension=2) )
            ) -> out1
 
 Krig(x,y, cov.function = "stationary.taper.cov", lambda=2.0, theta=1.5,
       cov.args= list( spam.format=TRUE,
-        Taper.args= list( theta=2.0,k=2) )
+        Taper.args= list( theta=2.0,k=2, dimension=2) )
            ) -> out2
 
 temp1<- predict( out1,lambda=2.0)
@@ -101,6 +101,23 @@ xnew<- cbind(runif( N)*.5 + x[,1], runif(N)*.5 + x[,2])
 test.for.zero( temp, temp2, tag="Wendland/no spam")
 test.for.zero( temp2, temp3, tag="Wendland/spam")
 
+
+### testing coefficients for new data (
+mKrig.coef( look2, cbind(y+1,y+2))-> newc
+test.for.zero( look2$c, newc$c[,2], tag="new coef c no spam")
+
+test.for.zero( look2$d,
+              c(newc$d[1,2] -2, newc$d[2:3,2]), tag="new d coef no spam")
+
+mKrig.coef( look3, cbind(y+1,y+2))-> newc
+test.for.zero( look3$c, newc$c[,2], tag="new coef c spam")
+
+test.for.zero( look3$d,
+              c(newc$d[1,2] -2, newc$d[2:3,2]), tag="new d coef spam")
+
+###
+
+
 ### bigger sample size
 set.seed( 334)
 N<- 1000
@@ -158,6 +175,31 @@ y<- sin( 3*pi*x[,1])*sin( 3.5*pi*x[,2]) + rnorm( N)*.01
       temp2<- predict( out2)
 
       test.for.zero( temp, temp2)
+
+
+
+# test of fastTps
+nx<- 100
+ny<- 120
+x<- seq( 0,1,,nx)
+y<- seq( 0,1,,ny)
+gl<- list( x=x, y=y)
+xg<- make.surface.grid(gl)
+ztrue<- sin( xg[,1]*pi*6)* cos(xg[,2]*pi*5)
+#image.plot(x,y,matriz( ztrue, nx,ny)) 
+set.seed( 222)
+ind<- sample( 1:(nx*ny), 5000)
+xdat<- xg[ind,]
+ydat <- ztrue[ind]
+out<- fastTps(xdat, ydat, theta=.1)
+out.p<-predict.surface( out, grid=gl, extrap=TRUE)
+# perfect agreement at data
+test.for.zero( ydat, c( out.p$z)[ind])
+#image.plot(x,y,matrix( ztrue, nx,ny)- out.p$z) 
+rmse<- sqrt(mean( (ztrue- c( out.p$z))^2)/ mean( (ztrue)^2))
+test.for.zero( rmse,0,, tol=.007, relative=FALSE)
+
+
 
 cat("all done with mKrig tests", fill=TRUE)
 options( echo=TRUE)

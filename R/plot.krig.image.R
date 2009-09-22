@@ -2,15 +2,10 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"plot.krig.image" <-
-function (x, main = NA, digits = 4, which = rep(TRUE, 4), 
-graphics.reset = TRUE, 
-    ...) 
-{
-out<- x # hack S3
-old.par <- par(no.readonly=TRUE)
-
+"plot.krig.image" <- function(x, main = NA, digits = 4, 
+    which = rep(TRUE, 4), graphics.reset = TRUE, ...) {
+    out <- x
+    old.par <- par(no.readonly = TRUE)
     if (graphics.reset) {
         on.exit(par(old.par))
         par(xpd = TRUE)
@@ -41,7 +36,7 @@ old.par <- par(no.readonly=TRUE)
         title("Residuals on surface ", cex = 0.8)
     }
     if (!is.na(main)) 
-   mtext(main, cex = 1, outer = TRUE, line = -2)
-  #####else      mtext(deparse(out$call), cex = 1, outer = TRUE, line = -2,adj=0)
+        mtext(main, cex = 1, outer = TRUE, line = -2)
+    #####else      mtext(deparse(out$call), cex = 1, outer = TRUE, line = -2,adj=0)
     invisible()
 }

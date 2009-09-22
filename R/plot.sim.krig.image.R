@@ -2,12 +2,9 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"plot.sim.krig.image" <-
-function (x,...) 
-{
-    obj<- x # hack S3
-    par.old <- par(read.only=TRUE)
+"plot.sim.krig.image" <- function(x, ...) {
+    obj <- x
+    par.old <- par(read.only = TRUE)
     on.exit(par(par.old))
     M <- length(obj$out)
     n <- round(sqrt(M))

@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"stats.sim.krig.image" <-
-function (obj) 
-{
+"stats.sim.krig.image" <- function(obj) {
     n <- length(obj$grid$y)
     m <- length(obj$grid$x)
     out1 <- out2 <- matrix(0, m, n)

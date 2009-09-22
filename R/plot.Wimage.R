@@ -2,12 +2,9 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"plot.Wimage" <-
-function (x, cut.min, graphics.reset = TRUE, common.range = FALSE, 
-    color.table = tim.colors(128), Nlevel = NULL, with.lines = FALSE, 
-    omd.width = 0.2, ...) 
-{
+"plot.Wimage" <- function(x, cut.min, graphics.reset = TRUE, 
+    common.range = FALSE, color.table = tim.colors(128), Nlevel = NULL, 
+    with.lines = FALSE, omd.width = 0.2, ...) {
     m <- nrow(x)
     n <- ncol(x)
     info <- Wimage.info(m, n, cut.min)
@@ -26,42 +23,40 @@ function (x, cut.min, graphics.reset = TRUE, common.range = FALSE,
     S2 <- info$S[3]:info$S[4]
     M <- 1:info$L[1, 1]
     N <- 1:info$L[1, 2]
-#
-# add box function
+    #
+    # add box function
     add.boxes <- function() {
         if (with.lines) {
             xline(c(0.5, M + 0.5), col = "white", lwd = 0.5)
             yline(c(0.5, N + 0.5), col = "white", lwd = 0.5)
         }
     }
-
     screen(ind[1])
     image(M, N, x[S1, S2], zlim = zr.common, xaxt = "n", yaxt = "n", 
         xlab = "", ylab = "", col = color.table)
     add.boxes()
     box()
-
     screen(ind[3])
     image(1:m, 1:n, x, xaxt = "n", yaxt = "n", col = color.table, 
         xlab = "", ylab = "")
     box()
-#
-#  add in the multiresolution partitioning of 
-#  image matrix. 
-
-    if( with.lines){
-     temp<- info$L
-      temp<- rbind( temp, c(m,n))
-     for( k in 1:info$Lmax){
-        xt<- c(temp[k,1]+.5, temp[k,1]+.5)
-        yt<- c(0,temp[k+1,2]+.5) 
-        segments( xt[1], yt[1],xt[2],yt[2], col="white", lwd=.5)
-        yt<- c(temp[k,2]+.5, temp[k,2]+.5)
-        xt<- c(0,temp[k+1,1]+.5) 
-        segments( xt[1], yt[1],xt[2],yt[2], col="white", lwd=.5)
-     }
+    #
+    #  add in the multiresolution partitioning of
+    #  image matrix.
+    if (with.lines) {
+        temp <- info$L
+        temp <- rbind(temp, c(m, n))
+        for (k in 1:info$Lmax) {
+            xt <- c(temp[k, 1] + 0.5, temp[k, 1] + 0.5)
+            yt <- c(0, temp[k + 1, 2] + 0.5)
+            segments(xt[1], yt[1], xt[2], yt[2], col = "white", 
+                lwd = 0.5)
+            yt <- c(temp[k, 2] + 0.5, temp[k, 2] + 0.5)
+            xt <- c(0, temp[k + 1, 1] + 0.5)
+            segments(xt[1], yt[1], xt[2], yt[2], col = "white", 
+                lwd = 0.5)
+        }
     }
-
     save.zr <- matrix(NA, Nlevel, 2)
     screen.off <- ind[3]
     KK <- 1
@@ -74,7 +69,6 @@ function (x, cut.min, graphics.reset = TRUE, common.range = FALSE,
         V2 <- info$V[lev, 3]:info$V[lev, 4]
         D1 <- info$Di[lev, 1]:info$Di[lev, 2]
         D2 <- info$Di[lev, 3]:info$Di[lev, 4]
-
         if (common.range) {
             zr <- zr.common
         }
@@ -102,7 +96,6 @@ function (x, cut.min, graphics.reset = TRUE, common.range = FALSE,
         KK <- KK + 1
     }
     screen(2)
-
     if (common.range) {
         image.plot(zlim = zr, legend.only = TRUE, smallplot = c(0.2, 
             0.3, 0.1, 0.5), col = color.table, graphics.reset = TRUE)
@@ -132,4 +125,3 @@ function (x, cut.min, graphics.reset = TRUE, common.range = FALSE,
         return(matrix(ind, ncol = 3, byrow = TRUE))
     }
 }
-

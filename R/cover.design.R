@@ -2,34 +2,29 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"cover.design" <-
-function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL, 
-    scale.type = "unscaled", R.center, R.scale, P = -20, Q = 20, 
-    start = NULL, DIST = NULL, return.grid = TRUE, return.transform = TRUE, 
-    max.loop = 20, verbose=FALSE) 
-{
-    
+"cover.design" <- function(R, nd, nruns = 1, nn = TRUE, 
+    num.nn = 100, fixed = NULL, scale.type = "unscaled", R.center, 
+    R.scale, P = -20, Q = 20, start = NULL, DIST = NULL, return.grid = TRUE, 
+    return.transform = TRUE, max.loop = 20, verbose = FALSE) {
     if (!is.null(start) && is.matrix(start)) {
         if (any(duplicated(start))) 
             stop("Error: start must not have duplicate rows")
-
         test <- duplicated(start, R)
-        if ( sum(test)<nrow(start) ) 
+        if (sum(test) < nrow(start)) 
             stop("Error: Starting design must be a subset of R")
     }
     R.orig <- R
     R <- as.matrix(R)
-# some checks on inputs 
-    if( nd >= nrow( R)) {
-       stop(" number of design points >= the number of candidates")}
+    # some checks on inputs
+    if (nd >= nrow(R)) {
+        stop(" number of design points >= the number of candidates")
+    }
     if (any(duplicated.array(R))) 
         stop("Error: R must not have duplicate rows")
-    if (num.nn >= (nrow(R)-nd)) {
+    if (num.nn >= (nrow(R) - nd)) {
         nn <- FALSE
-        warning(
-"Number of nearst neighbors (nn) reduced to the actual number of candidates")
-} 
+        warning("Number of nearst neighbors (nn) reduced to the actual number of candidates")
+    }
     if (is.null(DIST)) 
         DIST <- function(x, y) {
             rdist(x, y)
@@ -47,15 +42,16 @@ function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL,
     saved.crit <- rep(NA, nruns)
     saved.designs <- matrix(NA, nrow = nruns, ncol = n)
     saved.hist <- list(1:nruns)
-
-     if( verbose) { cat( dim(R), fill=TRUE)}
-#
-# do nruns with initial desing drawn at random
-#
-# in this code Dset are the indices of the design
-# Cset are the complement set of indices indicating the candidate points 
-# no used in the design
-#
+    if (verbose) {
+        cat(dim(R), fill = TRUE)
+    }
+    #
+    # do nruns with initial desing drawn at random
+    #
+    # in this code Dset are the indices of the design
+    # Cset are the complement set of indices indicating the candidate points
+    # no used in the design
+    #
     for (RUNS in 1:nruns) {
         if (is.null(start)) {
             if (!is.null(fixed)) {
@@ -83,9 +79,11 @@ function (R, nd, nruns = 1, nn = TRUE, num.nn = 100, fixed = NULL,
         loop.counter <- 1
         repeat {
             for (i in 1:nd) {
-# loop over current design points looking for a productive swap
+                # loop over current design points looking for a productive swap
                 Dset.i <- matrix(R[Dset[i], ], nrow = 1)
-if( verbose) { cat( "design point", i, Dset.i,fill=TRUE)}
+                if (verbose) {
+                  cat("design point", i, Dset.i, fill = TRUE)
+                }
                 partial.newrow <- sum(DIST(Dset.i, R[Dset[-i], 
                   ])^P)
                 rs.without.i <- rs - c(DIST(Dset.i, R[-Dset, 
@@ -94,23 +92,29 @@ if( verbose) { cat( "design point", i, Dset.i,fill=TRUE)}
                   vec <- (1:length(Cset))[order(dist.mat[, i])[1:num.nn]]
                 else vec <- 1:length(Cset)
                 for (j in vec) {
-# loop over possible candidates to swap with design point
+                  # loop over possible candidates to swap with design point
                   Cset.j <- matrix(R[Cset[j], ], nrow = 1)
                   newcol <- c(DIST(Cset.j, R[c(-Dset, -Cset[j]), 
                     ])^P)
                   CRIT[j] <- (sum((rs.without.i[-j] + newcol)^(Q/P)) + 
                     (DIST(Cset.j, Dset.i)^P + partial.newrow)^(Q/P))^(1/Q)
-if( verbose) { cat( j," ")}
+                  if (verbose) {
+                    cat(j, " ")
+                  }
                 }
                 best <- min(CRIT[!is.na(CRIT)])
-
                 best.spot <- Cset[CRIT == best][!is.na(Cset[CRIT == 
                   best])][1]
-if( verbose) { cat( i,"best found ", best," at",  best.spot, fill=TRUE)}
+                if (verbose) {
+                  cat(i, "best found ", best, " at", best.spot, 
+                    fill = TRUE)
+                }
                 crit.old <- crit.i
-# check if the best swap is really better thatn what you already have. 
+                # check if the best swap is really better thatn what you already have.
                 if (best < crit.i) {
-if( verbose) { cat( i,"best swapped ",fill=TRUE)}
+                  if (verbose) {
+                    cat(i, "best swapped ", fill = TRUE)
+                  }
                   crit.i <- best
                   hist <- rbind(hist, c(Dset[i], best.spot, crit.i))
                   Dset[i] <- best.spot

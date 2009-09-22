@@ -5,6 +5,7 @@
 
 \name{predict.se.Krig}
 \alias{predict.se.Krig}
+\alias{predict.se.mKrig}
 \alias{predict.se.KrigA}
 \title{
   Standard errors of predictions for Krig spatial process estimate 
@@ -13,16 +14,17 @@
 Finds the standard error ( or covariance) of prediction based on a linear
 combination of
 the observed data. The linear combination is usually the "Best Linear
-Unbiased Estimate" (BLUE) found from the Kriging equations. There are also
-provisions to use a different covariance for evaluation than the one used
-to define the BLUE.  
+Unbiased Estimate" (BLUE) found from the Kriging equations. 
+This statistical computation is done under the assumption that the
+covariance function is known.
 }
 \usage{
 \method{predict.se}{Krig}(object, x = NULL, cov = FALSE, verbose = FALSE,...)
+\method{predict.se}{mKrig}(object, x = NULL, verbose = FALSE,...)
  }
 \arguments{
 \item{object}{
-A Krig object.  
+A Krig or mKrig object.  
 }
 \item{x}{
 Points to compute the predict standard error or the prediction 
@@ -66,14 +68,16 @@ conditional mean of the field given the data. This function finds the
 conditional standard deviations (or full covariance matrix) of the 
 fields given the data.  
 
- There are two useful extensions supported by this function.  Adding
-the variance to the estimate of the spatial mean if this is a correlation
-model. (See help file for Krig)  and calculating the variances under
-covariance misspecification.  The function \code{predict.se.KrigA} uses the
-A matrix to find the standard errors or covariances directly from the 
-linear combination of the spatial predictor. Currently this is also 
-the calculation in \code{predict.se.Krig} although a shortcut using the
-Kriging equations is planned for a later verion of fields. 
+ There are two useful extensions supported by this function.  Adding the 
+variance to the estimate of the spatial mean if this is a correlation 
+model. (See help file for Krig) and calculating the variances under 
+covariance misspecification.  The function \code{predict.se.KrigA} uses 
+the smoother matrix ( A(lambda) ) to find the standard errors or 
+covariances directly from the linear combination of the spatial 
+predictor. Currently this is also the calculation in 
+\code{predict.se.Krig} although a shortcut is used 
+\code{predict.se.mKrig} for mKrig objects and this shortcut is planned 
+for in a later version of fields
 
 }
 \seealso{

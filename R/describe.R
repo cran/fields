@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"describe" <-
-function (x) 
-{
+"describe" <- function(x) {
     lab <- c("N", "mean", "Std.Dev.", "min", "Q1", "median", 
         "Q3", "max", "missing values")
     if (missing(x)) {

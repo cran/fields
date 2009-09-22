@@ -17,7 +17,8 @@ surfaces.
 }
 \usage{
 predict.surface(object, grid.list = NA, extrap = FALSE, chull.mask =
-                 NA, nx = 80, ny = 80, xy = c(1, 2), order.variables="xy",...)
+                 NA, nx = 80, ny = 80, xy = c(1, 2), order.variables="xy",
+                  verbose=FALSE,...)
 
 predict.surface.se(object, grid.list = NA, extrap = FALSE, chull.mask =
                  NA, nx = 80, ny = 80, xy = c(1, 2), 
@@ -39,10 +40,14 @@ grid will be made from the ranges of the observed variables.
  
 }
 \item{extrap}{
-Extrapolation beyond the range of the data. If false function will be
-restricted to the convex hull of the observed data or the hull defined
-from the points from the argument chull.mask.
- 
+ Extrapolation beyond the range of the data. If \code{FALSE} (the 
+default) the predictions will be restricted to the convex hull of the observed 
+data or the convex hull defined from the points from the argument chull.mask. 
+This function may be slightly faster if this logical is set to 
+\code{TRUE} to avoid checking the grid points for membership in the 
+convex hull. For more complicated masking a low level creation of a bounding 
+polygon and testing for membership with \code{in.poly} may be useful. 
+
 }
 
 \item{chull.mask}{

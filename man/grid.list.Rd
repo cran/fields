@@ -10,6 +10,7 @@
 \alias{parse.grid.list}
 \alias{fields.convert.grid}
 \alias{discretize.image}
+\alias{make.surface.grid}
 
 \title{
 Some simple functions for working with gridded data and 
@@ -36,7 +37,7 @@ fields.x.to.grid(x,nx=80, ny=80, xy=c(1,2))
 fields.convert.grid( midpoint.grid )
 discretize.image( x, m = 64, n = 64,  grid = NULL,
         expand = c(1, 1), boundary.grid=FALSE )
-
+make.surface.grid( grid.list)
 }
 \arguments{
 \item{grid.list}{ No surprises here -- a grid list! These can be unequally 
@@ -64,9 +65,10 @@ grid boxes. If FALSE interpret as the midpoints of the boxes. }
 
 
 }
-\details{
-The form of a grid.list is  
-list( var.name1= what1  , var.name2=what2 , ... var.nameN=what3)  
+\details{The form of a grid.list is  
+
+\code{list( var.name1= what1  , var.name2=what2 , ... var.nameN=what3)}
+
 Here var.names are the names of the independent variables. 
 The what options describe what should be done with this variable when  
 generating the grid. These should either an increasing sequence of points
@@ -74,7 +76,7 @@ or a single vaules. Obviously there should be only be two variables with
 sequences to define a grid for a surface.
 
 Most of time the gridding  sequences  are equally  
-spaced and are easily generated using the seq function. Also throughout fields
+spaced and are easily generated using the \code{seq} function. Also throughout fields
 the grid points are typically the midpoints of the grid rather the grid box
 boundaries. However, these functions can handle unequally spaced grids and the
 logical boundary.grid can indicate a grid being the box boundaries. 
@@ -82,6 +84,23 @@ logical boundary.grid can indicate a grid being the box boundaries.
 The variables in the list components are assumed  
 to be in the same order as they appear in the data matrix. 
 
+A useful function that expands the grid from the grid.list description into 
+a full set of locations is \code{make.surface.grid} and  is 
+just a wrapper around the R base function \code{expand.grid}. A typical operation is to go from a grid.list to the set of grid locations. Evaluate a
+fucntion at these lcoations and then reformat this as an image for plotting. 
+Here is how to do this cleanly:
+\preformatted{
+grid.list<- list( x= 1:10, y=1:15)
+xg<- make.surface.grid(grid.list)
+# look at a surface dependin on xg locations
+z<- xg[,1] + 2*xg[,2]
+out<- list( x=grid.list$x, y= grid.list$y, z=matrix( z, nrow=10, ncol=15))
+# now for example
+image.plot( out)
+}
+
+The key here is that \code{xg} and \code{matrix} both  organize the grid in the 
+same order. 
 
 Some fields internal functions that support interpreting grid list format are:
 
@@ -116,7 +135,6 @@ points are determined by extrapolating so that the first and last box
 has the midpoint in its center. (See the code in fields.convert.grid for
 details.) If grid is NULL then midpoints are found from m and n and the
 range of the x matrix. 
-
 }
 
 \seealso{

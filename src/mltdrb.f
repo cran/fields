@@ -1,7 +1,7 @@
        
 
-C** evaluates radial basis functions 
-c**** K_ij= radfun( distance( x1_i, x2_j))
+C** evaluates partial derivatives of radial basis functions with
+c** nodes at x2 and at the points x1
 c
        subroutine mltdrb( nd,x1,n1, x2,n2, par, c,h,work)
        implicit double precision (a-h,o-z)

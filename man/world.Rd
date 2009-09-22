@@ -17,7 +17,7 @@ world(ylim = c(-90, 90), xlim = NULL, add = FALSE, asp = 1,
                  0.1, col=1,shift = FALSE, 
                  fill=FALSE, col.water="white", col.land="darkgrey", ...)
 
-world.color(xlim= c(-180,180), ylim=c(-90,90), 
+world.color(obj,xlim= c(-180,180), ylim=c(-90,90), 
              col.water="white",col.land="darkgrey", ... )
 
 }
@@ -26,7 +26,7 @@ world.color(xlim= c(-180,180), ylim=c(-90,90),
   \item{xlim}{range of longitudes}
   \item{add}{logical; if true will add the world map to current plot.}
   \item{asp}{aspect ratio used if \code{add} is false, see
-    \code{\link{plot.default}}.}
+    \code{plot.default} .}
   \item{xlab,ylab}{labels for x- and y-axis; empty by default.}
   \item{xaxt,yaxt}{axis type for x- and y-axis; empty by default.}
 \item{eps}{ Tolerance to decide when to insert line break about 0 if
@@ -44,10 +44,10 @@ water with different colors.}
 \item{col.land}{Color for land filling.}
 
 \item{col.water}{Color for water filling.}
-
+\item{obj}{The data set of coast lines \code{world.dat}}
 \item{\dots}{
     If the land is not filled these are graphical arguments that are passed to the
-    \code{\link{lines}} (and \code{\link{plot}} if \code{add} is false)
+    \code{lines} (and \code{plot} if \code{add} is false)
     function that draws the outline.} If fill is TRUE then these arguments
     are passed to the polygon function that does the filling. 
 

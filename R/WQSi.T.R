@@ -2,10 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"WQSi.T" <-
-function (x) 
-{
+"WQSi.T" <- function(x) {
     if (!is.matrix(x)) 
         x <- matrix(x, nrow = length(x), ncol = 1)
     D.smooth <- c(1, 3, 3, 1)/16

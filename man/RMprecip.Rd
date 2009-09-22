@@ -95,6 +95,8 @@ abline( 0,1,col="blue")
 save.par<- par(no.readonly=TRUE)
 
 par( mar=c(0,0,0,0))
+
+# fancy use of persp with shading and lighting.
 persp( RMelevation, theta=75, phi= 15, 
           box=FALSE, axes=FALSE, xlab="", ylab="", 
          border=NA,
@@ -102,6 +104,7 @@ persp( RMelevation, theta=75, phi= 15,
          col= "wheat4", 
          scale=FALSE, expand=.00025)
 
+# reset graphics parameters and a more conventional image plot.
 par( save.par)
 image.plot(RMelevation, col=topo.colors(256))
 US( add=TRUE, col="grey", lwd=2)

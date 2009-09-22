@@ -2,10 +2,8 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
-"stats.bplot" <-
-function (x, by, style = "tukey", outlier = TRUE) 
-{
+"stats.bplot" <- function(x, by, style = "tukey", 
+    outlier = TRUE) {
     if (!missing(by)) {
         x <- cat.to.list(c(x), by)
     }
