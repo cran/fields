@@ -1,0 +1,59 @@
+
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> ############################################################################
+> #      Begin tests of Matern covaraince parameter estimate
+> # Note that in all tests the smoohtness (nu) is fixed
+> # and only theta (range), sill ( rho) and nugget (sigma2) are considered. 
+> ##########################################################################
+> library(fields)
+Loading required package: spam
+Package 'spam' is loaded. Spam version 0.15-5 (2009-08-08).
+Type demo( spam) for some demos, help( Spam) for an overview
+of this package.
+Help for individual functions is optained byadding the
+suffix '.spam' to the function name, e.g. 'help(chol.spam)'.
+
+Attaching package: 'spam'
+
+The following object(s) are masked from 'package:base':
+
+    backsolve, forwardsolve, norm
+
+ Use help(fields) for an overview of this library
+
+library( fields, keep.source=TRUE) retains comments in the source code. 
+> 
+> options( echo=FALSE)
+testing:  check REML rho
+    PASSED test at tolerance  2e-05
+testing:  check REML theta
+    PASSED test at tolerance  2e-05
+testing:   check REML sigma2
+    PASSED test at tolerance  5e-06
+testing:  check REML rho
+    PASSED test at tolerance  0.001
+testing:  check REML theta
+    PASSED test at tolerance  0.001
+testing:   check REML sigma2
+    PASSED test at tolerance  2e-04
+testing:  Profile likelihoods from Krig and optim
+    PASSED test at tolerance  1e-08
+testing:  Profile likelihoods from Krig and golden search
+    PASSED test at tolerance  1e-08
+done with Matern REML estimator tests where smoothness is fixed
+> 

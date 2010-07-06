@@ -8,6 +8,9 @@
     verbose = FALSE, ...) {
     #NOTE: most of this function is figuring out what to do!
     #
+    # check that derivative is not called
+      if( !is.null( list(...)$derivative)) {
+         stop("For derivatives use predict.derivative") }
     # y is full data yM are the data collapsed to replicate means
     # if new data is not passed then copy from the object
     if (is.null(y) & is.null(yM)) {

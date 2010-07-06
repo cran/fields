@@ -4,5 +4,7 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 ".First.lib" <- function(lib, pkg) {
     library.dynam("fields", pkg, lib)
-    packageStartupMessage(" Try help(fields) for an overview of this library\nfields web: http://www.image.ucar.edu/Software/Fields ")
+    packageStartupMessage(" Use help(fields) for an overview of this library\n
+library( fields, keep.source=TRUE) retains comments in the source code. "
+)
 }

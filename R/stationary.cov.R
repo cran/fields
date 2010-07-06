@@ -4,7 +4,7 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "stationary.cov" <- function(x1, x2, Covariance = "Exponential", 
     Distance = "rdist", Dist.args = NULL, theta = 1, V = NULL, 
-    C = NA, marginal = FALSE, ...) {
+    C = NA, marginal = FALSE, derivative=0, ...) {
     # get covariance function arguments from call
     Cov.args <- list(...)
     # coerce x1 and x2 to matrices
@@ -56,18 +56,35 @@
         return(do.call(Covariance, c(list(d = bigD), Cov.args)))
     }
     # or multiply cross covariance by C
+    # as coded below this is not particularly efficient of memory
     if (!is.na(C[1])) {
-        #
-        # as coded below this is not particularly efficient of memory
-        #
-        bigD <- do.call(Distance, c(list(x1 = x1, x2 = x2), Dist.args))/theta
-        return(do.call(Covariance, c(list(d = bigD), Cov.args)) %*% 
-            C)
+      bigD <- do.call(Distance, c(list(x1 = x1, x2 = x2), Dist.args))
+      if( derivative==0){
+        return(do.call(Covariance, c(list(d = bigD/theta), Cov.args)) %*%C) }
+      else{
+        # find partial derivatives
+        tempW <-do.call(Covariance, c(list(d = bigD/theta),
+                                      Cov.args, derivative=derivative))
+        # loop over dimensions and knock out each partial accumulate these in
+        # in temp
+        temp <- matrix(NA, ncol = d, nrow = n1)
+        for (kd in 1:d) {
+          # Be careful if the distance (tempD) is close to zero.
+          # Note that the x1 and x2 are in transformed ( V inverse) scale
+          sM <- ifelse(bigD == 0, 0,
+            (tempW * (outer(x1[, kd] , x2[, kd], "-") )/(theta * bigD)))
+          # accumlate the new partial
+          temp[, kd] <- sM %*% C }
+        # transform back to original coordinates.
+        if (!is.null(V)) {
+          temp <- temp %*% t(solve(V)) }
+        return(temp) }
     }
     # or find marginal variance and return  a vector.
     if (marginal) {
         sigma2 <- do.call(Covariance, c(list(d = 0), Cov.args))
         return(rep(sigma2, nrow(x1)))
     }
-    # should not get here
+
+# should not get here based on sequence of conditional if statements above.
 }

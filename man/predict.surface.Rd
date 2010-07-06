@@ -5,6 +5,7 @@
 
 \name{predict.surface}
 \alias{predict.surface}
+\alias{predict.surface.derivative}
 \alias{predict.surface.se}
 
 \title{
@@ -24,6 +25,7 @@ predict.surface.se(object, grid.list = NA, extrap = FALSE, chull.mask =
                  NA, nx = 80, ny = 80, xy = c(1, 2), 
                  order.variables="xy",verbose=FALSE, ...)
 
+predict.surface.derivative(object, grid.list = NULL, nx = 80, ny = 80, ...) 
 }
 \arguments{
 \item{object}{
@@ -90,7 +92,7 @@ object.
 }
 \value{
 The usual list components for making contour and perspective plots 
-(x,y,z) along  with labels for the x and y variables. }
+(x,y,z) along  with labels for the x and y variables. For \code{predict.surface.derivative} the component \code{z} is a three dimensional array  with \code{nx}, \code{ny}, 2. }
 \details{
  This function creates the right grid using the grid.list information or
 the attribute in xg, calls the predict 
@@ -102,7 +104,10 @@ the convex hull of the data the function \code{in.poly} is used. The
 argument inflation in this function is used to include a small margin
 around the outside of the polygon so that point on convex hull are
 included. This potentially confusing modification is to prevent excluding
-grid points that fall exactly on the ranges of the data. 
+grid points that fall exactly on the ranges of the data. Also note that as written there is no computational savings for evaluting only the convex subset compared to the full grid. 
+
+The derivative function has much fewer arguments and is written to have more clarity in the coding. For example, it assumes a 2-d surface with "x" and "y" in the order that they appear in the fitted object. To mask out the convex hull of the derivatives one could use \code{predict.surface} to get the convex hull and use this for the masking of the deriviative.
+
  }
 \seealso{
 Tps, Krig, predict, grid.list, make.surface.grid, as.surface, surface, 
@@ -130,8 +135,16 @@ surface(out.p, type="C")
 out.p<- predict.surface.se(fit, glist)
 surface(out.p, type="C")
 
+# the unbiquitous ozone data set day 16
+  data( ozone2)
 
-
+  obj<- Tps(ozone2$lon.lat,ozone2$y[16,], m=3)
+  lookd<- predict.surface.derivative( obj)
+  set.panel( 2,1) 
+  image.plot( lookd$z[,,1])
+  image.plot( lookd$z[,,2])
+ 
+  
 }
 \keyword{spatial}
 % docclass is function

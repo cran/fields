@@ -2,7 +2,7 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"Rad.cov" <- function(x1, x2, p = 1, with.log = TRUE, 
+"Rad.cov" <- function(x1, x2, p = 1, m=NA,with.log = TRUE, 
     with.constant = TRUE, C = NA, marginal = FALSE, derivative = 0) {
     #
     # mth order thin plate spline radial basis functions
@@ -26,11 +26,17 @@
     d <- ncol(x1)
     n1 <- nrow(x1)
     n2 <- nrow(x2)
-    m <- (d + p)/2
-    par <- c(p/2, ifelse((d%%2 == 0) & (with.log), 1, 0))
+    if( is.na(m)){
+      m <- (d + p)/2}
+    else{
+      p <- 2*m -d}
+    if( p < 0 ) {
+      stop(" p is negative (m possibly too small)")}
+    # parameter list to send to the FORTRAN
+      par <- c(p/2, ifelse((d%%2 == 0) & (with.log), 1, 0))
     #
     # multiply by constant if requested
-    rbf.constant <- ifelse(with.constant, radbas.constant(m, 
+      rbf.constant <- ifelse(with.constant, radbas.constant(m, 
         d), 1)
     # compute matrix in FORTRAN
     if (is.na(C[1])) {

@@ -13,7 +13,7 @@ function produces an
 image-like plot where the locations are discretized to a grid  and the z 
 values are coded as a color level from a color scale. }
 \usage{
-quilt.plot(x, y, z, nrow = 64, ncol = 64, grid = NULL, 
+quilt.plot(x, y, z, nx = 64, ny = 64,nrow=nx, ncol=ny,  grid = NULL, 
                      add.legend=TRUE,add=FALSE,col=tim.colors(256),...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -23,6 +23,8 @@ quilt.plot(x, y, z, nrow = 64, ncol = 64, grid = NULL,
   \item{y}{A vector of the y coordinates -or- if the locations are passed 
 in x the z vector  }
   \item{z}{Values of the variable to be plotted.}
+  \item{nx}{Number of grid boxes in x if a grid is not specified.}
+  \item{ny}{Number of grid boxes in y. }
   \item{nrow}{Number of grid boxes in x.}
   \item{ncol}{Number of grid boxes in y. }
   \item{grid}{A grid in the form of a \code{grid list}.  }

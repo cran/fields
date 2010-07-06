@@ -5,12 +5,12 @@
 
 \name{fields-stuff}
 \alias{fields.diagonalize}
+\alias{fields.diagonalize2}
 \alias{fields.duplicated.matrix}
 \alias{fields.mkpoly}
 \alias{fields.derivative.poly}
 \alias{fields.evlpoly}
 \alias{fields.evlpoly2}
-
 
 \title{Fields supporting functions}
 \description{
@@ -20,6 +20,7 @@ have been written for cleaner code or efficiency.
 }
 \usage{
 fields.diagonalize(A,B)
+fields.diagonalize2(A,B, verbose=FALSE)
 
 fields.duplicated.matrix(mat, digits = 8) 
 
@@ -52,14 +53,20 @@ vector}
 
 \item{coef}{Polynomial coefficients.}
 \item{ptab}{Table of powers of different polnomial terms.}   
+\item{verbose}{If TRUE prints condition number of A+B}
 }
 
-
 \details{
-\code{fields.diagonalize} finds the matrix transformation G  that will
-convert A to a identity matrix and B to a diagonal matrix:
+Given two matrices A (positive definite) and B (nonnegative definite)
+ \code{fields.diagonalize} and \code{fields.diagonalize2} finds the 
+matrix transformation G that will convert A to a identity matrix and B 
+to a diagonal matrix:
 
  G\^T A G= I       G\^T B G= D. 
+
+\code{fields.diagonalize} is easier to follow but
+\code{fields.diagonalize2} may be more stable and is the version used in 
+the Krig engine. 
 
 \code{fields.duplicated} finds duplicate rows in a matrix.  The digits
 arguments is the number of digits that are considered in the

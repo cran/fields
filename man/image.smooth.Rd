@@ -21,7 +21,7 @@ image.smooth(x, wght = NULL, dx = 1, dy = 1,
 
 setup.image.smooth(nrow = 64, ncol = 64, dx = 1, dy = 1,
                    kernel.function = double.exp,
-                   theta = 1, xwidth = nrow * dx, ywidth = ncol * dx, ...)}
+                   theta = 1, xwidth = nrow * dx, ywidth = ncol * dx, lambda=NULL, ...)}
 \arguments{
 \item{x}{
 A matrix image. Missing values can be indicated by NAs. }
@@ -55,6 +55,8 @@ estimates that are "far" away from data. Grid points with weights
 less than tol are set to NA.}
 \item{nrow}{X dimension of image in setting up smoother weights}
 \item{ncol}{Y dimension of image}
+\item{lambda}{Smoothing parameter if smoother is interpreted in a spline-like
+way.}
 \item{\dots}{
  Other arguments to be passed to the kernel function}
 }

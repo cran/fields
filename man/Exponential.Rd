@@ -18,7 +18,7 @@ Exponential(d, range = 1, alpha = 1/range, phi = 1)
 Matern (d , scale = 1, range = 1,alpha=1/range,
      smoothness = 0.5, nu= smoothness, phi=scale) 
 Matern.cor.to.range(d, nu, cor.target=.5, guess=NULL,...)
-RadialBasis(d,M,dimension)
+RadialBasis(d,M,dimension, derivative = 0)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -46,6 +46,7 @@ covariance.}
   \item{dimension}{Dimension of function} 
    \item{cor.target}{Correlation used to match the range parameter. Default is .5.}
    \item{guess}{An optional starting guess for solution. This should not be needed.}
+   \item{derivative}{If greater than zero finds the first derivative of this function.}
    \item{\dots}{Additional arguments to pass to the bisection search function.}
 }
 
@@ -79,13 +80,14 @@ theta so that
 See the example for how this might be used.
 
 Radial basis functions:
-\eqn{
-   C.m,d  r^(2m-d)        d- odd
-   C.m,d  r^(2m-d)ln(r)  d-even
+\preformatted{
+   C.m,d  r**(2m-d)        d- odd
+
+   C.m,d  r**(2m-d)ln(r)    d-even
 }
 where C.m.d is a constant based on spline theory and r is the radial distance
-between points. See \code{radbas.constant}.
-
+between points. See \code{radbas.constant} for the computation of the constant.
+NOTE: Earlier versions of fields used ln(r^2) instead of ln(r) and so differ by a factor of 2. 
 }
 \value{
 

@@ -1,6 +1,6 @@
 
-R version 2.9.0 (2009-04-17)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -31,14 +31,13 @@ suffix '.spam' to the function name, e.g. 'help(chol.spam)'.
 
 Attaching package: 'spam'
 
+The following object(s) are masked from 'package:base':
 
-	The following object(s) are masked from package:base :
+    backsolve, forwardsolve, norm
 
-	 backsolve,
-	 forwardsolve 
+ Use help(fields) for an overview of this library
 
- Try help(fields) for an overview of this library
-fields web: http://www.image.ucar.edu/Software/Fields 
+library( fields, keep.source=TRUE) retains comments in the source code. 
 > 
 > # tests of predict.se
 > # against direct linear algebra 
@@ -62,6 +61,6 @@ testing:  Weighted case and exact for ozone2 full
 cov
     PASSED test at tolerance  1e-08
 testing:  Conditional simulation marginal se for grid
-    PASSED test at tolerance  0.005
+    PASSED test at tolerance  0.001
 all done testing predict.se 
 > 

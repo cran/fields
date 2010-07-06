@@ -12,7 +12,7 @@ specified as two matrices x and y that given the grid x and y coordinates
 explicitly for every grid point. 
 }
 \usage{
-poly.image(x, y, z, col = tim.colors(64), transparent.color = "white", 
+poly.image(x, y, z, col = tim.colors(64), breaks, transparent.color = "white", 
  midpoint = FALSE, zlim = range(z, na.rm = TRUE), 
  xlim = range(x), ylim = range(y), add = FALSE, border=NA,...)
 
@@ -25,6 +25,8 @@ poly.image.regrid(x)
   \item{z}{Values for each grid cell. Can either be the value at the
 grid points or interpreted as the midpoint of the grid cell. }
   \item{col}{ Color scale for plotting. }
+  \item{breaks}{Numerical breaks to match to the colors. If missing breaks are
+ equally spaced on the range \code{zlim}.}
   \item{transparent.color}{ Color to plot cells that are outside the 
 range specified in the function call. }
   \item{midpoint}{ 
@@ -79,16 +81,24 @@ poly.image( RCMexample$x, RCMexample$y, RCMexample$z[,,1])
 # use midpoints of z
 poly.image( RCMexample$x, RCMexample$y, RCMexample$z[,,1],midpoint=TRUE)
 
+  set.panel()
+# an example with quantile breaks
+
+ brk<- quantile(  RCMexample$z[,,1], c( 0, .9,.95,.99,1.0) )
+ poly.image( RCMexample$x, RCMexample$y, RCMexample$z[,,1], breaks=brk, col=
+    rainbow(4))
+  
+
 # images are very similar. 
-set.panel()
+  set.panel()
 # Regridding of x and y
-l1<- poly.image.regrid( RCMexample$x)
-l2<- poly.image.regrid( RCMexample$y)
+  l1<- poly.image.regrid( RCMexample$x)
+  l2<- poly.image.regrid( RCMexample$y)
 
 # test that this works
-i<- 1:10
-plot( l1[i,i], l2[i,i])
-points( RCMexample$x[i,i], RCMexample$y[i,i],col="red")
+  i<- 1:10
+  plot( l1[i,i], l2[i,i])
+  points( RCMexample$x[i,i], RCMexample$y[i,i],col="red")
 
  
 

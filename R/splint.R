@@ -3,9 +3,10 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "splint" <- function(x, y, xgrid, wt = NULL, derivative = 0, 
-    lam = 0, df = NA) {
+    lam = 0, df = NA, lambda=NULL) {
     #
     # reform calling args if passed as a matrix or list
+
     if (is.matrix(x)) {
         if (ncol(x) > 1) {
             xgrid <- y
@@ -37,6 +38,10 @@
             stop("df out of range")
         }
         lam <- sreg.df.to.lambda(df, x, wt)
+    }
+    # use lambda is it is passed
+    if (!is.null(lambda)) {
+        lam<- lambda
     }
     igcv <- ifelse(lam == 0, 2, 0)
     # call to old FORTRAN

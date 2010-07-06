@@ -100,5 +100,6 @@
     temp[ind] <- Z
     call <- match.call()
     list(x = grid$x, y = grid$y, z = temp, call = call, ind = ind, 
-        weights = temp3)
+        weights = temp3,
+     xd= cbind( grid$x[ind[,1]], grid$y[ind[,2]]), call=match.call() )
 }

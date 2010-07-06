@@ -16,10 +16,11 @@ color bar based on the z values. \code{drape.color}  can be used to create
 a color matrix different from the z matrix used for the wireframe.}
 \usage{
 drape.plot(x, y, z, z2=NULL, col = tim.colors(64), zlim = range(z, na.rm=TRUE), 
- zlim2 = NULL, add.legend = TRUE, horizontal = TRUE, theta = 30, phi = 20, ...)
+ zlim2 = NULL, add.legend = TRUE, horizontal = TRUE, theta = 30, phi = 20, 
+   breaks=NA, ...)
 
-drape.color(z, col = tim.colors(64), zlim = NULL,
-   transparent.color = "white", midpoint)
+drape.color(z, col = tim.colors(64), zlim = NULL,breaks,
+   transparent.color = "white", midpoint=TRUE, eps=1e-8)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -43,6 +44,12 @@ plot, if FALSE it is placed vertically on the right side.  }
   \item{transparent.color}{ Color to use when given an NA in z} 
   \item{midpoint}{ If TRUE color scale is formed for midpoints of z
        obtained by averaging 4 corners.}
+  \item{breaks}{Numerical divisions for the color scale. If the default (NA)
+  is N+1 equally spaced points in the range \code{zlim} where N is the number of
+colors in \code{col}. This is the argument has the same effect as used in the
+\code{image} and \code{image.plot} functions.}
+ \item{eps}{Amount to inflate the range (1+/- eps) to inlude points on 
+     break endpoints.}
   \item{\dots}{ Other arguments that will be passed to the 
           persp function. The most common is zlim the z limits for the
 	  3-d  plot and also the limits to set up the color scale. The
@@ -56,8 +63,9 @@ See the \code{persp} help file for an example how to add additional points
 and lines using the \code{trans3d} function and also the example below. 
 
 
-\code{drape.color} If dim( z) = M,N this function returns an  (M-1)X(N-1) 
-matrix where each element is a text string specifying the color. 
+\code{drape.color} If dim( z) = M,N this function returns a list with components:
+\item{color.index}{An (M-1)X(N-1) matrix (midpoint= TRUE) or MXN matrx (midpoint=FALSE) where each element is a text string specifying the color. }
+\item{breaks}{The breaks used to assign the numerical values in z to color categories.}
 
 }
 \details{ 
@@ -134,13 +142,13 @@ dz<- (
 
 # convert dz to a color scale:
   zlim<- range( c( dz), na.rm=TRUE)
-  drape.color( dz, zlim =zlim)-> zcol
+  zcol<-drape.color( dz, zlim =zlim)$color.index
 
 # wireframe with these colors 
   persp( volcano, col=zcol, theta=30, phi=20)
 
 # add legend using image.plot function 
-  image.plot( zlim=zlim, legend.only =TRUE, horizontal =TRUE)
+  image.plot( zlim=zlim, legend.only =TRUE, horizontal =TRUE, col=zcol)
  
 
 }

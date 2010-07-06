@@ -2,14 +2,12 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "fields.diagonalize" <- function(A, B) {
+
     hold <- eigen(A, symmetric = TRUE)
     # square root of A
     hold2 <- (t(hold$vectors) * sqrt(1/hold$values))
-    #
-    # note: interated transposes are a quick way to post multiply by a
-    # diagonal matrix
-    #
     #
     # A.inv.sqrt = hold2
     # A.inv = hold%*% t(hold2)

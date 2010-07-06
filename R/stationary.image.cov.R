@@ -20,9 +20,9 @@ stationary.image.cov <- function(ind1, ind2, Y, cov.obj = NULL,
         # default is twice domain and will then yeild exact results
         #
         if (is.null(M)) 
-            M <- ceiling2(2 * m)
+            M <- (2 * m)
         if (is.null(N)) 
-            N <- ceiling2(2 * n)
+            N <- (2 * n)
         xg <- make.surface.grid(list((1:M) * dx, (1:N) * dy))
         center <- matrix(c((dx * M)/2, (dy * N)/2), nrow = 1, 
             ncol = 2)

@@ -137,7 +137,7 @@ Krig.find.gcvmin (info, lambda.grid, gcv, gcv.fun, tol, verbose =FALSE,
 give.warnings = TRUE)
 Krig.find.REML (info, lambda.grid, llike, llike.fun, tol, verbose = TRUE, 
 give.warnings = FALSE)
-Krig.flplike (lam, obj)
+Krig.flplike (lambda, obj)
 Krig.fs2hat (lam, obj) 
 Krig.ftrace (lam, D) 
 Krig.parameters (obj, mle.calc=obj$mle.calc)

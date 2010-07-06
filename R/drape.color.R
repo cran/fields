@@ -3,10 +3,9 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "drape.color" <- function(z, col = tim.colors(64), 
-    zlim = NULL, transparent.color = "white", midpoint = TRUE) {
-    # slight increase for range
-    eps <- 1e-07
-    # range if zlim not supplied
+    zlim = NULL, breaks,  transparent.color = "white", midpoint = TRUE,
+                          eps=1e-8) {
+  # range if zlim not supplied
     if (is.null(zlim)) {
         zlim <- range(c(z), na.rm = TRUE)
     }
@@ -21,12 +20,23 @@
     if (midpoint) {
         z <- (z[1:(M - 1), 1:(N - 1)] + z[2:M, 1:(N - 1)] + z[1:(M - 
             1), 2:N] + z[2:M, 2:N])/4
+        M<- M-1
+        N<- N-1
     }
-    # spacing for grid to assign  colors
-    # 1+eps included so that if z== zlim[2] it gets a color
-    dz <- (zlim[2] * (1 + eps) - zlim[1])/NC
-    # discretize the z-value
-    zcol <- floor((z - zlim[1])/dz + 1)
-    # assign colors if in range 1:NC otherwise use the transparent color
-    ifelse(zcol > NC, transparent.color, col[zcol])
+    if( missing( breaks)) { breaks<- NA}
+    if( is.na(breaks[1])){
+        # spacing for grid to assign  colors
+        # 1+-eps included so that if z== zlim[1 or 2] it gets a color
+        breaks<- seq(zlim[1]*(1-eps), zlim[2] * (1 + eps) ,, NC+1)
+    }
+    if (length(breaks) != NC + 1){ 
+          stop("must have one more break than colour")
+    }
+  # the magic of R ...
+    icolor<-  cut(c(z),breaks)@.Data
+  # returned values is a vector of character hex strings encoding the colors.
+    hold<- ifelse(is.na(icolor), transparent.color, col[icolor])
+  # points not assigned a bin from breaks get an NA
+  # NA are converted to transparent color
+    list( color.index=matrix(hold, nrow=M, ncol=N), breaks=breaks)
 }

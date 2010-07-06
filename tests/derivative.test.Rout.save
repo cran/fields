@@ -1,6 +1,6 @@
 
-R version 2.9.0 (2009-04-17)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -32,26 +32,73 @@ suffix '.spam' to the function name, e.g. 'help(chol.spam)'.
 
 Attaching package: 'spam'
 
+The following object(s) are masked from 'package:base':
 
-	The following object(s) are masked from package:base :
+    backsolve, forwardsolve, norm
 
-	 backsolve,
-	 forwardsolve 
+ Use help(fields) for an overview of this library
 
- Try help(fields) for an overview of this library
-fields web: http://www.image.ucar.edu/Software/Fields 
+library( fields, keep.source=TRUE) retains comments in the source code. 
 > options(echo=FALSE)
+testing:  radial basis function exact
     PASSED test at tolerance  1e-06
+testing:  sanity test of stationary.cov with RadialBasis
+    PASSED test at tolerance  1e-08
+testing:  sanity test of Rad.cov
+    PASSED test at tolerance  1e-08
+testing:  stat.cov Radbas C multiply
+    PASSED test at tolerance  1e-08
+testing:  Rad.cov C multiply
+    PASSED test at tolerance  1e-08
+    PASSED test at tolerance  1e-06
+testing:  Wendland exact
     PASSED test at tolerance  1e-06
     PASSED test at tolerance  1e-08
+testing:  Wendland C multiply
+    PASSED test at tolerance  1e-08
+testing:  Wendland.cov theta=1.0
     PASSED test at tolerance  1e-07
+testing:  Wendland.cov theta=.75
     PASSED test at tolerance  1e-07
+testing:  stationary.cov and exact C multiply for Wendland
+    PASSED test at tolerance  1e-08
+testing:    Wendland C multiply
+    PASSED test at tolerance  1e-08
+testing:  2-d derivs from wend.cov/mKrig
     PASSED test at tolerance  1e-08
     PASSED test at tolerance  1e-08
+testing:  2-d derivs from stationary-wend/mKrig
+    PASSED test at tolerance  1e-08
+    PASSED test at tolerance  1e-08
+testing:  wendland.cov quad 2-d
+    PASSED test at tolerance  0.005
+testing:  stationary.cov/Wendland cubic 2-d
     PASSED test at tolerance  0.01
-    PASSED test at tolerance  0.01
-    PASSED test at tolerance  0.01
-    PASSED test at tolerance  0.01
+Warning messages:
+1: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV, Krig.fgcv,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+2: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, Krig.fgcv.one,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+testing:  stationary.cov/Wendland cubic 2-d
+    PASSED test at tolerance  0.005
+    PASSED test at tolerance  0.005
+Warning messages:
+1: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV, Krig.fgcv,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+2: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, Krig.fgcv.one,  :
+  GCV search gives a minimum at the endpoints of the
+grid search
+testing:  Tps derivative x1
+    PASSED test at tolerance  2e-04
+testing:  Tps derivative x2
+    PASSED test at tolerance  2e-04
+testing:  Tps derivative x1 surface function
+    PASSED test at tolerance  1e-08
+testing:  Tps derivative x2 surface function
+    PASSED test at tolerance  1e-08
 done with dervative tests
 > 
 > 

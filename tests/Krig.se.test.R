@@ -70,7 +70,7 @@ predict.se( out, x=x0, cov=TRUE)-> test2
 eigen( test2, symmetric=TRUE)-> hold
 hold$vectors%*% diag( 1/sqrt( hold$values))%*% t( hold$vectors)-> hold
 cor(test%*% hold)-> hold2
-# off diagonal elements of correlations -- expceted values are zero. 
+# off diagonal elements of correlations -- expected values are zero. 
 
 abs(hold2[ col(hold2)> row( hold2)])-> hold3
 
@@ -89,7 +89,7 @@ as.image(ozone2$y[16,], x= ozone2$lon.lat, ncol=24, nrow=20,
 #
 # A useful disctrtized version of ozone2 data
  
-x<- cbind(dtemp$x[dtemp$ind[,1]], dtemp$y[dtemp$ind[,2]])
+x<- dtemp$xd
 y<- dtemp$z[ dtemp$ind]
 weights<- dtemp$weights[ dtemp$ind]
 
@@ -132,33 +132,51 @@ test<- predict.se( out, x0, cov=TRUE)
 test.for.zero( c( look), c( test), tag="Weighted case and exact for ozone2 full 
 cov", tol=1e-8)
 
-
+########################################################################
+######### redo test with smaller grid to speed things up
 #cat("Conditional simulation test -- this takes some time", fill=TRUE)
 
-# the grid ...
+# redo data set to smaller grid size
+N1<-10
+N2<-12
+as.image(ozone2$y[16,], x= ozone2$lon.lat, ncol=N2, nrow=N1, 
+          na.rm=TRUE)-> dtemp
+#
+# A useful discretized version of ozone2 data
+ 
+xd<- dtemp$xd
+y<- dtemp$z[ dtemp$ind]
+weights<- dtemp$weights[ dtemp$ind]
 
-glist<- list( x= dtemp$x, y=dtemp$y)
+Krig( xd, y, Covariance="Matern", 
+   theta=1.0, smoothness=1.0, weights=weights) -> out
+
+
+xr<- range( dtemp$x)
+yr<- range( dtemp$y)
+M1<-N1
+M2<- N2
+glist<- list( x=seq( xr[1], xr[2],,M1) , y=seq( yr[1], yr[2],,M2))
 
 set.seed( 233)
 # with extrap TRUE this finesses problems with
 # how NAs are handled in var below
 
-sim.Krig.grid( out, grid= glist, M=400, extrap=TRUE)-> look
+sim.Krig.grid( out, grid= glist, M=100, extrap=TRUE)-> look
 
 predict.surface.se( out, grid=glist,extrap=TRUE)-> test
 
 
-look2<- matrix( NA, 20,24)
+look2<- matrix( NA, M1,M2)
 
-for(  k in 1:24){
-for ( j in 1:20){
-look2[j,k] <- sqrt(var( look$z[j,k,], na.rm=TRUE))
-}
+for(  k in 1:M2){
+    for ( j in 1:M1){
+       look2[j,k] <- sqrt(var( look$z[j,k,], na.rm=TRUE)) }
 }
 
 
 test.for.zero(  1-mean(c(look2/test$z), na.rm=TRUE), 0, relative=FALSE, 
-tol=.005, tag="Conditional simulation marginal se for grid")
+tol=.001, tag="Conditional simulation marginal se for grid")
 
 cat("all done testing predict.se ", fill=TRUE)
 options( echo=TRUE)

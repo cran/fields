@@ -101,20 +101,22 @@ X<-  cbind( rep(1, nrow(x)), x)
 
 Sinv<- solve( Sigma + lam* diag( 1, nrow( x)))
 
-             
+#checks on  likelihoods            
+
 # quadratic form:
- dhat<- c(solve( t(X)%*%Sinv%*%(X) ) %*% t(X) %*%Sinv%*%y)
+dhat<- c(solve( t(X)%*%Sinv%*%(X) ) %*% t(X) %*%Sinv%*%y)
 test.for.zero( dhat, out$d, tag="initial check on d for likelihood")
 r<- y -X%*%dhat
 N<- nrow(x)
 look<-  t( r)%*%(Sinv)%*%r/N
 
 
+
 test.for.zero( look, out$rho.MLE, tag="rho hatfrom likelihood")
 
 test.for.zero( look, out2$rhohat*((N-3)/N), tag="rho hatfrom likelihood")
 
-#profile likelihood on rho and d
+
 
 # check determinant
 lam<- .2
@@ -127,6 +129,7 @@ out<-mKrig( x,y,cov.function =Exp.cov, theta=4, lambda=lam)
 
 test.for.zero( out$lnDetCov, look2)
 test.for.zero( out$lnDetCov, determinant(M, log=TRUE)$modulus)
+  
 
 # check profile likelihood by estimating MLE
 lam.true<- .2

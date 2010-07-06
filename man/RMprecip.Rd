@@ -44,8 +44,10 @@ in the usual R grid format for images and contouring
 They have  the following components:
 \describe{
 \item{x}{
-Longitude-latitude grid at approximately 4km resolution}
-\item{elev}{
+Longitude grid at approximately 4km resolution}
+\item{y}{
+Latitude grid at approximately 4km resolution}
+\item{z}{
 Average  elevation for grid cell in meters
 }
 
