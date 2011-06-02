@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -36,25 +36,35 @@ package (file ends in .gz) the commented source code is the R subdirectory.)
 regression (including GCV) 
 \item \code{Krig} Spatial process estimation
 (Kriging) including support for conditional simulation. 
-}
+
 
 The Krig function allows you to supply a covariance function that is
 written in native R code.  See (\code{stationary.cov}) that includes
 several families of covariances and distance metrics including the
-Matern and great circle distance. Also check out \code{mKrig} (micro Krig) and
-\code{fastTps}
-a fast Kriging and spline-like functions, that can take advantage of sparse covariance
+Matern and great circle distance. 
+\item \code{mKrig} (micro Krig) are
+      \code{fastTps}
+ fast efficient  Universal Kriging and spline-like functions, that can take advantage of sparse covariance
 functions and thus handle very large numbers of spatial locations. 
+
+\item
+\code{LatticeKrig} is an experimental function that uses a multiresolution basis
+and CAR on basis coefficients for fixed rank Kriging. This is designed to handle 
+large spatial datasets but with long range covariance functions.
+}
 
 \strong{Other noteworthy functions}
 \itemize{
-\item \code{cover.design}  Gnerates space-filling designs where the distance 
-function is expresed in R/S code
+
+\item \code{vgram} and \code{vgram.matrix} finds variograms for spatial data (and
+with temporal replications.
+
+\item \code{cover.design} Generates space-filling designs where the distance 
+function is expresed in R code.
 
 \item \code{as.image}, \code{image.plot}, \code{drape.plot}, \code{quilt.plot}
 \code{add.image}, \code{crop.image}, \code{half.image}, \code{average.image}, 
-\code{designer.colors}, \code{color.scale}
- 
+\code{designer.colors}, \code{color.scale}, \code{in.poly} Many
 convenient functions for working with image data and rationally (well,
 maybe reasonably) creating and  placing a color scale on an image plot. 
 See also  \code{help(grid.list)} for how fields works with grids and \code{US}
@@ -103,7 +113,7 @@ for summer 1987.
 \item \code{PRISMelevation} Digital elevations for the 
    continental US at approximately 4km resolution
 \item \code{rat.diet} Small paired study on rat food intake over time.
-\item \code{WorldBank} Demographic and carbon emission data 
+\item \code{WorldBankCO2} Demographic and carbon emission data 
  for 75 countries and for 1999. 
 }
 

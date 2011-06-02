@@ -34,7 +34,7 @@ hold3<- MaternQR.test( x,y,nu)
 hold4<- MaternQRProfile.test( x,y,nu)
 test.for.zero( hold3$pars[1], hold4$pars[1], tol=1e-3, tag="check REML rho")
 test.for.zero( hold3$pars[2], hold4$pars[2], tol=1e-3, tag="check REML theta")
-test.for.zero( hold3$pars[3], hold4$pars[3], tol=2e-4, tag=" check REML sigma2")
+test.for.zero( hold3$pars[3], hold4$pars[3], tol=.0002, tag=" check REML sigma2")
 
 nu<- hold3$smoothness 
 out1<- Krig( x,y, Covariance="Matern", theta=  hold3$pars[2],

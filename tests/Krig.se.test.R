@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -60,7 +60,7 @@ var(test)-> look
 
 predict.se( out, x=x0)-> test2
 mean( diag( look)/ test2**2)-> look2
-test.for.zero(look2, 1.0, tol=1e-2, tag="Marginal standard Cond. Sim.")
+test.for.zero(look2, 1.0, tol=1.5e-2, tag="Marginal standard Cond. Sim.")
 
 predict.se( out, x=x0, cov=TRUE)-> test2
 

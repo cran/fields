@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -66,7 +66,7 @@ This group of data sets is organized with the following  objects:
 Temperature is in degrees C and precipitation in total monthly
 accumulation in millimeters.}
 
-\item{CO.MAM.ppt CO.MAM.tmax CO.MAM.tmin}{Spring seasonal means 
+\item{CO.ppt.MAM CO.tmax.MAM CO.tmin.MAM}{Spring seasonal means 
 (March, April,May) as two dimensional arrays
    (Year, Station).}
 

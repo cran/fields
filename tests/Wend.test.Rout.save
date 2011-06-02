@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.13.0 (2011-04-13)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: i386-apple-darwin9.8.0/i386 (32-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,7 +17,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > # fields, Tools for spatial data
-> # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+> # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 > # University Corporation for Atmospheric Research
 > # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 > 
@@ -25,10 +26,10 @@ Type 'q()' to quit R.
 > 
 > library( fields)
 Loading required package: spam
-Package 'spam' is loaded. Spam version 0.15-5 (2009-08-08).
+Package 'spam' is loaded. Spam version 0.23-0 (2010-09-01).
 Type demo( spam) for some demos, help( Spam) for an overview
 of this package.
-Help for individual functions is optained byadding the
+Help for individual functions is optained by adding the
 suffix '.spam' to the function name, e.g. 'help(chol.spam)'.
 
 Attaching package: 'spam'
@@ -39,7 +40,9 @@ The following object(s) are masked from 'package:base':
 
  Use help(fields) for an overview of this library
 
-library( fields, keep.source=TRUE) retains comments in the source code. 
+library( fields, keep.source=TRUE) retains comments in the source code.
+
+Copyright 2004-2011, Licensed under GPL, www.gpl.org/licenses/gpl.html 
 > options( echo=FALSE)
     PASSED test at tolerance  1e-08
     PASSED test at tolerance  1e-08

@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 vgram.matrix <- function(dat, R = 5, dx = 1, dy = 1) {
@@ -44,8 +44,9 @@ vgram.matrix <- function(dat, R = 5, dx = 1, dy = 1) {
         BigDiff <- (dat[MM[, 1], NN[, 1]] - dat[MM[, 2], NN[, 
             2]])
         # standard and the  Cressie robust version.
-        holdVG[k] <- mean(0.5 * (BigDiff)^2)
-        holdRVG[k] <- mean(abs(BigDiff)^0.5)
+        # modified to handle NAs 
+        holdVG[k] <- mean(0.5 * (BigDiff)^2, na.rm=TRUE) 
+        holdRVG[k] <- mean(abs(BigDiff)^0.5, na.rm=TRUE)
     }
     # finish robust estimate Cressie (1993) formula 2.4.12
     holdRVG <- 0.5 * (holdRVG^4)/(0.457 + 0.494 * holdN)

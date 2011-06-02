@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -16,7 +16,7 @@ test.for.zero.flag<- TRUE
 x0<- cbind( 0,4)
 
 Krig( ozone$x, ozone$y, cov.function = "Exp.cov", theta=50,
-      lambda=.06)-> out
+      lambda=.06, GCV=FALSE)-> out
 
 # direct calculation
 Krig.Amatrix( out, x=x0)-> A

@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "print.Krig" <- function(x, digits = 4, ...) {
@@ -25,7 +25,7 @@
     c1 <- c(c1, "MLE for sigma:")
     c2 <- c(c2, format(signif(x$shat.MLE, digits)))
     c1 <- c(c1, "MLE for rho:")
-    c2 <- c(c2, format(signif(x$rhohat, digits)))
+    c2 <- c(c2, format(signif(x$rho.MLE, digits)))
     c1 <- c(c1, "lambda")
     c2 <- c(c2, format(signif(x$lambda, 2)))
     c1 <- c(c1, "User rho")

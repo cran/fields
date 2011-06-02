@@ -1,0 +1,94 @@
+# fields, Tools for spatial data
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+MLE.LatticeKrig<- function(x,y,NC=16, center.range=NULL, grid.list,
+                       iseed=123,NtrA=20, overlap=2.5 , verbose=FALSE){
+
+# dummy call to LatticeKrig to setup
+  obj<- LatticeKrig(  x,y,NC=NC, center.range=center.range,setup=TRUE, overlap=2.5)
+                   
+  centers<- obj$centers
+  N<- length( y)
+  N1<- obj$N1
+  N2<- obj$N2
+  basis.delta<- obj$basis.delta  
+# Spatial drift matrix -- assumed to be linear in coordinates. (m=2)
+  m=2
+  nt= 3
+  T.matrix<- cbind( rep(1, N), x)
+ 
+  pg<- make.surface.grid(grid.list)
+  PHI<-  wendland.basis( x, centers, theta=basis.delta, spam.format=TRUE, flavor=0)
+  XtX<-  t(PHI)%*%PHI
+  Xnorm<- mean( diag(XtX))
+  if( verbose){
+  cat("XtX mean diag", Xnorm, fill=TRUE)}
+  
+  NG<- nrow(pg)
+  lnProfileLike<-rho.MLE<-shat.MLE<-trA<-SEtrA<-GCV<-rep( NA,NG)
+  Mc<- obj$Mc
+  for (  k in 1: NG){
+    lambda<- pg[k,2]
+    beta<- pg[k,1]
+    if( verbose){
+      cat( "beta lambda", beta, lambda, ":")}
+    H<-  lattice.precision(N1,N2, spam.format=TRUE, beta=beta)
+    temp<- XtX + lambda*(t(H)%*%H)
+    Mc<-update.spam.chol.NgPeyton(obj$Mc, temp)
+    
+    lnDetReg <- 2 * sum(log(diag(Mc)))
+    lnDetQ<-  2* sum( log( diag( chol(t(H)%*%H))))
+    lnDetCov<- lnDetReg - lnDetQ + (N - N1*N2)* log(lambda)
+    
+    A <- forwardsolve(Mc, transpose = TRUE, t(PHI)%*%T.matrix, upper.tri = TRUE)
+    A <- backsolve(Mc, A)  
+    A<- t(T.matrix)%*%(T.matrix - PHI%*%A)/lambda
+    b <- forwardsolve(Mc, transpose = TRUE, t(PHI)%*%y, upper.tri = TRUE)
+    b <- backsolve(Mc, b)  
+    b<- t(T.matrix)%*%(y- PHI%*%b)/lambda
+    Omega<- solve( A)
+    d.coef<- Omega%*% b
+
+# coefficients of basis functions.   
+  c.coef <- forwardsolve(Mc, transpose = TRUE, t(PHI)%*%(y-T.matrix%*%d.coef),
+                         upper.tri = TRUE)
+  c.coef <- backsolve(Mc, c.coef)
+  fitted.values<- T.matrix%*%d.coef + PHI%*%c.coef
+  c.mKrig<- (y- fitted.values)/lambda
+  quad.form<-   sum(y* c.mKrig )
+  rho.MLE[k] <- quad.form/N
+  shat.MLE[k] <- sqrt(lambda * rho.MLE[k])
+  RSS<- sum((y- fitted.values)**2)
+  lnProfileLike[k] <- (-N/2 - log(2*pi)*(N/2)
+                      - (N/2)*log(rho.MLE[k]) - (1/2) * lnDetCov)
+  if(verbose){
+    cat( "rho shat, lnProfileLike", rho.MLE[k],  shat.MLE[k], lnProfileLike[k], fill=TRUE)}
+ if(!is.null(NtrA)){
+  set.seed(iseed)
+  Ey<- matrix( rnorm( NtrA*N), N,NtrA)
+  b <- forwardsolve(Mc, transpose = TRUE, t(PHI)%*%Ey, upper.tri = TRUE)
+  b <- backsolve(Mc, b)
+  b<- t(T.matrix)%*%(Ey- PHI%*%b)/lambda
+  d.temp<-  solve( A, b)
+  
+  c.temp <- forwardsolve(Mc, transpose = TRUE, t(PHI)%*%(Ey- T.matrix%*%d.temp),
+                                         upper.tri = TRUE)
+  c.temp <- backsolve(Mc, c.temp)
+  
+  Eyhat<-T.matrix%*%d.temp + PHI%*%c.temp 
+  trA.info <- t(Ey *(Eyhat))%*%rep(1,N)
+  trA[k] <- mean(trA.info)
+  SEtrA[k]<- sd(trA.info)/sqrt(NtrA)
+  GCV[k]<- (RSS/N)/ (( 1- trA[k]/N)**2)
+  if(verbose){
+    cat("trA", trA[k], fill=TRUE)}
+  }
+    
+
+} 
+  out<- cbind(pg,trA,SEtrA, shat.MLE, rho.MLE, lnProfileLike, GCV)
+  dimnames(out)<- list( NULL, c("beta", "lambda", "trA", "SEtrA", "sigmaMLE",
+                                "rhoMLE","lnProfileLike", "GCV"))
+  return( out)
+}  

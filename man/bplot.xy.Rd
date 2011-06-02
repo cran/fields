@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -14,9 +14,8 @@ representation
 of the conditional distrubtion of [Y|X] in terms of boxplots.  
 }
 \usage{
-bplot.xy(x, y, N = 10, breaks = pretty(x, N, eps.correct = 1),
-         style = "tukey", outlier = TRUE, plot = TRUE, xaxt =
-         "s", ...)
+bplot.xy(x, y, N = 10, breaks = pretty(x, N, eps.correct = 1), plot=TRUE,
+         ...)
 }
 \arguments{
 \item{x}{
@@ -31,26 +30,13 @@ Number of bins on x. Default is 10.
 \item{breaks}{
 Break points defining bin boundaries. These can be unequally spaced. 
 }
-\item{style}{
-Type of boxplot default is "tukey". The other choice is "quantile" where
-the whiskers are drawn to the 5 and 95 percentiles instead being based on
-the inner fences.
-}
-\item{xaxt}{
- 
-Plotting parameter for x-axis generation. Default is to produce
-an x-axis.
-}
-\item{outlier}{
-If true outliers (points beyond outer fences) will be added to the plots.
-}
+
 \item{plot}{
-If false just returns a list with the statistics used for plotting the
-box plots.
+If FALSE just returns a list with the statistics used for plotting the
+box plots, bin centers, etc. --  More stuff than you can imagine!
 }
 \item{\dots }{
-Any other optional arguments passed to the bplot.obj function there 
-are quite a few that are useful, see the help file for bplot for details. 
+Any other optional arguments passed to the standard \code{boxplot} function. 
 }
 }
 \seealso{
@@ -60,14 +46,16 @@ bplot, draw.bplot
 # condition on swim times to see how run times vary
 bplot.xy( minitri$swim, minitri$run, N=5)
 
-# bivariate normal corr= .6
+# bivariate normal corr= .8
 set.seed( 123)
 x<-rnorm( 2000)
-y<- .6*x +  sqrt( 1- .6**2)*rnorm( 200)
+y<- .8*x +  sqrt( 1- .8**2)*rnorm( 200)
 #
+bplot.xy(x,y)
 #
-bplot.xy( x,y, breaks=seq( -3, 3,,15) ,xlim =c(-4,4), ylim =c(-4,4))
-points( x,y, pch=".", col=3)
+bplot.xy( x,y, breaks=seq( -3, 3,,25) ,
+                xlim =c(-4,4), ylim =c(-4,4), col="grey80", lwd=2)
+points( x,y,col=3, cex=.5)
 }
 \keyword{hplot}
 % docclass is function

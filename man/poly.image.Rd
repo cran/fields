@@ -14,7 +14,7 @@ explicitly for every grid point.
 \usage{
 poly.image(x, y, z, col = tim.colors(64), breaks, transparent.color = "white", 
  midpoint = FALSE, zlim = range(z, na.rm = TRUE), 
- xlim = range(x), ylim = range(y), add = FALSE, border=NA,...)
+ xlim = range(x), ylim = range(y), add = FALSE, border=NA,lwd=1,...)
 
 poly.image.regrid(x)
 }
@@ -41,6 +41,8 @@ corners. (See poly.image.regrid.) }
   \item{add}{ If TRUE will add image onto current plot. }
   \item{border}{Color of the edges of the quadrilaterals, the default is
 no color.}
+  \item{lwd}{Line width for the mesh surface. i.e. the outlines of the quadrilateral
+facets. }
   \item{\dots}{ If add is FALSE, additional graphical arguments that
  will be supplied to the plot function. }
 }

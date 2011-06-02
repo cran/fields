@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "plot.surface" <- function(x, main = NULL, type = "C", 
@@ -7,7 +7,7 @@
     graphics.reset = NULL, labcex = 0.6, add.legend = TRUE, ...) {
     obj <- x
     old.par <- par(no.readonly = TRUE)
-    if (is.na(match(type, c("b", "C", "I", "p")))) {
+    if (is.na(match(type, c("b", "c","C", "I", "p")))) {
         stop("plot type does not match b, C, I, or p.")
     }
     if (is.null(zlim)) {
@@ -59,6 +59,14 @@
         if ((!is.null(main)) & type != "b") 
             title(main)
     }
+     if (type == "c") {
+        if (is.null(levels)) 
+            levels <- pretty(obj$z[!is.na(obj$z)], 5)
+        contour(obj$x, obj$y, obj$z, levels = levels, 
+            labcex = labcex, lwd = 2, ...)
+        if ((!is.null(main)) & type != "b") 
+            title(main)
+      }
     if (type == "b" | type == "C") {
         if (type == "b") {
             par(mar = old.mar)

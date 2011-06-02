@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -9,6 +9,7 @@
 \alias{mKrig.coef}
 \alias{mKrig.trace}
 \alias{print.mKrig}
+\alias{summary.mKrig}
 
 \title{"micro Krig"  Spatial process estimate of a curve or surface, 
 "kriging" with a known covariance function. }
@@ -18,13 +19,13 @@ optimized for large data sets and a clear exposition of the
 computations. Lambda, the smoothing parameter must be fixed. 
 }
 \usage{
-mKrig(x, y, weights = rep(1, nrow(x)), 
+mKrig(x, y, weights = rep(1, nrow(x)),  Z=NULL,
   lambda = 0, cov.function = "stationary.cov", 
     m = 2, chol.args=NULL,cov.args=NULL, find.trA = TRUE, NtrA = 20,
                  iseed = 123,  ...)
 
-\method{predict}{mKrig}( object, xnew=NULL,ynew=NULL, derivative=0, ...)
-
+\method{predict}{mKrig}( object, xnew=NULL,ynew=NULL, derivative=0, Z=NULL, drop.Z=FALSE,just.fixed=FALSE, ...)
+\method{summary}{mKrig}(object, ...)
 \method{print}{mKrig}( x, digits=4,... )
  mKrig.coef(object, y)
 
@@ -34,10 +35,13 @@ mKrig.trace( object, iseed, NtrA)
 \arguments{
   \item{x}{Matrix of unique spatial locations (or in print or surface 
        the returned mKrig object.) }
-  \item{y}{ Vector of observations at spatial locations, missing values
+  \item{y}{ Vector or matrix of observations at spatial locations, missing values
           are not allowed! Or in \code{mKrig.coef} a new vector of 
          observations. }
   \item{weights}{Precision  ( 1/variance) of each observation }
+\item{Z}{Linear covariates to be included in fixed part of the model that are distinct from the default low order polynomial in \code{x}}
+\item{drop.Z}{If true the fixed part will only be evaluated at the polynomial 
+part of the fixed model. The contribution from the other covariates will be omitted.}
   \item{lambda}{ Smoothing parameter or equivalently the 
 ratio between the nugget and process varainces.}
   \item{cov.function}{The name, a text string of the covariance function.}
@@ -69,15 +73,21 @@ Carlo estimate of the trace.}
 new fit to these data.}
   \item{derivative}{If zero the surface will be evaluated. If 
     not zero the matrix of partial derivatives will be computed.}
+\item{just.fixed}{If TRUE only the predictions for the fixed part of the model will be evaluted.} 
 \item{digits}{Number of significant digits used in printed output.}
 }
 \details{
  This function is an abridged version of Krig that focuses on the
 computations in Krig.engine.fixed done for a fixed lambda parameter
  for unique spatial locations and for data without missing values. These 
-restriction simply the code for reading. Note that also little checking 
+restrictions simplify the code for reading. Note that also little checking 
 is done and the spatial locations are not transformed before the 
-estimation.  
+estimation.  Because most of the operations are linear algebra this
+code has been written to handle multiple data sets. Specifically if the 
+spatial model is the same except for different observed values (the y's), one can 
+pass \code{y} as a matrix and the computations are done efficiently for each set.
+Note that this is not a multivariate spatial model just an efficient computation over 
+several data vectors without explicit looping. 
 
 \code{predict.mKrig} will evaluate the derivatives of the estimated
 function if derivatives are supported in the covariance function.
@@ -127,10 +137,13 @@ finding the trace exactly based on applying A to \code{np} unit
 vectors.
 }
 \value{
-  \item{d}{Coefficients of the polynomial fixed part. }
+  \item{d}{Coefficients of the polynomial fixed part and if present the covariates (Z).To determine which is which the logical vector ind.drift also part of this object is TRUE for the polynomial part. }
   \item{c}{ Coefficients of the nonparametric part.}
   \item{nt}{ Dimension of fixed part.}
   \item{np}{ Dimension of c.}
+  \item{nZ}{Number of columns of Z covariate matrix (can be zero).}
+   \item{ind.drift}{Logical vector that indicates polynomial coefficients in the 
+\code{d} coefficients vector. This is helpful to distguish between polynomial part and the extra covariates coefficients associated with Z. }
   \item{lambda.fixed}{The fixed lambda value}
   \item{x}{Spatial locations used for fitting.}
   \item{knots}{The same as x}
@@ -147,9 +160,8 @@ matrix for the process at the observation locations.}
  \item{rho.MLE}{MLE or rho.}
  \item{rhohat}{Estimate for rho adjusted for fixed model degrees of freedom (ala REML).}
  \item{lnProfileLike}{log Profile likelihood for lambda}
-  \item{lnDetCov}{Log determinant of the covariance matrix for the observations having factored out
-rho.}
-\item{Oemga}{GLS covariance for the estimated parameters in the fixed part of the model (d coefficients0.}
+  \item{lnDetCov}{Log determinant of the covariance matrix for the observations having factored out rho.}
+\item{Omega}{GLS covariance for the estimated parameters in the fixed part of the model (d coefficients0.}
 \item{qr.VT, Mc}{QR and cholesky matrix decompositions needed to recompute the estimate for new observation vectors.}
 \item{fitted.values, residuals}{Usual predictions from fit.}
 \item{eff.df}{Estimate of effective degrees of freedom. Either the mean of the Monte Carlo sample or the 
@@ -175,7 +187,6 @@ mKrig( x,y, theta = 2.0, lambda=.01)-> out
 #
 # NOTE this should be identical to 
 # Krig( x,y, theta=2.0, lambda=.01) 
-
 # interpolate using tapered version of the exponential, 
 # the taper scale is set to 1.5 default taper covariance is the Wendland.
 # Tapering will done at a scale of 1.5 relative to the scaling 
@@ -217,7 +228,7 @@ GCV.est[k]<- out$GCV
 logPL[k]<- out$lnProfileLike
 }
 #
-# plot results different curves are for individual estimates and 
+# plot the  results different curves are for individual estimates  
 # the two lines are whether one averages first the traces or the GCV criterion.
 #
 par( mar=c(5,4,4,6))
@@ -240,8 +251,22 @@ axis( 4)
 mtext( side=4,line=3, "-ln profile likelihood", col="blue")
 title( "GCV ( green = exact) and  -ln profile likelihood", cex=2)
 
+# an example using a "Z" covariate and the Matern family
 
-
+data(COmonthlyMet)
+y<- CO.tmin.MAM.climate
+good<- !is.na( y)
+y<-y[good]
+x<- CO.loc[good,]
+Z<- CO.elev[good]
+out<- mKrig( x,y, Z=Z,  cov.function="stationary.cov", Covariance="Matern",
+                    theta=4.0, smoothness=1.0, lambda=.1)
+set.panel(2,1)
+# quilt.plot with elevations
+quilt.plot( x, predict(out))
+# quilt.plot without elevation linear term included
+quilt.plot( x, predict(out, drop.Z=TRUE))
+set.panel()
 
 # here is a series of examples with a bigger problem 
 # using a compactly supported covariance directly
@@ -251,8 +276,8 @@ N<- 1000
 x<- matrix( 2*(runif(2*N)-.5),ncol=2)
 y<- sin( 1.8*pi*x[,1])*sin( 2.5*pi*x[,2]) + rnorm( 1000)*.1
   
-mKrig( x,y, cov.function="wendland.cov",k=2, theta=.2, 
-            lambda=.1)-> look2
+look2<-mKrig( x,y, cov.function="wendland.cov",k=2, theta=.2, 
+            lambda=.1)
 
 # take a look at fitted surface
 predict.surface(look2)-> out.p
@@ -311,11 +336,24 @@ y<- sin( 1.8*pi*x[,1])*sin( 2.5*pi*x[,2]) + rnorm( N)*.01
 
 # success!
 
+# fiting multiple data sets
+#
+#\dontrun{ 
+  y1<- sin( 1.8*pi*x[,1])*sin( 2.5*pi*x[,2]) + rnorm( N)*.01
+  y2<- sin( 1.8*pi*x[,1])*sin( 2.5*pi*x[,2]) + rnorm( N)*.01
+  Y<- cbind(y1,y2)
+
+  mKrig( x,Y,cov.function="wendland.cov",k=2, theta=.1, 
+            lambda=1e2  )-> look3
+# note slight difference in summary because two data sets have been fit.
+  print( look3)
+#}
+
 ##################################################
-# finding a good choice for theta 
+# finding a good choice for theta as a taper 
 ##################################################
 # Suppose the target is a spatial prediction using roughly 50 nearest neighbors
-# (tapering covariances is effective for rouhgly 20 or more in the situation of 
+# (tapering covariances is effective for roughly 20 or more in the situation of 
 #  interpolation) see Furrer, Genton and Nychka (2006).
 
 # take a look at a random set of 100 points to get idea of scale
@@ -344,6 +382,8 @@ set.seed(223)
  mKrig( x,y, cov.function="wendland.cov",k=2, theta=dguess, 
             lambda=1e2) ->  look2
 }
+
+
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

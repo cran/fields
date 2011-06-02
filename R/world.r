@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "world" <- function(ylim = c(-90, 90), xlim = NULL, 
@@ -95,3 +95,35 @@ world.color <- function(obj,xlim = c(-180, 180), ylim = c(-90,
         }
     }
 }
+
+in.land.grid<- function (grid.list)
+{
+data(world.dat)
+ind0<-is.na(world.dat$x)|is.na(world.dat$x)
+ ind <- (1:length(world.dat$x))[ind0]
+    ind <- c(0, ind)
+    N <- length(ind) - 1
+    lakes.id <- c(46, 53, 25, 26, 28, 27, 4, 47, 48, 51, 49, 
+        50)
+    start.id<- ind[1:N] +1
+    end.id<-   ind[2:(N+1)] -1
+
+    land.id <- (1:N)[-lakes.id]
+        m<- length( grid.list$x)
+        n<- length( grid.list$y)
+        land.mask<- matrix( FALSE, m,n)
+        for (k in land.id) {
+            tempi <- start.id[k] : end.id[k]
+            xp<- cbind(world.dat$x[tempi],  world.dat$y[tempi] )
+            land.mask<- land.mask | in.poly.grid( grid.list,xp, convex.hull=FALSE)  
+         }
+
+        for (k in lakes.id) {
+            tempi <- start.id[k] : end.id[k]
+            xp<- cbind(world.dat$x[tempi],  world.dat$y[tempi] )
+            land.mask<- land.mask & !(in.poly.grid( grid.list,xp))
+        }
+ return( land.mask)
+}
+
+

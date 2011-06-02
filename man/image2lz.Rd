@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 \name{image2lz}
@@ -79,7 +79,9 @@ being inside or on boundary of polygon. The test expands the polygon
 slightly in size (on the order of single precision zero) to include 
 points that are at the vertices. \code{in.poly} does not really depend 
 on an image format however the grid version \code{in.poly.grid} is more 
-efficient for considering the locations on a regular grid.}
+efficient for considering the locations on a regular grid
+See also \code{in.land.grid} that is hard coded to work with the
+fields world map.}
 
 }
 
@@ -88,7 +90,7 @@ efficient for considering the locations on a regular grid.}
 \author{Doug Nychka}
 
 \seealso{ drape.plot, image.plot,
-    interp.surface, interp.surface.grid}
+    interp.surface, interp.surface.grid, in.land.grid}
 
 \examples{
 data(RMelevation)

@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -11,6 +11,10 @@
 \alias{fields.pochdown}
 \alias{fields.pochup}
 \alias{wendland.eval}
+%\alias{Wendland.father}
+%\alias{Wendland.mother}
+%\alias{wendland.basis}
+
 
 \title{Wendland family of covariance functions and supporting 
 numerical functions}
@@ -32,6 +36,12 @@ fields.pochup(q, k)
 fields.pochdown(q, k)
 fields.D(f,name,order = 1)
 
+%Wendland.father(x, theta = 1, dimension = 1, k=3) 
+%Wendland.mother(x, theta = 1, dimension = 1, k=3) 
+%wendland.basis(x1, x2, theta = 1, V=NULL,
+%    k = 3, C = NA, Dist.args = list(method = "euclidean"), 
+%    spam.format = TRUE, verbose = FALSE, flavor=0)
+
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -51,6 +61,17 @@ marginal variance or sill if viewed as a covariance function.) }
 \item{f}{Numerical expression to differentiate.}
 \item{name}{Variable with which to take derivative.}
 \item{order}{Order of derivative.}
+
+%\item{x}{Argument for one dimensional basis function}
+%\item{x1}{Two dimensional locations to evaluate the basis functions}
+%\item{x2}{Two dimensional centers that define the basis}
+%\item{C}{Vector or matrix of coefficients to multiply with basis functions}
+%\item{Dist.args}{Arguments to distance function}
+%\item{V}{See explantion in help for \code{Exp.cov}}
+%\item{spam.format}{If TRUE return result in sparse format}
+%\item{verbose}{If TRUE prints out intermediate steps for debugging.}
+%\item{flavor}{Takes values 0:3. Controls type of tensor product:
+%father*father=0, father*mother =1, mother*father = 2, mother*mother =3 }
 
 }
 
