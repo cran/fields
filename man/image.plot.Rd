@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -26,7 +26,7 @@ image.plot(...,
                  graphics.reset = FALSE, bigplot = NULL, smallplot =
                  NULL, legend.only = FALSE, col = tim.colors(nlevel),
                  lab.breaks = NULL, axis.args = NULL, legend.args =
-                 NULL, midpoint=FALSE)}
+                 NULL, midpoint=FALSE, border=NA, lwd=1.0)}
 
 \arguments{ \item{\dots}{
  The usual arguments to the \code{image} function as x,y,or z or as a list with x,y,z as components. One can also include a
@@ -108,8 +108,10 @@ to surround the  z locations as midpoints. If TRUE z values will be averaged
 to yield a midpoint value and the original grid points be used to define the
 quadralaterals. (See help on poly.image for details). In most cases
 midpoint should be FALSE to preserve exact values for z and 
-let the grid polygons be modified. }
-
+let the grid polygons be modified.
+ }
+\item{border}{This only works if x and y are matrices -- if NA the quadralaterals will have no borders. Otherwise this specifies the color to use.}
+\item{lwd}{Line width of borders around pixels if border is not NA.}
 }
 \section{Side Effects}{
 After exiting, the
@@ -140,7 +142,19 @@ the gridded output of geophysical models where the regular grid is
 defined according to one map projection by the plotting is required
 in another projection. Typically the regular grid becomes distorted in 
 a smooth way when this happens. See the regional climate example for
-a illustration of this application. 
+a illustration of this application. One can add border colors in this case
+easily because these choices are jsut passed onto the polygon function. 
+For adding the grid of pixel borders to a rectangular image try this example
+
+\code{ 
+ dx<- x[2] - x[1]
+ dy <- y[2]-y[1]
+ xtemp<- seq(  min( x)- dx/2, max(x)+ dx/2,, length(x) +1)
+ ytemp<- seq(  min( y)- dy/2, max(y)+ dy/2,, length(y) +1)
+ xline( xtemp, col="grey50", lwd=2);  yline( ytemp, col="grey50", lwd=2)
+}
+
+where \code{x} and \code{y} here are the x and y grid values from the image list.  
 
  Fine tuning color scales: This function gives some flexibility in
 tuning the color scale to fit the rendering of z values. This can
@@ -218,8 +232,8 @@ into the legend and main plot number of colors.
 
 }
 
-\seealso{ image,poly.image,filled.contour, quilt.plot, plot.surface, 
-add.image, colorbar.plot, tim.colors } 
+\seealso{ image, poly.image,filled.contour, quilt.plot, plot.surface, 
+add.image, colorbar.plot, tim.colors, designer.colors } 
 
 \examples{
 x<- 1:10; y<- 1:15; z<- outer( x,y,"+") 
@@ -273,7 +287,11 @@ image.plot(x,y,z,
 
 #### example using a irregular quadrilateral grid
 data( RCMexample)
+
 image.plot( RCMexample$x, RCMexample$y, RCMexample$z[,,1])
+ind<- 50:75 # make a smaller image to show bordering lines
+image.plot( RCMexample$x[ind,ind], RCMexample$y[ind,ind], RCMexample$z[ind,ind,1],
+                                      border="grey50", lwd=2)
 
 
 #### multiple images with a common legend

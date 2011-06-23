@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sim.Krig.standard" <- function(object, xp, M = 1, 

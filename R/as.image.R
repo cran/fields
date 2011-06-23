@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "as.image" <- function(Z, ind = NULL, grid = NULL, 
@@ -13,6 +13,9 @@
     # Thanks to J. Rougier for fixing bugs in this function.
     # set some default values for arguments
     #
+    # coerce Z to a vector
+    Z<- c( Z)
+    # use indicators and weights if passed
     if (!is.null(ind)) 
         x <- ind
     if (is.null(weights)) {

@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "drape.color" <- function(z, col = tim.colors(64), 
@@ -26,8 +26,13 @@
     if( missing( breaks)) { breaks<- NA}
     if( is.na(breaks[1])){
         # spacing for grid to assign  colors
-        # 1+-eps included so that if z== zlim[1 or 2] it gets a color
-        breaks<- seq(zlim[1]*(1-eps), zlim[2] * (1 + eps) ,, NC+1)
+        # +-eps included so that if z== zlim[1 or 2] it gets a color
+        # if statement is for when the limit is exactly zero
+        # thanks to Rosa Trancoso for finding this bug
+        zrange<- zlim[2] - zlim[1]
+        lower<- ifelse(abs(zlim[1])!=0, (zlim[1] - abs(zlim[1])*eps), -eps*zrange)
+        upper<- ifelse(abs(zlim[2])!=0, (zlim[2] + abs(zlim[1])*eps), eps*zrange)
+        breaks<- seq(lower, upper ,, NC+1)
     }
     if (length(breaks) != NC + 1){ 
           stop("must have one more break than colour")

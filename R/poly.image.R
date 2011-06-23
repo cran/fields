@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 poly.image.regrid <- function(x) {
@@ -24,7 +24,7 @@ poly.image.regrid <- function(x) {
 poly.image <- function(x, y, z, col = tim.colors(64), breaks, 
     transparent.color = "white", midpoint = FALSE, zlim = range(z, 
         na.rm = TRUE), xlim = range(x), ylim = range(y), add = FALSE, 
-    border = NA, ...) {
+    border = NA, lwd=1.0, ...) {
     # check dimensions
     Dx <- dim(x)
     Dy <- dim(y)
@@ -67,8 +67,16 @@ poly.image <- function(x, y, z, col = tim.colors(64), breaks,
         xp <- c(t(xp))
         yp <- c(t(yp))
         pcol<- c(zcol[i, 1:Nm1])
+
     # draw each poly with different color including the border
-    # to avoid missing some space on some output devices.
+    # if the border color has not been specified.
+    # this will avoid missing some space on some output devices.
+
         polygon(xp, yp, border = pcol, col = pcol)
+
+    # fill in border with different color if it is not an NA.
+        if( !is.na(border)){
+        polygon(xp, yp, border = border, col = NA, lwd=lwd)}
+
     }
 }

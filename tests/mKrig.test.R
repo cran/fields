@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -102,7 +102,7 @@ test.for.zero( temp, temp2, tag="Wendland/no spam")
 test.for.zero( temp2, temp3, tag="Wendland/spam")
 
 
-### testing coefficients for new data (
+### testing coefficients for new data 
 mKrig.coef( look2, cbind(y+1,y+2))-> newc
 test.for.zero( look2$c, newc$c[,2], tag="new coef c no spam")
 
@@ -178,6 +178,7 @@ y<- sin( 3*pi*x[,1])*sin( 3.5*pi*x[,2]) + rnorm( N)*.01
 
 
 
+
 # test of fastTps
 nx<- 50
 ny<- 60
@@ -198,6 +199,7 @@ test.for.zero( ydat, c( out.p$z)[ind])
 #image.plot(x,y,matrix( ztrue, nx,ny)- out.p$z) 
 rmse<- sqrt(mean( (ztrue- c( out.p$z))^2)/ mean( (ztrue)^2))
 test.for.zero( rmse,0,, tol=.01, relative=FALSE)
+
 
 
 cat("all done with mKrig tests", fill=TRUE)

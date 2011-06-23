@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -29,7 +29,7 @@ A matrix of (irregular) locations to interpolate. First column of loc
 isthe X coordinates and second is the Y's. 
 }
 \item{grid.list}{ A list with components x and y 
-describing the grid to interpolate}
+describing the grid to interpolate. The grids do not need to be equally spaced.}
 
 }
 \value{
@@ -59,6 +59,8 @@ dimension and a call to the function for irregular locations. It was
 included in fields for convenience. since the grid format is so common. 
 
 See also the akima package for fast interpolation from irrgeular locations. 
+Many thanks to  Jean-Olivier Irisson for making this code more efficient and 
+concise. 
 
 }
 \seealso{
@@ -70,15 +72,30 @@ image.smooth, as.surface, as.image, image.plot, krig.image,Tps
 # 
 
 data( lennon)
-# create the surface object
+# create an example in the right list format like image or contour
 obj<- list( x= 1:20, y=1:20, z= lennon[ 201:220, 201:220])
 
-# sample at 50 equally spaced points 
-temp<- seq( 1,20,,50)
-make.surface.grid( list( temp,temp))-> loc
-interp.surface( obj, loc)-> look
+set.seed( 123)
+# lots of random points
+N<- 500
+loc<- cbind( runif(N)*20, runif(N)*20)
+z.new<- interp.surface( obj, loc)
+# compare the image with bilinear interpolation at scattered points
+set.panel(2,2)
+image.plot( obj)
+quilt.plot( loc, z.new) 
+
+
+# sample at 100X100 equally spaced points on a grid
+
+grid.list<- list( x= seq( 1,20,,100), y=  seq( 1,20,,100))
+
+interp.surface.grid( obj, grid.list)-> look
+
 # take a look
-image.plot( as.surface( loc, look))
+set.panel(2,2)
+image.plot( obj)
+image.plot( look)
 
 }
 \keyword{spatial}

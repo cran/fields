@@ -126,9 +126,13 @@ loglmvn <- function(pars,nu,x,y){
     temp<- optim(init,loglmvn,method="L-BFGS-B",nu=nu,x=x,y=y)
     theta.est<- exp(temp$par[1])
     out2<-Krig( x,y, Covariance="Matern", theta= theta.est,smoothness=nu, method="REML")
-    out3<- c( out2$rhohat,theta.est, out2$shat.MLE^2)  
+# MLE based on reduced degrees of freedom:
 
-return( list(  smoothness=smoothness,pars= out3, trA= out2$eff.df, optim=temp))
+    offset<- (out2$N/( out2$N-3))
+    
+    out3<- c( out2$rho.MLE*offset, theta.est, out2$shat.MLE^2*offset)  
+
+return( list(obj=out2,  smoothness=smoothness,pars= out3, trA= out2$eff.df, optim=temp))
 }
 
 # this function has correct formula for REML likelihood
@@ -152,7 +156,9 @@ return( list(  smoothness=smoothness,pars= out3, trA= out2$eff.df, optim=temp))
 
 
 
-MLE.Matern<- function(x,y,smoothness, theta.grid=NULL,ngrid=20, verbose=FALSE ){
+MLE.Matern<- function(x,y,smoothness, theta.grid=NULL,
+                       ngrid=20, verbose=FALSE,m=2,niter=25, tol=1e-5,... ){
+# remove missing values and print out a warning  
   bad<- is.na( y)
   if( sum(bad)>0){
     cat("removed ",sum(bad)," NAs", fill=TRUE)
@@ -164,10 +170,10 @@ MLE.Matern<- function(x,y,smoothness, theta.grid=NULL,ngrid=20, verbose=FALSE ){
      function( ltheta, info){
      minus.lPLike<- Krig( info$x,info$y,Covariance="Matern",
        smoothness= info$smoothness, theta=exp(ltheta), 
-       method="REML", nstep.cv=80, give.warnings=FALSE)$lambda.est[6,5]
+       method="REML", nstep.cv=80, give.warnings=FALSE,m=m,...)$lambda.est[6,5]
    return(minus.lPLike)} 
 
-# list to pass to the objetive function
+# list to pass to the objective function
  
     info<- list( x=x, y=y, smoothness= smoothness)
  
@@ -204,7 +210,8 @@ MLE.Matern<- function(x,y,smoothness, theta.grid=NULL,ngrid=20, verbose=FALSE ){
    lstart<- log( theta.grid)[ IMIN + c( -1,0,1)]
 # golden  section search -- this assumes convex minus log likelihood
 # note that search is in log scale.    
-  out<- golden.section.search( lstart[1], lstart[2], lstart[3], f=objective.fn, f.extra=info)$x
+  out<- golden.section.search( lstart[1], lstart[2], lstart[3], f=objective.fn, f.extra=info,
+                              niter=niter, tol=tol)$x
   theta.MLE<- exp(out)
 
 # one final call to Krig with the theta.MLE value to recover MLEs for rho and sigma

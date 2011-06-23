@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -112,9 +112,9 @@ look<-  t( r)%*%(Sinv)%*%r/N
 
 
 
-test.for.zero( look, out$rho.MLE, tag="rho hatfrom likelihood")
+test.for.zero( look, out$rho.MLE, tag="rho hat from likelihood")
 
-test.for.zero( look, out2$rhohat*((N-3)/N), tag="rho hatfrom likelihood")
+test.for.zero( look, out2$rhohat, tag="rho hat from likelihood compared to Krig")
 
 
 

@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "image.plot" <- function(..., add = FALSE, nlevel = 64, 
@@ -7,7 +7,7 @@
     legend.mar = ifelse(horizontal, 3.1, 5.1), legend.lab = NULL, 
     graphics.reset = FALSE, bigplot = NULL, smallplot = NULL, 
     legend.only = FALSE, col = tim.colors(nlevel), lab.breaks = NULL, 
-    axis.args = NULL, legend.args = NULL, midpoint = FALSE) {
+    axis.args = NULL, legend.args = NULL, midpoint = FALSE, border=NA, lwd=1.0) {
     # Thanks to S. Koehler and  S. Woodhead
     # for comments on making this a better function
     #
@@ -47,7 +47,8 @@
             image(..., add = add, col = col)
         }
         else {
-            poly.image(..., add = add, col = col, midpoint = midpoint)
+            poly.image(..., add = add, col = col, midpoint = midpoint,
+                            border=border, lwd=lwd)
         }
         big.par <- par(no.readonly = TRUE)
     }

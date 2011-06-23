@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -25,12 +25,12 @@ or image functions. This can also be an object from predict.surface.
 }
 \item{main}{
 Title for plot. 
- 
+
 }
 \item{type}{
-type="p" for a perspective/drape plot, 
+type="p" for a perspective/drape plot (see drape.plot), 
 type="I" for an image plot with a legend
-strip (see image.plot). type="C" is the "I" option with contours lines
+strip (see image.plot), type="c" draws a contour plot,  type="C" is the "I" option but with contours lines
 added. type="b" gives both  "p" and "C" as a 2X1 panel }
 \item{zlab}{
 z-axes label 
@@ -64,12 +64,24 @@ or image.plot
 surface, predict.surface, as.surface, drape.plot, image.plot  
 }
 \examples{
-fit<- Tps( BD[,1:4], BD$lnya) # fit surface to data 
+x<- seq( -2,2,,80)
+y<- seq( -2,2,,80)
+# a lazy way to create some test image
+z<- outer( x,y, "+")
 
-# surface of variables 2 and 3 
-#    holding 1 and 4 fixed at their median levels
+# create basic image/surface object
+obj<- list(x=x, y=y,z=z)
+
+# basic contour plot
+# note how graphical parameters appropriate to contour are passed
+plot.surface( obj, type="c", col="red")
+
+# using a fields function to fit a surface and evaluate as surface object.
+fit<- Tps( BD[,1:4], BD$lnya) # fit surface to data 
+# surface of variables 2 and 3 holding 1 and 4 fixed at their median levels
  out.p<-predict.surface(fit, xy=c(2,3))  
- plot.surface(out.p, type="C") # surface plot  
+
+ plot.surface(out.p) # surface plot  
 
 }
 \keyword{hplot}

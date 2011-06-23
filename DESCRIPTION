@@ -1,6 +1,6 @@
 Package: fields
-Version: 6.3
-Date: September 4, 2009
+Version: 6.5.2
+Date: JUNE 2, 2011
 Title: Tools for spatial data
 Author: Reinhard Furrer, Douglas Nychka and Stephen Sain
 Maintainer: Doug Nychka <nychka@ucar.edu>
@@ -18,7 +18,7 @@ Description: Fields is for curve, surface and function fitting with an
         overview.
 License: GPL (>= 2)
 URL: http://www.image.ucar.edu/Software/Fields
-Depends: methods, spam
-Packaged: 2010-07-06 17:01:48 UTC; nychka
+Depends: R (>= 2.10), methods, spam
+Packaged: 2011-06-22 17:18:05 UTC; nychka
 Repository: CRAN
-Date/Publication: 2010-07-06 19:17:12
+Date/Publication: 2011-06-23 05:46:58

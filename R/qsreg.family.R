@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "plot.qsreg" <- function(x, pch = "*", main = NA, 
@@ -31,7 +31,7 @@
         title(" CV curves", cex = 0.5)
     }
     bplot(qsreg.psi(out$residuals[, c(out$ind.cv, out$ind.cv.ps)], 
-        out$alpha, out$sc), labels = c("CV", "CV pseudo"))
+        out$alpha, out$sc), names = c("CV", "CV pseudo"))
     yline(0, col = 2)
     if (is.na(main)) 
         mtext(deparse(out$call), cex = 1.3, outer = TRUE, line = -2)

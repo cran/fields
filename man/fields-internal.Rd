@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -120,12 +120,10 @@
   Fields internal and secondary functions 
 }
 \description{
-Listed below are supporting fucntions for the major methods in fields. 
+Listed below are supporting functions for the major methods in fields. 
 }
 \usage{
 
-COR(dat) 
- 
 D4transform.image(x, inv = FALSE, transpose = FALSE, cut.min = 8) 
  
 Krig.df.to.lambda(df, D, guess = 1, tol = 1e-05) 
@@ -210,15 +208,13 @@ gauss.cov (...)
 
 
 golden.section.search (ax, bx, cx, f, niter = 25, f.extra = NA, 
-     tol = 1e-05) 
+     tol = 1e-05, gridx=NA) 
  
 grey.level (n=256) 
  
 image.plot.info (...) 
 image.plot.plt(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
 horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
-
-krig.image.parameters (out) 
  
 lonlat2xy (lnlt, miles = FALSE) 
  
@@ -228,23 +224,20 @@ periodic.cov.1d (x1, x2, a, b)
 periodic.cov.cyl (x1, x2, a = 0, b = 365, theta = 1) 
 periodic.plane.3d (x1, x2, a = 0, b = 365, theta = 1) 
  
-\method{plot}{krig.image}(x, main = NA, digits = 4, which = rep(TRUE, 4), 
-      graphics.reset = TRUE, ...) 
+
 \method{plot}{qsreg}(x, pch = "*", main = NA,...) 
-\method{plot}{sim.krig.image}(x,...) 
 \method{plot}{spatial.design}(x,...) 
  
-\method{predict}{interp.surface}(object, loc,...) 
-\method{predict}{krig.image}(object, x, ...) 
+\method{predict}{interp.surface}(object, loc,...)  
 \method{predict}{qsreg}(object, x, derivative = 0, model = object$ind.cv.ps,...)
 \method{predict}{sreg}(object, x, derivative = 0, model = 1,...) 
  
-\method{print}{krig.image}(x,...) 
+
 \method{print}{qsreg} (x, ...) 
 \method{print}{spatial.design} (x,...) 
 \method{print}{sreg}(x, ...) 
 \method{print}{summary.Krig} (x, ...) 
-\method{print}{summary.krig.image} (x, ...) 
+
 \method{print}{summary.spatial.design} (x, digits = 4,...) 
 \method{print}{summary.sreg} (x, ...) 
  
@@ -265,8 +258,6 @@ radbas.constant (m, d)
  
 replace.args.function (fun, ...) 
  
-sim.krig.image (out, nreps = 10) 
- 
 sreg.df.to.lambda (df, x, wt, guess = 1, tol = 1e-05) 
 sreg.fdf (h, info) 
 sreg.fgcv (lam, obj) 
@@ -277,23 +268,19 @@ sreg.fs2hat (lam, obj)
 sreg.trace (h, info) 
 
 stats.bplot (x, by, style = "tukey", outlier = TRUE) 
-stats.sim.krig.image (obj) 
- 
+
 summary.gcv.Krig(object, lambda, cost = 1, verbose = FALSE, 
                 offset = 0, y = NULL, ...)
 summary.gcv.sreg (object, lambda, cost = 1, nstep.cv = 20, 
         offset = 0, verbose = TRUE,...) 
-\method{summary}{krig.image} (object, digits = 4, ...) 
+
 \method{summary}{qsreg} (object, ...) 
 \method{summary}{spatial.design} (object, digits = 4, ...) 
 \method{summary}{sreg} (object, digits = 4, ...) 
 
 surface(obj , ...) 
 \method{surface}{default} (obj, ...) 
-\method{surface}{krig.image}(obj, grid.list = NA, extrap = TRUE, 
-      graphics.reset = FALSE, xlab = NULL, ylab = NULL, main = NULL,
-      zlab = NULL,zlim = NULL,levels = NULL, ptype = "I", ...) 
- 
+
 \method{surface}{surface} (obj, ...)
 
 unscale (x, x.center, x.scale) 

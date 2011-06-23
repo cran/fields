@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "plot.sreg" <- function(x, digits = 4, which = 1:4, 
@@ -37,8 +37,8 @@
             hist(out$residuals, xlab = "Residuals", main = "")
         }
         else {
-            bplot(out$residuals, labels = format(round(out$trace, 
-                1)), xlab = "eff df", srt = 90)
+            bplot(out$residuals, names = format(round(out$trace, 
+                1)), xlab = "eff df")
             title("Residuals")
         }
     }

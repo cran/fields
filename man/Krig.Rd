@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -528,7 +528,7 @@ test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
 #
 # note how range parameter is passed to Krig.   
 # BTW:  GCV indicates an interpolating model (nugget variance is zero) 
-#
+# This is the content of the warning message.
 
 # take a look ...
  surface(fit.flame, type="I") 

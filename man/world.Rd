@@ -1,11 +1,12 @@
 % fields, Tools for spatial data
-% Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 \name{world}
 \alias{world}
 \alias{world.color}
+\alias{in.land.grid}
 \title{Plot of the world}
 \description{
 Plots quickly, medium resolution outlines of large land masses and 
@@ -19,6 +20,7 @@ world(ylim = c(-90, 90), xlim = NULL, add = FALSE, asp = 1,
 
 world.color(obj,xlim= c(-180,180), ylim=c(-90,90), 
              col.water="white",col.land="darkgrey", ... )
+in.land.grid( grid.list)
 
 }
 \arguments{
@@ -50,7 +52,7 @@ water with different colors.}
     \code{lines} (and \code{plot} if \code{add} is false)
     function that draws the outline.} If fill is TRUE then these arguments
     are passed to the polygon function that does the filling. 
-
+\item{grid.list}{Grid list  in longitude latitude specifying rectangular grid}
 }
 \details{
 Both functions use the FIELDS dataset world.dat for the coordinates. The 
@@ -64,10 +66,14 @@ the colored landmasses and water to an existing plot. It is easy to
 modify just to add the land masses and use the existing back ground
 color as water.  Unfortunately world.color will not work when shift is
 TRUE.  The current code could be modified if you need this option. 
-Thanks to Steve McIntyre for suggesting and testin the fill option.
+Thanks to Steve McIntyre for suggesting and testing the fill option.
+
+\code{in.land.grid} Takes the grid information in the form of a grid list and 
+returns a logical  image matrix. TRUE means that the grid point is not in an ocean or a lake. 
+For very large grids  (500X1000) this make take a minute or so. 
 
  }
-\seealso{US}
+\seealso{US, in.poly, in.poly.grid}
 \examples{
 
 world()
@@ -90,6 +96,13 @@ box() # add back in the box that was obscured by the ocean fill.
 world( add=TRUE,lwd=1.5, col="green")
 
 grid()
+
+grid.list<- list( x= seq(-160,-60,,200), y= seq( 25, 55,,100))
+look<- in.land.grid( grid.list)
+
+world()
+# mask for land in grid
+image( grid.list$x, grid.list$y, look, add=TRUE)
 
 
 }

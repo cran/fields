@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2007, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 spind2full <- function(obj) {
@@ -28,8 +28,9 @@ spind2spam <- function(obj) {
         ind.missing <- (1:obj$da[1])[-unique(obj$ind[, 1])]
         stop(paste("Row(s)", ind.missing, "  missing in matrix"))
     }
-    return(new("spam", entries = obj$ra, colindices = obj$ind[, 
-        2], rowpointers = ia, dimension = obj$da))
+    return(new("spam", entries = as.numeric(obj$ra),
+               colindices = as.integer(obj$ind[, 
+        2]), rowpointers = as.integer(ia), dimension = as.integer(obj$da)))
 }
 spam2spind <- function(obj) {
     # diff gives the number of nonzero elements in each row
