@@ -261,8 +261,7 @@
             diag = as.double(c(cost, offset, rep(0, (out$np - 
                 2)))), cv = as.double(0), ngrid = as.integer(NG), 
             xg = as.double(xgrid), yg = as.double(rep(0, NG)), 
-            job = as.integer(job), ideriv = as.integer(0), ierr = as.integer(0), 
-            PACKAGE = "fields")
+            job = as.integer(job), ideriv = as.integer(0), ierr = as.integer(0)) 
         if (find.diagA) {
             diagA[, k] <- b$diag
         }
@@ -389,7 +388,7 @@
         sy = as.double(rep(0, np)), trace = as.double(0), diag = as.double(rep(0, 
             np)), cv = as.double(0), ngrid = as.integer(0), xg = as.double(0), 
         yg = as.double(0), job = as.integer(c(3, 0, 0)), ideriv = as.integer(0), 
-        ierr = as.integer(0), PACKAGE = "fields")
+        ierr = as.integer(0))
     rss <- sum((temp$sy - obj$yM)^2 * obj$weightsM)
     MSE <- rss/np
     if ((N - np) > 0) {
@@ -429,6 +428,6 @@
         sy = as.double(rep(0, N)), trace = as.double(0), diag = as.double(rep(0, 
             N)), cv = as.double(0), ngrid = as.integer(0), xg = as.double(0), 
         yg = as.double(0), job = as.integer(c(3, 0, 0)), ideriv = as.integer(0), 
-        ierr = as.integer(0), PACKAGE = "fields")$trace)
+        ierr = as.integer(0))$trace)
     return(temp)
 }

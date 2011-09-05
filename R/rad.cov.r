@@ -42,8 +42,7 @@
     if (is.na(C[1])) {
         temp <- .Fortran("radbas", nd = as.integer(d), x1 = as.double(x1), 
             n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
-            par = as.double(par), k = as.double(rep(0, n1 * n2)), 
-            PACKAGE = "fields")
+            par = as.double(par), k = as.double(rep(0, n1 * n2)))
         return(rbf.constant * matrix(temp$k, ncol = n2, nrow = n1))
     }
     else {
@@ -56,7 +55,7 @@
                 n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
                 par = as.double(par), c = as.double(C), n3 = as.integer(n3), 
                 h = as.double(rep(0, n1 * n3)), work = as.double(rep(0, 
-                  n2)), PACKAGE = "fields")$h
+                  n2)))$h
             return(rbf.constant * matrix(temp, nrow = n1, ncol = n3))
         }
         else {
@@ -66,7 +65,7 @@
             temp <- .Fortran("mltdrb", nd = as.integer(d), x1 = as.double(x1), 
                 n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
                 par = as.double(par), c = as.double(C), h = as.double(rep(0, 
-                  n1 * d)), work = as.double(rep(0, n2)), PACKAGE = "fields")$h
+                  n1 * d)), work = as.double(rep(0, n2)))$h
             return(rbf.constant * matrix(temp, nrow = n1, ncol = d))
         }
     }

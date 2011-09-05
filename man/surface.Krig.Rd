@@ -16,18 +16,18 @@ quick way to look at the fitted function over reasonable default
 ranges.  
 }
 \usage{
-\method{surface}{Krig}(obj, grid.list = NA, extrap = FALSE, graphics.reset =
+\method{surface}{Krig}(object, grid.list = NA, extrap = FALSE, graphics.reset =
                  NULL, xlab = NULL, ylab = NULL, main = NULL, zlab =
                  NULL, zlim = NULL, levels = NULL, type = "C", nx =
                  80, ny = 80, ...)
 
-\method{surface}{mKrig}(obj,
+\method{surface}{mKrig}(object,
 grid.list = NA, extrap = FALSE, graphics.reset = NULL, xlab = NULL,
         ylab = NULL, main = NULL, zlab = NULL, zlim = NULL, levels = NULL,
         type = "C", nx=80, ny=80, ...)
 }
 \arguments{
-\item{obj}{
+\item{object}{
 A Krig object or an mKrig object.
 }
 \item{grid.list}{

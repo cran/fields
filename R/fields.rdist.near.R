@@ -23,7 +23,7 @@ fields.rdist.near <- function(x1, x2, delta, max.points = NULL,
         n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
         D0 = as.double(delta), ind = as.integer(rep(0, Nmax * 
             2)), rd = as.double(rep(-1, Nmax)), Nmax = as.integer(Nmax), 
-        iflag = as.integer(1), PACKAGE = "fields")
+        iflag = as.integer(1))
     N <- out$Nmax
     if (out$iflag == -1) {
         cat("temp space set at", Nmax, fill = TRUE)

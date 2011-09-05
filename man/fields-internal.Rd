@@ -278,10 +278,10 @@ summary.gcv.sreg (object, lambda, cost = 1, nstep.cv = 20,
 \method{summary}{spatial.design} (object, digits = 4, ...) 
 \method{summary}{sreg} (object, digits = 4, ...) 
 
-surface(obj , ...) 
-\method{surface}{default} (obj, ...) 
+surface(object , ...) 
+\method{surface}{default} (object, ...) 
 
-\method{surface}{surface} (obj, ...)
+\method{surface}{surface} (object, ...)
 
 unscale (x, x.center, x.scale) 
 

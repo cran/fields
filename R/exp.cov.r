@@ -34,7 +34,7 @@
         return(.Fortran("multeb", nd = as.integer(d), x1 = as.double(x1), 
             n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
             par = as.double(par), c = as.double(C), h = as.double(rep(0, 
-                n1)), work = as.double(rep(0, n2)), PACKAGE = "fields")$h)
+                n1)), work = as.double(rep(0, n2)))$h)
     }
     #
     # return marginal variance ( 1.0 in this case)

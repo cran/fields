@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > 
 > library(fields)
 Loading required package: spam
-Package 'spam' is loaded. Spam version 0.23-0 (2010-09-01).
+Package 'spam' is loaded. Spam version 0.27-0 (2011-08-17).
 Type demo( spam) for some demos, help( Spam) for an overview
 of this package.
 Help for individual functions is optained by adding the
@@ -35,11 +35,8 @@ The following object(s) are masked from 'package:base':
 
     backsolve, forwardsolve, norm
 
- Use help(fields) for an overview of this library
-
-library( fields, keep.source=TRUE) retains comments in the source code.
-
-Copyright 2004-2011, Licensed under GPL, www.gpl.org/licenses/gpl.html 
+Warning message:
+package 'spam' was built under R version 2.13.1 
 > #
 > #
 > #  test of fixed lambda case
