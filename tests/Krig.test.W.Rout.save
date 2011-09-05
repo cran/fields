@@ -1,6 +1,6 @@
 
-R version 2.12.0 (2010-10-15)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.13.0 (2011-04-13)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: i386-apple-darwin9.8.0/i386 (32-bit)
 
@@ -23,10 +23,10 @@ Type 'q()' to quit R.
 > 
 > library(fields)
 Loading required package: spam
-Package 'spam' is loaded. Spam version 0.15-5 (2009-08-08).
+Package 'spam' is loaded. Spam version 0.27-0 (2011-08-17).
 Type demo( spam) for some demos, help( Spam) for an overview
 of this package.
-Help for individual functions is optained byadding the
+Help for individual functions is optained by adding the
 suffix '.spam' to the function name, e.g. 'help(chol.spam)'.
 
 Attaching package: 'spam'
@@ -35,11 +35,8 @@ The following object(s) are masked from 'package:base':
 
     backsolve, forwardsolve, norm
 
- Use help(fields) for an overview of this library
-
-library( fields, keep.source=TRUE) retains comments in the source code.
-
-Copyright 2004-2011, Licensed under GPL, www.gpl.org/licenses/gpl.html 
+Warning message:
+package 'spam' was built under R version 2.13.1 
 > options( echo=FALSE)
 testing:   d coef diag W fixed lam
     PASSED test at tolerance  1e-08

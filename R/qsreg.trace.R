@@ -15,6 +15,6 @@
             N)), cv = as.double(0), ngrid = as.integer(0), xg = as.double(0), 
         yg = as.double(0), job = as.integer(c(3, 0, 0)), ideriv = as.integer(0), 
         din = as.double(c(cost, offset, maxit, tol, sc, alpha)), 
-        dout = as.double(rep(0, 4)), ierr = as.integer(0), PACKAGE = "fields")$dout
+        dout = as.double(rep(0, 4)), ierr = as.integer(0))$dout
     return(temp[3])
 }

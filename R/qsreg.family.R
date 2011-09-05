@@ -108,8 +108,7 @@
             xg = as.double(xgrid), yg = as.double(rep(0, NG)), 
             job = as.integer(c(3, 3, 0)), ideriv = as.integer(0), 
             din = as.double(c(cost, offset, maxit, tol, sc, alpha)), 
-            dout = as.double(rep(0, 4)), ierr = as.integer(0), 
-            PACKAGE = "fields")
+            dout = as.double(rep(0, 4)), ierr = as.integer(0))
         residuals[, k] <- y - b$sy
         diagA[, k] <- b$diag
         cv[k] <- b$dout[4]
@@ -136,8 +135,8 @@
             xg = as.double(xgrid), yg = as.double(rep(0, NG)), 
             job = as.integer(c(3, 3, 0)), ideriv = as.integer(0), 
             din = as.double(c(cost, offset, maxit, tol, sqrt(var(y)) * 
-                10, alpha)), dout = as.double(rep(0, 4)), ierr = as.integer(0), 
-            PACKAGE = "fields")
+                10, alpha)), dout = as.double(rep(0, 4)), ierr = as.integer(0))
+
         #
         # CV residuals based on pseudo-data)
         # Use the linear approximation  Y_k - f.cv_k = (Y_k- f_k)/( 1- A_kk)
@@ -190,7 +189,7 @@
             N)), cv = as.double(0), ngrid = as.integer(0), xg = as.double(0), 
         yg = as.double(0), job = as.integer(c(3, 0, 0)), ideriv = as.integer(0), 
         din = as.double(c(cost, offset, maxit, tol, sc, alpha)), 
-        dout = as.double(rep(0, 4)), ierr = as.integer(0), PACKAGE = "fields")$dout
+        dout = as.double(rep(0, 4)), ierr = as.integer(0))$dout
     return(temp)
 }
 "qsreg.psi" <- function(r, alpha = 0.5, C = 1) {

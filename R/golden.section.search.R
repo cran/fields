@@ -1,8 +1,5 @@
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"golden.section.search" <- function(ax, bx, cx, f, 
+golden.section.search <-
+function(ax, bx, cx, f, 
     niter = 25, f.extra = NA, tol = 1e-05, gridx=NA) {
   
 # check if an initial grid has been passed if so then do a
@@ -15,7 +12,14 @@
       NG<- length( gridx)
       fgrid<- rep( NA,NG)
       for(k in 1:NG){
-        fgrid[k]<- f( gridx[k], f.extra)}
+        fgrid[k]<- f( gridx[k], f.extra)
+      }     
+# bail on search if objective function is an NA
+      if( any( is.na(fgrid))){
+        warning("grid search has found some missing values in objective function")
+         return( list(x = NA, fmin = NA,
+                 iter = 0,tol=tol,
+                 coarse.search=cbind( gridx, fgrid,deparse.level=1)) )}
        ind.bx<- which.min(fgrid)
 # if minimum is at grid boundary print warning and return      
       if( (ind.bx==1)|ind.bx==NG) {
@@ -87,3 +91,4 @@
   list(x = xmin, fmin = golden, iter = iter,tol=tol,
          coarse.search=cbind( gridx, fgrid,deparse.level=1))
 }
+

@@ -50,5 +50,5 @@
         sy = as.double(rep(0, n)), as.double(1), as.double(1), 
         as.double(1), as.integer(length(xgrid)), as.double(xgrid), 
         ygrid = as.double(rep(0, length(xgrid))), job = as.integer(c(igcv, 
-            3, 0)), as.integer(derivative), as.integer(0), PACKAGE = "fields")$ygrid
+            3, 0)), as.integer(derivative), as.integer(0))$ygrid
 }

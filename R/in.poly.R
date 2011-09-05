@@ -21,7 +21,7 @@
     # the bounding rectangle of the polygon.
     ind <- .Fortran("inpoly", nd = as.integer(nd), as.single(xd[, 
         1]), as.single(xd[, 2]), np = np, as.single(xp[, 1]), 
-        as.single(xp[, 2]), ind = as.integer(rep(-1, nd)), PACKAGE = "fields")$ind
+        as.single(xp[, 2]), ind = as.integer(rep(-1, nd)))$ind
     as.logical(ind)
 }
 in.poly.grid <- function(grid.list, xp, convex.hull = FALSE, 
@@ -49,6 +49,6 @@ in.poly.grid <- function(grid.list, xp, convex.hull = FALSE,
     ind <- .Fortran("igpoly", nx = as.integer(nx), xg = as.single(grid.list$x), 
         ny = as.integer(ny), yg = as.single(grid.list$y), np = np, 
         as.single(xp[, 1]), as.single(xp[, 2]), ind = as.integer(rep(-1, 
-            nx * ny)), PACKAGE = "fields")$ind
+            nx * ny)))$ind
     return(matrix(as.logical(ind), nrow = nx, ncol = ny))
 }

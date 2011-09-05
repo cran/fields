@@ -13,10 +13,11 @@
 Fits a thin plate spline surface to irregularly spaced data. The 
 smoothing parameter is chosen by generalized cross-validation. The assumed 
 model is additive  Y = f(X) +e  where f(X) is a d dimensional surface. 
-This is a special case of the spatial process estimate.  A "fast" version of this function uses a compactly supported Wendland covariance and computes the estimate for a fixed smoothing parameter.
+This function also works for just a single dimension  and is a special case of a spatial process estimate
+(Kriging).  A "fast" version of this function uses a compactly supported Wendland covariance and computes the estimate for a fixed smoothing parameter.
 }
 \usage{
-Tps(x, Y, m = NULL, p = NULL, scale.type = "range", ...)
+Tps(x, Y, m = NULL, p = NULL, scale.type = "range", lon.lat = FALSE, miles = TRUE, ...)
 
 fastTps(x, Y, m = NULL, p = NULL,  theta, lon.lat=FALSE,   ...)
 }
@@ -57,8 +58,9 @@ type of "unscaled" does not scale the data.
 \item{theta}{The tapering range that is passed to the Wendland compactly 
 supported covariance. The covariance (i.e. the radial basis function) is 
 zero beyond range theta.}
-\item{lon.lat}{If TRUE locations are interpreted as lognitude and latitude and great circle distance is used to find distances among locations. The theta scale parameter 
+\item{lon.lat}{If TRUE locations are interpreted as lognitude and latitude and great circle distance is used to find distances among locations. The theta scale parameter for \code{fast.Tps}
 (setting the compact support of the Wendland function) in this case is in units of miles (see example below). }
+\item{miles}{If TRUE great circle distances are in miles if FALSE in kilometers}
 
 \item{\dots}{
 For \code{Tps} any argument that is valid for the \code{Krig} function. Some of the main ones
@@ -73,6 +75,9 @@ Smoothing parameter that is the ratio of the error variance (sigma**2)
 to the scale parameter of the  
 covariance function. If omitted this is estimated by GCV. 
 }
+
+\item{Z}{Linear covariates to be included in fixed part of the model that are distinct
+        from the default low order polynomial in \code{x}}
 
 \item{df}{
 The effective number of parameters for the fitted surface. Conversely,
@@ -154,6 +159,10 @@ Please see the documentation on Krig for details of the returned
 arguments.  
 }
 \details{
+Both of these functions are special cases of using the 
+\code{Krig} and \code{mKrig} functions. See the help on each of these
+for more information on the calling arguments and what is returned. 
+
 A thin plate spline is result of minimizing the residual sum of 
 squares subject to a constraint that the function have a certain 
 level of smoothness (or roughness penalty). Roughness is 
@@ -271,17 +280,34 @@ image( out.p)
 out.p<-predict.surface( fit,df=10)
 
 
-#A 1-d example 
-out<-Tps( rat.diet$t, rat.diet$trt) # lambda found by GCV 
-out
-
-plot( out$x, out$y)
-lines( out$x, out$fitted.values)
+#A 1-d example  with confidence intervals
+  out<-Tps( rat.diet$t, rat.diet$trt) # lambda found by GCV 
+  out
+  plot( out$x, out$y)
+  xgrid<- seq(  min( out$x), max( out$x),,100)
+  fhat<- predict( out,xgrid)
+  lines( xgrid, fhat,)
+  SE<- predict.se( out, xgrid)
+  lines( xgrid,fhat + 1.96* SE, col="red", lty=2)
+  lines(xgrid, fhat - 1.96*SE, col="red", lty=2)
 
 # 
 # compare to the ( much faster) B spline algorithm 
+#  sreg(rat.diet$t, rat.diet$trt) 
 
-  sreg(rat.diet$t, rat.diet$trt) 
+# Here is a 1-d example with 95 percent  CIs  where sreg would not 
+# work:
+#  sreg would give the right estimate here but not the right CI's
+  x<- seq( 0,1,,8)
+  y<- sin(3*x)
+  out<-Tps( x, y) # lambda found by GCV 
+  plot( out$x, out$y)
+  xgrid<- seq(  min( out$x), max( out$x),,100)
+  fhat<- predict( out,xgrid)
+  lines( xgrid, fhat, lwd=2)
+  SE<- predict.se( out, xgrid)
+  lines( xgrid,fhat + 1.96* SE, col="red", lty=2)
+  lines(xgrid, fhat - 1.96*SE, col="red", lty=2)
 
 # Adding a covariate to the fixed part of model
 # Note: this is a fairly big problem numerically (850+ locations)
