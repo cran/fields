@@ -26,7 +26,7 @@ image.plot(...,
                  graphics.reset = FALSE, bigplot = NULL, smallplot =
                  NULL, legend.only = FALSE, col = tim.colors(nlevel),
                  lab.breaks = NULL, axis.args = NULL, legend.args =
-                 NULL, midpoint=FALSE, border=NA, lwd=1.0)}
+                 NULL, midpoint=FALSE, border=NA, lwd.poly=1.0)}
 
 \arguments{ \item{\dots}{
  The usual arguments to the \code{image} function as x,y,or z or as a list with x,y,z as components. One can also include a
@@ -110,14 +110,19 @@ quadralaterals. (See help on poly.image for details). In most cases
 midpoint should be FALSE to preserve exact values for z and 
 let the grid polygons be modified.
  }
-\item{border}{This only works if x and y are matrices -- if NA the quadralaterals will have no borders. Otherwise this specifies the color to use.}
-\item{lwd}{Line width of borders around pixels if border is not NA.}
+\item{border}{This only works if x and y are matrices -- if NA the quadralaterals will have a border color that is 
+the same as the interior color. Otherwise this specifies the color to use.}
+\item{lwd.poly}{Line width of borders around pixels. This might need to be set lss than 1.0 
+to avoid visible rounding of the pixel corners.}
 }
 \section{Side Effects}{
 After exiting, the
 plotting region may be changed to make it possible to add more features to
 the plot. To be explicit, \code{par()\$plt} may be changed to reflect a 
 smaller plotting region that has accommodated room for the legend subplot.  
+
+If \code{xlim} and \code{ylim} are specified the pixels may overplot the axis lines. 
+Just use the \code{box} function to redraw them. 
 }
 \details{
 Relationship of x, y and z:
@@ -192,7 +197,7 @@ from changing. The disadvantage, however, of resetting the graphics
 is that one can no longer add additional graphics elements to the image 
 plot. Note that filled.contour always resets the graphics but provides 
 another mechanism to pass through plotting commands. Apparently 
-filled.contour, while very pretty, does not work for multiple plots. 
+\code{filled.contour}, while very pretty, does not work for multiple plots. 
 \code{levelplot} that is part of the lattice package has a very 
 similar function to image.plot and a formula syntax in the call. 
 
@@ -208,15 +213,15 @@ default choices do not work. There may be problems with small plotting
 regions in fitting both of these elements in the plot region and one may 
 have to change the default character sizes or margins to make things fit.
 
-By keeping the zlim argument the same across images one can generate the
+By keeping the \code{zlim} argument the same across images one can generate the
 same color scale. (See the image help file.)  One useful technique for a
 panel of images is to just draw the images with \code{image} 
 and then use image.plot to add a legend to the last plot. (See example 
 below for messing with the outer margins to make this work.) 
 Usually a square plot (\code{pty="s"}) done in a rectangular plot region will
 have room for the legend stuck to the right side without any other 
-adjustments. See the examples below and the code for \code{plot.Wimage} 
-for more complicated arrangements of multiple image plots and summary 
+adjustments. See the examples below for more complicated arrangements
+ of multiple image plots and summary 
 legends.  
 
 Adding just the legend strip:
@@ -225,7 +230,7 @@ needs is the \code{zlim} argument!  We like \code{tim.colors} as a default
 color scale.  The the topographic color scale (\code{topo.colors}) is
 also a close second showing our geophysical basis.  See also
 \code{terrain.colors} for a subset and \code{designer.colors} to "roll
-your own". One nice option of this last one is to fix colors at
+your own". One nice option in  this last one is to fix colors at
 particular quantiles of the data rather than at equally spaced
 intervals. For color choices see how the \code{nlevels} argument figures
 into the legend and main plot number of colors. 
