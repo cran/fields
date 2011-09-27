@@ -24,7 +24,7 @@ poly.image.regrid <- function(x) {
 poly.image <- function(x, y, z, col = tim.colors(64), breaks, 
     transparent.color = "white", midpoint = FALSE, zlim = range(z, 
         na.rm = TRUE), xlim = range(x), ylim = range(y), add = FALSE, 
-    border = NA, lwd=1.0, ...) {
+    border = NA, lwd.poly=1.0, ...) {
     # check dimensions
     Dx <- dim(x)
     Dy <- dim(y)
@@ -71,12 +71,13 @@ poly.image <- function(x, y, z, col = tim.colors(64), breaks,
     # draw each poly with different color including the border
     # if the border color has not been specified.
     # this will avoid missing some space on some output devices.
+    # one can also crank down width of border lines to avoid rounded corners
 
-        polygon(xp, yp, border = pcol, col = pcol)
+        polygon(xp, yp, border = pcol, col = pcol, lwd=lwd.poly)
 
     # fill in border with different color if it is not an NA.
         if( !is.na(border)){
-        polygon(xp, yp, border = border, col = NA, lwd=lwd)}
+        polygon(xp, yp, border = border, col = NA, lwd=lwd.poly)}
 
     }
 }
