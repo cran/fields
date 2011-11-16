@@ -96,41 +96,74 @@ average.image <- function(obj, Q = 2) {
     return(list(x = x2, y = y2, z = (obj$z[ix - 1, iy] + obj$z[ix - 
         1, iy - 1] + obj$z[ix, iy - 1] + obj$z[ix, iy])/4))
 }
+
 pushpin <- function(x, y, z, p.out, height = 0.05, 
     col = "black", text = NULL, adj = -0.1, cex = 1, ...) {
+# project your x,y,z on to the uv plane of the plot
     Sxy1 <- trans3d(x, y, z, p.out)
-    #trans3d( x,y,z, p.out)-> Sxy2
     Sxy2 <- Sxy1
     hold <- par()$usr
     Sxy2$y <- (hold[4] - hold[3]) * height + Sxy2$y
+# draw the pin    
     segments(Sxy1$x, Sxy1$y, Sxy2$x, Sxy2$y, col = "black")
     points(Sxy2, col = col, pch = 19, cex = cex)
+# add a label    
     if (!is.null(text)) {
         text(Sxy2$x, Sxy2$y, label = text, adj = adj, cex = cex, 
             ...)
     }
 }
+
 designer.colors <- function(n = 256, col = c("darkgreen", 
-    "white", "darkred"), x = seq(0, 1, , length(col))) {
-    # distribute the colors at equal spacing if q is NULL
+    "white", "darkred"), x = seq(0, 1, , length(col)),alpha=1.0) {
+    # distribute the colors at equal spacings of x.
     xg <- seq(0, 1, , n)
     # matrix to hold RGB color values
-    y.rgb <- t(col2rgb(col))
+    y.rgb <- t(col2rgb(col))/255
     temp <- matrix(NA, ncol = 3, nrow = n)
     # spline interpolation of color values
     for (k in 1:3) {
         hold <- splint(x, y.rgb[, k], xg)
         # fix up to be integer in [0,255]
         hold[hold < 0] <- 0
-        hold[hold > 255] <- 255
-        temp[, k] <- round(hold)
+        hold[hold > 1.0] <- 1.0
+        temp[, k] <- hold
     }
     # convert back to hex
-    rgb(temp[, 1], temp[, 2], temp[, 3], maxColorValue = 255)
+    rgb(temp[, 1], temp[, 2], temp[, 3],  alpha=alpha)
 }
 #boulder.colors<- c('darkred', 'darkorange',
 #                   'white', 'darkgreen', 'darkblue')
 "two.colors" <- function(n = 256, start = "darkgreen", 
-    end = "red", middle = "white") {
-    designer.colors(n, c(start, middle, end))
+    end = "red", middle = "white", alpha=1.0) {
+    designer.colors(n, c(start, middle, end), alpha=alpha)
 }
+"tim.colors" <- function(n = 64,alpha=1.0) {
+# Tim Hoar's original 64 color definition 
+    orig <- c("#00008F", "#00009F", "#0000AF", "#0000BF", "#0000CF", 
+        "#0000DF", "#0000EF", "#0000FF", "#0010FF", "#0020FF", 
+        "#0030FF", "#0040FF", "#0050FF", "#0060FF", "#0070FF", 
+        "#0080FF", "#008FFF", "#009FFF", "#00AFFF", "#00BFFF", 
+        "#00CFFF", "#00DFFF", "#00EFFF", "#00FFFF", "#10FFEF", 
+        "#20FFDF", "#30FFCF", "#40FFBF", "#50FFAF", "#60FF9F", 
+        "#70FF8F", "#80FF80", "#8FFF70", "#9FFF60", "#AFFF50", 
+        "#BFFF40", "#CFFF30", "#DFFF20", "#EFFF10", "#FFFF00", 
+        "#FFEF00", "#FFDF00", "#FFCF00", "#FFBF00", "#FFAF00", 
+        "#FF9F00", "#FF8F00", "#FF8000", "#FF7000", "#FF6000", 
+        "#FF5000", "#FF4000", "#FF3000", "#FF2000", "#FF1000", 
+        "#FF0000", "#EF0000", "#DF0000", "#CF0000", "#BF0000", 
+        "#AF0000", "#9F0000", "#8F0000", "#800000")
+  if( n==length(orig)){
+      temp <- t(col2rgb(orig))/255
+# convert back to hex with alpha
+      rgb(temp[, 1], temp[, 2], temp[, 3],  alpha=alpha)
+  }
+  else{  
+      designer.colors(n, col= orig, alpha=alpha)
+  }
+  
+}
+
+#plot.colors<- function( col,...){
+#  N<- length(col)
+# image.plot( 1:N, 1, matrix(1:N,N,1), col=col,axes=FALSE, xlab="", ylab="",...)}

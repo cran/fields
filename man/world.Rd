@@ -7,6 +7,7 @@
 \alias{world}
 \alias{world.color}
 \alias{in.land.grid}
+\alias{world.land}
 \title{Plot of the world}
 \description{
 Plots quickly, medium resolution outlines of large land masses and 
@@ -16,14 +17,15 @@ bodies of water.
 world(ylim = c(-90, 90), xlim = NULL, add = FALSE, asp = 1,
                  xlab = "", ylab = "", xaxt = "n", yaxt = "n", eps =
                  0.1, col=1,shift = FALSE, 
-                 fill=FALSE, col.water="white", col.land="darkgrey", ...)
-
+                 fill=FALSE, col.water="white", col.land="darkgrey",alpha=NA, ...)
+world.land( col.water = "white", col.land = "darkgrey",alpha=NA, ...)
 world.color(obj,xlim= c(-180,180), ylim=c(-90,90), 
              col.water="white",col.land="darkgrey", ... )
 in.land.grid( grid.list)
 
 }
 \arguments{
+\item{alpha}{Color transparency of land fill and outlines.}
   \item{ylim}{range of latitudes}
   \item{xlim}{range of longitudes}
   \item{add}{logical; if true will add the world map to current plot.}
@@ -46,7 +48,7 @@ water with different colors.}
 \item{col.land}{Color for land filling.}
 
 \item{col.water}{Color for water filling.}
-\item{obj}{The data set of coast lines \code{world.dat}}
+\item{obj}{The data set of coast lines: \code{world.dat}}
 \item{\dots}{
     If the land is not filled these are graphical arguments that are passed to the
     \code{lines} (and \code{plot} if \code{add} is false)
@@ -55,8 +57,9 @@ water with different colors.}
 \item{grid.list}{Grid list  in longitude latitude specifying rectangular grid}
 }
 \details{
-Both functions use the FIELDS dataset world.dat for the coordinates. The 
-main advantage of this function is that it is fast and easy to modify. 
+Both functions use the FIELDS dataset world.dat for the coordinates.
+See the longstanding \code{maps} package for similar functionality 
+The main advantage of these functions is that they are fast and easy to modify. 
 The shift option to center over the dateline is useful because often 
 plots of oceanic and atmospheric information center the map this way. 
 
@@ -65,8 +68,13 @@ called by world with fill being TRUE. When used alone it will just add
 the colored landmasses and water to an existing plot. It is easy to
 modify just to add the land masses and use the existing back ground
 color as water.  Unfortunately world.color will not work when shift is
-TRUE.  The current code could be modified if you need this option. 
+TRUE. Use the maps package to accomplish this. 
+Howevr, the current code could be modified if you need this option. 
 Thanks to Steve McIntyre for suggesting and testing the fill option.
+
+The function  \code{world.land} adds to an existing plot a polygon fill of the land masses 
+the water in this case is just the lakes not the ocean. Used with transparency this provides a
+clearer reference than just outlines. 
 
 \code{in.land.grid} Takes the grid information in the form of a grid list and 
 returns a logical  image matrix. TRUE means that the grid point is not in an ocean or a lake. 

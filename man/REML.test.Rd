@@ -145,6 +145,7 @@ info<- list( x=x,y=y,smoothness=1.0, ngrid=80)
 out2<- MLE.objective.fn(log(out0$pars[2]), info, value=FALSE)
 print( out2$pars)
 
+\dontrun{
 # Now back to Midwest ozone pollution ...
 # Find the MLEs for ozone data and evaluate the Kriging surface.
   data(ozone2)
@@ -156,7 +157,7 @@ print( out2$pars)
   surface( out2) # uses default lambda -- which is the right one.
 
 # here is another way to do this that helps to show how various Krig functions determine the lambda value.
-\dontrun{
+
   out2<- Krig( ozone2$lon.lat,ozone2$y[16,] , Covariance="Matern", theta=out$pars[2],
                smoothness=1.5)
 # Here the default lambda is that found by GCV

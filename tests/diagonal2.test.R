@@ -19,7 +19,7 @@ A<- t(X)%*%X
 fields.diagonalize(A,B)-> look
 fields.diagonalize2(A,B, verbose=FALSE)-> look2
 
-test.for.zero( look$D, look2$D, tol=5e-8,tag="eigenvalues of both versions")
+test.for.zero( look$D, look2$D, tol=6E-8,tag="eigenvalues of both versions")
 
 G1<- look$G
 G2<-look2$G

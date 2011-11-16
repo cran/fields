@@ -1346,13 +1346,20 @@ Krig.null.function <- function(x, Z = NULL, drop.Z = FALSE,
     }
     if (mle.calc) {
       rho.MLE<-  sum(c(obj$c) * c(obj$yM))/obj$N
-      # commented out this is the REML estimate -- loose null space df because by
+# set rho estimate to zero if negtive. Typically this
+# is an issue of machine precision and very small negative value. 
+      rho.MLE<- ifelse( rho.MLE< 0 , 0, rho.MLE)
+
+#    commented out code for debugging ...      
+#      if( rho.MLE< 0) {
+#        stop("problems computing rho.MLE")}
+      # commented out is the REML estimate -- lose null space df because of
       # the restiction to orthogonal subspace of T.
       # rhohat<- rho.MLE <- sum(obj$c * obj$yM)/(obj$N - obj$nt)
       # .
       rhohat<-rho.MLE
       shat.MLE <- sqrt(rho.MLE * obj$lambda)
-          }
+    }
     else {
       rhohat <- rho.MLE<- shat.MLE <- NA
     }
