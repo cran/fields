@@ -75,8 +75,11 @@ these will
 be determined within the function.  
 }
 \item{smallplot }{
-Plot coordinates for legend. If not passed these will be determined within
-the function.  
+Plot coordinates for legend strip.  If not passed these will be determined within
+the function. Be sure to leave room for the axis labels. For example, if the legend is on the
+right side  \code{smallplot= c(.85,.9,0,1) } will leave (.1 in plot coordinates) for the
+axis labels to the right of the color strip. This argument is useful for drawing a 
+plot with the legend that is the same size as the plots without legends.
 }
 \item{legend.only}{
 If TRUE just add the
@@ -125,41 +128,55 @@ If \code{xlim} and \code{ylim} are specified the pixels may overplot the axis li
 Just use the \code{box} function to redraw them. 
 }
 \details{
+How this function works:
+The strategy for \code{image.plot} is simple, divide the plotting region
+into two smaller regions \code{bigplot} and \code{smallplot}. The image
+goes in one and the legend in the other. This way there is always room for
+the legend. Some adjustments are made to this rule by not shrinking the
+\code{bigplot} if there is already room for the legend strip and also
+sticking the legend strip close to the image plot. One can specify the
+plot regions explicitly by \code{bigplot} and  \code{smallplot} if the
+default choices do not work. There may be problems with small plotting
+regions in fitting both of these elements in the plot region and one may 
+have to change the default character sizes or margins to make things fit.
+
 Relationship of x, y and z:
  If the z component is a matrix then the user should be aware that
 this function locates the matrix element z[i,j] at the grid locations
 (x[i], y[j]) this is very different than simply listing out the
 matrix in the usual row column tabular form. See the example below
-for more details of this difference in formatting. What does one do
+fo details on the difference in formatting. What does one do
 if you don't really have the "z" values on a regular grid? See the
 functions \code{quilt.plot.Rd} and \code{as.image} to discretise
 irregular observations to a grid.  
 
-If x and y are matrices then
+Grids with unequally spacing:
+If x and y are matrices that are a smooth transformation of a regular grid  then
 z[i,j] is rendered at a quadrilateral that is centered at x[i,j] and
 y[i,j] (\code{midpoint} TRUE). The details of how this cell is found
-are buried in \code{poly.image}. If \code{midpoint} is FALSE then x
+are buried in \code{poly.image} but it it essentially found using midpoints between the centers.If \code{midpoint} is FALSE then x
 and y are interpreted as the corners of the quadrilateral cells. But
 what about z? The four values of z are now averaged to represent a
 value at the midpoint of the cell and this is what is used for
-plotting. Quadrilateral grids was added to help with plotting 
+plotting. Quadrilateral grids were added to help with plotting 
 the gridded output of geophysical models where the regular grid is
-defined according to one map projection by the plotting is required
+defined according to one map projection but the image plotting is required
 in another projection. Typically the regular grid becomes distorted in 
 a smooth way when this happens. See the regional climate example for
 a illustration of this application. One can add border colors in this case
 easily because these choices are jsut passed onto the polygon function. 
-For adding the grid of pixel borders to a rectangular image try this example
 
-\code{ 
+Adding the pixel grid for rectangular images:
+For adding the grid of pixel borders to a rectangular image try this example
+after calling \code{image.plot}
+\preformatted{ 
  dx<- x[2] - x[1]
  dy <- y[2]-y[1]
  xtemp<- seq(  min( x)- dx/2, max(x)+ dx/2,, length(x) +1)
  ytemp<- seq(  min( y)- dy/2, max(y)+ dy/2,, length(y) +1)
  xline( xtemp, col="grey50", lwd=2);  yline( ytemp, col="grey50", lwd=2)
 }
-
-where \code{x} and \code{y} here are the x and y grid values from the image list.  
+Here \code{x} and \code{y} here are the x and y grid values from the image list.  
 
  Fine tuning color scales: This function gives some flexibility in
 tuning the color scale to fit the rendering of z values. This can
@@ -171,8 +188,8 @@ supplying \code{lab.break} strings or axis parameters one can
 annotate the legend axis in an informative matter. 
 
 
- 
-Dividing up the plotting real estate:
+The details of placing the legend and 
+dividing up the plotting real estate:
 It is surprising how hard it is to automatically add the
 legend! All "plotting coordinates" mentioned here are in device
 coordinates. The plot region is assumed to be [0,1]X[0,1] and plotting
@@ -201,17 +218,6 @@ another mechanism to pass through plotting commands. Apparently
 \code{levelplot} that is part of the lattice package has a very 
 similar function to image.plot and a formula syntax in the call. 
 
-How this function works:
-The strategy for \code{image.plot} is simple, divide the plotting region
-into two smaller regions \code{bigplot} and \code{smallplot}. The image
-goes in one and the legend in the other. This way there is always room for
-the legend. Some adjustments are made to this rule by not shrinking the
-\code{bigplot} if there is already room for the legend strip and also
-sticking the legend strip close to the image plot. One can specify the
-plot regions explicitly by \code{bigplot} and \ \code{smallplot} if the
-default choices do not work. There may be problems with small plotting
-regions in fitting both of these elements in the plot region and one may 
-have to change the default character sizes or margins to make things fit.
 
 By keeping the \code{zlim} argument the same across images one can generate the
 same color scale. (See the image help file.)  One useful technique for a

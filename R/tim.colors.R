@@ -29,5 +29,8 @@
         hold[hold > 255] <- 255
         temp[, k] <- round(hold)
     }
-    rgb(temp[, 1], temp[, 2], temp[, 3], maxColorValue = 255, alpha=alpha)
+    if( alpha==1.0){ 
+      rgb(temp[, 1], temp[, 2], temp[, 3], maxColorValue = 255)}
+    else{
+      rgb(temp[, 1], temp[, 2], temp[, 3], maxColorValue = 255, alpha=alpha)}
 }

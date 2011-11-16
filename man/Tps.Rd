@@ -59,8 +59,8 @@ type of "unscaled" does not scale the data.
 supported covariance. The covariance (i.e. the radial basis function) is 
 zero beyond range theta.}
 \item{lon.lat}{If TRUE locations are interpreted as lognitude and latitude and great circle distance is used to find distances among locations. The theta scale parameter for \code{fast.Tps}
-(setting the compact support of the Wendland function) in this case is in units of miles (see example below). }
-\item{miles}{If TRUE great circle distances are in miles if FALSE in kilometers}
+(setting the compact support of the Wendland function) in this case is in units of miles (see example and caution below). }
+\item{miles}{If TRUE great circle distances are in miles if FALSE distances are in kilometers}
 
 \item{\dots}{
 For \code{Tps} any argument that is valid for the \code{Krig} function. Some of the main ones
@@ -150,9 +150,10 @@ to be included  to reflect other model degrees of freedom.
 }
 
 \value{
-A list of class Krig. This includes the predicted surface of 
-fitted.values and the residuals. The results of the grid 
-search minimizing the generalized cross validation function is 
+A list of class Krig. This includes the 
+fitted values, the predicted surface evaluated at the 
+observation locations, and the residuals. The results of the grid 
+search minimizing the generalized cross validation function are
 returned in gcv.grid. Note that the GCV/REML optimization is 
 done even if lambda or df is given. 
 Please see the documentation on Krig for details of the returned 
@@ -192,11 +193,36 @@ is created the estimator can be found rapidly for other data and smoothing
 parameters provided the locations remain unchanged. This makes simulation
 within R efficient (see example below). Tps does not currently support the
 knots argument where one can use a reduced set of basis functions. This is
-mainly to simplify and a good alternative using knots would be to use a
+mainly to simplify the code and a good alternative using knots would be to use a
 valid covariance from the Matern family and a large range parameter. 
 
-See also the mKrig function for handling larger data sets and also for an example
-of combining Tps and mKrig for evaluation on a larger grid. 
+CAUTION about \code{lon.lat=TRUE}: The option to use great circle distance
+ to define the radial basis functions (\code{lon.lat=TRUE}) is very useful
+ for small geographic domains where the spherical geometry is well approximated by a plane. However, for large domains the spherical distortion be large enough that the basis function no longer define a positive definite system and Tps will report a numerical error. An alternative is to switch to a three
+dimensional thin plate spline the locations being the direction cosines. This will 
+give approximate great circle distances for locations that are close and also the numerical methods will always have a positive definite matrices.
+
+Here is an example using this idea for \code{RMprecip} and also some 
+examples of building grids and evaluating the Tps results on them:
+\preformatted{
+# a useful function:
+  dircos<- function(x1){
+             coslat1 <- cos((x1[, 2] * pi)/180)
+             sinlat1 <- sin((x1[, 2] * pi)/180)
+             coslon1 <- cos((x1[, 1] * pi)/180)
+             sinlon1 <- sin((x1[, 1] * pi)/180)
+             cbind(coslon1*coslat1, sinlon1*coslat1, sinlat1)}
+# fit in 3-d to direction cosines
+  out<- Tps(dircos(RMprecip$x),RMprecip$y)
+  xg<-make.surface.grid(fields.x.to.grid(RMprecip$x))
+  fhat<- predict( out, dircos(xg))
+# coerce to image format from prediction vector and grid points.
+  out.p<- as.surface( xg, fhat)
+  surface( out.p)
+# compare to the automatic
+  out0<- Tps(RMprecip$x,RMprecip$y, lon.lat=TRUE)
+  surface(out0)
+}
 
 The function \code{fastTps} is really a convenient wrapper function that 
 calls \code{mKrig} with the Wendland covariance function. This is 
@@ -209,6 +235,9 @@ is a good idea for putting the variables on a common scale for smoothing.
 This function does have the potential to approximate estimates of Tps 
 for very large spatial data sets. See \code{wendland.cov} and help on 
 the SPAM package for more background.
+
+See also the mKrig function for handling larger data sets and also for an example
+of combining Tps and mKrig for evaluation on a huge grid. 
 
  }
 

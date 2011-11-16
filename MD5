@@ -1,4 +1,4 @@
-8c775b63d666dd5461aa35e2d5afc76f *DESCRIPTION
+9375b589da19d8259a9913a43a609831 *DESCRIPTION
 9fdcee37301b4808ab63d8f9dbcd9bd9 *LICENSE
 e5db63a0f2482b78082007ba4ceea935 *NAMESPACE
 c692a756d41c9092004f3e895b9be46f *R/BACK/D4transform.image.R
@@ -32,7 +32,7 @@ f7cbb42fd969c6cb19a57bd35677451e *R/REMLtest.R
 25b7b74f02c856ae55852df9a1426b8a *R/RMprecip.R
 b061fd53b8f05b02411ba1265457d31f *R/RadialBasis.R
 f4f237431e4039079678263547268e88 *R/SUBSCRIPTING.spatial.design.R
-f95431a67cc3417784e24319ccdcc37b *R/Tps.R
+766054d7826cbb8d35ebd4d9e502dace *R/Tps.R
 566c3d4c9bebc2ab81280bb3dc5f3592 *R/US.R
 690d01e49f3a36835c271b461ce46de0 *R/add.image.R
 9a39a56e655983dae26cb4134f073cfa *R/arrow.plot.R
@@ -88,11 +88,10 @@ b235051e6c79935c0598a8a421e592ef *R/grey.level.R
 2629ecd2e2a5bab3289c18bec349693a *R/image.plot.info.R
 2c8c9013d9609bf87da423d963bd6c8d *R/image.plot.plt.R
 c7aa195a56b284ee8901942ecc9e8ea3 *R/image.smooth.R
-ddc088c8dd1365d8e040845eb17587f4 *R/image2lz.R
-9087f75f134a6517ae670222b3d69882 *R/in.poly.R
+aefc10182755ec22dd51279559f2d3a4 *R/image2lz.R
+9c899df678cb1f51545871c5472d5e0c *R/in.poly.R
 8ee7011bb469513f5f511d1699f2b165 *R/interp.surface.R
 bfacd003546415020fab584c78c634fd *R/interp.surface.grid.R
-63f7c95ec4f289d7b66316d5fc4597ce *R/lonlat2xy.R
 85bf2cd9944d13f1206f6abc3ab04991 *R/mKrig.family.R
 37a333b0f8e8a5b9f5105b818ac3648d *R/make.surface.grid.R
 9d74ce2ccb7dd4397a29f76f21fe45d1 *R/matern.image.cov.R
@@ -164,7 +163,7 @@ ae723298a3cda0c7610136c12cab50f0 *R/summary.spatial.design.R
 e0d67355e1c20dd25a8535423994ede7 *R/summary.sreg.R
 7042d46e49add2347ca25f327b824a22 *R/surface.family.R
 b0e8fdcab18b21ea36b1018aef8b586f *R/test.for.zero.R
-3db9c32fcd80921e075ef1b29ad2c62b *R/tim.colors.R
+b1ffe27250b3401d2697f78568040982 *R/tim.colors.R
 b21082f82020ee05ac38f56f6db8b25b *R/transformx.R
 89f3f2d971084e7b7809b35b0e50d1c1 *R/unscale.R
 444b4a04f666cd52b87dcc74011002d9 *R/vgram.R
@@ -207,7 +206,7 @@ c217c12584f55c2c5c582cb771e9adc3 *man/Krig.null.function.Rd
 9f83dc67f8b5607e14ce062230faf72a *man/RCMexample.Rd
 458c4fecb2eb0d87d870552bbe532515 *man/REML.test.Rd
 e86ab1248f38568083dee261e552fb83 *man/RMprecip.Rd
-33c6e156f97bf5c6588637ebc2321190 *man/Tps.Rd
+52e33ba522c548203b7d12e51b636d77 *man/Tps.Rd
 496718034a9d3da25b15edc8dad262ac *man/US.Rd
 13634d9d4289f21972aff410446e60b2 *man/US.dat.Rd
 a6e0fe62920877941209d994f80cb2da *man/Wendland.Rd
@@ -222,9 +221,9 @@ c31935cb149f6f357e552ebfe325c3e6 *man/bplot.Rd
 c73515e1551328c95401f93e3bfcdf10 *man/cover.design.Rd
 9c11f969c66a5200f7ef2c5e25e72702 *man/drape.plot.Rd
 de6be8e7d4ddeabd3c4d08540ea2c544 *man/exp.cov.Rd
-7fc454e6ce95aadc032289a694daf336 *man/fields-internal.Rd
+1de7b59e00e665ca232bdda8c7de1725 *man/fields-internal.Rd
 e2e700ee5014546947093edaeb04e866 *man/fields-stuff.Rd
-040414b5a1dc3ee773fc8f67f2f9064a *man/fields.Rd
+2c0f93b356e1d69cec03f341417c810a *man/fields.Rd
 432ab740375db55e292f9771b3b403ac *man/fields.grid.Rd
 76177ec35b29cb628f1bc489a2e44eff *man/fields.hints.Rd
 e1611310c48c4bc4c1f5d15f8dbda4bb *man/fields.tests.Rd
@@ -232,7 +231,7 @@ e1611310c48c4bc4c1f5d15f8dbda4bb *man/fields.tests.Rd
 41a1b5fc31a0e9555ab2dc412e6d032f *man/gcv.Krig.Rd
 72c274cc5436ed46fd8f840905e64ea8 *man/grid.list.Rd
 24ce78e871321b92de3e09a676946eb8 *man/image.cov.Rd
-6d6d4c67f94559573381f5fe967d784b *man/image.plot.Rd
+e9da5effed5a98a19b011042a7620068 *man/image.plot.Rd
 3e8e62f5d9388718d54a4f773db92765 *man/image.smooth.Rd
 47e88abecaefc747c72a73bfd27dd685 *man/image2lz.Rd
 6385d042dc563349e22dc0deb549a125 *man/interp.surface.Rd
