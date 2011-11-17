@@ -22,25 +22,6 @@
 \alias{Krig.updateY}
 \alias{Krig.which.lambda}
 \alias{Krig.ynew}
-\alias{WD4}
-\alias{WD42d}
-\alias{WD42di}
-\alias{WD4i}
-\alias{WQS}
-\alias{WQS.T}
-\alias{WQS.basis}
-\alias{WQS2d}
-\alias{WQS2di}
-\alias{WQSdi}
-\alias{WQSi}
-\alias{WQSi.T}
-\alias{WQS2d.cylinder}
-\alias{WQS2di.cylinder}
-\alias{WQSi.periodic} 
-\alias{WQSi.periodic.T} 
-\alias{WQS.periodic} 
-\alias{WQS.periodic.basis}
-\alias{WQS.periodic.T} 
 \alias{bisection.search}
 \alias{bplot.obj}
 \alias{cat.matrix}
@@ -65,9 +46,6 @@
 \alias{krig.image.parameters}
 \alias{lonlat2xy}
 \alias{minimax.crit}
-\alias{periodic.cov.1d}
-\alias{periodic.cov.cyl}
-\alias{periodic.plane.3d}
 \alias{plot.krig.image}
 \alias{plot.qsreg}
 \alias{plot.sim.krig.image}
@@ -124,8 +102,6 @@ Listed below are supporting functions for the major methods in fields.
 }
 \usage{
 
-D4transform.image(x, inv = FALSE, transpose = FALSE, cut.min = 8) 
- 
 Krig.df.to.lambda(df, D, guess = 1, tol = 1e-05) 
 Krig.fdf (llam, info) 
 Krig.fgcv (lam, obj) 
@@ -145,27 +121,6 @@ Krig.which.lambda(out)
 Krig.ynew (out, y=NULL, yM=NULL ) 
  
 
-WD4 (x) 
-WD42d (x) 
-WD42di (x) 
-WD4i (x) 
- 
-WQS (x) 
-WQS.T (x) 
-WQS.basis (N, cut.n = 8) 
-WQS2d (x, transpose = FALSE) 
-WQS2di (x, transpose = FALSE) 
-WQSdi (x, transpose = FALSE) 
-WQSi (x) 
-WQSi.T (x) 
-WQS.periodic(x)
-WQS.periodic.T(x)
-WQS.periodic.basis(N, cut.n = 8)
-WQS.periodic.T(x)
-WQS2d.cylinder(x, transpose = FALSE, byX=TRUE)
-WQS2di.cylinder(x, transpose = FALSE, byX=TRUE)
-WQSi.periodic(x)
-WQSi.periodic.T(x)
 
 
 bisection.search (x1, x2, f, tol = 1e-07, niter = 25, f.extra = 
@@ -219,10 +174,6 @@ horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
 lonlat2xy (lnlt, miles = FALSE) 
  
 minimax.crit (obj, des = TRUE, R) 
- 
-periodic.cov.1d (x1, x2, a, b) 
-periodic.cov.cyl (x1, x2, a = 0, b = 365, theta = 1) 
-periodic.plane.3d (x1, x2, a = 0, b = 365, theta = 1) 
  
 
 \method{plot}{qsreg}(x, pch = "*", main = NA,...) 

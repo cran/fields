@@ -1,5 +1,5 @@
 
-R version 2.13.0 (2011-04-13)
+R version 2.13.2 (2011-09-30)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: i386-apple-darwin9.8.0/i386 (32-bit)
@@ -35,8 +35,6 @@ The following object(s) are masked from 'package:base':
 
     backsolve, forwardsolve, norm
 
-Warning message:
-package 'spam' was built under R version 2.13.1 
 > 
 > #options( echo=FALSE)
 > test.for.zero.flag<- 1

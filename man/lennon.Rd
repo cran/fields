@@ -10,6 +10,10 @@
 }
 \description{
 A 256X256 image of John Lennon.
+Try:
+
+\code{image(lennon, col=grey.level(256))}
+
 }
 \keyword{datasets}
 % docclass is data

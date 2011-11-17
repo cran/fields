@@ -17,14 +17,17 @@ two or more colors. There is also a function that converts between colors and
 a real valued vector.
 }
 \usage{
-tim.colors(n = 64)
-two.colors(n=256, start="darkgreen", end="red", middle="white")
+tim.colors(n = 64, alpha=1.0)
+two.colors(n=256, start="darkgreen", end="red", middle="white", alpha=1.0)
 designer.colors( n=256, col= c("darkgreen", "white", "darkred"),
-                              x= seq(0,1,, length(col)) )
+                              x= seq(0,1,, length(col)) ,alpha=1.0)
 color.scale( z, col=tim.colors(256), zlim =NULL, transparent.color="white",                     eps= 1e-8) 
 
 }
 \arguments{
+\item{alpha}{The transparency of the color -- 1.0 is opaque and 0 is transparent.
+             This is useful for overlays of color and still being able to view
+              the graphics that is covered. }
   \item{n}{ Number of color levels. The setting \code{n}=64 is the orignal 
 definition.}
 \item{start}{Starting color for lowest values in color scale}
@@ -69,7 +72,7 @@ leaves the choice of the colors to Dr. R after a thunderstorm.
 }
 \value{
 
-A vector giving the colors in a hexadecimal format. 
+A vector giving the colors in a hexadecimal format, two extra hex digits are added for alpha channel. 
 
 }
 \seealso{ topo.colors, terrain.colors, image.plot, quilt.plot, grey.scale,
@@ -77,21 +80,28 @@ fields.color.picker }
 \examples{
 
 tim.colors(10) 
-# returns an array of 10 strings in hex format
-#e.g. (red, green,  blue) values of   (16,255, 239)
-# translates to "#10FFEF" .
+# returns an array of 10 character strings encoding colors in hex format
+
+# e.g. (red, green,  blue) values of   (16,255, 239)
+#   translates to "#10FFEF" 
+# rgb( 16/255, 255/255, 239/255, alpha=.5)
+#   gives   "#10FFEF80"  note extra "alpha channel"
 
 # veiw some color table choices
-set.panel( 1,3)
-par( pty="s")
+set.panel( 2,3)
 z<- outer( 1:20,1:20, "+")
+obj<- list( x=1:20,y=1:20,z=z )
 
-image( z, col=tim.colors( 200)) # 200 levels
+image( obj, col=tim.colors( 200)) # 200 levels
 
-image( z, col=two.colors() )
+image( obj, col=two.colors() )
+
+# using tranparency without alpha the image plot would cover points
+plot( 1:20,1:20)
+image(obj, col=two.colors(alpha=.5), add=TRUE)
 
 coltab<- designer.colors(col=c("blue", "grey", "green"),  x= c( 0,.3,1) ) 
-image( z, col= coltab )
+image( obj, col= coltab )
 
 # peg colors at some desired quantiles  of data.
 # NOTE need 0 and 1 for the color scale to make sense

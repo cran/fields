@@ -47,13 +47,12 @@ glist<- fields.x.to.grid(x, nx=80, ny=80) # this is a cute way to get a default 
 
      V<- diag(c( 2.5*(glist$lon[2]-glist$lon[1]), 
                  2.5*(glist$lat[2]-glist$lat[1])))
-
+\dontrun{
 # this is an interplotation of the values using a compact 
 # but thin plate spline like covariance. 
     mKrig( Bigx,Bigy, cov.function="wendland.cov",k=4, V=V, 
                  lambda=0)->out2 
 # the big evaluation this takes about 45 seconds on a Mac G4 latop
-\dontrun{
     predict.surface( out2, nx=400, ny=400)-> look
 }
 
