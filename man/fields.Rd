@@ -118,10 +118,9 @@ for summer 1987.
 }
 
 \strong{DISCLAIMER:}
-This is software for statistical research and not for commercial uses. The
-authors do not guarantee the correctness of any function or program in
-this package. Any changes to the software should not be made without the
-authors permission.
+ The
+authors can not guarantee the correctness of any function or program in
+this package. 
 }
 \examples{
 

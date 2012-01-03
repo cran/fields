@@ -130,38 +130,16 @@ designer.colors <- function(n = 256, col = c("darkgreen",
         temp[, k] <- hold
     }
     # convert back to hex
-    rgb(temp[, 1], temp[, 2], temp[, 3],  alpha=alpha)
+    if( alpha==1){
+    rgb(temp[, 1], temp[, 2], temp[, 3])}
+    else{
+       rgb(temp[, 1], temp[, 2], temp[, 3],  alpha=alpha)}
 }
 #boulder.colors<- c('darkred', 'darkorange',
 #                   'white', 'darkgreen', 'darkblue')
 "two.colors" <- function(n = 256, start = "darkgreen", 
     end = "red", middle = "white", alpha=1.0) {
     designer.colors(n, c(start, middle, end), alpha=alpha)
-}
-"tim.colors" <- function(n = 64,alpha=1.0) {
-# Tim Hoar's original 64 color definition 
-    orig <- c("#00008F", "#00009F", "#0000AF", "#0000BF", "#0000CF", 
-        "#0000DF", "#0000EF", "#0000FF", "#0010FF", "#0020FF", 
-        "#0030FF", "#0040FF", "#0050FF", "#0060FF", "#0070FF", 
-        "#0080FF", "#008FFF", "#009FFF", "#00AFFF", "#00BFFF", 
-        "#00CFFF", "#00DFFF", "#00EFFF", "#00FFFF", "#10FFEF", 
-        "#20FFDF", "#30FFCF", "#40FFBF", "#50FFAF", "#60FF9F", 
-        "#70FF8F", "#80FF80", "#8FFF70", "#9FFF60", "#AFFF50", 
-        "#BFFF40", "#CFFF30", "#DFFF20", "#EFFF10", "#FFFF00", 
-        "#FFEF00", "#FFDF00", "#FFCF00", "#FFBF00", "#FFAF00", 
-        "#FF9F00", "#FF8F00", "#FF8000", "#FF7000", "#FF6000", 
-        "#FF5000", "#FF4000", "#FF3000", "#FF2000", "#FF1000", 
-        "#FF0000", "#EF0000", "#DF0000", "#CF0000", "#BF0000", 
-        "#AF0000", "#9F0000", "#8F0000", "#800000")
-  if( n==length(orig)){
-      temp <- t(col2rgb(orig))/255
-# convert back to hex with alpha
-      rgb(temp[, 1], temp[, 2], temp[, 3],  alpha=alpha)
-  }
-  else{  
-      designer.colors(n, col= orig, alpha=alpha)
-  }
-  
 }
 
 #plot.colors<- function( col,...){

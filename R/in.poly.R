@@ -29,7 +29,8 @@ in.poly.grid <- function(grid.list, xp, convex.hull = FALSE,
     # loop through rows of grid to fill out a logical matrix of
     # being in (TRUE) or out (FALSE)
     #
-    # this is just to avoid creating the full set of image locations.
+    # this is  to avoid the full target polygon if the convex hull is
+    # what is needed. 
     if (convex.hull) {
         xp <- xp[chull(xp), ]
     }

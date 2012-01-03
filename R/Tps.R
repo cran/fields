@@ -27,5 +27,5 @@
     Krig(x, Y, cov.function = stationary.cov, m = m, scale.type = scale.type, 
         outputcall = Tpscall, GCV = TRUE,
          cov.args=list(Covariance="RadialBasis",M=m, dimension=2, Distance="rdist.earth",
-            Dist.args=list(miles=miles)) )}
+            Dist.args=list(miles=miles)), ... )}
 }

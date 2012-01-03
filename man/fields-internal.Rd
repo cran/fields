@@ -44,7 +44,6 @@
 \alias{image.plot.info}
 \alias{image.plot.plt}
 \alias{krig.image.parameters}
-\alias{lonlat2xy}
 \alias{minimax.crit}
 \alias{plot.krig.image}
 \alias{plot.qsreg}
@@ -170,9 +169,7 @@ grey.level (n=256)
 image.plot.info (...) 
 image.plot.plt(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
 horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
- 
-lonlat2xy (lnlt, miles = FALSE) 
- 
+  
 minimax.crit (obj, des = TRUE, R) 
  
 
