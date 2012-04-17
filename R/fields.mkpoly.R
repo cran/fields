@@ -9,7 +9,7 @@
         x <- as.matrix(x)
     d <- ncol(x)
     n <- nrow(x)
-    nterms<- choose((m + d -1),d)
+    nterms <- choose((m + d - 1), d)
     temp <- .Fortran("dmaket", m = as.integer(m), n = as.integer(n), 
         dim = as.integer(d), des = as.double(x), lddes = as.integer(n), 
         npoly = as.integer(nterms), tmatrix = as.double(rep(0, 

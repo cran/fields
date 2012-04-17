@@ -17,7 +17,7 @@ directions.
 \usage{
 vgram.matrix(dat, R=5, dx = 1,dy = 1 )
 
-plot.vgram.matrix(x,...)
+\method{plot}{vgram.matrix}(x,...)
 }
 \arguments{
 \item{dat}{
@@ -45,7 +45,7 @@ See additional notes for dx.}
 }
 \value{
   
-A list with the following components:  d, a vector of distances for 
+An object of class vgram.matrix with the following components:  d, a vector of distances for 
 the differences, 
 and vgram, the variogram values. This is the traditional variogram 
 ignoring direction.  

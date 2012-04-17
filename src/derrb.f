@@ -10,7 +10,7 @@ c***** c is n2xn3
        implicit double precision (a-h,o-z)
        integer nd,n1,n2,n3,ic, jc,j
        
-       real*8 par(1),x1(n1,nd), x2(n2,nd), c(n2,n3), h(n1,n3),sum
+       real*8 par(2),x1(n1,nd), x2(n2,nd), c(n2,n3), h(n1,n3),sum
        real*8 work( n1), ddot
 
 c****** work aray must be dimensioned to size n1

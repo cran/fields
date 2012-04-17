@@ -31,7 +31,7 @@ the u and v coordinates of the arrows.
 }
 \item{u}{
 The u components of the direction vectors if they are not specified in 
-the a2 argument 
+the a1 argument 
 }
 \item{v}{
 The v  components of the direction vectors if they are not specified in     

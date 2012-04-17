@@ -21,10 +21,10 @@ poly.image.regrid <- function(x) {
     x <- t(temp.addcol(x))
     t(temp.addcol(x))
 }
-poly.image <- function(x, y, z, col = tim.colors(64), breaks, 
-    transparent.color = "white", midpoint = FALSE, zlim = range(z, 
+poly.image <- function(x, y, z, col = tim.colors(64), 
+    breaks, transparent.color = "white", midpoint = FALSE, zlim = range(z, 
         na.rm = TRUE), xlim = range(x), ylim = range(y), add = FALSE, 
-    border = NA, lwd.poly=1.0, ...) {
+    border = NA, lwd.poly = 1, ...) {
     # check dimensions
     Dx <- dim(x)
     Dy <- dim(y)
@@ -40,14 +40,14 @@ poly.image <- function(x, y, z, col = tim.colors(64), breaks,
         y <- poly.image.regrid(y)
     }
     # figure out the breaks make sure that missing breaks are passed as NA.
-    if ( missing( breaks)) {
-           breaks<- NA}
+    if (missing(breaks)) {
+        breaks <- NA
+    }
     
     # code values in z based on range to colors.
     # if midpoint is true z values will be averaged first
-    zcol <- drape.color(z, col = col, midpoint = midpoint,
-                        zlim = zlim, transparent.color = transparent.color,
-                        breaks=breaks)$color.index
+    zcol <- drape.color(z, col = col, midpoint = midpoint, zlim = zlim, 
+        transparent.color = transparent.color, breaks = breaks)$color.index
     # blank if not adding to an exising plot
     if (!add) {
         plot(xlim, ylim, type = "n", ...)
@@ -66,18 +66,19 @@ poly.image <- function(x, y, z, col = tim.colors(64), breaks,
             y[i, 2:N], rep(NA, Nm1))
         xp <- c(t(xp))
         yp <- c(t(yp))
-        pcol<- c(zcol[i, 1:Nm1])
-
-    # draw each poly with different color including the border
-    # if the border color has not been specified.
-    # this will avoid missing some space on some output devices.
-    # one can also crank down width of border lines to avoid rounded corners
-
-        polygon(xp, yp, border = pcol, col = pcol, lwd=lwd.poly)
-
-    # fill in border with different color if it is not an NA.
-        if( !is.na(border)){
-        polygon(xp, yp, border = border, col = NA, lwd=lwd.poly)}
-
+        pcol <- c(zcol[i, 1:Nm1])
+        
+        # draw each poly with different color including the border
+        # if the border color has not been specified.
+        # this will avoid missing some space on some output devices.
+        # one can also crank down width of border lines to avoid rounded corners
+        
+        polygon(xp, yp, border = pcol, col = pcol, lwd = lwd.poly)
+        
+        # fill in border with different color if it is not an NA.
+        if (!is.na(border)) {
+            polygon(xp, yp, border = border, col = NA, lwd = lwd.poly)
+        }
+        
     }
 }

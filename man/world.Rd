@@ -10,77 +10,23 @@
 \alias{world.land}
 \title{Plot of the world}
 \description{
-Plots quickly, medium resolution outlines of large land masses and 
-bodies of water. The main benefit is that this mapping function is available without having to load the 
-maps and mapproject libraries. 
+Plots quickly, medium resolution outlines of large land masses. This is a simple 
+wrapper for the map function from the maps package. 
 }
 \usage{
-world(ylim = c(-90, 90), xlim = NULL, add = FALSE, asp = 1,
-                 xlab = "", ylab = "", xaxt = "n", yaxt = "n", eps =
-                 0.1, col=1,shift = FALSE, 
-                 fill=FALSE, col.water="white", col.land="darkgrey",alpha=NA, ...)
-world.land( col.water = "white", col.land = "darkgrey",alpha=NA, ...)
-world.color(obj,xlim= c(-180,180), ylim=c(-90,90), 
-             col.water="white",col.land="darkgrey", ... )
-in.land.grid( grid.list)
+world(...)
+world.land(  ...)
+world.color( ... )
+in.land.grid(...)
 
 }
 \arguments{
-\item{alpha}{Color transparency of land fill and outlines.}
-  \item{ylim}{range of latitudes}
-  \item{xlim}{range of longitudes}
-  \item{add}{logical; if true will add the world map to current plot.}
-  \item{asp}{aspect ratio used if \code{add} is false, see
-    \code{plot.default} .}
-  \item{xlab,ylab}{labels for x- and y-axis; empty by default.}
-  \item{xaxt,yaxt}{axis type for x- and y-axis; empty by default.}
-\item{eps}{ Tolerance to decide when to insert line break about 0 if
-map is to be shifted. (leave this at .1) }
-\item{shift}{ If TRUE shifts to be centered on the Dateline and 
-longitude runs from 0 to 360. If FALSE centers on Prime Meridian and 
-longitude runs 
-from -180 to 180.}
-
-\item{col}{Color for map lines when fill is FALSE.}
-
-\item{fill}{ If FALSE draws land outlines. If TRUE fills in land and
-water with different colors.}
-
-\item{col.land}{Color for land filling.}
-
-\item{col.water}{Color for water filling.}
-\item{obj}{The data set of coast lines: \code{world.dat}}
-\item{\dots}{
-    If the land is not filled these are graphical arguments that are passed to the
-    \code{lines} (and \code{plot} if \code{add} is false)
-    function that draws the outline.} If fill is TRUE then these arguments
-    are passed to the polygon function that does the filling. 
-\item{grid.list}{Grid list  in longitude latitude specifying rectangular grid}
+\item{\dots}{Same arguments used by the \code{map} function from the maps package.}
 }
 \details{
-Both functions use the FIELDS dataset world.dat for the coordinates.
-See the longstanding \code{maps} package for similar functionality 
-The main advantage of these functions is that they are fast and easy to modify. 
-The shift option to center over the dateline is useful because often 
-plots of oceanic and atmospheric information center the map this way. 
-
-The function \code{world.color} can be used separately but is also
-called by world with fill being TRUE. When used alone it will just add
-the colored landmasses and water to an existing plot. It is easy to
-modify just to add the land masses and use the existing back ground
-color as water.  Unfortunately world.color will not work when shift is
-TRUE. Use the maps package to accomplish this. 
-Howevr, the current code could be modified if you need this option. 
-Thanks to Steve McIntyre for suggesting and testing the fill option.
-
-The function  \code{world.land} adds to an existing plot a polygon fill of the land masses 
-the water in this case is just the lakes not the ocean. Used with transparency this provides a
-clearer reference than just outlines. 
-
-\code{in.land.grid} Takes the grid information in the form of a grid list and 
-returns a logical  image matrix. TRUE means that the grid point is not in an ocean or a lake. 
-For very large grids  (500X1000) this make take a minute or so. 
-
+See the longstanding \code{maps} package for documentation on this function. 
+The functions world.land, world.color and in.land.grid have been
+depreciated but can be recovered from versions of fields 6.7.1 or older.
  }
 \seealso{US, in.poly, in.poly.grid}
 \examples{
@@ -89,30 +35,10 @@ world()
 # add the US
 US( add=TRUE,col="blue")
 
+world( fill=TRUE) # land filled in black 
 
-world( fill=TRUE) # land filled in dark grey 
-
-
-## Western Europe (*which* big islands are missing?)
-## with a coordinate grid:
-
-world(xlim=c(-10,18),ylim=c(36,60), 
-    xaxt = "s", yaxt = "s", fill=TRUE, col.land="darkgreen")
-
-box() # add back in the box that was obscured by the ocean fill.
-
-# add back in outline of land.
-world( add=TRUE,lwd=1.5, col="green")
-
-grid()
-
-grid.list<- list( x= seq(-160,-60,,200), y= seq( 25, 55,,100))
-look<- in.land.grid( grid.list)
-
-world()
-# mask for land in grid
-image( grid.list$x, grid.list$y, look, add=TRUE)
-
+## Western Europe
+world( xlim=c(-10,18),ylim=c(36,60),fill=TRUE, col="darkgreen", border="green1")
 
 }
 \keyword{hplot}

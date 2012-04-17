@@ -2,7 +2,11 @@
 # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"predict.surface.se" <- function(object, grid.list = NA, 
+"predict.surface.se" <- function(object, ...) {
+    UseMethod("predict.surface.se")
+}
+
+"predict.surface.se.default" <- function(object, grid.list = NA, 
     extrap = FALSE, chull.mask = NA, nx = 80, ny = 80, xy = c(1, 
         2), order.variables = "xy", verbose = FALSE, ...) {
     # without grid.list

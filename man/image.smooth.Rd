@@ -14,7 +14,7 @@ Takes an image matrix and applies a kernel smoother to it. Missing values
 are handled using the Nadaraya/Watson normalization of the kernel. 
 }
 \usage{
-image.smooth(x, wght = NULL, dx = 1, dy = 1,
+\method{image}{smooth}(x, wght = NULL, dx = 1, dy = 1,
     kernel.function = double.exp,
     theta = 1, grid = NULL, tol = 1e-08, xwidth = NULL, ywidth = NULL,
     weights = NULL,...)

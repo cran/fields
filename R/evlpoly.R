@@ -9,7 +9,6 @@ fields.evlpoly <- function(x, coef) {
     J <- length(coef)
     results <- rep(0, n)
     temp <- .Fortran("evlpoly", x = as.double(x), n = as.integer(n), 
-        coef = as.double(coef), j = as.integer(J), results = as.double(results) 
-       )$results
+        coef = as.double(coef), j = as.integer(J), results = as.double(results))$results
     return(temp)
 }

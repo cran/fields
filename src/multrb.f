@@ -10,7 +10,7 @@ c***** c is n2xn3
        implicit double precision (a-h,o-z)
        integer nd,n1,n2,n3,ic, jc,j
        
-       real*8 par(1),x1(n1,nd), x2(n2,nd), c(n2,n3), h(n1,n3),sum
+       real*8 par(2),x1(n1,nd), x2(n2,nd), c(n2,n3), h(n1,n3),sum
        real*8 work( n1), ddot
 
 c****** work aray must be dimensioned to size n1
@@ -40,12 +40,12 @@ c
 
 C**** evaluate squared distances  with basis functions. 
 
-          call radfun( n2,work(1),par)
+          call radfun( n2,work,par)
 c
 c***** now the dot products you have all been waiting for!
 c
        do 30 jc=1,n3
-          h(ir,jc)= ddot( n2, work(1), 1, c(1,jc),1)
+          h(ir,jc)= ddot( n2, work, 1, c(1,jc),1)
 30     continue
   
  5      continue

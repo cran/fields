@@ -3,10 +3,10 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "splint" <- function(x, y, xgrid, wt = NULL, derivative = 0, 
-    lam = 0, df = NA, lambda=NULL) {
+    lam = 0, df = NA, lambda = NULL) {
     #
     # reform calling args if passed as a matrix or list
-
+    
     if (is.matrix(x)) {
         if (ncol(x) > 1) {
             xgrid <- y
@@ -41,15 +41,16 @@
     }
     # use lambda is it is passed
     if (!is.null(lambda)) {
-        lam<- lambda
+        lam <- lambda
     }
     igcv <- ifelse(lam == 0, 2, 0)
     # call to old FORTRAN
-    temp<- .Fortran("css", h = as.double(ifelse(igcv == 2, 1, log(lam))), 
-        as.integer(n), as.double(x), as.double(y), wt = as.double(1/sqrt(wt)), 
-        sy = as.double(rep(0, n)), as.double(1), as.double(1), 
-        as.double(1), as.integer(length(xgrid)), as.double(xgrid), 
-        ygrid = as.double(rep(0, length(xgrid))), job = as.integer(c(igcv, 
-            3, 0)), as.integer(derivative), as.integer(0))
-    return( temp$ygrid)
+    temp <- .Fortran("css", h = as.double(ifelse(igcv == 2, 1, 
+        log(lam))), as.integer(n), as.double(x), as.double(y), 
+        wt = as.double(1/sqrt(wt)), sy = as.double(rep(0, n)), 
+        as.double(1), as.double(1), as.double(1), as.integer(length(xgrid)), 
+        as.double(xgrid), ygrid = as.double(rep(0, length(xgrid))), 
+        job = as.integer(c(igcv, 3, 0)), as.integer(derivative), 
+        as.integer(0))
+    return(temp$ygrid)
 }

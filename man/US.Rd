@@ -10,33 +10,20 @@
 }
 \description{
 Plots quickly, medium resolution outlines of the US with the states and 
-bodies of water.  
+bodies of water. A simple wrapper for the map function from the maps package. 
 }
 \usage{
-US( xlim=c(-124.7, -67.1), ylim = c(25.2, 49.4), add=FALSE,shift=FALSE, ...)
+US( ...)
 }
 \arguments{
-
-\item{ylim}{
-range of latitudes 
-}
-\item{xlim}{
-range of longitudes 
-}
-\item{add}{
-If true will add the world map to current plot 
-}
-\item{shift}{ If TRUE shifts to be centered on the Dateline and longitude
-runs from 0 to 360. If FALSE centers on Prime Meridian and longitude runs
-from -180 to 180.}
-
 \item{\dots}{
-These are graphical arguments that are passed to the lines function that 
-draws outline.  
+These are the arguments that are passed to the map function
+from the maps package.
 }
 }
 \details{
-This function uses the FIELDS dataset US.dat for the coordinates.   
+The older version of this function (fields < 6.7.2) used the FIELDS dataset US.dat for the
+  coordinates. Currenty this has been switched to use the maps package.    
 }
 \seealso{
 world

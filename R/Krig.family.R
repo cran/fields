@@ -11,11 +11,10 @@
     sd.obj = NA, null.function = "Krig.null.function", wght.function = NULL, 
     offset = 0, outputcall = NULL, na.rm = TRUE, cov.args = NULL, 
     chol.args = NULL, null.args = NULL, wght.args = NULL, W = NULL, 
-    give.warnings = TRUE, ...) # NOTES
-# the verbose switch prints many intermediate steps as an aid in debugging.
+    give.warnings = TRUE, ...) # the verbose switch prints many intermediate steps as an aid in debugging.
 #
 {
- 
+    
     #
     # create output list
     out <- list()
@@ -215,8 +214,9 @@
     # For fixed lambda the decompositions with and without knots
     # are surprisingly similar and so are in one engine.
     ###########################################################
-    if (verbose){
-      cat("Beginning of Engine block", fill=TRUE)}
+    if (verbose) {
+        cat("Beginning of Engine block", fill = TRUE)
+    }
     if (out$fixed.model) {
         out$matrices <- Krig.engine.fixed(out, verbose = verbose)
         # can't find the trace of A matrix in fixed lambda case so set this to NA.
@@ -255,18 +255,20 @@
     # that is not due to the Z covariates.
     # NOTE that the spatial drift coefficients must be the first columns of the
     # M matrix
-    if(verbose){
-      cat("End of Engine Block", fill=TRUE)}
+    if (verbose) {
+        cat("End of Engine Block", fill = TRUE)
+    }
     if (is.null(out$Z)) {
         out$ind.drift <- rep(TRUE, out$nt)
     }
     else {
         
         mZ <- ncol(out$ZM)
-        if(verbose){
-          cat( "ZM", out$ZM, fill=TRUE)
-          cat( "mZ", mZ, fill=TRUE)
-          cat(  "nt",out$nt, fill=TRUE)}
+        if (verbose) {
+            cat("ZM", out$ZM, fill = TRUE)
+            cat("mZ", mZ, fill = TRUE)
+            cat("nt", out$nt, fill = TRUE)
+        }
         out$ind.drift <- c(rep(TRUE, out$nt - mZ), rep(FALSE, 
             mZ))
     }
@@ -822,12 +824,13 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     # Find the transformed data vector used to
     # evaluate the solution, GCV, REML  at different lambdas
     #
-   
+    
     u <- c(rep(0, nt), t(tempM$vectors) %*% qr.q2ty(qr.T, c(out$W2 %d*% 
         out$yM)))
     if (verbose) {
         cat("u vector:", fill = TRUE)
-        print(u)}
+        print(u)
+    }
     #
     #
     return(list(D = D, qr.T = qr.T, decomp = "WBW", V = tempM$vectors, 
@@ -994,25 +997,25 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     #    sqrt(weightsM) * X
     XTwX <- t(X * out$weightsM) %*% X
     #
-  # then  B= G(I-D)G^T
-  # New version of diagonalize may be more stable 
+    # then  B= G(I-D)G^T
+    # New version of diagonalize may be more stable
     out2 <- fields.diagonalize2((XTwX), H)
     D <- out2$D
     if (verbose) {
         cat("D;", fill = TRUE)
         cat(out2$D, fill = TRUE)
     }
-#
-#  G should satisfy:
-#     t(G) %*% XTwX %*%G = I and  t(G)%*%H%*%G = D
-#
-#     and 
-#      solve( XtwX + lambda H) =  G%*%diag( 1/(1+ lambda*D))%*%t(G)
-# 
-
-#  save XG to avoid an extra multiplication.
-    XG<- X%*% out2$G 
-
+    #
+    #  G should satisfy:
+    #     t(G) %*% XTwX %*%G = I and  t(G)%*%H%*%G = D
+    #
+    #     and
+    #      solve( XtwX + lambda H) =  G%*%diag( 1/(1+ lambda*D))%*%t(G)
+    #
+    
+    #  save XG to avoid an extra multiplication.
+    XG <- X %*% out2$G
+    
     u <- t(XG) %*% (out$weightsM * out$yM)
     #
     # adjust pure sum of squares to be that due to replicates
@@ -1020,24 +1023,23 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     # any smoothing. This will be the part of the RSS that does not
     # change as lambda is varied ( see e.g. gcv.Krig)
     #
-    pure.ss <- sum(out$weightsM * (out$yM - XG %*% 
-        u)^2) + out$pure.ss
+    pure.ss <- sum(out$weightsM * (out$yM - XG %*% u)^2) + out$pure.ss
     if (verbose) {
         cat("total pure.ss from reps, reps + knots ", fill = TRUE)
         print(out$pure.ss)
         print(pure.ss)
     }
-
+    
     #
     # in this form  the solution is (d,c)= G( I + lambda D)^-1 u
     # fitted.values = X ( d,c)
     #
     # output list
-# last D eigenvalues are zero due to null space of penalty
-# OLD code:    D[(np - nt + 1):np] <- 0
-# this should be enforced to machine precision from diagonalization. 
-
-
+    # last D eigenvalues are zero due to null space of penalty
+    # OLD code:    D[(np - nt + 1):np] <- 0
+    # this should be enforced to machine precision from diagonalization.
+    
+    
     list(u = u, D = D, G = out2$G, qr.T = qr.T, decomp = "DR", 
         nt = nt, np = np, pure.ss = pure.ss)
 }
@@ -1168,19 +1170,20 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     #  - log profile likelihood for lambda
     # See section 3.4 from Nychka  Spatial Processes as Smoothers paper.
     # for equation and derivation
-    D2 <- obj$matrices$D[ obj$matrices$D>0]
-    u2<-  obj$matrices$u[ obj$matrices$D>0]
-    lD<- D2*lambda
+    D2 <- obj$matrices$D[obj$matrices$D > 0]
+    u2 <- obj$matrices$u[obj$matrices$D > 0]
+    lD <- D2 * lambda
     N2 <- length(D2)
     # MLE estimate of rho for fixed lambda
-    rho.MLE<- (sum( (D2*(u2)**2)/(1+lD)))/N2
+    rho.MLE <- (sum((D2 * (u2)^2)/(1 + lD)))/N2
     #
     # ln determinant of    K + lambda*WI
-    lnDetCov<- -sum( log(D2/(1 + lD)) )
-
-    -1*(-N2/2 - log(2*pi)*(N2/2) - (N2/2)*log(rho.MLE) - (1/2) * lnDetCov)
-
-  }
+    lnDetCov <- -sum(log(D2/(1 + lD)))
+    
+    -1 * (-N2/2 - log(2 * pi) * (N2/2) - (N2/2) * log(rho.MLE) - 
+        (1/2) * lnDetCov)
+    
+}
 # fields, Tools for spatial data
 # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
@@ -1245,7 +1248,7 @@ Krig.make.W <- function(out, verbose = FALSE) {
             return(list(W = NULL, W2 = NULL))
         }
         else {
-            return(list(W = out$weightsM, W2 = sqrt(out$weightsM) ))
+            return(list(W = out$weightsM, W2 = sqrt(out$weightsM)))
         }
     }
 }
@@ -1352,33 +1355,34 @@ Krig.null.function <- function(x, Z = NULL, drop.Z = FALSE,
     # NOTE: calculation of  shat involves full set of obs
     # not those colllapsed to the mean.
     if (obj$nondiag.W) {
-      shat.GCV <- sqrt(sum((obj$W2 %d*% obj$residuals)^2)/(length(obj$y) - 
+        shat.GCV <- sqrt(sum((obj$W2 %d*% obj$residuals)^2)/(length(obj$y) - 
             obj$eff.df))
     }
     else {
-     shat.GCV <- sqrt(sum((obj$weights * obj$residuals^2)/(length(obj$y) - 
+        shat.GCV <- sqrt(sum((obj$weights * obj$residuals^2)/(length(obj$y) - 
             obj$eff.df)))
     }
     if (mle.calc) {
-      rho.MLE<-  sum(c(obj$c) * c(obj$yM))/obj$N
-# set rho estimate to zero if negtive. Typically this
-# is an issue of machine precision and very small negative value. 
-      rho.MLE<- ifelse( rho.MLE< 0 , 0, rho.MLE)
-
-#    commented out code for debugging ...      
-#      if( rho.MLE< 0) {
-#        stop("problems computing rho.MLE")}
-      # commented out is the REML estimate -- lose null space df because of
-      # the restiction to orthogonal subspace of T.
-      # rhohat<- rho.MLE <- sum(obj$c * obj$yM)/(obj$N - obj$nt)
-      # .
-      rhohat<-rho.MLE
-      shat.MLE <- sqrt(rho.MLE * obj$lambda)
+        rho.MLE <- sum(c(obj$c) * c(obj$yM))/obj$N
+        # set rho estimate to zero if negtive. Typically this
+        # is an issue of machine precision and very small negative value.
+        rho.MLE <- ifelse(rho.MLE < 0, 0, rho.MLE)
+        
+        #    commented out code for debugging ...
+        #      if( rho.MLE< 0) {
+        #        stop('problems computing rho.MLE')}
+        # commented out is the REML estimate -- lose null space df because of
+        # the restiction to orthogonal subspace of T.
+        # rhohat<- rho.MLE <- sum(obj$c * obj$yM)/(obj$N - obj$nt)
+        # .
+        rhohat <- rho.MLE
+        shat.MLE <- sqrt(rho.MLE * obj$lambda)
     }
     else {
-      rhohat <- rho.MLE<- shat.MLE <- NA
+        rhohat <- rho.MLE <- shat.MLE <- NA
     }
-    list(shat.GCV = shat.GCV, rho.MLE=rho.MLE, shat.MLE = shat.MLE, rhohat = rhohat)
+    list(shat.GCV = shat.GCV, rho.MLE = rho.MLE, shat.MLE = shat.MLE, 
+        rhohat = rhohat)
 }
 # fields, Tools for spatial data
 # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
@@ -1400,10 +1404,12 @@ Krig.null.function <- function(x, Z = NULL, drop.Z = FALSE,
         weightsM <- out$weights
         xM <- as.matrix(out$x[uniquerows, ])
         # coerce ZM to matrix
-        if( !is.null(out$Z)){
-        ZM <- as.matrix(out$Z)}
-        else{
-        ZM<- NULL}
+        if (!is.null(out$Z)) {
+            ZM <- as.matrix(out$Z)
+        }
+        else {
+            ZM <- NULL
+        }
     }
     else {
         rep.info.aov <- fast.1way(rep.info, out$y, out$weights)

@@ -2,7 +2,7 @@
 # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"image.plot.info" <- function(...) {
+"imageplot.info" <- function(...) {
     temp <- list(...)
     #
     xlim <- NA
@@ -73,7 +73,7 @@
 # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"image.plot.plt" <- function(x, add = FALSE, legend.shrink = 0.9, 
+"imageplot.setup" <- function(x, add = FALSE, legend.shrink = 0.9, 
     legend.width = 1, horizontal = FALSE, legend.mar = NULL, 
     bigplot = NULL, smallplot = NULL, ...) {
     old.par <- par(no.readonly = TRUE)
@@ -229,15 +229,15 @@ average.image <- function(obj, Q = 2) {
 
 pushpin <- function(x, y, z, p.out, height = 0.05, 
     col = "black", text = NULL, adj = -0.1, cex = 1, ...) {
-# project your x,y,z on to the uv plane of the plot
+    # project your x,y,z on to the uv plane of the plot
     Sxy1 <- trans3d(x, y, z, p.out)
     Sxy2 <- Sxy1
     hold <- par()$usr
     Sxy2$y <- (hold[4] - hold[3]) * height + Sxy2$y
-# draw the pin    
+    # draw the pin
     segments(Sxy1$x, Sxy1$y, Sxy2$x, Sxy2$y, col = "black")
     points(Sxy2, col = col, pch = 19, cex = cex)
-# add a label    
+    # add a label
     if (!is.null(text)) {
         text(Sxy2$x, Sxy2$y, label = text, adj = adj, cex = cex, 
             ...)
@@ -245,7 +245,7 @@ pushpin <- function(x, y, z, p.out, height = 0.05,
 }
 
 designer.colors <- function(n = 256, col = c("darkgreen", 
-    "white", "darkred"), x = seq(0, 1, , length(col)),alpha=1.0) {
+    "white", "darkred"), x = seq(0, 1, , length(col)), alpha = 1) {
     # distribute the colors at equal spacings of x.
     xg <- seq(0, 1, , n)
     # matrix to hold RGB color values
@@ -256,22 +256,24 @@ designer.colors <- function(n = 256, col = c("darkgreen",
         hold <- splint(x, y.rgb[, k], xg)
         # fix up to be integer in [0,255]
         hold[hold < 0] <- 0
-        hold[hold > 1.0] <- 1.0
+        hold[hold > 1] <- 1
         temp[, k] <- hold
     }
     # convert back to hex
-    if( alpha==1){
-    rgb(temp[, 1], temp[, 2], temp[, 3])}
-    else{
-       rgb(temp[, 1], temp[, 2], temp[, 3],  alpha=alpha)}
+    if (alpha == 1) {
+        rgb(temp[, 1], temp[, 2], temp[, 3])
+    }
+    else {
+        rgb(temp[, 1], temp[, 2], temp[, 3], alpha = alpha)
+    }
 }
 #boulder.colors<- c('darkred', 'darkorange',
 #                   'white', 'darkgreen', 'darkblue')
 "two.colors" <- function(n = 256, start = "darkgreen", 
-    end = "red", middle = "white", alpha=1.0) {
-    designer.colors(n, c(start, middle, end), alpha=alpha)
+    end = "red", middle = "white", alpha = 1) {
+    designer.colors(n, c(start, middle, end), alpha = alpha)
 }
 
 #plot.colors<- function( col,...){
 #  N<- length(col)
-# image.plot( 1:N, 1, matrix(1:N,N,1), col=col,axes=FALSE, xlab="", ylab="",...)}
+# image.plot( 1:N, 1, matrix(1:N,N,1), col=col,axes=FALSE, xlab='', ylab='',...)}

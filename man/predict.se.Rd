@@ -14,11 +14,11 @@ usually the fitted object from a function estimate such as from Krig
 or Tps. 
 }
 \usage{
-predict.se(object, ...)
+\method{predict}{se}(object, ...)
 }
 \arguments{
 \item{object}{
-A fitted model object of a certain class 
+A fitted model object of a certain class. 
 }
 \item{\dots}{
 Additional arguments to be passed to 

@@ -143,8 +143,9 @@ theta=1.0,smoothness=1.0, na.rm=TRUE)-> out
 # simulations on a grid
 # NOTE this is approximate due to the bilinear interpolation
 # for simulating the unconditional random field. 
+# also more  grids points ( nx and  ny) should be used  
 
-sim.Krig.grid(out,M=5)-> sim.out
+sim.Krig.grid(out,M=5, nx=30,ny=30)-> sim.out
 
 # take a look at the ensemble members. 
 

@@ -4,15 +4,15 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "vgram" <- function(loc, y, id = NULL, d = NULL, lon.lat = FALSE, 
     dmax = NULL, N = NULL, breaks = NULL) {
-   # coerce to matrix
+    # coerce to matrix
     y <- cbind(y)
-   # if nearest neighbor indices are missing create all possible pairs.
+    # if nearest neighbor indices are missing create all possible pairs.
     if (is.null(id)) {
         n <- nrow(loc)
         ind <- rep(1:n, n) > rep(1:n, rep(n, n))
         id <- cbind(rep(1:n, n), rep(1:n, rep(n, n)))[ind, ]
     }
-  
+    
     
     # if distances are missing calculate these
     if (is.null(d)) {

@@ -13,8 +13,6 @@ Predicted derivatives
 Calculates the partial derivatives.
 }
 \usage{
-predict.derivative(object, ...)
-
 \method{predict.derivative}{default}( object, ...)
 }
 \arguments{

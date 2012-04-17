@@ -5,6 +5,7 @@
 
 \name{tim.colors}
 \alias{tim.colors}
+\alias{larry.colors}
 \alias{two.colors}
 \alias{designer.colors}
 \alias{color.scale}
@@ -18,6 +19,7 @@ a real valued vector.
 }
 \usage{
 tim.colors(n = 64, alpha=1.0)
+larry.colors()
 two.colors(n=256, start="darkgreen", end="red", middle="white", alpha=1.0)
 designer.colors( n=256, col= c("darkgreen", "white", "darkred"),
                               x= seq(0,1,, length(col)) ,alpha=1.0)
@@ -49,12 +51,14 @@ coded as NAs}
 and these coordinates are interpolated separately using a cubic spline
 to give color values that intermediate to the specified colors.  
 
- Ask Tim Hoar about tim.colors! He is a matlab black belt and this is
+ Ask Tim Hoar about \code{tim.colors}! He is a matlab black belt and this is
 his favorite scale in that system.  \code{two.colors} is really about
 three different colors. For other colors try \code{fields.color.picker}
 to view possible choices.   \code{start="darkgreen", end="azure4"} are
 the options used to get a nice color scale for rendering aerial photos
 of ski trails.  (See \url{http://www.image.ucar.edu/Data/MJProject}.)
+\code{larry.colors} is a 13 color palette used by Larry McDaniel and is particularly 
+useful for visualizing  fields of climate variables.
 
  \code{designer.color} is the master function for two.colors and
 tim.colors.  It can be useful if one wants to customize the color table

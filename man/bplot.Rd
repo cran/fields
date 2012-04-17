@@ -16,7 +16,7 @@ is also flexible in the input object, accepting either a list or matrix.
 }
 \usage{
 bplot(x, by, pos=NULL, at = pos, add = FALSE, boxwex =
-                 0.8, ...)
+                 0.8,xlim=NULL, ...)
 }
 \arguments{
  \item{x}{
@@ -43,7 +43,8 @@ for each group.
 It behaves a little different than as an argumetn passed directly to \code{boxplot}.
 To make this a general function it is useful to scale this according to size of positions. Within bplot this happens as \code{boxwex<- boxwex* min(diff( sort( at)))}.
 and then the scaled version of \code{boxwex} is now passed to \code{boxplot}.}
-
+\item{xlim}{ Same as the usual argument used in plotting. The plotting limits for the 
+x axis. }
 \item{\dots}{
 Other arguments to be passed to the boxplot function some handy favorites are:
 \code{names}

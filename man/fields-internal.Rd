@@ -35,8 +35,8 @@
 \alias{find.upcross}
 \alias{gauss.cov}
 \alias{golden.section.search}
-\alias{image.plot.info}
-\alias{image.plot.plt}
+\alias{imageplot.info}
+\alias{imageplot.setup}
 \alias{krig.image.parameters}
 \alias{minimax.crit}
 \alias{plot.krig.image}
@@ -55,6 +55,17 @@
 \alias{print.summary.sreg}
 \alias{qr.q2ty}
 \alias{qr.yq2}
+
+\alias{plot.qsreg}
+\alias{predict.qsreg}
+\alias{print.qsreg}
+\alias{qsreg.fit}
+\alias{qsreg.psi}
+\alias{qsreg.rho}
+\alias{qsreg.psi.OLD}
+\alias{qsreg.rho.OLD}
+\alias{qsreg.trace}
+\alias{summary.qsreg}
 \alias{radbas.constant}
 \alias{sim.krig.image}
 \alias{sreg.df.to.lambda}
@@ -66,8 +77,8 @@
 \alias{sreg.fs2hat}
 \alias{sreg.trace}
 \alias{stats.sim.krig.image}
-\alias{summary.gcv.Krig}
-\alias{summary.gcv.sreg}
+\alias{summaryGCV.Krig}
+\alias{summaryGCV.sreg}
 \alias{summary.krig.image}
 \alias{summary.spatial.design}
 \alias{summary.sreg}
@@ -77,6 +88,8 @@
 \alias{surface.surface}
 \alias{unscale}
 \alias{world.dat}
+
+
 \title{
   Fields internal and secondary functions 
 }
@@ -135,8 +148,8 @@ gauss.cov (...)
 golden.section.search (ax, bx, cx, f, niter = 25, f.extra = NA, 
      tol = 1e-05, gridx=NA) 
  
-image.plot.info (...) 
-image.plot.plt(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
+imageplot.info (...) 
+imageplot.setup(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
 horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
   
 minimax.crit (obj, des = TRUE, R) 
@@ -156,6 +169,21 @@ minimax.crit (obj, des = TRUE, R)
 qr.q2ty (qr, y) 
  
 qr.yq2 (qr, y) 
+\method{plot}{qsreg}(x, pch = "*", main = NA,...) 
+\method{predict}{qsreg}(object, x, derivative = 0, model = object$ind.cv.ps,...)
+\method{print}{qsreg} (x, ...) 
+qsreg.fit (x, y, lam, maxit = 50, maxit.cv = 10, 
+           tol = 1e-04, offset = 0, sc = sqrt(var(y)) * 1e-07, alpha = 0.5, 
+           wt = rep(1, length(x)), cost = 1)
+qsreg.psi( r,alpha=.5,C=1) 
+qsreg.rho( r,alpha=.5,C=1)
+qsreg.trace(x, y, lam, maxit = 50, maxit.cv = 10, tol = 1e-04, 
+             offset = 0, sc = sqrt(var(y)) * 1e-07, alpha = 0.5, 
+             wt = rep(1, length(x)), cost = 1)
+qsreg.rho.OLD(r, alpha = 0.5, C = 1)
+qsreg.psi.OLD(r, alpha = 0.5, C = 1)
+
+\method{summary}{qsreg} (object, ...) 
 
 radbas.constant (m, d) 
  
@@ -168,9 +196,9 @@ sreg.fit (lam, obj, verbose=FALSE)
 sreg.fs2hat (lam, obj) 
 sreg.trace (h, info) 
 
-summary.gcv.Krig(object, lambda, cost = 1, verbose = FALSE, 
+summaryGCV.Krig(object, lambda, cost = 1, verbose = FALSE, 
                 offset = 0, y = NULL, ...)
-summary.gcv.sreg (object, lambda, cost = 1, nstep.cv = 20, 
+summaryGCV.sreg (object, lambda, cost = 1, nstep.cv = 20, 
         offset = 0, verbose = TRUE,...) 
 
 \method{summary}{spatial.design} (object, digits = 4, ...) 

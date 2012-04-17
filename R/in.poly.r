@@ -30,7 +30,7 @@ in.poly.grid <- function(grid.list, xp, convex.hull = FALSE,
     # being in (TRUE) or out (FALSE)
     #
     # this is  to avoid the full target polygon if the convex hull is
-    # what is needed. 
+    # what is needed.
     if (convex.hull) {
         xp <- xp[chull(xp), ]
     }

@@ -44,9 +44,9 @@ vgram.matrix <- function(dat, R = 5, dx = 1, dy = 1) {
         BigDiff <- (dat[MM[, 1], NN[, 1]] - dat[MM[, 2], NN[, 
             2]])
         # standard and the  Cressie robust version.
-        # modified to handle NAs 
-        holdVG[k] <- mean(0.5 * (BigDiff)^2, na.rm=TRUE) 
-        holdRVG[k] <- mean(abs(BigDiff)^0.5, na.rm=TRUE)
+        # modified to handle NAs
+        holdVG[k] <- mean(0.5 * (BigDiff)^2, na.rm = TRUE)
+        holdRVG[k] <- mean(abs(BigDiff)^0.5, na.rm = TRUE)
     }
     # finish robust estimate Cressie (1993) formula 2.4.12
     holdRVG <- 0.5 * (holdRVG^4)/(0.457 + 0.494 * holdN)
@@ -58,7 +58,9 @@ vgram.matrix <- function(dat, R = 5, dx = 1, dy = 1) {
     vgram <- top/bottom
     #  wipe out pesky row names
     dimnames(vgram) <- NULL
-    list(vgram = vgram, d = dcollapsed, ind = ind, d.full = d, 
+    out <- list(vgram = vgram, d = dcollapsed, ind = ind, d.full = d, 
         vgram.full = holdVG, robust.vgram = holdRVG, N = holdN, 
         dx = dx, dy = dy)
+    class(out) <- "vgram.matrix"
+    return(out)
 }

@@ -5,8 +5,11 @@
 
 \name{predict.surface}
 \alias{predict.surface}
+\alias{predict.surface.default}
 \alias{predict.surface.derivative}
+\alias{predict.surface.derivative.default}
 \alias{predict.surface.se}
+\alias{predict.surface.se.default}
 
 \title{
   Evaluates a fitted function or its standard errors as a surface object  
@@ -17,15 +20,22 @@ The resulting object is suitable for use with functions for viewing 3-d
 surfaces.  
 }
 \usage{
-predict.surface(object, grid.list = NA, extrap = FALSE, chull.mask =
+\method{predict}{surface}(object,...)
+
+\method{predict.surface}{default}(object, grid.list = NA, extrap = FALSE, chull.mask =
                  NA, nx = 80, ny = 80, xy = c(1, 2), order.variables="xy",
                   verbose=FALSE,...)
 
-predict.surface.se(object, grid.list = NA, extrap = FALSE, chull.mask =
+\method{predict}{surface.se}(object,...)
+
+\method{predict.surface.se}{default}(object, grid.list = NA, extrap = FALSE, chull.mask =
                  NA, nx = 80, ny = 80, xy = c(1, 2), 
                  order.variables="xy",verbose=FALSE, ...)
 
-predict.surface.derivative(object, grid.list = NULL, nx = 80, ny = 80, ...) 
+\method{predict}{surface.derivative}(object,...)
+
+\method{predict.surface.derivative}{default}(object, grid.list = NULL, nx = 80, ny = 80, ...) 
+
 }
 \arguments{
 \item{object}{

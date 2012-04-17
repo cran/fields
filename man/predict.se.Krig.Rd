@@ -20,17 +20,23 @@ covariance function is known.
 }
 \usage{
 \method{predict.se}{Krig}(object, x = NULL, cov = FALSE, verbose = FALSE,...)
-\method{predict.se}{mKrig}(object, x = NULL, verbose = FALSE,...)
+\method{predict.se}{mKrig}(object, xnew = NULL, Z = NULL, verbose = FALSE, drop.Z
+                 = FALSE, ...)
  }
 \arguments{
+\item{drop.Z}{If FALSE find standard error without including the additional spatial covariates
+described by \code{Z}. If TRUE find full standard error with spatial covariates if they are part of the model.}
 \item{object}{
 A Krig or mKrig object.  
 }
-\item{x}{
+\item{xnew}{
 Points to compute the predict standard error or the prediction 
 cross covariance matrix.  
 }
-
+\item{x}{
+Same as \code{xnew} -- points to compute the predict standard error or the prediction 
+cross covariance matrix.  
+}
 \item{cov}{
 If TRUE the full covariance matrix for the predicted values is returned.
 Make sure this will not be big if this option is used. ( e.g. 50X50 grid
@@ -44,6 +50,8 @@ FALSE -- of course.
 \item{\dots}{
 These additional arguments passed to the predict.se function.
 }
+\item{Z}{Additional matrix of spatial covariates used for prediction. These are used to 
+determine the additional covariance contributed in teh fixed part of the model.}
 
 }
 
