@@ -2,6 +2,11 @@
 # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+image.plot.info<- function(...){
+# this function has been renamed as imageplot.info to avoid confusion with
+# an S3 method
+   imageplot.info(...)}
+
 "imageplot.info" <- function(...) {
     temp <- list(...)
     #
@@ -73,6 +78,12 @@
 # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
+ image.plot.plt<- function(...){
+# this function has been renamed as imageplot.setup to avoid confusion with
+# an S3 method
+   imageplot.setup(...)}
+
 "imageplot.setup" <- function(x, add = FALSE, legend.shrink = 0.9, 
     legend.width = 1, horizontal = FALSE, legend.mar = NULL, 
     bigplot = NULL, smallplot = NULL, ...) {
