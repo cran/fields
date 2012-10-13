@@ -4,10 +4,12 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 mKrig <- function(x, y, weights = rep(1, nrow(x)), Z=NULL,
     lambda = 0, cov.function = "stationary.cov", m = 2, chol.args = NULL, 
-    cov.args = NULL, find.trA = TRUE, NtrA = 20, iseed = 123, 
+    cov.args = NULL, find.trA = TRUE, NtrA = 20, iseed = 123, llambda=NULL, 
     ...) {
     # grab other arguments for covariance function
     cov.args <- c(cov.args, list(...))
+    #
+    if( !is.null(llambda)){ lambda <- exp(llambda)}
     # see comments in Krig.engine.fixed for algorithmic commentary
     #
     #
@@ -89,12 +91,13 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)), Z=NULL,
     # save intermediate result this is   t(y- T d.coef)( M^{-1}) ( y- T d.coef)
     quad.form <- c(colSums(as.matrix(c.coef^2)))
     # find c coefficients
-    c.coef <- backsolve(Mc, c.coef)
+    c.coef <- as.matrix(backsolve(Mc, c.coef))
     # GLS covariance matrix for fixed part.
     Rinv <- solve(qr.R(qr.VT))
     Omega <- Rinv %*% t(Rinv)
     # MLE estimate of rho and sigma
     #    rhohat <- c(colSums(as.matrix(c.coef * y)))/(np - nt)
+    # NOTE if y is a matrix then each of these are vectors of parameters. 
     rho.MLE <- quad.form/np
     rhohat<-  c(colSums(as.matrix(c.coef * y)))/np
     shat.MLE <- sigma.MLE <- sqrt(lambda * rho.MLE)
@@ -104,6 +107,10 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)), Z=NULL,
     # includes the constants
     lnProfileLike <- (-np/2 - log(2*pi)*(np/2)
                       - (np/2)*log(rho.MLE) - (1/2) * lnDetCov)
+    rho.MLE.FULL<- mean( rho.MLE)
+    sigma.MLE.FULL <- sqrt(lambda * rho.MLE.FULL)
+    lnProfileLike.FULL<- sum(  (-np/2 - log(2*pi)*(np/2)
+                      - (np/2)*log(rho.MLE.FULL) - (1/2) * lnDetCov) )
     #
     # return coefficients and   include lambda as a check because
     # results are meaningless for other values of lambda
@@ -113,8 +120,11 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)), Z=NULL,
     out <- list(d = (d.coef), c = (c.coef), nt = nt, np = np, 
         lambda.fixed = lambda, x = x, knots = knots, cov.function.name = cov.function, 
         args = cov.args, m = m, chol.args = chol.args, call = match.call(), 
-        nonzero.entries = nzero, shat.MLE = shat.MLE, rho.MLE = rho.MLE, 
-        sigma.MLE, rhohat = rhohat, lnProfileLike = lnProfileLike, 
+        nonzero.entries = nzero, shat.MLE = sigma.MLE, sigma.MLE=sigma.MLE,
+        rho.MLE = rho.MLE, rhohat= rho.MLE, 
+        lnProfileLike = lnProfileLike,
+        rho.MLE.FULL = rho.MLE.FULL, sigma.MLE.FULL = sigma.MLE.FULL,
+        lnProfileLike.FULL = lnProfileLike.FULL,    
         lnDetCov = lnDetCov,quad.form = quad.form,
         Omega = Omega, qr.VT = qr.VT, Mc = Mc, 
         Tmatrix = Tmatrix, ind.drift=ind.drift,nZ=nZ)
@@ -184,15 +194,16 @@ mKrig.coef <- function(object, y) {
     #
     # generalized least squares for d
   
-    d.coef <- qr.coef(object$qr.VT, forwardsolve(object$Mc, transpose = TRUE, 
-        y, upper.tri = TRUE))
+    d.coef <- as.matrix(
+                        qr.coef(object$qr.VT, forwardsolve(object$Mc, transpose = TRUE, 
+        y, upper.tri = TRUE)))
     #  residuals from subtracting off fixed part
     #  of model as m-1 order polynomial   
     resid <- y - object$Tmatrix %*% d.coef
     # and now find c.
     c.coef <- forwardsolve(object$Mc, transpose = TRUE, resid, 
         upper.tri = TRUE)
-    c.coef <- backsolve(object$Mc, c.coef)
+    c.coef <- as.matrix(backsolve(object$Mc, c.coef))
     out <- list(d = (d.coef), c = (c.coef))
     return(out)
 }

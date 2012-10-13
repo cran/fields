@@ -129,7 +129,23 @@ out<-mKrig( x,y,cov.function =Exp.cov, theta=4, lambda=lam)
 
 test.for.zero( out$lnDetCov, look2)
 test.for.zero( out$lnDetCov, determinant(M, log=TRUE)$modulus)
-  
+
+# weighted version 
+lam<- .2
+Sigma<- Exp.cov( x,x,theta=4)
+set.seed( 123)
+weights<- runif(nrow( x))
+M<- Sigma +  diag(lam/ weights)
+chol( M)-> Mc
+look2<- sum( log(diag( Mc)))*2
+
+out<-mKrig( x,y,weights=weights, cov.function =Exp.cov, theta=4, lambda=lam)
+
+test.for.zero( out$lnDetCov, look2)
+test.for.zero(  look2, determinant(M, log=TRUE)$modulus)
+test.for.zero( out$lnDetCov, determinant(M, log=TRUE)$modulus)
+
+
 
 # check profile likelihood by estimating MLE
 lam.true<- .2

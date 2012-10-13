@@ -26,7 +26,7 @@ image.plot(...,
                  graphics.reset = FALSE, bigplot = NULL, smallplot =
                  NULL, legend.only = FALSE, col = tim.colors(nlevel),
                  lab.breaks = NULL, axis.args = NULL, legend.args =
-                 NULL, midpoint=FALSE, border=NA, lwd.poly=1.0)}
+                 NULL, midpoint=FALSE, border=NA, lwd=1.0)}
 
 \arguments{ \item{\dots}{
  The usual arguments to the \code{image} function as x,y,or z or as a list with x,y,z as components. One can also include a
@@ -115,7 +115,7 @@ let the grid polygons be modified.
  }
 \item{border}{This only works if x and y are matrices -- if NA the quadralaterals will have a border color that is 
 the same as the interior color. Otherwise this specifies the color to use.}
-\item{lwd.poly}{Line width of borders around pixels. This might need to be set lss than 1.0 
+\item{lwd}{Line width of borders around pixels. This might need to be set less than 1.0 
 to avoid visible rounding of the pixel corners.}
 }
 \section{Side Effects}{
@@ -373,10 +373,13 @@ col=topo.colors(64))
 #
 # 
 # sorting out the difference in formatting between matrix storage 
-# and the image plot depiction
+# and the image plot depiction 
+# this really has not much to do with image.plot but I hope it is useful
 
-A<- matrix( 1:48, ncol=6)
-# Note that matrix(c(A), ncol=6) == A
+A<- matrix( 1:48, ncol=6, nrow=8)
+# first column of A will be 1:8 
+#   ...  second  is  9:16 
+
 image.plot(1:8, 1:6, A)
 # add labels to each box 
 text( c( row(A)), c( col(A)), A)
@@ -387,11 +390,7 @@ text( c( row(A)), c( col(A))-.25,
 # "columns" of A are horizontal and rows are ordered from bottom to top!
 #
 # matrix in its usual tabular form where the rows are y  and columns are x
-
-image.plot( t( A[6:1,]), axes=FALSE)
-
-
-
+image.plot( t( A[8:1,]), axes=FALSE)
  
 }
 \keyword{hplot}

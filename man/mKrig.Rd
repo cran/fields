@@ -22,7 +22,7 @@ computations. Lambda, the smoothing parameter must be fixed.
 mKrig(x, y, weights = rep(1, nrow(x)),  Z=NULL,
   lambda = 0, cov.function = "stationary.cov", 
     m = 2, chol.args=NULL,cov.args=NULL, find.trA = TRUE, NtrA = 20,
-                 iseed = 123,  ...)
+                 iseed = 123, llambda=NULL,  ...)
 
 \method{predict}{mKrig}( object, xnew=NULL,ynew=NULL, derivative=0, Z=NULL, drop.Z=FALSE,just.fixed=FALSE, ...)
 \method{summary}{mKrig}(object, ...)
@@ -37,13 +37,16 @@ mKrig.trace( object, iseed, NtrA)
        the returned mKrig object.) }
   \item{y}{ Vector or matrix of observations at spatial locations, missing values
           are not allowed! Or in \code{mKrig.coef} a new vector of 
-         observations. }
+         observations. If y is a matrix the columns are assumed to be 
+ independent observations vectors generated from the same covariance and measurment error 
+ model. }
   \item{weights}{Precision  ( 1/variance) of each observation }
-\item{Z}{Linear covariates to be included in fixed part of the model that are distinct from the default low order polynomial in \code{x}}
-\item{drop.Z}{If true the fixed part will only be evaluated at the polynomial 
+  \item{Z}{Linear covariates to be included in fixed part of the model that are distinct from the default low order polynomial in \code{x}}
+  \item{drop.Z}{If true the fixed part will only be evaluated at the polynomial 
 part of the fixed model. The contribution from the other covariates will be omitted.}
   \item{lambda}{ Smoothing parameter or equivalently the 
 ratio between the nugget and process varainces.}
+  \item{llambda}{If not \code{NULL} then \code{lambda = exp( llambda)}}
   \item{cov.function}{The name, a text string of the covariance function.}
   \item{m}{The degree of the polynomial used in teh fixed part is 
 (m-1) }

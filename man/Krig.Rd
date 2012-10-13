@@ -497,7 +497,7 @@ predict( fit, df=7.5)
  surface( out.p, type="C")
  points( fit$x)
 
-
+\dontrun{
 # Using another stationary covariance. 
 # smoothness is the shape parameter for the Matern. 
 
@@ -532,6 +532,7 @@ test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
 
 # take a look ...
  surface(fit.flame, type="I") 
+}
 
 # 
 # Thin plate spline fit to ozone data using the radial 
@@ -572,43 +573,40 @@ test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
 # note that that trA found by GCV is around 17 so 50>17  knots may be a 
 # reasonable approximation to the full estimator. 
 #
-
+\dontrun{
 # the plot 
  surface( out, type="C")
  US( add=TRUE)
  points( x, col=2)
  points( xknots, cex=2, pch="O")
-
+}
+\dontrun{
 ## A quick way to deal with too much data if you intend to smooth it anyway
 ##  Discretize the locations to a grid, then apply Krig 
 ##  to the discretized locations:
 ## 
-CO2.approx<- as.image(RMprecip$y, x=RMprecip$x, nx=20, ny=20)
+RM.approx<- as.image(RMprecip$y, x=RMprecip$x, nx=20, ny=20)
 
 # take a look:
-image.plot( CO2.approx)
+image.plot( RM.approx)
 # discretized data (observations averaged if in the same grid box)
 # 336 locations -- down form the  full 806
 
 # convert the image format to locations, obs and weight vectors
-yd<- CO2.approx$z[CO2.approx$ind]
-weights<- CO2.approx$weights[CO2.approx$ind] # takes into account averaging
-xd<- CO2.approx$xd
+yd<- RM.approx$z[RM.approx$ind]
+weights<- RM.approx$weights[RM.approx$ind] # takes into account averaging
+xd<- RM.approx$xd
 
 obj<- Krig( xd, yd, weights=weights, theta=4)
 
 # compare to the full fit:
 # Krig( RMprecip$x, RMprecip$y, theta=4) 
+}
 
-
+\dontrun{
 # A correlation model example
-
 # fit krig surface using a mean and sd function to standardize 
 # first get stats from 1987 summer Midwest O3 data set 
-# Compare the function Tps to the call to Krig given above 
-# fit tps surfaces to the mean and sd  points.  
-# (a shortcut is being taken here just using the lon/lat coordinates) 
-
  data(ozone2)
  stats.o3<- stats( ozone2$y)
  mean.o3<- Tps( ozone2$lon.lat, c( stats.o3[2,]))
@@ -616,10 +614,10 @@ obj<- Krig( xd, yd, weights=weights, theta=4)
 
 #
 # Now use these to fit particular day ( day 16) 
-# and use great circle distance
-#NOTE: there are some missing values for day 16. 
+# and use great circle distance 
 
- fit<- Krig( ozone2$lon.lat, y16, 
+
+ fit<- Krig( ozone2$lon.lat, ozone2$y[16,], 
             theta=350, mean.obj=mean.o3, sd.obj=sd.o3, 
             Covariance="Matern", Distance="rdist.earth",
             smoothness=1.0,
@@ -631,41 +629,43 @@ obj<- Krig( xd, yd, weights=weights, theta=4)
  US( add=TRUE)
  points( fit$x)
  title("Estimated ozone surface")
-
+}
+\dontrun{
 #
 #
 # explore some different values for the range and lambda using REML
- theta <- seq( 300,400,,10)
- PLL<- matrix( NA, 10,80)
+  theta <- seq( 100,500,,40)
+  PLL<- matrix( NA, 40,80)
 # the loop 
- for( k in 1:10){
-
+  for( k in 1:40){
 # call to Krig with different ranges
 # also turn off warnings for GCV search 
 # to avoid lots of messages. (not recommended in general!)
-
-  PLL[k,]<- Krig( ozone2$lon.lat[good,], y16[good],
+    PLL[k,]<- Krig( ozone2$lon.lat,ozone2$y[16,],
              cov.function="stationary.cov", 
              theta=theta[k], mean.obj=mean.o3, sd.obj=sd.o3, 
              Covariance="Matern",smoothness=.5, 
              Distance="rdist.earth", nstep.cv=80,
-             give.warnings=FALSE)$gcv.grid[,7]
-  
+             give.warnings=FALSE, na.rm=TRUE)$gcv.grid[,7]
 #
 # gcv.grid is the grid search output from 
 # the optimization for estimating different estimates for lambda including 
 # REML
 # default grid is equally spaced in eff.df scale ( and should the same across theta)
 #  here 
-
- }
-
+  }
+# get lambda grid  from looping 
+   k<- 1
+   lam<-  Krig( ozone2$lon.lat,ozone2$y[16,],
+             cov.function="stationary.cov", 
+             theta=theta[k], mean.obj=mean.o3, sd.obj=sd.o3, 
+             Covariance="Matern",smoothness=.5, 
+             Distance="rdist.earth", nstep.cv=80,
+             give.warnings=FALSE, na.rm=TRUE)$gcv.grid[,1]
 # see the 2 column of $gcv.grid to get the effective degress of freedom. 
-
- cat( "all done", fill=TRUE)
- contour( theta, 1:80, PLL)
+  contour( theta,log(lam) , PLL)
  
-
+}
 }
 
 \keyword{spatial}

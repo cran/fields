@@ -4,8 +4,8 @@
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 \name{fields-stuff}
-\alias{fields.diagonalize}
 \alias{fields.diagonalize2}
+\alias{fields.diagonalize}
 \alias{fields.duplicated.matrix}
 \alias{fields.mkpoly}
 \alias{fields.derivative.poly}
@@ -19,9 +19,8 @@ methods. Variants of these might be found in the R base but these
 have been written for cleaner code or efficiency.
 }
 \usage{
-fields.diagonalize(A,B)
 fields.diagonalize2(A,B, verbose=FALSE)
-
+fields.diagonalize(A,B)
 fields.duplicated.matrix(mat, digits = 8) 
 
 fields.mkpoly(x, m = 2)
@@ -64,8 +63,9 @@ to a diagonal matrix:
 
  G\^T A G= I       G\^T B G= D. 
 
-\code{fields.diagonalize} is easier to follow but
-\code{fields.diagonalize2} may be more stable and is the version used in 
+
+\code{fields.diagonalize2} is not as easy to follow as \code{fields.diagonalize} but may be more stable
+ and is the version used in 
 the Krig engine. 
 
 \code{fields.duplicated} finds duplicate rows in a matrix.  The digits

@@ -32,7 +32,6 @@
     #          rho*predict( object, y= k0, x=x, just.fixed=TRUE)
 
     # alternative formula using the d and c coefficients directly. 
-
     hold <- mKrig.coef(object, y = k0)
     temp1 <- rho * (colSums(t0 * (object$Omega %*% t0)) - colSums((k0) * 
         hold$c) - 2 * colSums(t0 * hold$d))

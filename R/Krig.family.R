@@ -15,6 +15,7 @@
 # the verbose switch prints many intermediate steps as an aid in debugging.
 #
 {
+ 
     #
     # create output list
     out <- list()
@@ -238,6 +239,9 @@
                 cat("Call to Krig.engine.default", fill = TRUE)
             }
             out$matrices <- Krig.engine.default(out, verbose = verbose)
+            if (verbose) {
+                cat("Return from  Krig.engine.default", fill = TRUE)
+            }
         }
     }
     #
@@ -251,11 +255,18 @@
     # that is not due to the Z covariates.
     # NOTE that the spatial drift coefficients must be the first columns of the
     # M matrix
+    if(verbose){
+      cat("End of Engine Block", fill=TRUE)}
     if (is.null(out$Z)) {
         out$ind.drift <- rep(TRUE, out$nt)
     }
     else {
+        
         mZ <- ncol(out$ZM)
+        if(verbose){
+          cat( "ZM", out$ZM, fill=TRUE)
+          cat( "mZ", mZ, fill=TRUE)
+          cat(  "nt",out$nt, fill=TRUE)}
         out$ind.drift <- c(rep(TRUE, out$nt - mZ), rep(FALSE, 
             mZ))
     }
@@ -811,8 +822,12 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     # Find the transformed data vector used to
     # evaluate the solution, GCV, REML  at different lambdas
     #
+   
     u <- c(rep(0, nt), t(tempM$vectors) %*% qr.q2ty(qr.T, c(out$W2 %d*% 
         out$yM)))
+    if (verbose) {
+        cat("u vector:", fill = TRUE)
+        print(u)}
     #
     #
     return(list(D = D, qr.T = qr.T, decomp = "WBW", V = tempM$vectors, 
@@ -1384,7 +1399,11 @@ Krig.null.function <- function(x, Z = NULL, drop.Z = FALSE,
         yM <- as.matrix(out$y)
         weightsM <- out$weights
         xM <- as.matrix(out$x[uniquerows, ])
-        ZM <- out$Z
+        # coerce ZM to matrix
+        if( !is.null(out$Z)){
+        ZM <- as.matrix(out$Z)}
+        else{
+        ZM<- NULL}
     }
     else {
         rep.info.aov <- fast.1way(rep.info, out$y, out$weights)

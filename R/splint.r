@@ -45,10 +45,11 @@
     }
     igcv <- ifelse(lam == 0, 2, 0)
     # call to old FORTRAN
-    .Fortran("css", h = as.double(ifelse(igcv == 2, 1, log(lam))), 
+    temp<- .Fortran("css", h = as.double(ifelse(igcv == 2, 1, log(lam))), 
         as.integer(n), as.double(x), as.double(y), wt = as.double(1/sqrt(wt)), 
         sy = as.double(rep(0, n)), as.double(1), as.double(1), 
         as.double(1), as.integer(length(xgrid)), as.double(xgrid), 
         ygrid = as.double(rep(0, length(xgrid))), job = as.integer(c(igcv, 
-            3, 0)), as.integer(derivative), as.integer(0))$ygrid
+            3, 0)), as.integer(derivative), as.integer(0))
+    return( temp$ygrid)
 }

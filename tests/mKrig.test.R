@@ -174,7 +174,7 @@ y<- sin( 3*pi*x[,1])*sin( 3.5*pi*x[,2]) + rnorm( N)*.01
  temp<- predict( out)
       temp2<- predict( out2)
 
-      test.for.zero( temp, temp2)
+      test.for.zero( temp, temp2, tag="predict Wendland  mKrig vs Krig")
 
 
 
@@ -195,10 +195,10 @@ ydat <- ztrue[ind]
 out<- fastTps(xdat, ydat, theta=.3)
 out.p<-predict.surface( out, grid=gl, extrap=TRUE)
 # perfect agreement at data
-test.for.zero( ydat, c( out.p$z)[ind])
+test.for.zero( ydat, c( out.p$z)[ind], tag="fastTps interp1")
 #image.plot(x,y,matrix( ztrue, nx,ny)- out.p$z) 
 rmse<- sqrt(mean( (ztrue- c( out.p$z))^2)/ mean( (ztrue)^2))
-test.for.zero( rmse,0,, tol=.01, relative=FALSE)
+test.for.zero( rmse,0,tol=.01, relative=FALSE,tag="fastTps interp2")
 
 
 

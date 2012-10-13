@@ -1,6 +1,6 @@
 
-R version 2.13.2 (2011-09-30)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: i386-apple-darwin9.8.0/i386 (32-bit)
 
@@ -23,17 +23,17 @@ Type 'q()' to quit R.
 > ##########################################################################
 > library(fields)
 Loading required package: spam
-Package 'spam' is loaded. Spam version 0.27-0 (2011-08-17).
-Type demo( spam) for some demos, help( Spam) for an overview
-of this package.
-Help for individual functions is optained by adding the
-suffix '.spam' to the function name, e.g. 'help(chol.spam)'.
+Spam version 0.29-2 (2012-08-17) is loaded.
+Type 'help( Spam)' or 'demo( spam)' for a short introduction 
+and overview of this package.
+Help for individual functions is also obtained by adding the
+suffix '.spam' to the function name, e.g. 'help( chol.spam)'.
 
 Attaching package: 'spam'
 
 The following object(s) are masked from 'package:base':
 
-    backsolve, forwardsolve, norm
+    backsolve, forwardsolve
 
 > 
 > options( echo=FALSE)
@@ -55,3 +55,6 @@ testing:  Profile likelihoods from Krig and golden search
     PASSED test at tolerance  1e-08
 done with Matern REML estimator tests where smoothness is fixed
 > 
+> proc.time()
+   user  system elapsed 
+ 12.752   0.034  12.774 

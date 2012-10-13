@@ -23,39 +23,30 @@
 \alias{Krig.which.lambda}
 \alias{Krig.ynew}
 \alias{bisection.search}
-\alias{bplot.obj}
 \alias{cat.matrix}
 \alias{cat.to.list}
 \alias{ceiling2}
-\alias{conjugate.gradient}
 \alias{describe}
 \alias{dyadic.2check}
 \alias{dyadic.check}
-\alias{describe.bplot}
 \alias{double.exp}
-\alias{draw.bplot}
-\alias{draw.bplot.obj}
 \alias{Exp.earth.cov}
 \alias{fast.1way}
 \alias{find.upcross}
 \alias{gauss.cov}
 \alias{golden.section.search}
-\alias{grey.level}
 \alias{image.plot.info}
 \alias{image.plot.plt}
 \alias{krig.image.parameters}
 \alias{minimax.crit}
 \alias{plot.krig.image}
-\alias{plot.qsreg}
 \alias{plot.sim.krig.image}
 \alias{plot.spatial.design}
 \alias{predict.interp.surface}
 \alias{predict.krig.image}
-\alias{predict.qsreg}
 \alias{predict.sreg}
 \alias{predict.Tps}
 \alias{print.krig.image}
-\alias{print.qsreg}
 \alias{print.spatial.design}
 \alias{print.sreg}
 \alias{print.summary.Krig}
@@ -64,12 +55,7 @@
 \alias{print.summary.sreg}
 \alias{qr.q2ty}
 \alias{qr.yq2}
-\alias{qsreg.fit}
-\alias{qsreg.psi}
-\alias{qsreg.rho}
-\alias{qsreg.trace}
 \alias{radbas.constant}
-\alias{replace.args.function}
 \alias{sim.krig.image}
 \alias{sreg.df.to.lambda}
 \alias{sreg.fdf}
@@ -79,12 +65,10 @@
 \alias{sreg.fit}
 \alias{sreg.fs2hat}
 \alias{sreg.trace}
-\alias{stats.bplot}
 \alias{stats.sim.krig.image}
 \alias{summary.gcv.Krig}
 \alias{summary.gcv.sreg}
 \alias{summary.krig.image}
-\alias{summary.qsreg}
 \alias{summary.spatial.design}
 \alias{summary.sreg}
 \alias{surface}
@@ -125,32 +109,19 @@ Krig.ynew (out, y=NULL, yM=NULL )
 bisection.search (x1, x2, f, tol = 1e-07, niter = 25, f.extra = 
         NA, upcross.level = 0) 
  
-bplot.obj (data, pos = NA, width = NULL, labels = NULL, las=NULL
-            ,add = FALSE, space = 0.25, sort.names = FALSE, xlab = "", ylab = "", 
-              label.cex = 1, xaxt = "n", outlier = TRUE, horizontal = FALSE, 
-              lwd=NA,col=NA,...) 
- 
 cat.matrix (mat, digits = 8) 
  
 cat.to.list (x, a) 
  
 ceiling2 (m) 
  
-conjugate.gradient (b, multAx, start, tol = 1e-05, kmax = 
-             25, verbose = TRUE,    ...) 
- 
 describe (x) 
-describe.bplot (temp, style = "tukey", outlier = TRUE) 
 
 double.exp(x)
 
 dyadic.2check( m,n,cut.p=2)
 dyadic.check( n,cut.p=2) 
 
-draw.bplot (temp, width, xpos, outlier = TRUE, style = "tukey") 
-draw.bplot.obj (obj, width, xpos, outlier = TRUE, 
-             horizontal = FALSE,lwd=NA,col=NA) 
- 
 Exp.earth.cov (x1, x2, theta = 1) 
  
 fast.1way  (lev, y, w = rep(1, length(y))) 
@@ -164,8 +135,6 @@ gauss.cov (...)
 golden.section.search (ax, bx, cx, f, niter = 25, f.extra = NA, 
      tol = 1e-05, gridx=NA) 
  
-grey.level (n=256) 
- 
 image.plot.info (...) 
 image.plot.plt(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
 horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
@@ -173,15 +142,10 @@ horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
 minimax.crit (obj, des = TRUE, R) 
  
 
-\method{plot}{qsreg}(x, pch = "*", main = NA,...) 
 \method{plot}{spatial.design}(x,...) 
  
 \method{predict}{interp.surface}(object, loc,...)  
-\method{predict}{qsreg}(object, x, derivative = 0, model = object$ind.cv.ps,...)
 \method{predict}{sreg}(object, x, derivative = 0, model = 1,...) 
- 
-
-\method{print}{qsreg} (x, ...) 
 \method{print}{spatial.design} (x,...) 
 \method{print}{sreg}(x, ...) 
 \method{print}{summary.Krig} (x, ...) 
@@ -192,19 +156,8 @@ minimax.crit (obj, des = TRUE, R)
 qr.q2ty (qr, y) 
  
 qr.yq2 (qr, y) 
- 
-qsreg.fit (x, y, lam, maxit = 50, maxit.cv = 10, tol = 1e-04, 
-    offset = 0, sc = sqrt(var(y)) * 1e-07, alpha = 0.5, wt = rep(1, 
-    length(x)), cost = 1)
-qsreg.psi ( r,alpha=.5,C=1) 
-qsreg.rho ( r,alpha=.5,C=1)
-qsreg.trace (x, y, lam, maxit = 50, maxit.cv = 10, tol = 1e-04, 
-    offset = 0, sc = sqrt(var(y)) * 1e-07, alpha = 0.5, 
-    wt = rep(1, length(x)), cost = 1) 
 
 radbas.constant (m, d) 
- 
-replace.args.function (fun, ...) 
  
 sreg.df.to.lambda (df, x, wt, guess = 1, tol = 1e-05) 
 sreg.fdf (h, info) 
@@ -215,14 +168,11 @@ sreg.fit (lam, obj, verbose=FALSE)
 sreg.fs2hat (lam, obj) 
 sreg.trace (h, info) 
 
-stats.bplot (x, by, style = "tukey", outlier = TRUE) 
-
 summary.gcv.Krig(object, lambda, cost = 1, verbose = FALSE, 
                 offset = 0, y = NULL, ...)
 summary.gcv.sreg (object, lambda, cost = 1, nstep.cv = 20, 
         offset = 0, verbose = TRUE,...) 
 
-\method{summary}{qsreg} (object, ...) 
 \method{summary}{spatial.design} (object, digits = 4, ...) 
 \method{summary}{sreg} (object, digits = 4, ...) 
 

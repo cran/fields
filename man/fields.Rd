@@ -33,7 +33,7 @@ package (file ends in .gz) the commented source code is the R subdirectory.)
 
 \strong{Major methods} 
 \itemize{ \item \code{Tps} Thin Plate spline
-regression (including GCV) 
+regression including GCV and REML estimates for the smoothing parameter.  
 \item \code{Krig} Spatial process estimation
 (Kriging) including support for conditional simulation. 
 
@@ -46,17 +46,15 @@ Matern and great circle distance.
       \code{fastTps}
  fast efficient  Universal Kriging and spline-like functions, that can take advantage of sparse covariance
 functions and thus handle very large numbers of spatial locations. 
+\item \code{mKrig.MLE} for maximum likelihood estimates of covariance parameters. This function also 
+handles replicate fields assumed to be independent realizations at the same locations.  
 
-\item
-\code{LatticeKrig} is an experimental function that uses a multiresolution basis
-and CAR on basis coefficients for fixed rank Kriging. This is designed to handle 
-large spatial datasets but with long range covariance functions.
 }
 
 \strong{Other noteworthy functions}
 \itemize{
 
-\item \code{vgram} and \code{vgram.matrix} finds variograms for spatial data (and
+\item \code{vgram} and \code{vgram.matrix} find variograms for spatial data (and
 with temporal replications.
 
 \item \code{cover.design} Generates space-filling designs where the distance 
@@ -70,9 +68,8 @@ maybe reasonably) creating and  placing a color scale on an image plot.
 See also  \code{help(grid.list)} for how fields works with grids and \code{US}
 and \code{world} for adding a map quickly. 
 
-\item \code{sreg},  \code{qsreg} \code{splint}   Fast 1-D smoothing 
-splines and 1-D 
-quantile/robust and interpolating cubic splines.
+\item \code{sreg} \code{splint}   Fast 1-D smoothing 
+splines and interpolating cubic splines.
 
 }
 
@@ -112,6 +109,8 @@ See \code{help(fields.tests)} for testing fields.
 for summer 1987.
 \item \code{PRISMelevation} Digital elevations for the 
    continental US at approximately 4km resolution
+\item \code{NorthAmericanRainfall} 50+ year average and trend for summer rainfall at 
+1700+ stations. 
 \item \code{rat.diet} Small paired study on rat food intake over time.
 \item \code{WorldBankCO2} Demographic and carbon emission data 
  for 75 countries and for 1999. 
