@@ -12,7 +12,7 @@
 A 256X256 image of John Lennon.
 Try:
 
-\code{image(lennon, col=grey.level(256))}
+\code{image(lennon, col=grey(seq(0,1,,256)) )}
 
 }
 \keyword{datasets}

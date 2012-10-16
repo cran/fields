@@ -98,7 +98,6 @@ MSE2<- S0 + out$rhohat*t(t0)%*% Omega %*%t0 -
             
 hold<- Krig.coef(out, y=k0)
 
-
 tempc<-  t(k0)%*% hold$c 
 tempd<-  t(t0)%*%hold$d 
 

@@ -219,7 +219,7 @@
         print(lam)
     }
     if (do.cv) {
-        a <- gcv.sreg(out, lambda = lam, cost = cost, offset = offset, 
+        a <- gcv.sreg(out, lambda.grid = lam, cost = cost, offset = offset, 
             nstep.cv = nstep.cv, verbose = verbose, trmin = trmin, 
             trmax = trmax, rmse = rmse)
         # if the spline is evaluated at the GCV solution

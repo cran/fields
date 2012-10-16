@@ -73,9 +73,7 @@ describe.bplot, draw.bplot.obj, bplot.xy, bplot.obj}
 Finally to bin data into groups based on a continuous variable and to
 make bplots of each group see \code{bplot.xy}.
 }
-\seealso{
-describe.bplot, draw.bplot.obj, stats.bplot, bplot.xy, bplot.obj
-}
+\seealso{ bplot.xy }
 \examples{
 #
 set.seed(123)

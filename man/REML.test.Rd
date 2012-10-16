@@ -81,7 +81,7 @@ If no exists from the grid search the function returns with NAs for the paramete
 Note that due to the setup of the golden  section search the computation actually minimizes minus the log 
 likelihood.  \code{MLE.Matern.fast} is a similar function but replaces the
 optimaiztion step computed by Krig to a tighter set of code in the function
-\code{MLE.objective.fn}. 
+\code{MLE.objective.fn}.  See also \code{mKrig.MLE} for an alternative and streamlined function using \code{mKrig} rather than \code{Krig}.
 }
 \value{
 For MLE.Matern (and MLE.Matern.fast)
@@ -101,17 +101,18 @@ see how these functions are used to check the likelihood expressions.
 \examples{
 
 
+
 # Just look at one day from the ozone2 
 data(ozone2)
 
-out<- MLE.Matern( ozone2$lon.lat,ozone2$y[16,],1.5)
+out<- MLE.Matern( ozone2$lon.lat,ozone2$y[16,],1.5, ngrid=8)
 plot( out$REML.grid)
 points( out$pars[2], out$REML, cex=2)
 xline( out$pars[2], col="blue", lwd=2)
-# to get a finer grid on initial search:
 \dontrun{
+# to get a finer grid on initial search:
 out<- MLE.Matern( ozone2$lon.lat,ozone2$y[16,],1.5,
-                      theta.grid=c(.3,2), ngrid=40) }
+                      theta.grid=c(.3,2), ngrid=40) 
 
 # simulated data  200 points uniformly distributed
 set.seed( 123)
@@ -144,6 +145,7 @@ info<- list( x=x,y=y,smoothness=1.0, ngrid=80)
 # the MLEs:
 out2<- MLE.objective.fn(log(out0$pars[2]), info, value=FALSE)
 print( out2$pars)
+}
 
 \dontrun{
 # Now back to Midwest ozone pollution ...
@@ -180,8 +182,6 @@ print( out2$pars)
     cat( "day", k," :", hold, fill=TRUE)
     out.pars[k,]<- hold }
 }
-
-
 
 }
 \keyword{spatial}

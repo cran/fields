@@ -21,7 +21,7 @@ spind2full(obj)
 
 spam2full(obj)
 
-spind2spam(obj)
+spind2spam(obj, add.zero.rows=TRUE)
 
 spam2spind(obj)
 
@@ -32,6 +32,7 @@ spam2spind(obj)
 \item{obj}{
 Either a list with the sparse index components (spind) or an 
 obj of class spam.}
+\item{add.zero.rows}{If TRUE an entire row is zero add a hard zero value to the element in the first  column for each zero row. The spam format requires at least one element in each row to have an explicit value. It is OK if this value is zero but one must be specified. }
 }
 
 

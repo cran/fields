@@ -308,7 +308,7 @@ image( out.p)
 # number of parameters 
 out.p<-predict.surface( fit,df=10)
 
-
+\dontrun{
 #A 1-d example  with confidence intervals
   out<-Tps( rat.diet$t, rat.diet$trt) # lambda found by GCV 
   out
@@ -337,10 +337,11 @@ out.p<-predict.surface( fit,df=10)
   SE<- predict.se( out, xgrid)
   lines( xgrid,fhat + 1.96* SE, col="red", lty=2)
   lines(xgrid, fhat - 1.96*SE, col="red", lty=2)
+}
 
 # Adding a covariate to the fixed part of model
 # Note: this is a fairly big problem numerically (850+ locations)
-
+\dontrun{
 set.panel( 1,2)
 # without elevation covariate
   Tps( RMprecip$x,RMprecip$y)-> out0 
@@ -371,7 +372,7 @@ set.panel( 1,2)
   US( add=TRUE)
   title("full prediction")
   set.panel()
-
+}
 ### 
 ### fast Tps
 # m=2   p= 2m-d= 2
@@ -382,16 +383,18 @@ set.panel( 1,2)
 # interpolation case in 2 d the taper should be large enough to 
 # about 20 non zero nearest neighbors for every location.
 
-set.panel( 1,2)
-fastTps( RMprecip$x,RMprecip$y,m=2,lambda= 1e-2, theta=3.0) -> out2
+  fastTps( RMprecip$x,RMprecip$y,m=2,lambda= 1e-2, theta=3.0) -> out2
 
 # note that fastTps produces an mKrig object so one can use all the 
 # the overloaded functions that are defined for the mKrig class. 
 # summary of what happened note estimate of effective degrees of 
 # freedom
+  print( out2)
 
-print( out2)
+\dontrun{
+set.panel( 1,2)
 surface( out2)
+
 #
 # now use great circle distance for this smooth 
 # note the different  "theta" for the taper support  ( there are
@@ -402,8 +405,9 @@ print( out3)  # note the effective degrees of freedom is different.
 surface(out3)
 
 set.panel()
+}
 
-
+\dontrun{
 #
 # simulation reusing Tps/Krig object
 #
@@ -418,7 +422,7 @@ temp[,k]<- predict(fit, y= ysim)
 }
 matplot( fit$x, temp, type="l")
 
-
+}
 # 
 #4-d example 
 fit<- Tps(BD[,1:4],BD$lnya,scale.type="range") 

@@ -11,7 +11,8 @@
 \title{Plot of the world}
 \description{
 Plots quickly, medium resolution outlines of large land masses and 
-bodies of water.  
+bodies of water. The main benefit is that this mapping function is available without having to load the 
+maps and mapproject libraries. 
 }
 \usage{
 world(ylim = c(-90, 90), xlim = NULL, add = FALSE, asp = 1,
