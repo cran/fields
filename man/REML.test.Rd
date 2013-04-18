@@ -20,7 +20,10 @@ The remaining functions are primarily for testing.
 \usage{
 
 
-MLE.Matern(x, y, smoothness, theta.grid = NULL, ngrid=20, verbose=FALSE, m=2,niter = 25, tol = 1e-05, ...)
+MLE.Matern(
+x, y, smoothness, theta.grid = NULL, ngrid = 20,
+                 verbose = FALSE, niter = 25, tol = 1e-05, Distance =
+                 "rdist", m = 2, Dmax = NULL, ...)
 MLE.Matern.fast(x, y, smoothness, theta.grid = NULL, ngrid=20, verbose=FALSE, m=2, ...)
 MLE.objective.fn( ltheta,info, value=TRUE)
 
@@ -33,6 +36,8 @@ REML.test(x, y, rho, sigma2, theta, nu = 1.5)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
+  \item{Dmax}{ Maximum distance for grid used to evaluate the fitted covariance function.}
+  \item{Distance}{Distance function used in finding covariance.}
   \item{x}{ A matrix of spatial locations with rows indexing location and columns the dimension 
 (e.g. longitude/latitude)}
   \item{y}{ Spatial observations

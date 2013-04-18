@@ -4,7 +4,7 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 "fields.diagonalize" <- function(A, B) {
-
+    
     hold <- eigen(A, symmetric = TRUE)
     # square root of A
     hold2 <- (t(hold$vectors) * sqrt(1/hold$values))

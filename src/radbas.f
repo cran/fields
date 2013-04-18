@@ -6,7 +6,7 @@ c
        implicit double precision (a-h,o-z)
        integer nd,n1,n2,ic
        
-       real*8 par(1),x1(n1,nd), x2(n2,nd), k(n1,n2)
+       real*8 par(2),x1(n1,nd), x2(n2,nd), k(n1,n2)
 c **** loop through columns of output matrix K
 c*** outer most loop over columns of x1 and x2 should reduce paging 
 

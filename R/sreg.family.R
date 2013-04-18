@@ -261,7 +261,7 @@
             diag = as.double(c(cost, offset, rep(0, (out$np - 
                 2)))), cv = as.double(0), ngrid = as.integer(NG), 
             xg = as.double(xgrid), yg = as.double(rep(0, NG)), 
-            job = as.integer(job), ideriv = as.integer(0), ierr = as.integer(0)) 
+            job = as.integer(job), ideriv = as.integer(0), ierr = as.integer(0))
         if (find.diagA) {
             diagA[, k] <- b$diag
         }

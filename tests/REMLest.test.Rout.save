@@ -1,8 +1,7 @@
 
-R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
-Platform: i386-apple-darwin9.8.0/i386 (32-bit)
+R version 3.0.0 (2013-04-03) -- "Masked Marvel"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin10.8.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -31,10 +30,11 @@ suffix '.spam' to the function name, e.g. 'help( chol.spam)'.
 
 Attaching package: 'spam'
 
-The following object(s) are masked from 'package:base':
+The following object is masked from 'package:base':
 
     backsolve, forwardsolve
 
+Loading required package: maps
 > 
 > options( echo=FALSE)
 testing:  check REML rho
@@ -57,4 +57,4 @@ done with Matern REML estimator tests where smoothness is fixed
 > 
 > proc.time()
    user  system elapsed 
- 12.752   0.034  12.774 
+ 10.669   0.206  10.867 

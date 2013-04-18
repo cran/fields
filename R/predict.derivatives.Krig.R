@@ -3,8 +3,9 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
-"predict.derivative"<- function( object,...){
-   UseMethod("predict.derivative")}  
+"predict.derivative" <- function(object, ...) {
+    UseMethod("predict.derivative")
+}
 
 "predict.derivative.Krig" <- function(object, x = NULL, 
     verbose = FALSE, ...) {
@@ -54,5 +55,5 @@
         list(x1 = x, x2 = object$knots, derivative = 1, C = temp.c)))
     # returned value is the matrix of partials of polynomial plus  partials of spatial # part aso add in chain rule scale factor  because
     # functional form for the surface uses the coordinates xscaled =  (x- xc)/xs
-      return(t(t(temp1 + temp2)/xs))
+    return(t(t(temp1 + temp2)/xs))
 }

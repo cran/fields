@@ -3,18 +3,20 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
-"predict.derivative"<- function( object,...){
-   UseMethod("predict.derivative")}
+"predict.derivative" <- function(object, ...) {
+    UseMethod("predict.derivative")
+}
 
-# default method is just a pass through 
-"predict.derivative.default"<- function(object, ...){
-   predict( object,..., derivative=1)}
+# default method is just a pass through
+"predict.derivative.default" <- function(object, ...) {
+    predict(object, ..., derivative = 1)
+}
 
 "predict.derivative.Krig" <- function(object, x = NULL, 
     verbose = FALSE, ...) {
     # this is a lean evaluation of the derivatives of the
     # random component of the model.
-    # several checks to make sure this being applied to
+    # first several checks to make sure this is being applied to
     # simple Krig models where it makes sense
     if (object$correlation.model) {
         stop("Can not handle correlation model with derivative evaluation")
@@ -23,9 +25,10 @@
         stop("null space may not be a low order polynomial")
     }
     # check if derivatives are supported by covariance function
-    args.of.covariance<- names(as.list(args(get(object$cov.function.name))))
-    if( all( args.of.covariance !="derivative")) {
-      stop("Covariance function does not have a derivative argument")}
+    args.of.covariance <- names(as.list(args(get(object$cov.function.name))))
+    if (all(args.of.covariance != "derivative")) {
+        stop("Covariance function does not have a derivative argument")
+    }
     
     # default is to predict at data x's
     if (is.null(x)) {
@@ -63,5 +66,5 @@
         list(x1 = x, x2 = object$knots, derivative = 1, C = temp.c)))
     # returned value is the matrix of partials of polynomial plus  partials of spatial # part aso add in chain rule scale factor  because
     # functional form for the surface uses the coordinates xscaled =  (x- xc)/xs
-    return( t(t(temp1 + temp2)/xs))
+    return(t(t(temp1 + temp2)/xs))
 }

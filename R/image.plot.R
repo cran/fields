@@ -7,14 +7,15 @@
     legend.mar = ifelse(horizontal, 3.1, 5.1), legend.lab = NULL, 
     graphics.reset = FALSE, bigplot = NULL, smallplot = NULL, 
     legend.only = FALSE, col = tim.colors(nlevel), lab.breaks = NULL, 
-    axis.args = NULL, legend.args = NULL, midpoint = FALSE, border=NA, lwd=1.0) {
+    axis.args = NULL, legend.args = NULL, midpoint = FALSE, border = NA, 
+    lwd = 1) {
     # Thanks to S. Koehler and  S. Woodhead
     # for comments on making this a better function
     #
     # save current graphics settings
     old.par <- par(no.readonly = TRUE)
     #  figure out zlim from passed arguments
-    info <- image.plot.info(...)
+    info <- imageplot.info(...)
     if (add) {
         big.plot <- old.par$plt
     }
@@ -27,7 +28,7 @@
     #
     # figure out how to divide up the plotting real estate this
     #
-    temp <- image.plot.plt(add = add, legend.shrink = legend.shrink, 
+    temp <- imageplot.setup(add = add, legend.shrink = legend.shrink, 
         legend.width = legend.width, legend.mar = legend.mar, 
         horizontal = horizontal, bigplot = bigplot, smallplot = smallplot)
     #
@@ -47,8 +48,8 @@
             image(..., add = add, col = col)
         }
         else {
-            poly.image(..., add = add, col = col, midpoint = midpoint,
-                            border=border, lwd.poly=lwd)
+            poly.image(..., add = add, col = col, midpoint = midpoint, 
+                border = border, lwd.poly = lwd)
         }
         big.par <- par(no.readonly = TRUE)
     }
@@ -155,6 +156,9 @@
         par(big.par)
         par(plt = big.par$plt, xpd = FALSE)
         par(mfg = mfg.save, new = FALSE)
+        # Suggestion from Karline Soetaert <Karline.Soetaert@nioz.nl>
+        # this is to reset margins to be based on the mar arguments
+        par(mar = par("mar"))
         invisible()
     }
 }

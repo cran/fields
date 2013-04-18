@@ -9,12 +9,12 @@
 }
 \description{
 This function is designed to explore the likelihood surface for different 
-covariance parameters having maximized over sigma and rho. This is sometimes 
-termed a profile likelihood because sigma and rho are evlauted at there MLE estimates
-given the other parameters. 
+covariance parameters with the option of  maximizing over sigma and rho.
 }
 \usage{
-mKrig.MLE(x, y, ..., par.grid = NULL, lambda = NULL, lambda.profile = TRUE,  verbose = FALSE)
+mKrig.MLE( x, y, weights = rep(1, nrow(x)), Z = NULL, ...,
+                 par.grid = NULL, lambda = NULL, lambda.profile = TRUE,
+                 verbose = FALSE, relative.tolerance = 1e-04)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -35,11 +35,14 @@ mKrig.MLE(x, y, ..., par.grid = NULL, lambda = NULL, lambda.profile = TRUE,  ver
   \item{par.grid}{
      A list or data frame with components  being
      parameters for  different covariance models. A typical component is \code{theta}
-     comprising a vector of scale parameters to try. If par.grid is \code{NULL} then the starting
-     then the covariance model is fixed at the components
-     in \dots.}
+     comprising a vector of scale parameters to try. If par.grid is \code{NULL} 
+     then the covariance model is fixed at  values that are given in \dots.}
   \item{lambda.profile}{If TRUE maximize likelihood over lambda.}
+  \item{relative.tolerance}{Tolerance used to declare convergence when maximizing
+           likelihood over lambda.}
   \item{verbose}{If TRUE print out interesting intermediate results. }
+  \item{weights}{Same weighting argument as used in \code{mKrig}.}
+  \item{Z}{Same argument as \code{mKrig} to include spatial covariates.}
 }
 \details{
 The observational model follows the same as that described in the \code{Krig} function and 
@@ -53,7 +56,7 @@ over lambda when \code{ lambda.profile = TRUE}.
 }
 \value{
 A list with the components
- \item{out}{A matrix giving the results for evaluating the likelihood for each covariance model.}
+ \item{summary}{A matrix giving the results for evaluating the likelihood for each covariance model.}
 \item{par.grid}{The par.grid argument used.}
 \item{cov.args.MLE}{The list of covariance arguments (except for lambda) that have the largest 
 likelihood over the list covariance models. To fit the surface at the largest likelihood among those tried
@@ -85,12 +88,12 @@ Krig.MLE
   Y<-  F.true +  sigma* matrix( rnorm(N*M), N,M)
 # find MLE for lambda with range and smoothness fixed in Matern for first data set
   obj<- mKrig.MLE( x,Y[,1], Covariance="Matern", theta=.2, smoothness=1.0)
-  obj$out # take a look
+  obj$summary # take a look
   fit<- mKrig( x,Y[,1], Covariance="Matern", theta=.2, smoothness=1.0, lambda= obj$lambda.best) 
 #
-# search over the range parameter and use all 10 replications for combined likelihood
+# search over the range parameter and use all 5 replications for combined likelihood
 \dontrun{
-  par.grid<- list( theta= seq(.15,.25,,5))
+  par.grid<- list( theta= seq(.1,.25,,6))
 # default starting value for lambda is .02 subsequent ones use previous optimum.
   obj<- mKrig.MLE( x,Y, Covariance="Matern",lambda=c(.02,rep(NA,4)), smoothness=1.0, par.grid=par.grid)
 }

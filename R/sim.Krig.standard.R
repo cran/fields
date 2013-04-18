@@ -31,22 +31,25 @@
     # complete set of points for prediction.
     # check for replicates and adjust
     x <- rbind(object$xM, xpM)
-    if( verbose){
-       cat("full x ", fill=TRUE)
-       print(x)}
+    if (verbose) {
+        cat("full x ", fill = TRUE)
+        print(x)
+    }
     #
     # find indices of all rows of xp that correspond to rows of
     # xM and then collapse x to unique rows.
     rep.x.info <- fields.duplicated.matrix(x)
     x <- as.matrix(x[!duplicated(rep.x.info), ])
-
-    if( verbose){
-       cat("full x without duplicates ", fill=TRUE)
-       print(x)}
-
+    
+    if (verbose) {
+        cat("full x without duplicates ", fill = TRUE)
+        print(x)
+    }
+    
     N.full <- nrow(x)
-    if( verbose){
-       cat("N.full",  N.full, fill=TRUE)}
+    if (verbose) {
+        cat("N.full", N.full, fill = TRUE)
+    }
     # these give locations in x matrix to reconstruct xp matrix
     xp.ind <- rep.x.info[(1:m) + n]
     if (verbose) {

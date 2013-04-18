@@ -1,8 +1,7 @@
 
-R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
-Platform: i386-apple-darwin9.8.0/i386 (32-bit)
+R version 3.0.0 (2013-04-03) -- "Masked Marvel"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin10.8.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -36,10 +35,11 @@ suffix '.spam' to the function name, e.g. 'help( chol.spam)'.
 
 Attaching package: 'spam'
 
-The following object(s) are masked from 'package:base':
+The following object is masked from 'package:base':
 
     backsolve, forwardsolve
 
+Loading required package: maps
 > options( echo=FALSE)
 testing:  Amatrix vs. predict
     PASSED test at tolerance  1e-08
@@ -51,10 +51,11 @@ testing:  comparing Omega
     PASSED test at tolerance  1e-08
 testing:  test of formula with explicit d and c
     PASSED test at tolerance  1e-08
+testing:  Krig function and direct formula
     PASSED test at tolerance  1e-08
 testing:  new predict formula and direct formula
     PASSED test at tolerance  1e-08
-testing:  New se _function_ and old one
+testing:  New se _function_ and old Krig _function_
     PASSED test at tolerance  1e-08
 testing:  Benchmark of formula
     PASSED test at tolerance  1e-08
@@ -64,4 +65,4 @@ testing:  test function with several locations Krig mKrig functions
     PASSED test at tolerance  1e-08
 > proc.time()
    user  system elapsed 
-  0.908   0.026   0.921 
+  0.919   0.025   0.936 

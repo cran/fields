@@ -109,20 +109,18 @@ test.for.zero(SE0, sqrt( MSE4), tag="test of formula with explicit d and c")
 
 # test of new function
 
-Krig( ozone$x, ozone$y, cov.function = "Exp.cov", theta=50,
-      lambda=.06)-> out0
-
+Krig( ozone$x, ozone$y, cov.function = "Exp.cov", theta=50,lambda=.06)-> out0
+SE0<- predict.se.Krig( out0, x=x0)
 mKrig( ozone$x, ozone$y, cov.function = "Exp.cov", theta=50, lambda=.06)-> out2
-SE3<- predict.se.mKrig( out2, x0)
+SE3<- predict.se.mKrig( out2, xnew=x0)
 
-test.for.zero(SE0, sqrt( MSE))
+test.for.zero(SE0, sqrt( MSE), tag="Krig function and direct formula")
 
 
 test.for.zero(sqrt(MSE), sqrt( MSE2), 
              tag="new predict formula and direct formula")
 
-test.for.zero( SE3, predict.se(out, x0),
-             tag="New se _function_ and old one")
+test.for.zero( SE3, SE0,  tag="New se _function_ and old Krig _function_")
 #
 # test of vectors of locations.
 

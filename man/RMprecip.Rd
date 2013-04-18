@@ -8,11 +8,11 @@
 \alias{RMelevation}
 \alias{PRISMelevation}
 \title{
-Monthly total precipitation (mm) for August 1963 in the Rocky Mountain 
-Region and some gridded 4km elevation data sets.  
+Monthly total precipitation (mm) for August 1997 in the Rocky Mountain 
+Region and some gridded 4km elevation data sets (m).  
 }
 \description{
-\code{RMprecip} is a useful spatial data set of moderate size consisting of 865 
+\code{RMprecip} is a useful spatial data set of moderate size consisting of 806
 locations. See www.image.ucar.edu/Data for the source of these data. 
 \code{PRISMelevation} and \code{RMelevation} are gridded elevations for the 
 continental US and Rocky Mountain region at 4km resolution. 
@@ -25,14 +25,16 @@ The data set  \code{RMprecip} is a list containing the following components:
 
 \describe{
 \item{x}{
-Longitude-latitude position of monitoring stations. Rows names are station id codes. 
+Longitude-latitude position of monitoring stations. Rows names are station id codes consistent
+with the US Cooperative observer network.
+The ranges for these coordinates are  [-111, -99] for longitude and [35,45] for latitude.
 }
 \item{elev}{
 Station elevation in meters. 
 }
 \item{y}{
 Monthly total precipitation in millimeters.
-for August 1963
+for August, 1997
 }
 }
 
@@ -64,7 +66,37 @@ and is an interpolation of the observational data to a 4km grid that
 takes into account topography such as elevation and aspect.
 
 }
+\details{
+The binary file \code{RData.USmonthlyMet.bin}
+can be downwloaded from   
+\url{http://www.image.ucar.edu/Data/US.monthly.met}
+and also includes information on its source. 
 
+\preformatted{
+# explicit source code to create the RMprecip data
+dir <- "" # include path to data file 
+load(paste(dir, "RData.USmonthlyMet.bin", sep="/")
+#year.id<-  1963- 1895
+year.id<- 103
+#pptAUG63<- USppt[ year.id,8,]
+loc<- cbind(USpinfo$lon, USpinfo$lat)
+xr<- c(-111, -99)
+yr<- c( 35, 45)
+station.subset<-  (loc[,1]>= xr[1]) & (loc[,1] <= xr[2]) & (loc[,2]>= yr[1]) & (loc[,2]<= yr[2])
+ydata<-  USppt[ year.id,8,station.subset]
+ydata <- ydata*10 #  cm -> mm conversion
+xdata<- loc[station.subset,]
+dimnames(xdata)<- list( USpinfo$station.id[station.subset], c( "lon", "lat"))
+xdata<- data.frame( xdata)
+good<- !is.na(ydata)
+ydata<- ydata[good]
+xdata<- xdata[good,]
+     
+test.for.zero.flag<- 1
+test.for.zero( unlist(RMprecip$x), unlist(xdata), tag="locations")
+test.for.zero( ydata, RMprecip$y, "values")
+}
+}
 \examples{
 # this data set was created  the 
 # historical data  taken from 
@@ -111,8 +143,7 @@ par( save.par)
 image.plot(RMelevation, col=topo.colors(256))
 US( add=TRUE, col="grey", lwd=2)
 title("PRISM elevations (m)")
-
-} 
+}
 \keyword{datasets}
 % docclass is data
 % Converted by Sd2Rd version 1.21.

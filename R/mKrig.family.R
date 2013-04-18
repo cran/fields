@@ -2,14 +2,16 @@
 # Copyright 2004-2007, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-mKrig <- function(x, y, weights = rep(1, nrow(x)), Z=NULL,
-    lambda = 0, cov.function = "stationary.cov", m = 2, chol.args = NULL, 
-    cov.args = NULL, find.trA = TRUE, NtrA = 20, iseed = 123, llambda=NULL, 
-    ...) {
+mKrig <- function(x, y, weights = rep(1, nrow(x)), 
+    Z = NULL, lambda = 0, cov.function = "stationary.cov", m = 2, 
+    chol.args = NULL, cov.args = NULL, find.trA = TRUE, NtrA = 20, 
+    iseed = 123, llambda = NULL, ...) {
     # grab other arguments for covariance function
     cov.args <- c(cov.args, list(...))
     #
-    if( !is.null(llambda)){ lambda <- exp(llambda)}
+    if (!is.null(llambda)) {
+        lambda <- exp(llambda)
+    }
     # see comments in Krig.engine.fixed for algorithmic commentary
     #
     #
@@ -21,16 +23,17 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)), Z=NULL,
         stop("locations are not unique see help(mKrig) ")
     if (any(is.na(y))) 
         stop("Missing values in y should be removed")
-    if(!is.null(Z)){
-      Z<- as.matrix(Z)}
+    if (!is.null(Z)) {
+        Z <- as.matrix(Z)
+    }
     
     # create fixed part of model as m-1 order polynomial
     Tmatrix <- cbind(fields.mkpoly(x, m), Z)
     # set some dimensions
     np <- nrow(x)
-    nt<- ncol(Tmatrix)
-    nZ<- ifelse (is.null(Z), 0, ncol(Z))   
-    ind.drift <- c(rep(TRUE, (nt-nZ)), rep( FALSE, nZ))
+    nt <- ncol(Tmatrix)
+    nZ <- ifelse(is.null(Z), 0, ncol(Z))
+    ind.drift <- c(rep(TRUE, (nt - nZ)), rep(FALSE, nZ))
     
     
     # as a place holder for reduced rank Kriging, distinguish between
@@ -86,8 +89,8 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)), Z=NULL,
         y, upper.tri = TRUE)))
     # and then find c.
     # find the coefficents for the spatial part.
-    c.coef <- as.matrix(forwardsolve(Mc, transpose = TRUE, y - Tmatrix %*% 
-        d.coef, upper.tri = TRUE))
+    c.coef <- as.matrix(forwardsolve(Mc, transpose = TRUE, y - 
+        Tmatrix %*% d.coef, upper.tri = TRUE))
     # save intermediate result this is   t(y- T d.coef)( M^{-1}) ( y- T d.coef)
     quad.form <- c(colSums(as.matrix(c.coef^2)))
     # find c coefficients
@@ -97,20 +100,20 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)), Z=NULL,
     Omega <- Rinv %*% t(Rinv)
     # MLE estimate of rho and sigma
     #    rhohat <- c(colSums(as.matrix(c.coef * y)))/(np - nt)
-    # NOTE if y is a matrix then each of these are vectors of parameters. 
+    # NOTE if y is a matrix then each of these are vectors of parameters.
     rho.MLE <- quad.form/np
-    rhohat<-  c(colSums(as.matrix(c.coef * y)))/np
+    rhohat <- c(colSums(as.matrix(c.coef * y)))/np
     shat.MLE <- sigma.MLE <- sqrt(lambda * rho.MLE)
     # the  log profile likehood with  rhohat  and  dhat substituted
     # leaving a profile for just lambda.
     # note that this is _not_  -2*loglike just the log and
     # includes the constants
-    lnProfileLike <- (-np/2 - log(2*pi)*(np/2)
-                      - (np/2)*log(rho.MLE) - (1/2) * lnDetCov)
-    rho.MLE.FULL<- mean( rho.MLE)
+    lnProfileLike <- (-np/2 - log(2 * pi) * (np/2) - (np/2) * 
+        log(rho.MLE) - (1/2) * lnDetCov)
+    rho.MLE.FULL <- mean(rho.MLE)
     sigma.MLE.FULL <- sqrt(lambda * rho.MLE.FULL)
-    lnProfileLike.FULL<- sum(  (-np/2 - log(2*pi)*(np/2)
-                      - (np/2)*log(rho.MLE.FULL) - (1/2) * lnDetCov) )
+    lnProfileLike.FULL <- sum((-np/2 - log(2 * pi) * (np/2) - 
+        (np/2) * log(rho.MLE.FULL) - (1/2) * lnDetCov))
     #
     # return coefficients and   include lambda as a check because
     # results are meaningless for other values of lambda
@@ -120,18 +123,16 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)), Z=NULL,
     out <- list(d = (d.coef), c = (c.coef), nt = nt, np = np, 
         lambda.fixed = lambda, x = x, knots = knots, cov.function.name = cov.function, 
         args = cov.args, m = m, chol.args = chol.args, call = match.call(), 
-        nonzero.entries = nzero, shat.MLE = sigma.MLE, sigma.MLE=sigma.MLE,
-        rho.MLE = rho.MLE, rhohat= rho.MLE, 
-        lnProfileLike = lnProfileLike,
-        rho.MLE.FULL = rho.MLE.FULL, sigma.MLE.FULL = sigma.MLE.FULL,
-        lnProfileLike.FULL = lnProfileLike.FULL,    
-        lnDetCov = lnDetCov,quad.form = quad.form,
-        Omega = Omega, qr.VT = qr.VT, Mc = Mc, 
-        Tmatrix = Tmatrix, ind.drift=ind.drift,nZ=nZ)
+        nonzero.entries = nzero, shat.MLE = sigma.MLE, sigma.MLE = sigma.MLE, 
+        rho.MLE = rho.MLE, rhohat = rho.MLE, lnProfileLike = lnProfileLike, 
+        rho.MLE.FULL = rho.MLE.FULL, sigma.MLE.FULL = sigma.MLE.FULL, 
+        lnProfileLike.FULL = lnProfileLike.FULL, lnDetCov = lnDetCov, 
+        quad.form = quad.form, Omega = Omega, qr.VT = qr.VT, 
+        Mc = Mc, Tmatrix = Tmatrix, ind.drift = ind.drift, nZ = nZ)
     #
-    # find the residuals directly from solution 
-    # to avoid a call to predict 
-    out$residuals<- lambda*c.coef/weights
+    # find the residuals directly from solution
+    # to avoid a call to predict
+    out$residuals <- lambda * c.coef/weights
     out$fitted.values <- y - out$residuals
     # estimate effective degrees of freedom using Monte Carlo trace method.
     if (find.trA) {
@@ -193,12 +194,11 @@ mKrig.coef <- function(object, y) {
     # of all of these at once. In this case d.coef and c.coef are matrices
     #
     # generalized least squares for d
-  
-    d.coef <- as.matrix(
-                        qr.coef(object$qr.VT, forwardsolve(object$Mc, transpose = TRUE, 
-        y, upper.tri = TRUE)))
+    
+    d.coef <- as.matrix(qr.coef(object$qr.VT, forwardsolve(object$Mc, 
+        transpose = TRUE, y, upper.tri = TRUE)))
     #  residuals from subtracting off fixed part
-    #  of model as m-1 order polynomial   
+    #  of model as m-1 order polynomial
     resid <- y - object$Tmatrix %*% d.coef
     # and now find c.
     c.coef <- forwardsolve(object$Mc, transpose = TRUE, resid, 
@@ -208,28 +208,32 @@ mKrig.coef <- function(object, y) {
     return(out)
 }
 print.mKrig <- function(x, digits = 4, ...) {
-
-       if( is.matrix(x$residuals)){
-         n<- nrow(x$residuals)
-         NData<- ncol(x$residuals)}
-       else{
-         n<- length( x$residuals)
-         NData<-1 }
-
+    
+    if (is.matrix(x$residuals)) {
+        n <- nrow(x$residuals)
+        NData <- ncol(x$residuals)
+    }
+    else {
+        n <- length(x$residuals)
+        NData <- 1
+    }
+    
     c1 <- "Number of Observations:"
     c2 <- n
-
-    if( NData>1){
-    c1<- c( c1,"Number of data sets fit:")
-    c2<- c( c2, NData)}
-       
+    
+    if (NData > 1) {
+        c1 <- c(c1, "Number of data sets fit:")
+        c2 <- c(c2, NData)
+    }
+    
     c1 <- c(c1, "Degree of polynomial null space ( base model):")
     c2 <- c(c2, x$m - 1)
     c1 <- c(c1, "Total number of parameters in base model")
     c2 <- c(c2, x$nt)
-    if( x$nZ>0){
-      c1 <- c(c1, "Number of additional covariates (Z)")
-      c2 <- c(c2, x$nZ)}
+    if (x$nZ > 0) {
+        c1 <- c(c1, "Number of additional covariates (Z)")
+        c2 <- c(c2, x$nZ)
+    }
     if (!is.na(x$eff.df)) {
         c1 <- c(c1, " Eff. degrees of freedom")
         c2 <- c(c2, signif(x$eff.df, digits))
@@ -241,13 +245,14 @@ print.mKrig <- function(x, digits = 4, ...) {
     }
     c1 <- c(c1, "Smoothing parameter")
     c2 <- c(c2, signif(x$lambda.fixed, digits))
-
-    if( NData==1){
-    c1 <- c(c1, "MLE sigma ")
-    c2 <- c(c2, signif(x$shat.MLE, digits))
-    c1 <- c(c1, "MLE rho")
-    c2 <- c(c2, signif(x$rho.MLE, digits))}
-       
+    
+    if (NData == 1) {
+        c1 <- c(c1, "MLE sigma ")
+        c2 <- c(c2, signif(x$shat.MLE, digits))
+        c1 <- c(c1, "MLE rho")
+        c2 <- c(c2, signif(x$rho.MLE, digits))
+    }
+    
     c1 <- c(c1, "Nonzero entries in covariance")
     c2 <- c(c2, x$nonzero.entries)
     sum <- cbind(c1, c2)
@@ -255,7 +260,7 @@ print.mKrig <- function(x, digits = 4, ...) {
     cat("Call:\n")
     dput(x$call)
     print(sum, quote = FALSE)
-    cat(" ", fill=TRUE)   
+    cat(" ", fill = TRUE)
     cat(" Covariance Model:", x$cov.function, fill = TRUE)
     if (x$cov.function == "stationary.cov") {
         cat("   Covariance function:  ", ifelse(is.null(x$args$Covariance), 
@@ -267,22 +272,27 @@ print.mKrig <- function(x, digits = 4, ...) {
         nlist <- as.character(names(x$args))
         NL <- length(nlist)
         for (k in 1:NL) {
-            cat("   Argument:", nlist[k]," " )
-            if(object.size(x$args[[k]]) <= 1024) {
-              cat("has the value(s): ",fill=TRUE)
-              print(x$args[[k]])}
-            else{
-              cat("too large to print value, size > 1K ...", fill =TRUE)}
+            cat("   Argument:", nlist[k], " ")
+            if (object.size(x$args[[k]]) <= 1024) {
+                cat("has the value(s): ", fill = TRUE)
+                print(x$args[[k]])
+            }
+            else {
+                cat("too large to print value, size > 1K ...", 
+                  fill = TRUE)
+            }
         }
     }
     invisible(x)
 }
 
-summary.mKrig<- function(object,...){
-  print.mKrig( object,...)}
+summary.mKrig <- function(object, ...) {
+    print.mKrig(object, ...)
+}
 
 predict.mKrig <- function(object, xnew = NULL, ynew = NULL, 
-    derivative = 0, Z=NULL, drop.Z=FALSE,just.fixed=FALSE,...) {
+    derivative = 0, Z = NULL, drop.Z = FALSE, just.fixed = FALSE, 
+    ...) {
     # the main reason to pass new args to the covariance is to increase
     # the temp space size for sparse multiplications
     # other optional arguments from mKrig are passed along in the
@@ -293,7 +303,7 @@ predict.mKrig <- function(object, xnew = NULL, ynew = NULL,
         xnew <- object$x
     }
     if (is.null(Z)) {
-        Z <- object$Tmatrix[,!object$ind.drift]
+        Z <- object$Tmatrix[, !object$ind.drift]
     }
     if (!is.null(ynew)) {
         coef.hold <- mKrig.coef(object, ynew)
@@ -308,19 +318,26 @@ predict.mKrig <- function(object, xnew = NULL, ynew = NULL,
     # Tmatrix <- fields.mkpoly(xnew, m=object$m)
     #
     if (derivative == 0) {
-      if( drop.Z|object$nZ==0){
-      # just evaluate polynomial and not the Z covariate
-        temp1 <- fields.mkpoly(xnew, m = object$m) %*% d.coef[object$ind.drift,]}
-      else{  
-        temp1<- cbind( fields.mkpoly(xnew, m = object$m),Z) %*% d.coef}
+        if (drop.Z | object$nZ == 0) {
+            # just evaluate polynomial and not the Z covariate
+            temp1 <- fields.mkpoly(xnew, m = object$m) %*% d.coef[object$ind.drift, 
+                ]
+        }
+        else {
+            temp1 <- cbind(fields.mkpoly(xnew, m = object$m), 
+                Z) %*% d.coef
+        }
     }
     else {
-      if(!drop.Z & object$nZ>0){
-        stop("derivative not supported with Z covariate included")}
-      temp1 <- fields.derivative.poly(xnew, m = object$m, d.coef[object$ind.drift,])
+        if (!drop.Z & object$nZ > 0) {
+            stop("derivative not supported with Z covariate included")
+        }
+        temp1 <- fields.derivative.poly(xnew, m = object$m, d.coef[object$ind.drift, 
+            ])
     }
-    if( just.fixed){
-      return(temp1)}
+    if (just.fixed) {
+        return(temp1)
+    }
     # add nonparametric part. Covariance basis functions
     # times coefficients.
     # syntax is the name of the function and then a list with

@@ -22,9 +22,8 @@ Tps(x, Y, m = NULL, p = NULL, scale.type = "range", lon.lat = FALSE, miles = TRU
 fastTps(x, Y, m = NULL, p = NULL,  theta, lon.lat=FALSE,   ...)
 }
 \arguments{
-To be helpful, a more complete list of arguments are described that are the 
-same as those for the Krig function.  
-
+%To be helpful, a more complete list of arguments are described that are the 
+%same as those for the Krig function.  
 \item{x}{
 Matrix of independent variables. Each row is a location or a set of 
 independent covariates. 
@@ -340,37 +339,66 @@ out.p<-predict.surface( fit,df=10)
 }
 
 # Adding a covariate to the fixed part of model
-# Note: this is a fairly big problem numerically (850+ locations)
 \dontrun{
-set.panel( 1,2)
+set.panel( 1,3)
 # without elevation covariate
-  Tps( RMprecip$x,RMprecip$y)-> out0 
+  out0<-Tps( RMprecip$x,RMprecip$y)
   surface( out0)
   US( add=TRUE, col="grey")
 
 # with elevation covariate
-  Tps( RMprecip$x,RMprecip$y, Z=RMprecip$elev)-> out
+  out<- Tps( RMprecip$x,RMprecip$y, Z=RMprecip$elev)
 # NOTE: out$d[4] is the estimated elevation coeficient
+# it is easy to get the smooth surface separate from the elevation.
   out.p<-predict.surface( out, drop.Z=TRUE)
   surface( out.p)
   US( add=TRUE, col="grey")
-  
+# and if the estimate is of high resolution and you get by with 
+# a simple discretizing -- does not work in this case!
+  quilt.plot( out$x, out$fitted.values)
+#
+# however the correct way to do this is evaluate the estimate
+# on a grid where you also have elevations 
+# To evaluate with elevations on a grid takes some more 
+# work because we need to use the same grid where elevations are available.
+#
+# An elevation DEM from the PRISM climate data product (4km resolution)
+  data(RMelevation)  
+  grid.list<- list( x=RMelevation$x, y= RMelevation$y)
+# now create single big 2 column matrix with all  the lon.lat locations in this grid
+  bigX<- make.surface.grid( grid.list)
+# and create a big vector of the elevations in the grid
+  bigZ<- c( RMelevation$z)
+#NOTE:  nrow( bigX) = 69938 = 289X242, length( bigZ)= 69938
+  fit<- predict(out, x= bigX, Z= bigZ)
+# fit is just a big vector 
+# now coerce back into grid format (x,y,z components) 
+# this function works because bigX has some attributes set that indicate the parent grid.
+  fit<- as.surface( bigX, fit)
+# 
 # decomposing into the different pieces:
-  fit<- predict( out)
-  fit0<- predict( out, drop.Z=TRUE, just.fixed=TRUE)
-  fit.elev<- predict( out, just.fixed=TRUE) - fit0
-  fit1<- predict(out, drop.Z=TRUE) - fit0
+# this is just the spatial model without elevation
+  fit0<- predict(out0, x=bigX)
+  fit0<- as.surface( bigX, fit0)
 
+# this is the linear fixed part of the second spatial model: lon,lat and elevation
+  fit.fixed<- predict( out, x= bigX, just.fixed=TRUE, Z= bigZ)
+  fit.fixed<- as.surface( bigX, fit.fixed)
+
+# This is the smooth part but also with the linear lon lat terms. 
+  fit.smooth<- predict( out, x= bigX, drop.Z=TRUE)
+  fit.smooth<- as.surface( bigX, fit.smooth)
+#
   set.panel( 2,2)
-  quilt.plot( out$x, fit0)
-  title("spatial drift")
-  quilt.plot( out$x, fit.elev)
-  title("elevation")
-  quilt.plot( out$x, fit1)
-  title("spatial nonparametric")
-  quilt.plot( out$x, fit)
+  image.plot( fit0)
+  title(" first spatial model (w/o elevation)")
+  image.plot( fit.fixed)
+  title(" fixed part of second model")
+  image.plot( fit.smooth)
+  title("smoothed component second model")
   US( add=TRUE)
-  title("full prediction")
+  image.plot( fit)
+  title("full prediction second model")
   set.panel()
 }
 ### 

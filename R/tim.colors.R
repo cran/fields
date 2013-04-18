@@ -2,7 +2,7 @@
 # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"tim.colors" <- function(n = 64, alpha=1.0) {
+"tim.colors" <- function(n = 64, alpha = 1) {
     # tims original 64 color definition definition:
     orig <- c("#00008F", "#00009F", "#0000AF", "#0000BF", "#0000CF", 
         "#0000DF", "#0000EF", "#0000FF", "#0010FF", "#0020FF", 
@@ -17,7 +17,7 @@
         "#FF5000", "#FF4000", "#FF3000", "#FF2000", "#FF1000", 
         "#FF0000", "#EF0000", "#DF0000", "#CF0000", "#BF0000", 
         "#AF0000", "#9F0000", "#8F0000", "#800000")
-    if (n == 64& alpha==1.0) 
+    if (n == 64 & alpha == 1) 
         return(orig)
     rgb.tim <- t(col2rgb(orig))
     temp <- matrix(NA, ncol = 3, nrow = n)
@@ -29,8 +29,11 @@
         hold[hold > 255] <- 255
         temp[, k] <- round(hold)
     }
-    if( alpha==1.0){ 
-      rgb(temp[, 1], temp[, 2], temp[, 3], maxColorValue = 255)}
-    else{
-      rgb(temp[, 1], temp[, 2], temp[, 3], maxColorValue = 255, alpha=alpha)}
+    if (alpha == 1) {
+        rgb(temp[, 1], temp[, 2], temp[, 3], maxColorValue = 255)
+    }
+    else {
+        rgb(temp[, 1], temp[, 2], temp[, 3], maxColorValue = 255, 
+            alpha = alpha)
+    }
 }

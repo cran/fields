@@ -19,7 +19,7 @@ often arise from regular grids transformed with a map projection.
 }
 \usage{
 
-image.plot(...,
+\method{image}{plot}(...,
                  add = FALSE, nlevel = 64, horizontal = FALSE,
                  legend.shrink = 0.9, legend.width = 1.2, legend.mar =
                  ifelse(horizontal, 3.1, 5.1), legend.lab = NULL,
@@ -139,6 +139,9 @@ plot regions explicitly by \code{bigplot} and  \code{smallplot} if the
 default choices do not work. There may be problems with small plotting
 regions in fitting both of these elements in the plot region and one may 
 have to change the default character sizes or margins to make things fit.
+Sometimes this function will not reset the type of margins correctly and the
+"null" call \code{par(mar = par("mar"))} may help to fix this issue.
+
 
 Relationship of x, y and z:
  If the z component is a matrix then the user should be aware that

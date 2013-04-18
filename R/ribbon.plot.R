@@ -15,10 +15,10 @@ ribbon.plot <- function(x, y, z, zlim = NULL, col = tim.colors(256),
     if (is.null(zlim)) {
         zlim <- range(c(z), na.rm = TRUE)
     }
-
-# convert z values to a color scale.
-    colz <- color.scale(z, col=col,transparent.color=transparent.color)
-
+    
+    # convert z values to a color scale.
+    colz <- color.scale(z, col = col, transparent.color = transparent.color)
+    
     segments(x1[1:(N)], y1[1:(N)], x1[2:(N + 1)], y1[2:(N + 1)], 
         col = colz, ...)
 }

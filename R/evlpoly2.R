@@ -14,7 +14,6 @@ fields.evlpoly2 <- function(x, coef, ptab) {
     results <- rep(0, n)
     temp <- .Fortran("evlpoly2", x = as.double(x), n = as.integer(n), 
         nd = as.integer(nd), ptab = as.integer(ptab), j = as.integer(J), 
-        coef = as.double(coef), results = as.double(results) 
-       )$results
+        coef = as.double(coef), results = as.double(results))$results
     return(temp)
 }

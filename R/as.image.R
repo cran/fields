@@ -14,7 +14,7 @@
     # set some default values for arguments
     #
     # coerce Z to a vector
-    Z<- c( Z)
+    Z <- c(Z)
     # use indicators and weights if passed
     if (!is.null(ind)) 
         x <- ind
@@ -103,6 +103,6 @@
     temp[ind] <- Z
     call <- match.call()
     list(x = grid$x, y = grid$y, z = temp, call = call, ind = ind, 
-        weights = temp3,
-     xd= cbind( grid$x[ind[,1]], grid$y[ind[,2]]), call=match.call() )
+        weights = temp3, xd = cbind(grid$x[ind[, 1]], grid$y[ind[, 
+            2]]), call = match.call())
 }

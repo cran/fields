@@ -2,10 +2,10 @@
 # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"surface.Krig" <- function(object, grid.list = NA, extrap = FALSE, 
-    graphics.reset = NULL, xlab = NULL, ylab = NULL, main = NULL, 
-    zlab = NULL, zlim = NULL, levels = NULL, type = "C", nx = 80, 
-    ny = 80, ...) {
+"surface.Krig" <- function(object, grid.list = NA, 
+    extrap = FALSE, graphics.reset = NULL, xlab = NULL, ylab = NULL, 
+    main = NULL, zlab = NULL, zlim = NULL, levels = NULL, type = "C", 
+    nx = 80, ny = 80, ...) {
     ## modified so that you can give main, and ylab as arguments
     ## in ... and have them passed correctly
     out.p <- predict.surface(object, grid.list = grid.list, extrap = extrap, 
@@ -42,14 +42,14 @@
 # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"surface.mKrig" <- function(object, grid.list = NA, extrap = FALSE, 
-    graphics.reset = NULL, xlab = NULL, ylab = NULL, main = NULL, 
-    zlab = NULL, zlim = NULL, levels = NULL, type = "C", nx = 80, 
-    ny = 80,...) {
+"surface.mKrig" <- function(object, grid.list = NA, 
+    extrap = FALSE, graphics.reset = NULL, xlab = NULL, ylab = NULL, 
+    main = NULL, zlab = NULL, zlim = NULL, levels = NULL, type = "C", 
+    nx = 80, ny = 80, ...) {
     ## modified so that you can give main, and ylab as arguments
     ## in ... and have them passed correctly
     out.p <- predict.surface(object, grid.list = grid.list, extrap = extrap, 
-        nx = nx, ny = ny, drop.Z=TRUE)
+        nx = nx, ny = ny, drop.Z = TRUE)
     if (!is.null(ylab)) 
         out.p$ylab <- ylab
     if (!is.null(xlab)) 

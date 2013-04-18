@@ -3,9 +3,9 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "drape.color" <- function(z, col = tim.colors(64), 
-    zlim = NULL, breaks,  transparent.color = "white", midpoint = TRUE,
-                          eps=1e-8) {
-  # range if zlim not supplied
+    zlim = NULL, breaks, transparent.color = "white", midpoint = TRUE, 
+    eps = 1e-08) {
+    # range if zlim not supplied
     if (is.null(zlim)) {
         zlim <- range(c(z), na.rm = TRUE)
     }
@@ -20,28 +20,32 @@
     if (midpoint) {
         z <- (z[1:(M - 1), 1:(N - 1)] + z[2:M, 1:(N - 1)] + z[1:(M - 
             1), 2:N] + z[2:M, 2:N])/4
-        M<- M-1
-        N<- N-1
+        M <- M - 1
+        N <- N - 1
     }
-    if( missing( breaks)) { breaks<- NA}
-    if( is.na(breaks[1])){
+    if (missing(breaks)) {
+        breaks <- NA
+    }
+    if (is.na(breaks[1])) {
         # spacing for grid to assign  colors
         # +-eps included so that if z== zlim[1 or 2] it gets a color
         # if statement is for when the limit is exactly zero
         # thanks to Rosa Trancoso for finding this bug
-        zrange<- zlim[2] - zlim[1]
-        lower<- ifelse(abs(zlim[1])!=0, (zlim[1] - abs(zlim[1])*eps), -eps*zrange)
-        upper<- ifelse(abs(zlim[2])!=0, (zlim[2] + abs(zlim[1])*eps), eps*zrange)
-        breaks<- seq(lower, upper ,, NC+1)
+        zrange <- zlim[2] - zlim[1]
+        lower <- ifelse(abs(zlim[1]) != 0, (zlim[1] - abs(zlim[1]) * 
+            eps), -eps * zrange)
+        upper <- ifelse(abs(zlim[2]) != 0, (zlim[2] + abs(zlim[1]) * 
+            eps), eps * zrange)
+        breaks <- seq(lower, upper, , NC + 1)
     }
-    if (length(breaks) != NC + 1){ 
-          stop("must have one more break than colour")
+    if (length(breaks) != NC + 1) {
+        stop("must have one more break than colour")
     }
-  # the magic of R ...
-    icolor<-  cut(c(z),breaks)@.Data
-  # returned values is a vector of character hex strings encoding the colors.
-    hold<- ifelse(is.na(icolor), transparent.color, col[icolor])
-  # points not assigned a bin from breaks get an NA
-  # NA are converted to transparent color
-    list( color.index=matrix(hold, nrow=M, ncol=N), breaks=breaks)
+    # the magic of R ...
+    icolor <- cut(c(z), breaks)@.Data
+    # returned values is a vector of character hex strings encoding the colors.
+    hold <- ifelse(is.na(icolor), transparent.color, col[icolor])
+    # points not assigned a bin from breaks get an NA
+    # NA are converted to transparent color
+    list(color.index = matrix(hold, nrow = M, ncol = N), breaks = breaks)
 }
