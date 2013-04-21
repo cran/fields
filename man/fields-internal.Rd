@@ -36,6 +36,8 @@
 \alias{gauss.cov}
 \alias{golden.section.search}
 \alias{imageplot.info}
+\alias{image.plot.plt}
+\alias{image.plot.info}
 \alias{imageplot.setup}
 \alias{krig.image.parameters}
 \alias{minimax.crit}
@@ -151,6 +153,9 @@ golden.section.search (ax, bx, cx, f, niter = 25, f.extra = NA,
 imageplot.info (...) 
 imageplot.setup(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
 horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
+\method{image}{plot.plt}(...)
+\method{image}{plot.info}(...)
+
   
 minimax.crit (obj, des = TRUE, R) 
  

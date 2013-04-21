@@ -14,9 +14,6 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)),
     }
     # see comments in Krig.engine.fixed for algorithmic commentary
     #
-    #
-    # default values for Cholesky decomposition, these are important
-    # for sparse matrix decompositions
     # check for duplicate x's.
     # stop if there are any
     if (any(duplicated(cat.matrix(x)))) 
@@ -33,12 +30,10 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)),
     np <- nrow(x)
     nt <- ncol(Tmatrix)
     nZ <- ifelse(is.null(Z), 0, ncol(Z))
-    ind.drift <- c(rep(TRUE, (nt - nZ)), rep(FALSE, nZ))
-    
-    
+    ind.drift <- c(rep(TRUE, (nt - nZ)), rep(FALSE, nZ)) 
     # as a place holder for reduced rank Kriging, distinguish between
-    # observations locations and locations to evaluate covariance.
-    # (this is will also predict.mKrig to handle a Krig object)
+    # observations locations and  the locations to evaluate covariance.
+    # (this is will also allow predict.mKrig to handle a Krig object)
     knots <- x
     # covariance matrix at observation locations
     # NOTE: if cov.function is a sparse constuct then tempM will be sparse.
@@ -59,7 +54,7 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)),
     else {
         chol.args <- chol.args
     }
-    # record sparsity of tempM
+    # quantify sparsity of tempM for the mKrig object
     nzero <- ifelse(sparse.flag, length(tempM@entries), np^2)
     # add diagonal matrix that is the observation error Variance
     # NOTE: diag must be a overloaded function to handle  sparse format.
@@ -106,19 +101,22 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)),
     shat.MLE <- sigma.MLE <- sqrt(lambda * rho.MLE)
     # the  log profile likehood with  rhohat  and  dhat substituted
     # leaving a profile for just lambda.
-    # note that this is _not_  -2*loglike just the log and
-    # includes the constants
+    # NOTE if y is a matrix then each of this is a vector of log profile
+    # likelihood values.
     lnProfileLike <- (-np/2 - log(2 * pi) * (np/2) - (np/2) * 
         log(rho.MLE) - (1/2) * lnDetCov)
     rho.MLE.FULL <- mean(rho.MLE)
     sigma.MLE.FULL <- sqrt(lambda * rho.MLE.FULL)
+    # if y is a matrix then compute the combined likelihood
+    # under the assumption that the columns of y are replicated
+    # fields
     lnProfileLike.FULL <- sum((-np/2 - log(2 * pi) * (np/2) - 
         (np/2) * log(rho.MLE.FULL) - (1/2) * lnDetCov))
     #
     # return coefficients and   include lambda as a check because
     # results are meaningless for other values of lambda
     # returned list is an 'object' of class mKrig (micro Krig)
-    # also save the matrix decopositions so coefficients can be
+    # also save the matrix decompositions so coefficients can be
     # recalculated for new y values.
     out <- list(d = (d.coef), c = (c.coef), nt = nt, np = np, 
         lambda.fixed = lambda, x = x, knots = knots, cov.function.name = cov.function, 
