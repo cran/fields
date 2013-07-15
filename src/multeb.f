@@ -1,6 +1,7 @@
-C** evaluates radial basis functions 
-c**** K_ij= radfun( distance( x1_i, x2_j))
+
 c
+c evaluates exponential radial bais function
+c 
        subroutine multeb( nd,x1,n1, x2,n2, par, c,h,work)
        implicit double precision (a-h,o-z)
        integer nd,n1,n2,ic

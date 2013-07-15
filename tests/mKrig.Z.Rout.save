@@ -20,12 +20,7 @@ Type 'q()' to quit R.
 > # University Corporation for Atmospheric Research
 > # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 > 
-> 
-> 
-> # tests of predict.se
-> # against direct linear algebra 
-> 
-> library(fields)
+> library( fields)
 Loading required package: spam
 Spam version 0.29-3 (2013-04-23) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
@@ -41,28 +36,19 @@ The following object is masked from 'package:base':
 
 Loading required package: maps
 > options( echo=FALSE)
-testing:  Amatrix vs. predict
+testing:  Full prediction
     PASSED test at tolerance  1e-08
-testing:  Marginal predict.se
+testing:   prediction dropping Z
     PASSED test at tolerance  1e-08
-testing:  comparing Omega
+testing:  new x's dropping Z
     PASSED test at tolerance  1e-08
+testing:  new x's new Z's
     PASSED test at tolerance  1e-08
+testing:  predicting on surface with drop.Z
     PASSED test at tolerance  1e-08
-testing:  test of formula with explicit d and c
-    PASSED test at tolerance  1e-08
-testing:  Krig function and direct formula
-    PASSED test at tolerance  1e-08
-testing:  new predict formula and direct formula
-    PASSED test at tolerance  1e-08
-testing:  New se _function_ and old Krig _function_
-    PASSED test at tolerance  1e-08
-testing:  Benchmark of formula
-    PASSED test at tolerance  1e-08
-testing:  Benchmark of formula mKrig coefs
-    PASSED test at tolerance  1e-08
-testing:  test function with several locations Krig mKrig functions
-    PASSED test at tolerance  1e-08
+all done with mKrig Z tests
+> 
+> 
 > proc.time()
    user  system elapsed 
-  0.834   0.025   0.851 
+  1.755   0.038   1.785 

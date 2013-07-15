@@ -11,9 +11,10 @@ a regular grid or a grid of quadrilaterals.
 }
 \description{
 This function combines the R image function with some automatic 
-placement of a legend. This is done by splitting the plotting region  
-into two parts. Putting the image in one and the legend in the other.  
-It also allows for plotting quadrilateral cells in the image format that
+placement of a legend. This is done by automatically splitting the plotting region  
+into two parts. Putting the image in one and the legend in the other. After the
+legend is added the plot region is reset to the image plot.
+This function also allows for plotting quadrilateral cells in the image format that
 often arise from regular grids transformed with a map projection. 
 
 }
@@ -22,53 +23,38 @@ often arise from regular grids transformed with a map projection.
 \method{image}{plot}(...,
                  add = FALSE, nlevel = 64, horizontal = FALSE,
                  legend.shrink = 0.9, legend.width = 1.2, legend.mar =
-                 ifelse(horizontal, 3.1, 5.1), legend.lab = NULL,
+                 ifelse(horizontal, 3.1, 5.1), legend.lab = NULL,legend.line = 2,
                  graphics.reset = FALSE, bigplot = NULL, smallplot =
                  NULL, legend.only = FALSE, col = tim.colors(nlevel),
                  lab.breaks = NULL, axis.args = NULL, legend.args =
                  NULL, midpoint=FALSE, border=NA, lwd=1.0)}
 
 \arguments{ \item{\dots}{
- The usual arguments to the \code{image} function as x,y,or z or as a list with x,y,z as components. One can also include a
- \code{breaks} argument for an unequal color scale with color scale 
-boundaries at the breaks (see example below).  If a quadrilateral grid, 
-arguments must be explicitly x,y and z with x, and y being matrices of 
-dimension equal or one more than z giving the grid locations. The basic 
-concept is that the coordinates of x and y still define a grid but the image
-cells are general quadrilaterals rather than being restricted to rectangles.
-See details below as to how one handles whether the quads are specified by their
-vertices or by their midpoints. 
+ The usual arguments to the \code{image} function as x,y,or z or as a
+list with x,y,z as components. One can also include a \code{breaks} an
+argument for an unequal spaced color scale with color scale boundaries
+at the breaks (see example below).  If a "quadrilateral grid",
+arguments must be explicitly x,y and z with x, and y being matrices of
+dimensions equal to, or one more than, z giving the grid
+locations. The basic concept is that the coordinates of x and y still
+define a grid but the image cells are quadrilaterals rather than being
+restricted to rectangles.  See details below as to how one handles
+whether the quads are specified by their vertices or by their
+midpoints. NOTE graphical argruments passed here will only have impact
+on the image plot. To change the graphical defaults for the legend use
+the \code{par} function beforehand e.g. par( lab.cex=2.0) to increase
+colorbar labels.
 }
+
 \item{add}{
 If true add image and a legend strip to the existing plot. 
 }
-\item{nlevel}{
-Number of color levels used in legend strip  
-}
-\item{legend.shrink}{
- Amount to shrink the size of legend relative to the full height or width
-of the plot.  
-}
-\item{legend.width}{
-Width in characters of the legend strip. Default is 1.2, a little bigger 
-that the width of a character. }
 
-\item{legend.mar}{
-Width in characters of legend margin that has the axis. Default is 5.1 
-for a vertical legend and 3.1 for a horizontal legend.}
-\item{legend.lab}{ Label for the axis of the color legend. Default is no
-label as this is usual evident from the plot title.}
+\item{border}{This only works if x and y are matrices -- if NA the quadralaterals will have a border color that is 
+the same as the interior color. Otherwise this specifies the color to use.}
 
-\item{graphics.reset}{
- If FALSE (default) the plotting region ( plt in par) will not be reset 
-and one can add more information onto the image plot. (e.g. using functions
-such as points or lines.)  If TRUE will reset plot parameters to the
-values before entering the function.  
-}
-\item{horizontal}{
-If false (default) legend will be a vertical strip on the right side. If
-true the legend strip will be along the bottom.  
-}
+ 
+
 \item{bigplot}{
 Plot coordinates for image plot. If not passed
 these will
@@ -81,28 +67,66 @@ right side  \code{smallplot= c(.85,.9,0,1) } will leave (.1 in plot coordinates)
 axis labels to the right of the color strip. This argument is useful for drawing a 
 plot with the legend that is the same size as the plots without legends.
 }
-\item{legend.only}{
-If TRUE just add the
-legend to a the plot in the plot region defined by the coordinates in
-smallplot. In the absence of other information the range for the legend 
-is determined from the \code{zlim} argument. 
-}
+
 \item{col}{
 Color table to use for image ( see help file on image for details).
 Default is a pleasing range of 64 divisions suggested by Tim Hoar and is similar to 
 the MATLAB (TM) jet color scheme.
 }
 
+\item{graphics.reset}{
+ If FALSE (default) the plotting region ( plt in par) will not be reset 
+and one can add more information onto the image plot. (e.g. using functions
+such as points or lines.)  If TRUE will reset plot parameters to the
+values before entering the function.  
+}
+
+\item{horizontal}{
+If false (default) legend will be a vertical strip on the right side. If
+true the legend strip will be along the bottom.  
+}
 \item{lab.breaks}{ If breaks are supplied these are text string labels
 to put at each break value. This is intended to label axis on a
 transformed scale such as logs.}
 \item{axis.args}{Additional arguments for the axis function used to 
 create the legend axis. (See example below adding a log scaling.)}
 
+\item{legend.only}{
+If TRUE just add the
+legend to a the plot in the plot region defined by the coordinates in
+smallplot. In the absence of other information the range for the legend 
+is determined from the \code{zlim} argument. 
+}
+
 \item{legend.args}{Arguments for a complete specification of the 
 legend label. This is in the form of list and is just passed to the 
 mtext function. Usually this will not be needed. 
 (See example below.)}
+
+\item{legend.line}{Distance in units of character height (as in \code{mtext})
+ of the legend label from the 
+color bar. Make this larger if the label collides with the color axis labels.}
+
+\item{legend.mar}{
+Width in characters of legend margin that has the axis. Default is 5.1 
+for a vertical legend and 3.1 for a horizontal legend.}
+
+\item{legend.lab}{ Label for the axis of the color legend. Default is no
+label as this is usual evident from the plot title.}
+
+\item{legend.shrink}{
+ Amount to shrink the size of legend relative to the full height or width
+of the plot.  
+}
+
+\item{legend.width}{
+Width in characters of the legend strip. Default is 1.2, a little bigger 
+that the width of a character. }
+
+\item{lwd}{Line width of bordering lines around pixels.
+ This might need to be set less than 1.0 
+to avoid visible rounding of the pixel corners.}
+
 \item{midpoint}{ 
 This option for the case of unequally spaced grids with x and y being 
 matrices of grid point locations. 
@@ -113,10 +137,11 @@ quadralaterals. (See help on poly.image for details). In most cases
 midpoint should be FALSE to preserve exact values for z and 
 let the grid polygons be modified.
  }
-\item{border}{This only works if x and y are matrices -- if NA the quadralaterals will have a border color that is 
-the same as the interior color. Otherwise this specifies the color to use.}
-\item{lwd}{Line width of borders around pixels. This might need to be set less than 1.0 
-to avoid visible rounding of the pixel corners.}
+
+\item{nlevel}{
+Number of color levels used in legend strip  
+}
+
 }
 \section{Side Effects}{
 After exiting, the
@@ -142,6 +167,14 @@ have to change the default character sizes or margins to make things fit.
 Sometimes this function will not reset the type of margins correctly and the
 "null" call \code{par(mar = par("mar"))} may help to fix this issue.
 
+Almost cloropleths too:  It  should be noted that this image function is slightly
+different than a cloropleth map because
+the legend is assuming that a continous scale has been discretized into a series of colors.
+To make image.plot function as a  cloropleth graphic one would of course use the
+ \code{breaks} option
+and for clarity perhaps code the different regions as different integer values. 
+In addition, for publication quality one would want to use the \code{legend.args} to
+add more descriptive labels at the midpoints in the color strip. 
 
 Relationship of x, y and z:
  If the z component is a matrix then the user should be aware that
@@ -204,8 +237,7 @@ spaces. These units are helpful in thinking about axis labels that
 will be put into these areas. To add more or less space between the
 legend and the image plot alter the mar parameters. The default mar
 settings (5.1,5.1,5.1,2.1) leaves 2.1 spaces for vertical legends and
-5.1 spaces for horizontal legends. Changing the plot margins directly
-replaces the \code{offset} argument in the older version of this function. 
+5.1 spaces for horizontal legends. 
 
 There are always problems with
 default solutions to placing information on graphs but the choices made
@@ -230,47 +262,56 @@ below for messing with the outer margins to make this work.)
 Usually a square plot (\code{pty="s"}) done in a rectangular plot region will
 have room for the legend stuck to the right side without any other 
 adjustments. See the examples below for more complicated arrangements
- of multiple image plots and summary 
+ of multiple image plots and a summary 
 legends.  
 
 Adding just the legend strip:
 Note that to add just the legend strip all the numerical information one
-needs is the \code{zlim} argument!  We like \code{tim.colors} as a default
-color scale.  The the topographic color scale (\code{topo.colors}) is
-also a close second showing our geophysical basis.  See also
-\code{terrain.colors} for a subset and \code{designer.colors} to "roll
-your own". One nice option in  this last one is to fix colors at
+needs is the \code{zlim} argument and the color table!
+
+About color tables:  
+We like \code{tim.colors}
+as a default color scale and so if this what you use this can be omitted.   The
+topographic color scale (\code{topo.colors}) is
+also a close second showing our geophysical bias.
+Users may find \code{larry.colors} useful for coding distinct regions
+in the style of a cloropleith map.   See also
+\code{terrain.colors} for a subset of the topo ones and \code{designer.colors} to "roll
+your own" color table. One nice option in this last function is to fix color transitions at
 particular quantiles of the data rather than at equally spaced
 intervals. For color choices see how the \code{nlevels} argument figures
-into the legend and main plot number of colors. 
+into the legend and main plot number of colors. Also see the \code{colors} function
+for a listing of all the colors that come with the R base environment. 
 
 }
 
-\seealso{ image, poly.image,filled.contour, quilt.plot, plot.surface, 
+\seealso{ image, poly.image, filled.contour, quilt.plot, plot.surface, 
 add.image, colorbar.plot, tim.colors, designer.colors } 
 
 \examples{
-x<- 1:10; y<- 1:15; z<- outer( x,y,"+") 
+  x<- 1:10
+  y<- 1:15
+  z<- outer( x,y,"+") 
 
-image.plot(x,y,z) 
+  image.plot(x,y,z) 
 
-# or obj<- list( x=x,y=y,z=z); image.plot(obj)
+# or 
+  obj<- list( x=x,y=y,z=z)
+  image.plot(obj, legend.lab="Sverdrups")
 
-# now add some points on diagonal with some clipping anticipated 
-   points( 5:12, 5:12, pch="X", cex=3)
-
-
-image.plot(x,y,z, legend.lab="inches")
+# to show how we are reset to the main image add some points on diagonal
+# (with some clipping beyond 10 anticipated)
+  points( 5:12, 5:12, pch="X", cex=3)
 
 # adding breaks and distinct colors for intervals of z
 # with and without lab.breaks
 
-brk<- quantile( c(z))
-image.plot(x,y,z, breaks=brk, col=rainbow(4))
+  brk<- quantile( c(z))
+  image.plot(x,y,z, breaks=brk, col=rainbow(4))
 
-# annotate legend strip just at break values
-image.plot(x,y,z, breaks=brk, col=rainbow(4),
-             lab.breaks=names(brk))
+# annotate legend strip  at break values and add a label
+  image.plot(x,y,z, breaks=brk, col=rainbow(4),
+                       lab.breaks=names(brk))
 #
 # compare to 
 

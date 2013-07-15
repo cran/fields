@@ -2,9 +2,9 @@
 # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"sim.Krig.grid" <- function(object, grid.list = NA, 
-    M = 1, nx = 40, ny = 40, xy = c(1, 2), verbose = FALSE, sigma2 = NA, 
-    rho = NA, extrap = FALSE) {
+"sim.Krig.approx" <- function(object, grid.list = NA, 
+    M = 1, nx = 40, ny = 40,  verbose = FALSE, 
+     extrap = FALSE) {
     # check that this is a stationary covariance
     if (object$cov.function.name != "stationary.cov") {
         stop("covariance function is not stationary.cov")
@@ -14,8 +14,7 @@
         if (is.null(object$x)) {
             stop("Need a an X matrix in the output object")
         }
-        grid.list <- fields.x.to.grid(object$x, nx = nx, ny = ny, 
-            xy = xy)
+        grid.list <- fields.x.to.grid(object$x, nx = nx, ny = ny) 
     }
     #
     # extract what are the x and y and their lengths
@@ -28,19 +27,16 @@
     #
     glist <- list(x = temp$x, y = temp$y)
     # figure out what sigma and rho should be
-    if (is.na(sigma2)) {
+   
         sigma2 <- object$best.model[2]
-    }
-    if (is.na(rho)) {
         rho <- object$best.model[3]
-    }
     #
     # set up various sizes of arrays
     m <- nx * ny
     n <- nrow(object$xM)
     N <- n
     if (verbose) {
-        cat(" m,n,N, sigma2, rho", m, n, N, sigma2, rho, fill = TRUE)
+        cat(" m,n,N ", m, n, N, fill = TRUE)
     }
     #transform the new points
     xc <- object$transform$x.center

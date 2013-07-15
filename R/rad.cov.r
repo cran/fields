@@ -7,12 +7,14 @@
     #
     # mth order thin plate spline radial basis functions
     # in d dimensions
-    # usually called with p 2m-d
-    #  marginal dummy argument
-    #  this should only be called within predict.se.Krig
-    #  and provides the correct calculation. Because this is
+    # usually called with p = 2m-d
+    #  Because this is
     #  a generalized covariance the marginal variance is not really
     #  defined.
+    #  Thus, marginal is a dummy argument to be consistent with
+    #  other covariance functions
+    #  marginal = TRUE this should only be called within predict.se.Krig
+    #  and provides the correct calculation.
     #
     if (marginal) {
         return(rep(0, nrow(x1)))

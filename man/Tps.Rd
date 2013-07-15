@@ -19,7 +19,7 @@ This function also works for just a single dimension  and is a special case of a
 \usage{
 Tps(x, Y, m = NULL, p = NULL, scale.type = "range", lon.lat = FALSE, miles = TRUE, ...)
 
-fastTps(x, Y, m = NULL, p = NULL,  theta, lon.lat=FALSE,   ...)
+fastTps(x, Y, m = NULL, p = NULL,  theta, lon.lat=FALSE, find.trA = TRUE, lambda=0, ...)
 }
 \arguments{
 %To be helpful, a more complete list of arguments are described that are the 
@@ -56,96 +56,100 @@ type of "unscaled" does not scale the data.
 }
 \item{theta}{The tapering range that is passed to the Wendland compactly 
 supported covariance. The covariance (i.e. the radial basis function) is 
-zero beyond range theta.}
-\item{lon.lat}{If TRUE locations are interpreted as lognitude and latitude and great circle distance is used to find distances among locations. The theta scale parameter for \code{fast.Tps}
-(setting the compact support of the Wendland function) in this case is in units of miles (see example and caution below). }
-\item{miles}{If TRUE great circle distances are in miles if FALSE distances are in kilometers}
+zero beyond range theta. The larger theta the closer this model will approximate the 
+standard thin plate spline.}
 
-\item{\dots}{
-For \code{Tps} any argument that is valid for the \code{Krig} function. Some of the main ones
-are listed below. 
-For \code{fastTps} any argument that is suitable for the \code{mKrig} function 
-see help on mKrig for these choices.
+\item{lon.lat}{If TRUE locations are interpreted as lognitude and
+latitude and great circle distance is used to find distances among
+locations. The theta scale parameter for \code{fast.Tps} (setting the
+compact support of the Wendland function) in this case is in units of
+miles (see example and caution below). }
 
+\item{miles}{If TRUE great circle distances are in miles if FALSE
+distances are in kilometers}
+
+
+\item{lambda}{Smoothing parameter the ratio of error variance to
+            process variance, default is zero which corresponds to
+            interpolation. See fastTps.MLE to estimate this paramter
+            from the data.}
+
+\item{find.trA}{If TRUE will estimate the effective degrees of freedom
+using a simple Monte Carlo method. This will add to the computational
+burden by approximately \code{NtrA} solutions of the linear system but
+the cholesky decomposition is reused.}
+ 
+\item{\dots}{For \code{Tps} any argument that is valid for the
+\code{Krig} function. Some of the main ones are listed below.
+
+For \code{fastTps} any argument that is suitable for the \code{mKrig}
+function see help on mKrig for these choices.
+
+Arguments for Tps:
 \describe{
+  \item{lambda}{ Smoothing parameter that is the ratio of the error
+    variance (sigma**2) to the scale parameter of the covariance
+    function. If omitted this is estimated by GCV. }
 
-\item{lambda}{
-Smoothing parameter that is the ratio of the error variance (sigma**2) 
-to the scale parameter of the  
-covariance function. If omitted this is estimated by GCV. 
-}
+  \item{Z}{Linear covariates to be included in fixed part of the model
+    that are distinct from the default low order polynomial in
+    \code{x}}
 
-\item{Z}{Linear covariates to be included in fixed part of the model that are distinct
-        from the default low order polynomial in \code{x}}
+  \item{df}{ The effective number of parameters for the fitted
+    surface. Conversely, N- df, where N is the total number of
+    observations is the degrees of freedom associated with the
+    residuals.  This is an alternative to specifying lambda and much
+    more interpretable.}
 
-\item{df}{
-The effective number of parameters for the fitted surface. Conversely,
-N- df, where N is the total number of observations is the degrees of
-freedom associated with the residuals.
-This is an alternative to specifying lambda and much more interpretable.
-}
+  \item{cost}{ Cost value used in GCV criterion. Corresponds to a
+    penalty for increased number of parameters. The default is 1.0 and
+    corresponds to the usual GCV.}
 
-\item{cost}{
-Cost value used in GCV criterion. Corresponds to a penalty for
-increased number of parameters. The default is 1.0 and corresponds to the
-usual GCV.
-}
+  \item{weights}{ Weights are proportional to the reciprocal variance
+    of the measurement error. The default is no weighting i.e. vector
+    of unit weights. }
 
+  \item{nstep.cv}{ Number of grid points for minimum GCV search. }
 
-\item{weights}{
-Weights are proportional to the reciprocal variance of the measurement  
-error. The default is no weighting i.e. vector of unit weights. 
-}
-\item{nstep.cv}{
-Number of grid points for minimum GCV search. 
-}
-\item{x.center}{
-Centering values are subtracted from each column of the x matrix. 
-Must 
-have scale.type="user".
-}
-\item{x.scale}{
-Scale values that divided into each column after centering. 
-Must 
-have scale.type="user".
-}
-\item{rho}{
-Scale factor for covariance. 
-}
-\item{sigma2}{
-Variance of errors or if weights are not equal to 1 the variance is
-sigma**2/weight. 
-}
+  \item{x.center}{ Centering values are subtracted from each column of
+     the x matrix.  Must have scale.type="user".}
 
-\item{method}{
-Determines what "smoothing" parameter should be used. The default
-is to estimate standard GCV
-Other choices are: GCV.model, GCV.one, RMSE, pure error and REML. The
-differences are explained below.
+  \item{x.scale}{ Scale values that divided into each column after
+    centering.  Must have scale.type="user".}
+
+  \item{rho}{Scale factor for covariance. }
+
+  \item{sigma2}{ Variance of errors or if weights are not equal to 1
+     the variance is sigma**2/weight.}
+
+  \item{method}{ Determines what "smoothing" parameter should be
+     used. The default is to estimate standard GCV Other choices are:
+     GCV.model, GCV.one, RMSE, pure error and REML. The differences
+     are explained below.}
+
+   \item{verbose}{ If true will print out all kinds of intermediate
+      stuff.  }
+
+   \item{mean.obj}{ Object to predict the mean of the spatial
+      process. }
+
+   \item{sd.obj}{ Object to predict the marginal standard deviation of
+      the spatial process. }
+
+    \item{null.function}{An R function that creates the matrices for
+       the null space model.  The default is fields.mkpoly, an R
+       function that creates a polynomial regression matrix with all
+       terms up to degree m-1. (See Details) }
+
+     \item{offset}{ The offset to be used in the GCV
+        criterion. Default is 0. This would be used when Krig/Tps is
+        part of a backfitting algorithm and the offset has to be
+        included to reflect other model degrees of freedom.  }
 }
-\item{verbose}{
-If true will print out all kinds of intermediate stuff.  
-}
-\item{mean.obj}{
-Object to predict the mean of the spatial process. 
-}
-\item{sd.obj}{
-Object to predict the marginal standard deviation of the spatial process. 
 }
 
-\item{null.function}{
-An R function that creates the matrices for the null space model.
-The default is fields.mkpoly, an R function that creates a polynomial
-regression matrix with all terms up to degree m-1. (See Details)
-}
 
-\item{offset}{
-The offset to be used in the GCV criterion. Default is 0. This would be 
-used when Krig/Tps is part of a backfitting algorithm and the offset has
-to be included  to reflect other model degrees of freedom. 
-}
-}
-}
+
 }
 
 \value{

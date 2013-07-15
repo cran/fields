@@ -15,7 +15,7 @@ Wendland2.2 <- function(d, theta = 1) {
 #
 "wendland.cov" <- function(x1, x2, theta = 1, V = NULL, 
     k = 2, C = NA, marginal = FALSE, Dist.args = list(method = "euclidean"), 
-    spam.format = TRUE, derivative = 0, verbose = FALSE) {
+    spam.format = TRUE, derivative = 0,  verbose = FALSE) {
     #
     #   if marginal variance is needed
     #  this is a quick return
