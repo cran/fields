@@ -33,7 +33,7 @@ if(long.test.flag){
 glist<- list( x= dtemp$x, y=dtemp$y)
 
 set.seed( 233)
-sim.Krig.grid( out, grid= glist, M=200, extrap=TRUE)-> look
+sim.Krig.approx( out, grid= glist, M=200, extrap=TRUE)-> look
 
 predict.surface.se( out, grid=glist, extrap=TRUE)-> test
 

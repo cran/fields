@@ -19,7 +19,7 @@ depreciated functions and are replaced by stationary.image.cov.
 }
 \usage{
 stationary.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, 
-grid, M=NULL,N=NULL, Covariance="Matern", Distance="rdist",...) 
+grid, M=NULL,N=NULL,cov.function="stationary.cov", ...) 
 
 Exp.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...)
 
@@ -48,6 +48,7 @@ A list with the information needed to do the multiplication by
 convolutions. This is usually found by using the returned list when
 setup=T.
 }
+\item{cov.function}{Name of the (stationary) covariance function.}
 \item{setup}{
 If true do not do the multiplication but just return the covariance object
 required by this function. 
@@ -66,13 +67,7 @@ result but  smaller values of M will yield an approximate, faster result.
 }
 
 \item{N}{Size of y-grid used to compute multiplication by the FFT.}
-\item{Covariance}{Covariance function that is apllied to the distance 
-between locations. (see stationary.cov) Default is the Matern model.
-(with smoothness=.5) the expontential. }
-\item{Distance}{
-Distance function applied to locations. Default is Euclidean distance. 
-Another choice is "rdist.earth", great circle distnace for lon/lat 
-coordinates. }
+
 \item{\dots}{
 Any arguments to pass to the covariance function in setting up the
 covariance object. This is only required if setup is TRUE.
@@ -160,7 +155,7 @@ image( matrix( result, 100,100)) # NOTE that is also a smoother!
 
 # to do it again, no setup is needed 
 #  e.g. 
-#  junk2<- matrix(rnorm(100**2, 100,10))
+#  junk2<- matrix(rnorm(100**2, 100,100))
 #  result2<-  stationary.image.cov(Y=junk2, cov.obj=cov.obj)
 
 # generate a grid and set of indices based on discretizing the locations
@@ -202,7 +197,7 @@ image( matrix( result, 100,100)) # NOTE that is also a smoother!
 
 # check out the Matern 
  cov.obj<- stationary.image.cov( 
-             setup=TRUE, grid=grid, theta=1.25, smoothness=2)
+             setup=TRUE, grid=grid,Covariance="Matern", theta=1.25, smoothness=2)
  Y<- matrix(0,64,64)
  Y[16,16]<- 1
 

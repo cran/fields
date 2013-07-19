@@ -3,13 +3,13 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 stationary.image.cov <- function(ind1, ind2, Y, cov.obj = NULL, 
-    setup = FALSE, grid, M = NULL, N = NULL, Covariance = "Matern", 
-    Distance = "rdist", ...) {
+    setup = FALSE, grid, M = NULL, N = NULL, cov.function="stationary.cov", ...) {
     #
     # if cov object is missing then create
     # basically need to enlarge domain and find the FFT of the
     # covariance
     #
+    cov.args<-list(...)
     if (is.null(cov.obj)) {
         dx <- grid$x[2] - grid$x[1]
         dy <- grid$y[2] - grid$y[1]
@@ -30,10 +30,13 @@ stationary.image.cov <- function(ind1, ind2, Y, cov.obj = NULL,
         # here is where the actual covarinace form is used
         # note passed arguments from call for parameters etc.
         #
-        out <- stationary.cov(xg, center, Covariance = Covariance, 
-            Distance = Distance, ...)
+        out<- do.call(cov.function, c(cov.args, list(x1 = xg, x2 = center)))  
+        # check if this is a sparse result and if so expand to full size
+        if( class( out)=="spam"){
+           out <- spam2full(out)
+         }
         # coerce to a matrix (image)
-        out <- matrix(c(out), nrow = M, ncol = N)
+           out<- matrix( c(out), nrow = M, ncol = N) 
         temp <- matrix(0, nrow = M, ncol = N)
         #
         # a simple way to normalize. This could be avoided by

@@ -119,7 +119,8 @@ mKrig <- function(x, y, weights = rep(1, nrow(x)),
     # also save the matrix decompositions so coefficients can be
     # recalculated for new y values.
     out <- list(d = (d.coef), c = (c.coef), nt = nt, np = np, 
-        lambda.fixed = lambda, x = x, knots = knots, cov.function.name = cov.function, 
+        lambda.fixed = lambda, x = x, y=y, weights=weights, knots = knots,
+        cov.function.name = cov.function, 
         args = cov.args, m = m, chol.args = chol.args, call = match.call(), 
         nonzero.entries = nzero, shat.MLE = sigma.MLE, sigma.MLE = sigma.MLE, 
         rho.MLE = rho.MLE, rhohat = rho.MLE, lnProfileLike = lnProfileLike, 

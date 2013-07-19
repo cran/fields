@@ -54,7 +54,7 @@ test.for.zero( look, test,tag="Full covariance predict.se")
 
 set.seed( 333)
 
-sim.Krig.standard( out, x0,M=4e3)-> test
+sim.Krig( out, x0,M=4e3)-> test
 
 var(test)-> look
 
@@ -78,7 +78,7 @@ test.for.zero(   mean(hold3), 0, relative=FALSE, tol=.02,
           tag="Full covariance standard Cond. Sim.")
 
 
-# test of sim.Krig.grid.R
+# test of sim.Krig.approx.R
 #
 # first create and check a gridded test case. 
 
@@ -162,7 +162,7 @@ set.seed( 233)
 # with extrap TRUE this finesses problems with
 # how NAs are handled in var below
 
-sim.Krig.grid( out, grid= glist, M=100, extrap=TRUE)-> look
+sim.Krig.approx( out, grid= glist, M=100, extrap=TRUE)-> look
 
 predict.surface.se( out, grid=glist,extrap=TRUE)-> test
 

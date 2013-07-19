@@ -21,9 +21,25 @@ temp3<-  rdist( x,x)
 temp3 <- ifelse( abs(temp3) < 1e-14, 0,log( temp3)*(temp3^2) )
 temp3<- radbas.constant( 2,2)*temp3
 
-test.for.zero( temp, temp2, tag="Tps radial basis function")
-test.for.zero( temp, temp3, tag="Tps radial basis function")
-test.for.zero( temp2,temp3, tag="Tps radial basis function")
+test.for.zero( temp, temp2, tag="Tps radial basis function 2d")
+test.for.zero( temp, temp3, tag="Tps radial basis function 2d")
+test.for.zero( temp2,temp3, tag="Tps radial basis function 2d")
+
+
+set.seed( 123)
+xtemp<- matrix( runif( 40*3), ncol=3) 
+temp<- Rad.cov( xtemp,xtemp, p= 2*4-3)
+temp2<- RadialBasis( rdist( xtemp,xtemp), M=4, dimension=3)
+
+temp3<-  rdist( xtemp,xtemp)
+temp3 <- ifelse( abs(temp3) < 1e-14, 0, temp3^(2*4 -3) )
+temp3<- radbas.constant( 4,3)*temp3
+
+test.for.zero( temp, temp2, tag="Tps radial basis function 3d")
+test.for.zero( temp, temp3, tag="Tps radial basis function 3d")
+test.for.zero( temp2,temp3, tag="Tps radial basis function 3d")
+
+
 
 #####  testing derivative formula
 C<- cbind(rnorm( length( y)))

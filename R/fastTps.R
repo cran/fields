@@ -3,7 +3,7 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "fastTps" <- function(x, Y, m = NULL, p = NULL, theta, 
-    lon.lat = FALSE, ...) {
+    lon.lat = FALSE, find.trA=TRUE,lambda=0,...) {
     x <- as.matrix(x)
     d <- ncol(x)
     if (is.null(p)) {
@@ -19,8 +19,8 @@
     # see nearest.dist for some explanation of 'method'
     cov.args <- list(k = p, Dist.args = list(method = ifelse(!lon.lat, 
         "euclidean", "greatcircle")))
-    Tpscall <- match.call()
-    Tpscall$cov.function <- "Compactly supported Wendland function "
+    if( lambda==0){
+      warning("fastTps will interpolate observations")}
     mKrig(x, Y, cov.function = "wendland.cov", m = m, cov.args = cov.args, 
-        theta = theta, find.trA = TRUE, ...)
+        theta = theta, find.trA = find.trA,lambda=lambda, ...)
 }

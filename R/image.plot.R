@@ -4,7 +4,8 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "image.plot" <- function(..., add = FALSE, nlevel = 64, 
     horizontal = FALSE, legend.shrink = 0.9, legend.width = 1.2, 
-    legend.mar = ifelse(horizontal, 3.1, 5.1), legend.lab = NULL, 
+    legend.mar = ifelse(horizontal, 3.1, 5.1), legend.lab = NULL,
+    legend.line= 2,                    
     graphics.reset = FALSE, bigplot = NULL, smallplot = NULL, 
     legend.only = FALSE, col = tim.colors(nlevel), lab.breaks = NULL, 
     axis.args = NULL, legend.args = NULL, midpoint = FALSE, border = NA, 
@@ -134,7 +135,7 @@
     #
     if (!is.null(legend.lab)) {
         legend.args <- list(text = legend.lab, side = ifelse(horizontal, 
-            1, 4), line = legend.mar - 2)
+            1, 4), line = legend.line)
         #                    just guessing at a good default for line argument!
     }
     #
@@ -158,7 +159,10 @@
         par(mfg = mfg.save, new = FALSE)
         # Suggestion from Karline Soetaert <Karline.Soetaert@nioz.nl>
         # this is to reset margins to be based on the mar arguments
-        par(mar = par("mar"))
+  #      par(mar = par("mar"))  or
+  #      par(mar = big.par$mar)
+  # unfortunately this causes problems by allowing plotting outside of the
+  # original plot region.
         invisible()
     }
 }

@@ -1,28 +1,17 @@
-
-       subroutine radfun(n,d2, par)
-       real*8 d2(n), par(2), dtemp
-       integer n
-       if( int(par(2)).eq.0) then
-         
-         do 5 k =1,n
-           dtemp= d2(k)
-           if( dtemp.lt.1e-20) dtemp =1e-20 
-         d2(k)= (dtemp)**( par(1))
-   5     continue
-        else 
-         do 6 k=1,n
-          dtemp= d2(k)
-          if( dtemp.gt.1e-20)  then
-c note: dtemp is squared distance
+c evaluates thin plate spline radial basis function
+       double precision function radfun(d2, par1, par2)
+       double precision d2, par1, par2 
+       if( d2.lt.1e-20) then 
+           d2= 1e-20
+       endif
+       if( int(par2).eq.0) then
+           radfun= (d2)**( par1)
+       else 
+c note: d2 is squared distance
 c divide by 2 to have log evaluated on distance
 c as opposed to squared distance. 
-
-           d2(k)= log(dtemp)*(dtemp)**( par(1))/2
-          else
-           d2(k)=0.0
-          endif
-   6   continue
+           radfun= (log(d2)/2) * ((d2)**( par1))
        endif
-        return
-        end
+       return
+       end
 
