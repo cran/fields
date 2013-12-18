@@ -3,13 +3,16 @@
 \docType{data}
 \title{3-hour precipitation fields from a regional climate model}
 \description{
- Transformed surface precipitation fields simulated by the WRFP
+These are few model output fields from the North American Regional Climate
+ Change and Assessment Program (NARCCAP). 
+ The imagea are transformed surface precipitation fields simulated by the WRFP
 regional climate model (RCM) over North Amreica forced by observation
 data. The fields are 3 hour precipitation for 8 time periods in January
-1, 1979. The grid is unequally spaced in longitude and latitude but
-near equally in a more appropriate projection centered on the model
-domain. Precipitation is in a log 10 scale where values smaller than
-4.39e-5 ( the .87 quantile) have been been set to this value.
+1, 1979. The grid is unequally spaced in longitude and latitude  appropriate projection centered on the model
+domain.The grid points are nearly equally spaced in great circle distance due to this projection. Precipitation is in a log 10 scale where values smaller than
+4.39e-5 ( the .87 quantile) have been been set to this value. Longitudes have
+ been shifted from the original coordinates (0-360) to the range (-180-180) that
+is assumed by the R \code{map} function.
 }
 \usage{data(RCMexample)}
 \format{
@@ -21,8 +24,7 @@ domain. Precipitation is in a log 10 scale where values smaller than
 \item  z: 123X101X8 transformed matrix of precipitation
 }
 
-Units are degrees with longitude being 0-360 westward from the prime meridian.
-(See the shift argument in world for overlaying world map.)
+Spatial units are degrees with longitude being -180,180  with the prime meridian at 0.
 Precipitation is log 10 of cm / 3 hour period.
 }
 \details{
@@ -48,7 +50,7 @@ data(RCMexample)
 # second time period
 
 image.plot( RCMexample$x, RCMexample$y, RCMexample$z[,,2])
-world( add=TRUE, shift=TRUE, lwd=2)
+world( add=TRUE,  lwd=2, col="grey")
 
 }
 \keyword{datasets}

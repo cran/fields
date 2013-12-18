@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 Wendland2.2 <- function(d, theta = 1) {
@@ -182,10 +182,18 @@ Wendland = function(d, theta = 1, dimension, k, derivative = 0,
         scale.constant <- scale.constant * (theta^(derivative))
     }
     # scale distances by theta.
-    d <- d/theta
+    if( theta!=1){
+         d <- d/theta}
+    # at this point d the distances shouls be scaled so that
+    # covariance is zero beyond 1
+    if( (k==2)& (dimension==2) & (derivative==0)){
+      ((1 - d)^6 * (35 * d^2 + 18 * d + 3))/3 * (d < 1)}
+    else{
     ifelse(d < 1, wendland.eval(d, n = dimension, k, derivative)/scale.constant, 
         0)
-}
+    }
+  }
+
 ####################
 # [M] = wm(n, k)
 # Compute the matrix coeficient in Wendland(1995)

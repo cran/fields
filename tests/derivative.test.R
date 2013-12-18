@@ -157,7 +157,7 @@ obj<- Krig( x,y,  cov.function="stationary.cov", m=3,
 
 xp<- make.surface.grid( list(x=seq(-.5,.5,,24),y= seq( -.5,.5,,24)) )
 true<- cbind( 3*xp[,1]**2 , 3*xp[,2]**2)
-predict.derivative( obj, xp)-> outd2
+predictDerivative.Krig( obj, xp)-> outd2
 look<- as.surface( xp, outd2[,1])
 rmse<-sqrt(mean((true[,1] - outd2[,1])**2))/sqrt(mean(true[,1]**2))
 test.for.zero( rmse,0, tol=5e-3,relative=FALSE,
@@ -176,18 +176,12 @@ test.for.zero( rmse,0, tol=5e-3,relative=FALSE,
   test.for.zero( rmse,0, tol=5e-3,relative=FALSE)
 
   obj<- Tps( x,y,lambda=0)
-  predict.derivative( obj, xp, derivative=1)-> outd
+  predictDerivative.Krig( obj, xp, derivative=1)-> outd
   look<- as.surface( xp, outd[,1])
   rmse<-sqrt(mean((true[,1] - outd[,1])**2)/mean(true[,1]**2))
   test.for.zero( rmse,0, tol=2e-4,relative=FALSE, tag="Tps derivative x1")
   rmse<-sqrt(mean((true[,2] - outd[,2])**2)/mean(true[,2]**2))
   test.for.zero( rmse,0, tol=2e-4,relative=FALSE, tag="Tps derivative x2")
-### test of surface evaluation function
-  outd2<-predict.surface.derivative( obj, list(x=seq(-.5,.5,,24),y= seq( -.5,.5,,24)))
-  look<- as.surface( xp, outd[,1])
-  test.for.zero( outd2$z[,,1],look$z, tag="Tps derivative x1 surface function")
-  look<- as.surface( xp, outd[,2])
-  test.for.zero( outd2$z[,,2],look$z, tag="Tps derivative x2 surface function")
 
 cat("done with dervative tests", fill=TRUE)
 options( echo=TRUE)

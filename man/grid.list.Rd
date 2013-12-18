@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -107,7 +107,7 @@ Some fields internal functions that support interpreting grid list format are:
 \code{fields.x.to.grid}: 
  Takes an "x" matrix of locations or independent variables and creates a
 reasonable grid list. This is used to evaluate predicted surfaces when a
-grid list is not explicited given to predict.surface. The variables
+grid list is not explicited given to predictSurface. The variables
 (i.e. columns of x) that are not part of the grid are set to the median
 values.  The x grid values are \code{nx} equally spaced points in the
 range \code{x[, xy[1]]}. The y grid values are \code{ny} equally spaced
@@ -116,7 +116,7 @@ points in the range \code{x[, xy[2]]}.
 
 \code{parse.grid.list}:
  Takes a grid list and returns the information in a more expanded list
-form that is easy to use. This is used, for example, by predict.surface
+form that is easy to use. This is used, for example, by predictSurface
 to figure out what to do!
 
 
@@ -138,7 +138,7 @@ range of the x matrix.
 }
 
 \seealso{
-as.surface, predict.surface, plot.surface, surface, 
+as.surface, predictSurface, plot.surface, surface, 
 expand.grid, as.image 
 }
 

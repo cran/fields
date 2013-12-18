@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -21,7 +21,7 @@ information e.g. a contour plots, perspective plots.
 \item{x}{
 A surface object. At the minimum a list with components x,y and z 
 in the same form as the input list for the standard contour, persp
-or image functions. This can also be an object from predict.surface. 
+or image functions. This can also be an object from predictSurface. 
 }
 \item{main}{
 Title for plot. 
@@ -61,7 +61,7 @@ or image.plot
 
 }
 \seealso{
-surface, predict.surface, as.surface, drape.plot, image.plot  
+surface, predictSurface, as.surface, drape.plot, image.plot  
 }
 \examples{
 x<- seq( -2,2,,80)
@@ -79,7 +79,7 @@ plot.surface( obj, type="c", col="red")
 # using a fields function to fit a surface and evaluate as surface object.
 fit<- Tps( BD[,1:4], BD$lnya) # fit surface to data 
 # surface of variables 2 and 3 holding 1 and 4 fixed at their median levels
- out.p<-predict.surface(fit, xy=c(2,3))  
+ out.p<-predictSurface(fit, xy=c(2,3))  
 
  plot.surface(out.p) # surface plot  
 

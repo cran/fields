@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -81,7 +81,7 @@ splines and interpolating cubic splines.
 \code{print}- shorter version of summary \cr
 \code{surface}- graphical display of fitted surface \cr
 \code{predict}- evaluation fit at arbitrary points \cr
-\code{predict.se}- prediction standard errors at arbitrary points. \cr
+\code{predictSE}- prediction standard errors at arbitrary points. \cr
 \code{sim.rf}- Simulate a random fields on a 2-d grid.
 
 \strong{Getting Started}

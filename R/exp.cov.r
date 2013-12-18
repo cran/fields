@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "Exp.cov" <- function(x1, x2, theta = rep(1, ncol(x1)), 
@@ -31,10 +31,16 @@
     # in this case implemented in FORTRAN
     #
     if (!is.na(C[1])) {
-        return(.Fortran("multeb", nd = as.integer(d), x1 = as.double(x1), 
-            n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
-            par = as.double(par), c = as.double(C), h = as.double(rep(0, 
-                n1)), work = as.double(rep(0, n2)))$h)
+        return(.Fortran("multeb", PACKAGE="fields",
+                        nd = as.integer(d),
+                        x1 = as.double(x1), 
+                        n1 = as.integer(n1),
+                        x2 = as.double(x2),
+                        n2 = as.integer(n2), 
+                        par = as.double(par),
+                        c = as.double(C),
+                        h = as.double(rep(0, n1)),
+                        work = as.double(rep(0, n2)))$h)
     }
     #
     # return marginal variance ( 1.0 in this case)

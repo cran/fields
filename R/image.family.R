@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 image.plot.info<- function(...){
@@ -75,7 +75,7 @@ image.plot.info<- function(...){
     list(xlim = xlim, ylim = ylim, zlim = zlim, poly.grid = poly.grid)
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -140,7 +140,7 @@ image.plot.info<- function(...){
     return(list(smallplot = smallplot, bigplot = bigplot))
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "crop.image" <- function(obj, loc = NULL, ...) {
@@ -256,28 +256,38 @@ pushpin <- function(x, y, z, p.out, height = 0.05,
 }
 
 designer.colors <- function(n = 256, col = c("darkgreen", 
-    "white", "darkred"), x = seq(0, 1, , length(col)), alpha = 1) {
-    # distribute the colors at equal spacings of x.
-    xg <- seq(0, 1, , n)
-    # matrix to hold RGB color values
+    "white", "darkred"), x = seq(0, 1,, length(col) ), alpha = 1) {
+# generate colors at equal spacings but interpolate to colors at x
+    xRange<- range(x)
+    xg <- seq(xRange[1], xRange[2],, n)
+# convert colors from names  e.g. "magenta" to rgb in [0.1]    
     y.rgb <- t(col2rgb(col))/255
+# matrix to hold RGB color values
     temp <- matrix(NA, ncol = 3, nrow = n)
-    # spline interpolation of color values
+    nColors<- length( col)
+    if( nColors != length( x)){
+      stop("number of colors needs to be the same as length of x")}
+# linear or spline interpolation of RGB color values at x onto xg
     for (k in 1:3) {
-        hold <- splint(x, y.rgb[, k], xg)
-        # fix up to be integer in [0,255]
+        if( nColors > 2){
+           hold <- splint(x, y.rgb[, k], xg)}
+        else{
+           a<-(xRange[2]-xg)/(xRange[2] - xRange[1])
+           hold<-  a*y.rgb[1, k] + (1-a)*y.rgb[2, k] }
+        # fix up to be in [0,1]
         hold[hold < 0] <- 0
         hold[hold > 1] <- 1
         temp[, k] <- hold
     }
     # convert back to hex
-    if (alpha == 1) {
-        rgb(temp[, 1], temp[, 2], temp[, 3])
+   if(alpha==1){
+      return( rgb(temp[, 1], temp[, 2], temp[, 3]))
     }
-    else {
-        rgb(temp[, 1], temp[, 2], temp[, 3], alpha = alpha)
+    else{
+      return( rgb(temp[, 1], temp[, 2], temp[, 3], alpha = alpha))
     }
 }
+
 #boulder.colors<- c('darkred', 'darkorange',
 #                   'white', 'darkgreen', 'darkblue')
 "two.colors" <- function(n = 256, start = "darkgreen", 
@@ -285,6 +295,6 @@ designer.colors <- function(n = 256, col = c("darkgreen",
     designer.colors(n, c(start, middle, end), alpha = alpha)
 }
 
-#plot.colors<- function( col,...){
-#  N<- length(col)
-# image.plot( 1:N, 1, matrix(1:N,N,1), col=col,axes=FALSE, xlab='', ylab='',...)}
+fieldsPlotColors<- function( col, ...){
+               N<- length(col)
+               image.plot( 1:N, 1, matrix(1:N,N,1), col=col,axes=FALSE, xlab='', ylab='',...)}

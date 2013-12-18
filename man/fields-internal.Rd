@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -40,6 +40,10 @@
 \alias{image.plot.info}
 \alias{imageplot.setup}
 \alias{krig.image.parameters}
+
+\alias{makeSimulationGrid}
+\alias{multWendlandGrid}
+
 \alias{minimax.crit}
 \alias{plot.krig.image}
 \alias{plot.sim.krig.image}
@@ -153,6 +157,9 @@ golden.section.search (ax, bx, cx, f, niter = 25, f.extra = NA,
 imageplot.info (...) 
 imageplot.setup(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
 horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
+
+makeSimulationGrid( mKrigObject, predictionGrid,
+                               nx, ny, gridRefinement, gridExpansion)
 \method{image}{plot.plt}(...)
 \method{image}{plot.info}(...)
 
@@ -170,7 +177,9 @@ minimax.crit (obj, des = TRUE, R)
 
 \method{print}{summary.spatial.design} (x, digits = 4,...) 
 \method{print}{summary.sreg} (x, ...) 
- 
+
+multWendlandGrid( grid.list,center, delta, coef)
+
 qr.q2ty (qr, y) 
  
 qr.yq2 (qr, y) 

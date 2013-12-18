@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 fields.evlpoly2 <- function(x, coef, ptab) {
@@ -12,8 +12,13 @@ fields.evlpoly2 <- function(x, coef, ptab) {
         stop("coefficients not same length as ptab rows")
     }
     results <- rep(0, n)
-    temp <- .Fortran("evlpoly2", x = as.double(x), n = as.integer(n), 
-        nd = as.integer(nd), ptab = as.integer(ptab), j = as.integer(J), 
-        coef = as.double(coef), results = as.double(results))$results
+    temp <- .Fortran("evlpoly2",PACKAGE="fields",
+                     x = as.double(x),
+                     n = as.integer(n), 
+                     nd = as.integer(nd),
+                     ptab = as.integer(ptab),
+                     j = as.integer(J), 
+                     coef = as.double(coef),
+                     results = as.double(results))$results
     return(temp)
 }

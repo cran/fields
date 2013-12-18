@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "predict.Krig" <- function(object, x = NULL, Z = NULL, 
@@ -10,7 +10,7 @@
     #
     # check that derivative is not called
     if (!is.null(list(...)$derivative)) {
-        stop("For derivatives use predict.derivative")
+        stop("For derivatives use predictDerivative")
     }
     # y is full data yM are the data collapsed to replicate means
     # if new data is not passed then copy from the object

@@ -1,5 +1,5 @@
 
-R version 3.0.1 (2013-05-16) -- "Good Sport"
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
 Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin10.8.0 (64-bit)
 
@@ -25,7 +25,8 @@ Type 'q()' to quit R.
 > 
 > library( fields)
 Loading required package: spam
-Spam version 0.29-3 (2013-04-23) is loaded.
+Loading required package: grid
+Spam version 0.40-0 (2013-09-11) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
 and overview of this package.
 Help for individual functions is also obtained by adding the
@@ -33,7 +34,7 @@ suffix '.spam' to the function name, e.g. 'help( chol.spam)'.
 
 Attaching package: 'spam'
 
-The following object is masked from 'package:base':
+The following objects are masked from 'package:base':
 
     backsolve, forwardsolve
 
@@ -53,4 +54,4 @@ Done with testing Wendland family
 > 
 > proc.time()
    user  system elapsed 
-  0.720   0.024   0.735 
+  0.868   0.029   0.888 

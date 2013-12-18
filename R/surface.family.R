@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "surface.Krig" <- function(object, grid.list = NA, 
@@ -8,7 +8,7 @@
     nx = 80, ny = 80, ...) {
     ## modified so that you can give main, and ylab as arguments
     ## in ... and have them passed correctly
-    out.p <- predict.surface(object, grid.list = grid.list, extrap = extrap, 
+    out.p <- predictSurface(object, grid.list = grid.list, extrap = extrap, 
         nx = nx, ny = ny, drop.Z = TRUE)
     if (!is.null(ylab)) 
         out.p$ylab <- ylab
@@ -25,21 +25,21 @@
     invisible()
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "surface" <- function(object, ...) {
     UseMethod("surface")
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "surface.default" <- function(object, ...) {
     plot.surface(object, ...)
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "surface.mKrig" <- function(object, grid.list = NA, 
@@ -48,7 +48,7 @@
     nx = 80, ny = 80, ...) {
     ## modified so that you can give main, and ylab as arguments
     ## in ... and have them passed correctly
-    out.p <- predict.surface(object, grid.list = grid.list, extrap = extrap, 
+    out.p <- predictSurface(object, grid.list = grid.list, extrap = extrap, 
         nx = nx, ny = ny, drop.Z = TRUE)
     if (!is.null(ylab)) 
         out.p$ylab <- ylab
@@ -65,7 +65,7 @@
     invisible()
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "surface.surface" <- function(object, ...) {

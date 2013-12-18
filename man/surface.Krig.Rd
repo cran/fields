@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -78,7 +78,7 @@ Any other plotting options.
 }
 }
 \details{
-This function is essentially a combination of predict.surface and
+This function is essentially a combination of predictSurface and
 plot.surface. It may not always give a great rendition but is easy to use
 for checking the fitted surface. The default of extrap=F is designed to
 discourage looking at the estimated surface outside the range of
@@ -90,7 +90,7 @@ the model will be evaluated.
 }
 \seealso{
 \code{\link{Krig}} 
-predict.surface, plot.surface, image.plot
+predictSurface, plot.surface, image.plot
 }
 \examples{
 fit<- Krig(ozone$x,ozone$y, theta=30)  # krig fit 

@@ -63,7 +63,8 @@
     converge <- rep(0, NL)
     wt.old <- wt
     for (k in 1:NL) {
-        b <- .Fortran("rcss", h = as.double(h[k]), npoint = as.integer(N), 
+        b <- .Fortran("rcss", PACKAGE="fields",
+                      h = as.double(h[k]), npoint = as.integer(N), 
             x = as.double(x), y = as.double(y), wt = as.double(wt.old), 
             sy = as.double(rep(0, N)), trace = as.double(0), 
             diag = as.double(rep(0, N)), cv = as.double(0), ngrid = as.integer(NG), 
@@ -90,7 +91,8 @@
         # it is essentially a LS spline this helps to match the lambda for robust spline
         # with a lambda for the LS one.
         #
-        b <- .Fortran("rcss", h = as.double(h[k]), npoint = as.integer(N), 
+        b <- .Fortran("rcss", PACKAGE="fields",
+                      h = as.double(h[k]), npoint = as.integer(N), 
             x = as.double(x), y = as.double(y.pseudo), wt = as.double(wt), 
             sy = as.double(rep(0, N)), trace = as.double(0), 
             diag = as.double(rep(0, N)), cv = as.double(0), ngrid = as.integer(NG), 
@@ -144,7 +146,8 @@
     if (length(x) != length(y)) 
         stop(" X and Y do not match")
     h <- log(lam)
-    temp <- .Fortran("rcss", h = as.double(log(lam)), npoint = as.integer(N), 
+    temp <- .Fortran("rcss", PACKAGE="fields",
+                     h = as.double(log(lam)), npoint = as.integer(N), 
         x = as.double(x), y = as.double(y), wt = as.double(wt), 
         sy = as.double(rep(0, N)), trace = as.double(0), diag = as.double(rep(0, 
             N)), cv = as.double(0), ngrid = as.integer(0), xg = as.double(0), 
@@ -200,7 +203,7 @@ qsreg.rho <- function(r, alpha = 0.5, C = 1) {
     temp
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "qsreg.trace" <- function(x, y, lam, maxit = 50, maxit.cv = 10, 
@@ -210,7 +213,8 @@ qsreg.rho <- function(r, alpha = 0.5, C = 1) {
     if (length(x) != length(y)) 
         stop(" X and Y do not match")
     h <- log(lam)
-    temp <- .Fortran("rcss", h = as.double(log(lam)), npoint = as.integer(N), 
+    temp <- .Fortran("rcss", PACKAGE="fields",
+                     h = as.double(log(lam)), npoint = as.integer(N), 
         x = as.double(x), y = as.double(y), wt = as.double(wt), 
         sy = as.double(rep(0, N)), trace = as.double(0), diag = as.double(rep(0, 
             N)), cv = as.double(0), ngrid = as.integer(0), xg = as.double(0), 
@@ -220,7 +224,7 @@ qsreg.rho <- function(r, alpha = 0.5, C = 1) {
     return(temp[3])
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "summary.qsreg" <- function(object, ...) {

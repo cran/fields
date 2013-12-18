@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "in.poly" <- function(xd, xp, convex.hull = FALSE, 
@@ -19,7 +19,8 @@
     }
     # Note: inpoly FORTRAN has built in quick reject check to be inside
     # the bounding rectangle of the polygon.
-    ind <- .Fortran("inpoly", nd = as.integer(nd), as.single(xd[, 
+    ind <- .Fortran("inpoly",PACKAGE="fields",
+                    nd = as.integer(nd), as.single(xd[, 
         1]), as.single(xd[, 2]), np = np, as.single(xp[, 1]), 
         as.single(xp[, 2]), ind = as.integer(rep(-1, nd)))$ind
     as.logical(ind)
@@ -47,7 +48,8 @@ in.poly.grid <- function(grid.list, xp, convex.hull = FALSE,
     }
     # Note: inpoly FORTRAN has built in quick reject check to be inside
     # the bounding rectangle of the polygon.
-    ind <- .Fortran("igpoly", nx = as.integer(nx), xg = as.single(grid.list$x), 
+    ind <- .Fortran("igpoly",PACKAGE="fields",
+                    nx = as.integer(nx), xg = as.single(grid.list$x), 
         ny = as.integer(ny), yg = as.single(grid.list$y), np = np, 
         as.single(xp[, 1]), as.single(xp[, 2]), ind = as.integer(rep(-1, 
             nx * ny)))$ind

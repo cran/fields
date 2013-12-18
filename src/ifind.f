@@ -1,3 +1,8 @@
+c fields, Tools for spatial data
+c Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+c University Corporation for Atmospheric Research
+c Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+ 
   
       INTEGER FUNCTION IFIND(X,XK,N)                                   
 C  FIND I SUCH THAT XK(I) LE X LT XK(I+1)                              

@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "fields.mkpoly" <- function(x, m = 2) {
@@ -10,7 +10,7 @@
     d <- ncol(x)
     n <- nrow(x)
     nterms <- choose((m + d - 1), d)
-    temp <- .Fortran("dmaket", m = as.integer(m), n = as.integer(n), 
+    temp <- .Fortran("dmaket",PACKAGE="fields", m = as.integer(m), n = as.integer(n), 
         dim = as.integer(d), des = as.double(x), lddes = as.integer(n), 
         npoly = as.integer(nterms), tmatrix = as.double(rep(0, 
             n * (nterms))), ldt = as.integer(n), wptr = as.integer(rep(0, 

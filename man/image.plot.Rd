@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -292,47 +292,47 @@ add.image, colorbar.plot, tim.colors, designer.colors }
   x<- 1:10
   y<- 1:15
   z<- outer( x,y,"+") 
-
   image.plot(x,y,z) 
 
 # or 
   obj<- list( x=x,y=y,z=z)
   image.plot(obj, legend.lab="Sverdrups")
 
-# to show how we are reset to the main image add some points on diagonal
-# (with some clipping beyond 10 anticipated)
+# add some points on diagonal using standard plot function
+#(with some clipping beyond 10 anticipated)
   points( 5:12, 5:12, pch="X", cex=3)
 
 # adding breaks and distinct colors for intervals of z
 # with and without lab.breaks
-
   brk<- quantile( c(z))
   image.plot(x,y,z, breaks=brk, col=rainbow(4))
-
 # annotate legend strip  at break values and add a label
   image.plot(x,y,z, breaks=brk, col=rainbow(4),
                        lab.breaks=names(brk))
 #
 # compare to 
-
-quantile(c(z), c( .05, .1,.5, .9,.95))-> zp
-
-image.plot(x,y,z, 
-   axis.args=list( at=zp, labels=names(zp) ) )
-
-
+  zp <-quantile(c(z), c( .05, .1,.5, .9,.95))
+  image.plot(x,y,z, 
+     axis.args=list( at=zp, labels=names(zp) ) )
 # a log scaling for the colors
-ticks<- c( 1, 2,4,8,16,32)
-image.plot(x,y,log(z), axis.args=list( at=log(ticks), labels=ticks))
+  ticks<- c( 1, 2,4,8,16,32)
+  image.plot(x,y,log(z), axis.args=list( at=log(ticks), labels=ticks))
 
 # see help file for designer.colors to generate a color scale that adapts to 
 # quantiles of z. 
-
+# Two add some color scales together here is an example of  5 blues to white to 5 reds
+# with white being a specific size.
+ blues<- designer.colors(6, c( "blue", "white") )
+ reds <- designer.colors(6, c( "white","red")  )
+ colorTable<- c( blues[-6], reds)
+# breaks with a gap of 10 to 17 assigned the white color
+ brks<- c(seq( 1, 10,,6), seq( 17, 25,,6)) 
+ image.plot( x,y,z,breaks=brks, col=colorTable)
 #
 #fat (5 characters wide) and short (50\% of figure)  color bar on the bottom
    image.plot( x,y,z,legend.width=5, legend.shrink=.5, horizontal=TRUE) 
 
-# adding label with all kinds of additional arguments.
+# adding a label with all kinds of additional arguments.
 # use side=4 for vertical legend and side= 1 for horizontal legend
 # to be parallel to axes. See help(mtext).
 

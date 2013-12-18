@@ -5,7 +5,7 @@
 
 
 
-# tests of predict.se
+# tests of predictSE
 # against direct linear algebra 
 
 library(fields)
@@ -36,8 +36,8 @@ look<- S0 - t(S1)%*% t(A) - A%*%S1 +
 # diagonal elements
 
 
-test2<- predict.se( out, x= x0) 
-test.for.zero( sqrt(diag(  look)), test2,tag="Marginal predict.se")
+test2<- predictSE( out, x= x0) 
+test.for.zero( sqrt(diag(  look)), test2,tag="Marginal predictSE")
 
 
 # now test shortcut formula that leverages the prediction step for Kriging
@@ -82,9 +82,9 @@ hold<- t( t0)%*%M1 + t(k0)%*% M2
 test.for.zero( hold, A)
 test.for.zero( M2%*%Sigma%*%t( M2), M2)
 
-# benchmark using standard predict.se function
+# benchmark using standard predictSE function
 
-SE0<- predict.se( out, x=x0)
+SE0<- predictSE( out, x=x0)
 
 # shortcut formula explicitly
 MSE<- S0  + out$rhohat*t(t0)%*% Omega %*%t0 -
@@ -110,9 +110,9 @@ test.for.zero(SE0, sqrt( MSE4), tag="test of formula with explicit d and c")
 # test of new function
 
 Krig( ozone$x, ozone$y, cov.function = "Exp.cov", theta=50,lambda=.06)-> out0
-SE0<- predict.se.Krig( out0, x=x0)
+SE0<- predictSE.Krig( out0, x=x0)
 mKrig( ozone$x, ozone$y, cov.function = "Exp.cov", theta=50, lambda=.06)-> out2
-SE3<- predict.se.mKrig( out2, xnew=x0)
+SE3<- predictSE.mKrig( out2, xnew=x0)
 
 test.for.zero(SE0, sqrt( MSE), tag="Krig function and direct formula")
 
@@ -150,13 +150,13 @@ MSE6<- (rep( S0,nrow(x0)) +
                   -out$rhohat* colSums((k0)*hold$c) -
                    2*out$rhohat*colSums(t0*hold$d))
 
-test.for.zero( predict.se( out0, x0), sqrt(MSE5), 
+test.for.zero( predictSE( out0, x0), sqrt(MSE5), 
                    tag="Benchmark of formula")
 
-test.for.zero( predict.se( out0, x0), sqrt(MSE6), 
+test.for.zero( predictSE( out0, x0), sqrt(MSE6), 
                    tag="Benchmark of formula mKrig coefs")
 
-test.for.zero( predict.se( out, x0), predict.se.mKrig(out, x0),
+test.for.zero( predictSE( out, x0), predictSE.mKrig(out, x0),
                    tag="test function with several locations Krig mKrig functions" )
 
 

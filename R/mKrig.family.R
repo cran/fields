@@ -193,7 +193,9 @@ mKrig.coef <- function(object, y) {
     # of all of these at once. In this case d.coef and c.coef are matrices
     #
     # generalized least squares for d
-    
+    if( any(is.na(y))){
+    	stop("mKrig can not omit missing values in observation vecotor")
+    }
     d.coef <- as.matrix(qr.coef(object$qr.VT, forwardsolve(object$Mc, 
         transpose = TRUE, y, upper.tri = TRUE)))
     #  residuals from subtracting off fixed part

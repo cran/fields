@@ -6,7 +6,7 @@
 
 library( fields)
 
-# tests of predict.se
+# tests of predictSE
 # against direct linear algebra 
 
 options( echo=FALSE)
@@ -37,17 +37,17 @@ look<- S0 - t(S1)%*% t(A) - A%*%S1 +
 # diagonal elements
 
 
-test2<- predict.se( out, x= x0) 
-test.for.zero( sqrt(diag(  look)), test2,tag="Marginal predict.se")
+test2<- predictSE( out, x= x0) 
+test.for.zero( sqrt(diag(  look)), test2,tag="Marginal predictSE")
 
 out2<- Krig( ozone$x, ozone$y, cov.function = "Exp.cov", theta=50,
             lambda=out$lambda)
 
-test2<- predict.se( out2, x= x0) 
-test.for.zero( sqrt(diag(  look)), test2,tag="Marginal predict.se fixed ")
+test2<- predictSE( out2, x= x0) 
+test.for.zero( sqrt(diag(  look)), test2,tag="Marginal predictSE fixed ")
 
-test<- predict.se( out, x= x0, cov=TRUE)
-test.for.zero( look, test,tag="Full covariance predict.se")
+test<- predictSE( out, x= x0, cov=TRUE)
+test.for.zero( look, test,tag="Full covariance predictSE")
 
 
 # simulation based.
@@ -58,11 +58,11 @@ sim.Krig( out, x0,M=4e3)-> test
 
 var(test)-> look
 
-predict.se( out, x=x0)-> test2
+predictSE( out, x=x0)-> test2
 mean( diag( look)/ test2**2)-> look2
 test.for.zero(look2, 1.0, tol=1.5e-2, tag="Marginal standard Cond. Sim.")
 
-predict.se( out, x=x0, cov=TRUE)-> test2
+predictSE( out, x=x0, cov=TRUE)-> test2
 
 # multiply simulated values by inverse square root of covariance
 # to make them white
@@ -127,7 +127,7 @@ out$xM, x0, theta=1.0,smoothness=1.0, Covariance="Matern")
 look<- S0 - t(S1)%*% t(A) - A%*%S1 +
        A%*% ( Sigma + diag(out$shat.MLE**2/out$weightsM) )%*% t(A)
 
-test<- predict.se( out, x0, cov=TRUE)
+test<- predictSE( out, x0, cov=TRUE)
 
 test.for.zero( c( look), c( test), tag="Weighted case and exact for ozone2 full 
 cov", tol=1e-8)
@@ -137,46 +137,46 @@ cov", tol=1e-8)
 #cat("Conditional simulation test -- this takes some time", fill=TRUE)
 
 # redo data set to smaller grid size
-N1<-10
-N2<-12
-as.image(ozone2$y[16,], x= ozone2$lon.lat, ncol=N2, nrow=N1, 
-          na.rm=TRUE)-> dtemp
+##D N1<-4
+##D N2<-5
+##D as.image(ozone2$y[16,], x= ozone2$lon.lat, ncol=N2, nrow=N1, 
+##D          na.rm=TRUE)-> dtemp
 #
 # A useful discretized version of ozone2 data
  
-xd<- dtemp$xd
-y<- dtemp$z[ dtemp$ind]
-weights<- dtemp$weights[ dtemp$ind]
+##D xd<- dtemp$xd
+##D y<- dtemp$z[ dtemp$ind]
+##D weights<- dtemp$weights[ dtemp$ind]
 
-Krig( xd, y, Covariance="Matern", 
-   theta=1.0, smoothness=1.0, weights=weights) -> out
+##D Krig( xd, y, Covariance="Matern", 
+##D    theta=1.0, smoothness=1.0, weights=weights) -> out
 
 
-xr<- range( dtemp$x)
-yr<- range( dtemp$y)
-M1<-N1
-M2<- N2
-glist<- list( x=seq( xr[1], xr[2],,M1) , y=seq( yr[1], yr[2],,M2))
+##D xr<- range( dtemp$x)
+##D yr<- range( dtemp$y)
+##D M1<-N1
+##D M2<- N2
+##D glist<- list( x=seq( xr[1], xr[2],,M1) , y=seq( yr[1], yr[2],,M2))
 
-set.seed( 233)
+##D set.seed( 233)
 # with extrap TRUE this finesses problems with
 # how NAs are handled in var below
 
-sim.Krig.approx( out, grid= glist, M=100, extrap=TRUE)-> look
+##D sim.Krig.approx( out, grid= glist, M=3000, extrap=TRUE)-> look
 
-predict.surface.se( out, grid=glist,extrap=TRUE)-> test
-
-
-look2<- matrix( NA, M1,M2)
-
-for(  k in 1:M2){
-    for ( j in 1:M1){
-       look2[j,k] <- sqrt(var( look$z[j,k,], na.rm=TRUE)) }
-}
+##D predictSE( out, make.surface.grid( glist))-> test
 
 
-test.for.zero(  1-mean(c(look2/test$z), na.rm=TRUE), 0, relative=FALSE, 
-tol=.001, tag="Conditional simulation marginal se for grid")
+##D look2<- matrix( NA, M1,M2)
 
-cat("all done testing predict.se ", fill=TRUE)
+##D for(  k in 1:M2){
+##D     for ( j in 1:M1){
+##D       look2[j,k] <- sqrt(var( look$z[j,k,], na.rm=TRUE)) }
+##D }
+
+
+##D test.for.zero(  1-mean(c(look2/test), na.rm=TRUE), 0, relative=FALSE, 
+##D tol=.001, tag="Conditional simulation marginal se for grid")
+
+cat("all done testing predictSE ", fill=TRUE)
 options( echo=TRUE)

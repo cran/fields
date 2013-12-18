@@ -4,7 +4,7 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 library( fields)
-# tests of predict.se using 
+# tests of predictSE using 
 # off diag weight matrix for obs (W)
 
 options( echo=FALSE)
@@ -62,14 +62,14 @@ look<- temp0 - t(temp1) - temp1 +  temp2
 #compare to 
 # diagonal elements
 
-test<- predict.se( out, x= x0) 
-test.for.zero( sqrt(diag(  look)), test,tag="Marginal predict.se")
+test<- predictSE( out, x= x0) 
+test.for.zero( sqrt(diag(  look)), test,tag="Marginal predictSE")
 
 
-test<- predict.se( out, x= x0, cov=TRUE)
-test2<- predict.se( out2, x= x0, cov=TRUE)
-test.for.zero( look, test,tag="Full covariance predict.se")
-test.for.zero( look, test2,tag="Full covariance predict.se explicit W")
+test<- predictSE( out, x= x0, cov=TRUE)
+test2<- predictSE( out2, x= x0, cov=TRUE)
+test.for.zero( look, test,tag="Full covariance predictSE")
+test.for.zero( look, test2,tag="Full covariance predictSE explicit W")
 
 cat( "all done", fill=TRUE)
 options( echo=TRUE)

@@ -13,7 +13,7 @@ of June, July and August for the period 1950-2010. Data is based on
 %\usage{data(NorthAmericanRainfall)}
 \format{
   The format is a list with components:
-"longitude" "latitude"  "precip"    "elevation" "precipSE" "trend" "trendSE" "type"
+"longitude" "latitude"  "precip"    "elevation" "precipSE" "trend" "trendSE" "type" "x.s" "sProjection"
 with elevation in meters, longitude as (-180,180), latitude as (-90, 90) and precipitaion in 1/10 mm 
 ( precip/254  converts to inches of rainfall)
 
@@ -22,6 +22,16 @@ each station's record. SE is the companion standard error from the least squares
 If the station is complete, then \code{precip} and \code{precipSE} will just be the mean and standard deviation adjusted for a linear trend. The estimated trend  \code{trend} and and its standard error \code{trendSE} are also included. 
  Also due to the centering, for complete data the intercept and trend estimate will be uncorrelated. The component \code{type} indicates whether the station has been "adjusted" (see below) or is still in
   "unadjusted" form. 
+
+\code{x.s} is a useful transformation of locations into stereographic coordinates that reduces the
+inflation of North Canada due to the usual lon/lat coordinates. Specifically it is found by: 
+\preformatted{
+  library(mapproj)
+  xStereo<- mapproject( NorthAmericanRainfall$lon,NorthAmericanRainfall$lat, projection="stereographic")
+  NorthAmericanRainfall$x.s<- cbind( xStereo$x, xStereo$y)
+  NorthAmericanRainfall$projection<- .Last.projection
+}
+Use \code{NorthAmericanRainfall$orientation} to access the stereographic projection orientation.
 
 }
 

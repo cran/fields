@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 fields.rdist.near <- function(x1, x2, delta, max.points = NULL, 
@@ -19,7 +19,8 @@ fields.rdist.near <- function(x1, x2, delta, max.points = NULL,
     else {
         Nmax <- max.points
     }
-    out <- .Fortran("ddfind", nd = as.integer(d), x1 = as.double(x1), 
+    out <- .Fortran("ddfind",PACKAGE="fields",
+                    nd = as.integer(d), x1 = as.double(x1), 
         n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
         D0 = as.double(delta), ind = as.integer(rep(0, Nmax * 
             2)), rd = as.double(rep(-1, Nmax)), Nmax = as.integer(Nmax), 

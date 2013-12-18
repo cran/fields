@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -20,6 +20,7 @@ This function also works for just a single dimension  and is a special case of a
 Tps(x, Y, m = NULL, p = NULL, scale.type = "range", lon.lat = FALSE, miles = TRUE, ...)
 
 fastTps(x, Y, m = NULL, p = NULL,  theta, lon.lat=FALSE, find.trA = TRUE, lambda=0, ...)
+
 }
 \arguments{
 %To be helpful, a more complete list of arguments are described that are the 
@@ -238,6 +239,8 @@ is a good idea for putting the variables on a common scale for smoothing.
 This function does have the potential to approximate estimates of Tps 
 for very large spatial data sets. See \code{wendland.cov} and help on 
 the SPAM package for more background.
+Also, the function \code{predictSurface.fastTps} has been made more efficient for the 
+case of k=2 and m=2. 
 
 See also the mKrig function for handling larger data sets and also for an example
 of combining Tps and mKrig for evaluation on a huge grid. 
@@ -250,7 +253,7 @@ by Green and Silverman.
 See "Additive Models" by Hastie and Tibshirani. 
 }
 \seealso{
-Krig, summary.Krig, predict.Krig, predict.se.Krig, plot.Krig, mKrig  
+Krig, summary.Krig, predict.Krig, predictSE.Krig, predictSurface, predictSurface.fastTps, plot.Krig, mKrig  
 \code{\link{surface.Krig}}, 
 \code{\link{sreg}} 
 }
@@ -301,7 +304,7 @@ set.panel()
 
 # predict onto a grid that matches the ranges of the data.  
 
-out.p<-predict.surface( fit)
+out.p<-predictSurface( fit)
 image( out.p) 
 
 # the surface function (e.g. surface( fit))  essentially combines 
@@ -309,7 +312,7 @@ image( out.p)
 
 # predict at different effective 
 # number of parameters 
-out.p<-predict.surface( fit,df=10)
+out.p<-predictSurface( fit,df=10)
 
 \dontrun{
 #A 1-d example  with confidence intervals
@@ -319,7 +322,7 @@ out.p<-predict.surface( fit,df=10)
   xgrid<- seq(  min( out$x), max( out$x),,100)
   fhat<- predict( out,xgrid)
   lines( xgrid, fhat,)
-  SE<- predict.se( out, xgrid)
+  SE<- predictSE( out, xgrid)
   lines( xgrid,fhat + 1.96* SE, col="red", lty=2)
   lines(xgrid, fhat - 1.96*SE, col="red", lty=2)
 
@@ -337,7 +340,7 @@ out.p<-predict.surface( fit,df=10)
   xgrid<- seq(  min( out$x), max( out$x),,100)
   fhat<- predict( out,xgrid)
   lines( xgrid, fhat, lwd=2)
-  SE<- predict.se( out, xgrid)
+  SE<- predictSE( out, xgrid)
   lines( xgrid,fhat + 1.96* SE, col="red", lty=2)
   lines(xgrid, fhat - 1.96*SE, col="red", lty=2)
 }
@@ -354,7 +357,7 @@ set.panel( 1,3)
   out<- Tps( RMprecip$x,RMprecip$y, Z=RMprecip$elev)
 # NOTE: out$d[4] is the estimated elevation coeficient
 # it is easy to get the smooth surface separate from the elevation.
-  out.p<-predict.surface( out, drop.Z=TRUE)
+  out.p<-predictSurface( out, drop.Z=TRUE)
   surface( out.p)
   US( add=TRUE, col="grey")
 # and if the estimate is of high resolution and you get by with 

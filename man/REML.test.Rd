@@ -208,7 +208,7 @@ print( out2$pars)
                theta=out$pars[2], smoothness=1.5)
 # The default lambda is that found by GCV
 # predict on a grid but use the MLE value for lambda:
-  out.p<- predict.surface(out2, lambda= lambda.MLE)
+  out.p<- predictSurface(out2, lambda= lambda.MLE)
   surface(out.p) # same surface!
 }
 
