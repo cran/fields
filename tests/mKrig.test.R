@@ -58,8 +58,8 @@ mKrig( x,Y, cov.function="stationary.cov",
 temp3<-  predict( lookY, xnew)[,4]
 
 test.for.zero( temp, temp3, tag="test of matrix Y predicts" )
-predict.surface( look)-> temp
-predict.surface( look2)-> temp2
+predictSurface( look)-> temp
+predictSurface( look2)-> temp2
 
 good<- !is.na( temp2$z)
 test.for.zero( temp$z[good], temp2$z[good])
@@ -74,11 +74,11 @@ spam.format=FALSE, lambda=.35 )-> look
 Krig( x,y, cov.function="stationary.taper.cov", theta=2, 
 spam.format=FALSE, lambda=.35)-> look2
 
-predict.surface( look, nx=50, ny=45)-> temp
-predict.surface( look2, nx=50, ny=45)-> temp2
+predictSurface( look, nx=50, ny=45)-> temp
+predictSurface( look2, nx=50, ny=45)-> temp2
 
 good<- !is.na( temp2$z)
-test.for.zero( temp$z[good], temp2$z[good], tag="predict.surface with mKrig")
+test.for.zero( temp$z[good], temp2$z[good], tag="predictSurface with mKrig")
 
 # 
 # Use Wendland with sparse off and on.
@@ -193,7 +193,7 @@ ind<- sample( 1:(nx*ny), 600)
 xdat<- xg[ind,]
 ydat <- ztrue[ind]
 out<- fastTps(xdat, ydat, theta=.3)
-out.p<-predict.surface( out, grid=gl, extrap=TRUE)
+out.p<-predictSurface( out, grid=gl, extrap=TRUE)
 # perfect agreement at data
 test.for.zero( ydat, c( out.p$z)[ind], tag="fastTps interp1")
 #image.plot(x,y,matrix( ztrue, nx,ny)- out.p$z) 

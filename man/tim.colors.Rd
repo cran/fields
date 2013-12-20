@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -9,6 +9,7 @@
 \alias{two.colors}
 \alias{designer.colors}
 \alias{color.scale}
+\alias{fieldsPlotColors}
 \title{ Some useful color tables for images and tools to handle them. }
 \description{
 Several color scales useful for image plots: a pleasing rainbow style
@@ -30,6 +31,8 @@ designer.colors( n=256, col= c("darkgreen", "white", "darkred"), x=
 
 color.scale( z, col=tim.colors(256), zlim =NULL,
 transparent.color="white", eps= 1e-8)
+
+fieldsPlotColors( col,...)
 
 }
 \arguments{
@@ -61,6 +64,7 @@ that the x values are equally spacesd from 0 to 1.}
 
 \item{eps}{A small inflation of the range to avoid boundary values of
 \code{z} being coded as NAs}
+\item{\dots}{Additional plotting arguments to code{image.plot}}
 
 }
 
@@ -92,12 +96,18 @@ easy. For example
 \code{designer.color( 256, rainbow(4), x= c( 0,.2,.8,1.0))}
 
 leaves the choice of the colors to Dr. R after a thunderstorm.
- 
+
+\code{color.scale} assigns colors to a numerical vector in the same way as 
+the \code{image} function. This is useful to kept the assigment of colors consistent
+across several vectors by specifiying a common \code{zlim} range.  
+
+\code{plotColorScale} A simple function to plot a vector of colors to examinet their values. 
 }
+
 \value{
 
 A vector giving the colors in a hexadecimal format, two extra hex
-digits are added for alpha channel.
+digits are added for the alpha channel.
 
 }
 \seealso{ topo.colors, terrain.colors, image.plot, quilt.plot, grey.scale,

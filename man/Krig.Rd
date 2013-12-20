@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -22,7 +22,7 @@ Gaussian stochastic process with a
 covariance that is unknown up to a scale constant. The main advantages of
 this function are the flexibility in specifying the covariance as an
 R language function and also the supporting functions plot, predict,
-predict.se, surface for
+predictSE, surface for
 subsequent analysis. Krig also supports a correlation model where the mean
 and marginal variances are supplied. 
 }
@@ -456,8 +456,8 @@ See "Additive Models" by Hastie and Tibshirani, "Spatial Statistics" by
 Cressie and the FIELDS manual. 
 }
 \seealso{
-summary.Krig, predict.Krig, predict.se.Krig, predict.surface.se,
-predict.surface, plot.Krig,
+summary.Krig, predict.Krig, predictSE.Krig, predictSurfaceSE,
+predictSurface, plot.Krig,
 surface.Krig 
 }
 \examples{
@@ -482,7 +482,7 @@ predict( fit, df=7.5)
 
 
 # predict on a grid ( grid chosen here by defaults)
- out<- predict.surface( fit)
+ out<- predictSurface( fit)
  surface( out, type="C") # option "C" our favorite
 
 # predict at arbitrary points (10,-10) and (20, 15)
@@ -490,10 +490,10 @@ predict( fit, df=7.5)
  predict( fit, xnew)
 
 # standard errors of prediction based on covariance model.  
- predict.se( fit, xnew)
+ predictSE( fit, xnew)
 
 # surface of standard errors on a default grid
- predict.surface.se( fit)-> out.p # this takes some time!
+ predictSurfaceSE( fit)-> out.p # this takes some time!
  surface( out.p, type="C")
  points( fit$x)
 

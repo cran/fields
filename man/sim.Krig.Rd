@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -7,6 +7,8 @@
 \alias{sim.Krig}
 \alias{sim.Krig.approx}
 \alias{sim.mKrig.approx}
+\alias{sim.fastTps.approx}
+
 \title{Conditional simulation of a spatial process}
 \description{
 Generates exact (or approximate) random draws from the conditional 
@@ -24,22 +26,30 @@ sim.Krig.approx(object, grid.list = NA, M = 1, nx = 40, ny = 40, verbose =
 FALSE, 
  extrap = FALSE)
 
-sim.mKrig.approx(mKrigObject, predictionGrid = NULL,
-                            simulationGridlist=NULL, gridRefinement=5, gridExpansion=1,
-    M = 1, nx = 40, ny = 40,  verbose = FALSE )
+sim.mKrig.approx( mKrigObject, predictionGrid = NULL, simulationGridlist
+                 = NULL, gridRefinement = 5, gridExpansion = 1, M = 1,
+                 nx = 40, ny = 40, delta = NULL, verbose = FALSE)
+
+sim.fastTps.approx(fastTpsObject, predictionGridlist = NULL, simulationGridlist = NULL, 
+    gridRefinement = 5, gridExpansion = 1, M = 1, nx = 40, ny = 40, 
+    delta = NULL, verbose = FALSE) 
+
 } 
 %- maybe also 'usage' for other objects documented here. 
 \arguments{
+  \item{delta}{If the covariance has compact support this is its range. An optional but makes computations more efficient if used.  }
   \item{extrap}{ If FALSE conditional process is not evaluated outside 
      the convex hull of observations. }
   \item{grid.list}{Grid information for evaluating the conditional 
          surface as a grid.list.}
   \item{mKrigObject}{An mKrig Object}
+  \item{fastTpsObject}{The output object returned by fastTps}
   \item{M}{Number of draws from conditional distribution.}
   \item{nx}{ Number of grid points in x.}
   \item{ny}{ Number of grid points in y.}
   \item{object}{A Krig object.}
   \item{predictionGrid}{A matrix of locations for the conditional simulation.}
+\item{predictionGridlist}{A \code{gridlist} defining the rectangular grid for evaluating the predictions.}
   \item{simulationGridlist}{ A \code{gridlist} describing grid for simulation. If missing 
 this is created from the range of the locations, \code{nx}, \code{ny} and the other parameters.}
   \item{gridRefinement}{Amount to increase the number of grid points for the simulation grid.}
@@ -71,7 +81,7 @@ For fixed a covariance this is just a multivariate normal sampling problem.
 \code{sim.Krig.standard} samples this conditional process at the points 
 \code{xp} and is exact for  fixed covariance parameters.
 \code{sim.Krig.grid} also assumes fixed covariance parameters and does 
-approxiamte sampling on a grid. 
+approximate sampling on a grid. 
 
 The outline of the algorithm is 
 
@@ -104,6 +114,10 @@ circulant embedding and so is restricted to stationary
 fields. The circulant embedding method is known to fail if the domain is small relative to the
 correlation range. The argument \code{gridExpansion} can be used to increase the size of the
 domain to make the algorithm work. 
+
+\code{sim.fastTps.approx} Is optimized for the approximate thin plate spline estimator
+in two dimensions and \code{k=2}. For efficiency the  ensemble prediction locations must be on a grid. 
+
 }
 \value{
 \code{sim.Krig}
@@ -153,7 +167,7 @@ theta=1.0,smoothness=1.0, na.rm=TRUE)-> out
 # this is an exact calculation
  sim.Krig( out,xp, M=5)-> sim.out
 
-# Compare: stats(sim.out)[3,] to  Exact: predict.se( out, xp)
+# Compare: stats(sim.out)[3,] to  Exact: predictSE( out, xp)
 
 # simulations on a grid
 # NOTE this is approximate due to the bilinear interpolation
@@ -164,7 +178,7 @@ sim.Krig.approx(out,M=5, nx=20,ny=20)-> sim.out
 
 # take a look at the ensemble members. 
 
-predict.surface( out, grid= list( x=sim.out$x, y=sim.out$y))-> look
+predictSurface( out, grid= list( x=sim.out$x, y=sim.out$y))-> look
 
 zr<- c( 40, 200)
 
@@ -180,7 +194,7 @@ y<- ozone2$y[16,]
 good<- !is.na( y)
 y<-y[good]
 x<- ozone2$lon.lat[good,]
-O3.fit<- mKrig( x,y, Covariance="Matern", theta=1.0,smoothness=1.0, lambda= .01 )
+O3.fit<- mKrig( x,y, Covariance="Matern", theta=.5,smoothness=1.0, lambda= .01 )
 set.seed(122)
 O3.sim<- sim.mKrig.approx( O3.fit, nx=100, ny=100, gridRefinement=4, M=5 )
 set.panel(3,2)
@@ -188,7 +202,25 @@ surface( O3.fit)
 for ( k in 1:5){
 image.plot( as.surface( O3.sim$predictionGrid, O3.sim$Ensemble[,k]) )
 }
- 
+}
+\dontrun{
+#An example for fastTps:
+  data(ozone2)
+  y<- ozone2$y[16,]
+  good<- !is.na( y)
+  y<-y[good]
+  x<- ozone2$lon.lat[good,]
+  O3FitMLE<- fastTps.MLE( x,y, theta=1.5 )
+  O3Obj<- fastTps( x,y, theta=1.5, lambda=O3FitMLE$lambda.MLE)
+  O3Sim<- sim.fastTps.approx( O3Obj,M=5,nx=100,ny=100)
+# controlling the grids
+  xR<- range( x[,1], na.rm=TRUE)
+     yR<- range( x[,2], na.rm=TRUE)
+    simulationGridlist<- list( x= seq(xR[1],xR[2],,400), y= seq( yR[1],yR[2], ,400))
+# very fine localized prediction grid
+    O3Gridlist<- list( x= seq( -90.5,-89.5,,200), y= seq( 38,39,,200))
+    O3Sim<- sim.fastTps.approx( O3Obj,M=5, predictionGridlist=O3Gridlist,
+                  simulationGridlist = simulationGridlist, verbose=TRUE) 
 }
 }
 \keyword{spatial}

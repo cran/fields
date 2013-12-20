@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -280,7 +280,7 @@ set.panel() # reset panel to 1 plot
 
 SE<- fit$shat.GCV*sqrt(fit$diagA)
 
-# compare to predict.se( fit.tps) differences are due to 
+# compare to predictSE( fit.tps) differences are due to 
 # slightly different lambda values and using shat.MLE instad of shat.GCV
 #
 

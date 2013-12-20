@@ -1,6 +1,6 @@
 
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "Krig" <- function(x, Y, cov.function = "stationary.cov", 
@@ -138,9 +138,6 @@
     # in steps and it is hoped easier to follow.
     ###############################################################
     # various checks on x and  Y including removal of NAs in Y
-    if (verbose) {
-        cat("checks on x,Y, and Z", fill = TRUE)
-    }
     # Here is an instance of adding to the Krig object
     # in this case some onerous bookkeeping making sure arguments are consistent
     out2 <- Krig.check.xY(x, Y, Z, weights, na.rm, verbose = verbose)
@@ -150,9 +147,6 @@
     # Transform unique x locations and knots.
     if (out$correlation.model) {
         out$y <- Krig.cor.Y(out, verbose = verbose)
-    }
-    if (verbose) {
-        cat("Transform x and knots: ", fill = TRUE)
     }
     out2 <- Krig.transform.xY(out, knots, verbose = verbose)
     out <- c(out, out2)
@@ -164,16 +158,7 @@
     # this functions works through the logic of
     # what has been supplied for lambda
     out2 <- Krig.which.lambda(out)
-    out[names(out2)] <- out2
-    # verbose block
-    if (verbose) {
-        cat("Modified values for smoothing controls", fill = TRUE)
-        print(out2)
-    }
-    # verbose block
-    if (verbose) {
-        cat("lambda, fixed? ", lambda, out$fixed.model, fill = TRUE)
-    }
+    out[names(out2)] <- out2  
     # Make weight matrix for observations
     #    ( this is proportional to the inverse square root of obs covariance)
     #     if a weight function or W has not been passed then this is
@@ -181,9 +166,6 @@
     #     The checks represent a limitation of this model to
     #     the  WBW type decoposition and no replicate observations.
     out$nondiag.W <- (!is.null(wght.function)) | (!is.null(W))
-    if (verbose) {
-        cat("out$nondiag", out$nondiag, fill = TRUE)
-    }
     # Do not continue if there there is a nondiagonal weight matrix
     # and replicate observations.
     if (out$nondiag.W) {
@@ -214,9 +196,6 @@
     # For fixed lambda the decompositions with and without knots
     # are surprisingly similar and so are in one engine.
     ###########################################################
-    if (verbose) {
-        cat("Beginning of Engine block", fill = TRUE)
-    }
     if (out$fixed.model) {
         out$matrices <- Krig.engine.fixed(out, verbose = verbose)
         # can't find the trace of A matrix in fixed lambda case so set this to NA.
@@ -235,13 +214,7 @@
         }
         else {
             # standard engine following the basic computations for thin plate splines
-            if (verbose) {
-                cat("Call to Krig.engine.default", fill = TRUE)
-            }
             out$matrices <- Krig.engine.default(out, verbose = verbose)
-            if (verbose) {
-                cat("Return from  Krig.engine.default", fill = TRUE)
-            }
         }
     }
     #
@@ -255,20 +228,12 @@
     # that is not due to the Z covariates.
     # NOTE that the spatial drift coefficients must be the first columns of the
     # M matrix
-    if (verbose) {
-        cat("End of Engine Block", fill = TRUE)
-    }
     if (is.null(out$Z)) {
         out$ind.drift <- rep(TRUE, out$nt)
     }
     else {
         
         mZ <- ncol(out$ZM)
-        if (verbose) {
-            cat("ZM", out$ZM, fill = TRUE)
-            cat("mZ", mZ, fill = TRUE)
-            cat("nt", out$nt, fill = TRUE)
-        }
         out$ind.drift <- c(rep(TRUE, out$nt - mZ), rep(FALSE, 
             mZ))
     }
@@ -289,16 +254,8 @@
         gcv.out <- gcv.Krig(out, nstep.cv = nstep.cv, verbose = verbose, 
             cost = out$cost, offset = out$offset, give.warnings = give.warnings)
         out$gcv.grid <- gcv.out$gcv.grid
-        #
         #  a handy summary table of the search results
         out$lambda.est <- gcv.out$lambda.est
-        #
-        # verbose block
-        if (verbose) {
-            cat("returned GCV and REML grid search", fill = TRUE)
-            print(out$gcv.grid)
-        }
-        #
         # assign the preferred lambda either from GCV/REML/MSE or the user value
         # NOTE: gcv/reml can be done but the estimate is
         # still evaluted at the passed  user values of lambda (or df)
@@ -315,12 +272,6 @@
                 out$eff.df <- Krig.ftrace(out$lambda, out$matrices$D)
             }
         }
-        if (verbose) {
-            cat("lambda set in GCV block", fill = TRUE)
-            print(out$lambda)
-            cat("trace of A", fill = TRUE)
-            print(out$eff.df)
-        }
     }
     ##########################
     # end GCV/REML block
@@ -333,15 +284,9 @@
     # and evaluate the solution at observations
     ##########################################
     #   pass replicate group means -- no need to recalculate these.
-    if (verbose) {
-        cat("Call to Krig.coef:", fill = TRUE)
-    }
+
     out2 <- Krig.coef(out, yM = out$yM, verbose = verbose)
     out <- c(out, out2)
-    if (verbose) {
-        cat("Krig.coef:", fill = TRUE)
-        print(out2)
-    }
     #######################################################################
     # fitted values and residuals and predicted values for full model and
     # also on the null space (fixed
@@ -383,10 +328,13 @@
     class(out) <- c("Krig")
     return(out)
 }
+
+
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 Krig.check.xY <- function(x, Y, Z, weights, na.rm, 
     verbose = FALSE) {
     #
@@ -477,10 +425,7 @@ Krig.check.xY <- function(x, Y, Z, weights, na.rm,
     return(list(N = N, y = Y, x = x, weights = weights, Z = Z, 
         NA.ind = ind))
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.coef" <- function(out, lambda = out$lambda, 
     y = NULL, yM = NULL, verbose = FALSE) {
     #
@@ -595,10 +540,7 @@ Krig.check.xY <- function(x, Y, Z, weights, na.rm,
     return(list(c = temp.c, d = temp.d, shat.rep = out2$shat.rep, 
         shat.pure.error = out2$shat.pure.error, pure.ss = out2$pure.ss))
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 Krig.cor.Y <- function(obj, verbose = FALSE) {
     # subtract mean
     if (!is.na(obj$mean.obj[1])) {
@@ -610,14 +552,7 @@ Krig.cor.Y <- function(obj, verbose = FALSE) {
     }
     Y
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL, 
     eval.correlation.model = FALSE, ...) {
     if (is.null(lambda)) {
@@ -675,10 +610,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
         f.extra = info)$x
     +exp(out)
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.engine.default" <- function(out, verbose = FALSE) {
     #
     # matrix decompositions for computing estimate
@@ -790,6 +722,8 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     # Tmatrix premultiplied by sqrt of wieghts
     Tmatrix <- out$W2 %d*% Tmatrix
     qr.T <- qr(Tmatrix)
+    if( qr.T$rank < ncol( Tmatrix)){
+      stop("Regression matrix for fixed part of model is colinear")}
     #
     #verbose block
     if (verbose) {
@@ -836,10 +770,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     return(list(D = D, qr.T = qr.T, decomp = "WBW", V = tempM$vectors, 
         u = u, nt = nt, np = np))
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.engine.fixed" <- function(out, verbose = FALSE, 
     lambda = NA) {
     #
@@ -963,10 +894,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     # should not get here.
     #
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.engine.knots" <- function(out, verbose = FALSE) {
     #
     # matrix decompostions for computing estimate when
@@ -1043,17 +971,11 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     list(u = u, D = D, G = out2$G, qr.T = qr.T, decomp = "DR", 
         nt = nt, np = np, pure.ss = pure.ss)
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.fdf" <- function(llam, info) {
     sum(1/(1 + exp(llam) * info$D)) - info$df
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.fgcv" <- function(lam, obj) {
     #
     # GCV that is leave-one-group out
@@ -1071,10 +993,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     #
     ifelse(den > 0, MSE/den^2, NA)
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.fgcv.model" <- function(lam, obj) {
     lD <- obj$matrices$D * lam
     MSE <- sum(((obj$matrices$u * lD)/(1 + lD))^2)/length(lD)
@@ -1082,10 +1001,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     den <- (1 - (obj$cost * (trA - obj$nt - obj$offset) + obj$nt)/length(lD))
     ifelse(den > 0, obj$shat.pure.error^2 + MSE/den^2, NA)
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.fgcv.one" <- function(lam, obj) {
     lD <- obj$matrices$D * lam
     RSS <- obj$pure.ss + sum(((obj$matrices$u * lD)/(1 + lD))^2)
@@ -1096,10 +1012,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     #
     ifelse(den > 0, (RSS/obj$N)/den^2, 1e+20)
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.find.REML" <- function(info, lambda.grid, llike, 
     llike.fun, tol, verbose = TRUE, give.warnings = FALSE) {
     #
@@ -1130,10 +1043,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
         return(lambda.llike)
     }
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.find.gcvmin" <- function(info, lambda.grid, 
     gcv, gcv.fun, tol, verbose = FALSE, give.warnings = TRUE) {
     ind <- !is.na(gcv)
@@ -1162,10 +1072,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
         return(lambda.gcv)
     }
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.flplike" <- function(lambda, obj) {
     #  - log profile likelihood for lambda
     # See section 3.4 from Nychka  Spatial Processes as Smoothers paper.
@@ -1184,10 +1091,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
         (1/2) * lnDetCov)
     
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.fs2hat" <- function(lam, obj) {
     lD <- obj$matrices$D * lam
     RSS <- obj$pure.ss + sum(((obj$matrices$u * lD)/(1 + lD))^2)
@@ -1201,17 +1105,11 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
         RSS/(den)
     }
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.ftrace" <- function(lam, D) {
     sum(1/(1 + lam * D))
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 Krig.make.W <- function(out, verbose = FALSE) {
     if (verbose) {
         cat("W", fill = TRUE)
@@ -1252,10 +1150,7 @@ Krig.make.W <- function(out, verbose = FALSE) {
         }
     }
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 Krig.make.Wi <- function(out, verbose = FALSE) {
     #
     # If a weight matrix has been passed use it.
@@ -1277,10 +1172,7 @@ Krig.make.Wi <- function(out, verbose = FALSE) {
         return(list(Wi = 1/out$weightsM, W2i = 1/sqrt(out$weightsM)))
     }
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.make.u" <- function(out, y = NULL, yM = NULL, 
     verbose = FALSE) {
     #
@@ -1326,10 +1218,7 @@ Krig.make.Wi <- function(out, verbose = FALSE) {
     return(list(u = u, shat.rep = out2$shat.rep, shat.pure.error = out2$shat.pure.error, 
         pure.ss = out2$pure.ss))
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 Krig.null.function <- function(x, Z = NULL, drop.Z = FALSE, 
     m) {
     # default function to create matrix for fixed part of model
@@ -1344,10 +1233,7 @@ Krig.null.function <- function(x, Z = NULL, drop.Z = FALSE,
         return(cbind(fields.mkpoly(x, m = m), Z))
     }
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.parameters" <- function(obj, mle.calc = obj$mle.calc) {
     # if nondiag W is supplied then use it.
     # otherwise assume a diagonal set of weights.
@@ -1384,10 +1270,7 @@ Krig.null.function <- function(x, Z = NULL, drop.Z = FALSE,
     list(shat.GCV = shat.GCV, rho.MLE = rho.MLE, shat.MLE = shat.MLE, 
         rhohat = rhohat)
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.replicates" <- function(out, verbose = FALSE) {
     rep.info <- cat.matrix(out$x)
     if (verbose) {
@@ -1434,10 +1317,7 @@ Krig.null.function <- function(x, Z = NULL, drop.Z = FALSE,
         uniquerows = uniquerows, shat.rep = shat.rep, shat.pure.error = shat.pure.error, 
         pure.ss = pure.ss, rep.info = rep.info))
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 Krig.transform.xY <- function(obj, knots, verbose = FALSE) {
     # find all replcates and  collapse to unique locations and mean response
     # and pooled variances and weights.
@@ -1480,10 +1360,7 @@ Krig.transform.xY <- function(obj, knots, verbose = FALSE) {
     }
     return(out)
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.updateY" <- function(out, Y, verbose = FALSE, 
     yM = NA) {
     #given new Y values but keeping everything else the same finds the
@@ -1618,10 +1495,7 @@ Krig.which.lambda <- function(out) {
     #
     return(out2)
 }
-# fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "Krig.ynew" <- function(out, y = NULL, yM = NULL) {
     #
     # calculates the collapsed y (weighted) mean vector based on the

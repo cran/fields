@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -53,7 +53,7 @@ glist<- fields.x.to.grid(x, nx=80, ny=80) # this is a cute way to get a default 
     mKrig( Bigx,Bigy, cov.function="wendland.cov",k=4, V=V, 
                  lambda=0)->out2 
 # the big evaluation this takes about 45 seconds on a Mac G4 latop
-    predict.surface( out2, nx=400, ny=400)-> look
+    predictSurface( out2, nx=400, ny=400)-> look
 }
 
 # the nice surface

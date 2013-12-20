@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sim.Krig.approx" <- function(object, grid.list = NA, 
@@ -60,7 +60,7 @@
     # (these are added at the predict step).
     # from now on all predicted values are on the grid
     # represented by a matrix
-    h.hat <- predict.surface(object, grid.list = grid.list, extrap = extrap)$z
+    h.hat <- predictSurface(object, grid.list = grid.list, extrap = extrap)$z
     if (verbose) {
         cat("mean predicted field", fill = TRUE)
         image.plot(h.hat)
@@ -105,7 +105,7 @@
         }
         # predict at grid using these data
         # and subtract from 'true' value
-        temp.error <- predict.surface(object, grid.list = grid.list, 
+        temp.error <- predictSurface(object, grid.list = grid.list, 
             yM = y.synthetic, eval.correlation.model = FALSE, 
             extrap = TRUE)$z - h.true$z
         if (verbose) {

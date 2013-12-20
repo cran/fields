@@ -1,33 +1,27 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sim.mKrig.approx" <- function(mKrigObject, predictionGrid = NULL,
                             simulationGridlist=NULL, gridRefinement=5, gridExpansion=1,
-    M = 1, nx = 40, ny = 40,  verbose = FALSE ) {
+    M = 1, nx = 40, ny = 40, delta=NULL,  verbose = FALSE ) {
     # create grid if not passed
     if (is.null(predictionGrid)) {
         predictionGridlist <- fields.x.to.grid(mKrigObject$x, nx = nx, ny = ny)
         predictionGrid<- make.surface.grid( predictionGridlist)
     }
-    if (is.null(simulationGridlist)) {
-        nxSimulation<- nx*gridRefinement*gridExpansion
-        nySimulation<- ny*gridRefinement*gridExpansion
-        xRange<- range(c(mKrigObject$x[,1], predictionGrid[,1]) )
-        yRange<- range(c(mKrigObject$x[,2], predictionGrid[,2]) )
-        midpointX<-               (xRange[2] + xRange[1])/2
-        midpointY<-               (yRange[2] + yRange[1])/2
-        deltaX<-    gridExpansion*(xRange[2] - xRange[1])/2 
-        deltaY<-    gridExpansion*(yRange[2] - yRange[1])/2       
-        simulationGridlist <- list( x= seq( midpointX - deltaX,  midpointX + deltaX,, nxSimulation),
-                                    y= seq( midpointY - deltaY,  midpointY + deltaY,, nySimulation) )
+    if ( is.null(simulationGridlist) ) {
+        simulationGridlist<- makeSimulationGrid( mKrigObject, predictionGrid,
+                               nx, ny, gridRefinement, gridExpansion)
     }
-     if (verbose) {
-        cat("predictionGrid summary stats",  fill = TRUE)
+    nxSimulation<- length(simulationGridlist$x)    
+    nySimulation<- length(simulationGridlist$y)
+    if (verbose) {
+        cat("prediction grid summary:", fill=TRUE)
         print( stats(predictionGrid))
-        print(stats(simulationGridlist), fill = TRUE)
-        
-    }
+        cat("simulation grid summary:", fill=TRUE)
+        print(stats(simulationGridlist), fill = TRUE)       
+     }
         sigma <- mKrigObject$sigma.MLE
         rho <- mKrigObject$rho.MLE
     #
@@ -41,7 +35,8 @@
     #
     covarianceObject <- stationary.image.cov( 
                             setup = TRUE, grid =simulationGridlist,
-                            cov.function=mKrigObject$cov.function,  mKrigObject$args )
+                            cov.function=mKrigObject$cov.function,
+                            cov.args=mKrigObject$args, delta=delta)
      if (verbose) {
         cat( "dim of full circulant matrix ", dim(covarianceObject$wght), fill = TRUE)
     }
@@ -85,4 +80,20 @@
         out[ , k] <- hHat + spatialError
     }
     return( list( predictionGrid=predictionGrid, Ensemble=out, call=match.call()) )
+}
+
+makeSimulationGrid<-function( mKrigObject, predictionGrid,
+                               nx, ny, gridRefinement, gridExpansion){
+        nxSimulation<- nx*gridRefinement*gridExpansion
+        nySimulation<- ny*gridRefinement*gridExpansion
+        xRange<- range(c(mKrigObject$x[,1], predictionGrid[,1]) )
+        yRange<- range(c(mKrigObject$x[,2], predictionGrid[,2]) )
+        midpointX<-               (xRange[2] + xRange[1])/2
+        midpointY<-               (yRange[2] + yRange[1])/2
+        deltaX<-    gridExpansion*(xRange[2] - xRange[1])/2 
+        deltaY<-    gridExpansion*(yRange[2] - yRange[1])/2       
+        return(
+           list( x= seq( midpointX - deltaX, midpointX + deltaX,, nxSimulation),
+                 y= seq( midpointY - deltaY, midpointY + deltaY,, nySimulation) )
+                )
 }

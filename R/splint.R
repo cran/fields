@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "splint" <- function(x, y, xgrid, wt = NULL, derivative = 0, 
@@ -44,13 +44,24 @@
         lam <- lambda
     }
     igcv <- ifelse(lam == 0, 2, 0)
-    # call to old FORTRAN
-    temp <- .Fortran("css", h = as.double(ifelse(igcv == 2, 1, 
-        log(lam))), as.integer(n), as.double(x), as.double(y), 
-        wt = as.double(1/sqrt(wt)), sy = as.double(rep(0, n)), 
-        as.double(1), as.double(1), as.double(1), as.integer(length(xgrid)), 
-        as.double(xgrid), ygrid = as.double(rep(0, length(xgrid))), 
-        job = as.integer(c(igcv, 3, 0)), as.integer(derivative), 
-        as.integer(0))
-    return(temp$ygrid)
+    # call to FORTRAN -- only return the evaluated poiints (ygrid).
+    return(
+           .Fortran("css",PACKAGE="fields",
+                     h = as.double(ifelse(igcv == 2, 1, log(lam))),
+                     as.integer(n),
+                     as.double(x),
+                     as.double(y), 
+                     wt = as.double(1/sqrt(wt)),
+                     sy = as.double(rep(0, n)), 
+                     as.double(1),
+                     as.double(1),
+                     as.double(1),
+                     as.integer(length(xgrid)), 
+                     as.double(xgrid),
+                     ygrid = as.double(rep(0, length(xgrid))), 
+                     job = as.integer(c(igcv, 3, 0)),
+                     as.integer(derivative), 
+                     as.integer(0)
+                     )$ygrid
+ )
 }

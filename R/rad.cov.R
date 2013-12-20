@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "Rad.cov" <- function(x1, x2, p = 1, m = NA, with.log = TRUE, 
@@ -13,7 +13,7 @@
     #  defined.
     #  Thus, marginal is a dummy argument to be consistent with
     #  other covariance functions
-    #  marginal = TRUE this should only be called within predict.se.Krig
+    #  marginal = TRUE this should only be called within predictSE.Krig
     #  and provides the correct calculation.
     #
     if (marginal) {
@@ -45,7 +45,8 @@
         d), 1)
     # compute matrix in FORTRAN
     if (is.na(C[1])) {
-        temp <- .Fortran("radbas", nd = as.integer(d), x1 = as.double(x1), 
+        temp <- .Fortran("radbas", PACKAGE="fields",
+                         nd = as.integer(d), x1 = as.double(x1), 
             n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
             par = as.double(par), k = as.double(rep(0, n1 * n2)))
         return(rbf.constant * matrix(temp$k, ncol = n2, nrow = n1))
@@ -56,7 +57,8 @@
             #     evaluate function not partial derivatives.
             C <- as.matrix(C)
             n3 <- ncol(C)
-            temp <- .Fortran("multrb", nd = as.integer(d), x1 = as.double(x1), 
+            temp <- .Fortran("multrb",PACKAGE="fields",
+                             nd = as.integer(d), x1 = as.double(x1), 
                 n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
                 par = as.double(par), c = as.double(C), n3 = as.integer(n3), 
                 h = as.double(rep(0, n1 * n3)), work = as.double(rep(0, 
@@ -67,7 +69,8 @@
             if (ncol(C) > 1) {
                 stop("Can only evaluate derivatives on one spline fit")
             }
-            temp <- .Fortran("mltdrb", nd = as.integer(d), x1 = as.double(x1), 
+            temp <- .Fortran("mltdrb", PACKAGE="fields",
+                             nd = as.integer(d), x1 = as.double(x1), 
                 n1 = as.integer(n1), x2 = as.double(x2), n2 = as.integer(n2), 
                 par = as.double(par), c = as.double(C), h = as.double(rep(0, 
                   n1 * d)), work = as.double(rep(0, n2)))$h

@@ -24,11 +24,11 @@ y<- y[1:75]
 
 
 
-hold1<- MaternGLS.test( x,y, nu)
-hold2<- MaternGLSProfile.test( x,y,nu)
-test.for.zero( hold1$pars[1], hold2$pars[1], tol=2e-5, tag="check REML rho")
-test.for.zero( hold1$pars[2], hold2$pars[2], tol=2e-5, tag="check REML theta")
-test.for.zero( hold1$pars[3], hold2$pars[3], tol=5e-6, tag=" check REML sigma2")
+##D hold1<- MaternGLS.test( x,y, nu)
+##D hold2<- MaternGLSProfile.test( x,y,nu)
+##D test.for.zero( hold1$pars[1], hold2$pars[1], tol=2e-5, tag="check REML rho")
+##D test.for.zero( hold1$pars[2], hold2$pars[2], tol=2e-5, tag="check REML theta")
+##D test.for.zero( hold1$pars[3], hold2$pars[3], tol=5e-6, tag=" check REML sigma2")
 
 hold3<- MaternQR.test( x,y,nu)
 hold4<- MaternQRProfile.test( x,y,nu)

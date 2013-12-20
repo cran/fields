@@ -110,7 +110,7 @@ test.for.zero( zhat, obj$fitted.values, tag="Tps 2-d m=2 sanity check")
    xg<- make.surface.grid( list(x=seq(-.7,.7,,10),  y=seq(-.7,.7,,10)) )
    test<- cbind( xg[,1] + xg[,2], xg[,1] - xg[,2])
 #   test<- xg
-   look<- predict.derivative.Krig( out, x= xg) 
+   look<- predictDerivative.Krig( out, x= xg) 
    test.for.zero( look[,1], test[,1], tol=1e-3)
    test.for.zero( look[,2], test[,2], tol=1e-3)
 

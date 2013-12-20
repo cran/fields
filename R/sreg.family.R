@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "gcv.sreg" <- function(out, lambda.grid = NA, cost = 1, 
@@ -152,7 +152,7 @@
     list(gcv.grid = gcv.grid, lambda.est = lambda.est)
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg" <- function(x, y, lambda = NA, df = NA, offset = 0, 
@@ -255,13 +255,22 @@
         # what the routine does is controlled by array job
         # spline solution evaluated at xgrid
         #
-        b <- .Fortran("css", h = as.double(h[k]), npoint = as.integer(out$np), 
-            x = as.double(out$xM), y = as.double(out$yM), wt = as.double(1/sqrt(out$weightsM)), 
-            sy = as.double(rep(0, out$np)), trace = as.double(0), 
-            diag = as.double(c(cost, offset, rep(0, (out$np - 
-                2)))), cv = as.double(0), ngrid = as.integer(NG), 
-            xg = as.double(xgrid), yg = as.double(rep(0, NG)), 
-            job = as.integer(job), ideriv = as.integer(0), ierr = as.integer(0))
+        b <- .Fortran("css",  PACKAGE="fields",
+                      h = as.double(h[k]),
+                      npoint = as.integer(out$np), 
+                      x = as.double(out$xM),
+                      y = as.double(out$yM),
+                      wt = as.double(1/sqrt(out$weightsM)), 
+                      sy = as.double(rep(0, out$np)),
+                      trace = as.double(0), 
+                      diag = as.double(c(cost, offset, rep(0, (out$np - 2)))),
+                      cv = as.double(0), ngrid = as.integer(NG), 
+                      xg = as.double(xgrid),
+                      yg = as.double(rep(0, NG)), 
+                      job = as.integer(job),
+                      ideriv = as.integer(0),
+                      ierr = as.integer(0)
+                      )
         if (find.diagA) {
             diagA[, k] <- b$diag
         }
@@ -289,7 +298,7 @@
     return(out)
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.df.to.lambda" <- function(df, x, wt, guess = 1, 
@@ -322,35 +331,35 @@
     exp(out)
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fdf" <- function(h, info) {
     sreg.trace(h, info) - info$df
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fgcv" <- function(lam, obj) {
     sreg.fit(lam, obj)$gcv
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fgcv.model" <- function(lam, obj) {
     sreg.fit(lam, obj)$gcv.model
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fgcv.one" <- function(lam, obj) {
     sreg.fit(lam, obj)$gcv.one
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fit" <- function(lam, obj, verbose = FALSE) {
@@ -383,7 +392,8 @@
     }
     #print(np)
     #\tNOTE h <- log(lam)
-    temp <- .Fortran("css", h = as.double(log(lam)), npoint = as.integer(np), 
+    temp <- .Fortran("css", PACKAGE="fields",
+                     h = as.double(log(lam)), npoint = as.integer(np), 
         x = as.double(obj$xM), y = as.double(obj$yM), wt = as.double(sqrt(1/obj$weightsM)), 
         sy = as.double(rep(0, np)), trace = as.double(0), diag = as.double(rep(0, 
             np)), cv = as.double(0), ngrid = as.integer(0), xg = as.double(0), 
@@ -410,24 +420,34 @@
         gcv.one = gcv.one)
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fs2hat" <- function(lam, obj) {
     sreg.fit(lam, obj)$shat^2
 }
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.trace" <- function(h, info) {
     N <- length(info$x)
     #\th <- log(lam)
-    temp <- (.Fortran("css", h = as.double(h), npoint = as.integer(N), 
-        x = as.double(info$x), y = as.double(rep(0, N)), wt = as.double(1/sqrt(info$wt)), 
-        sy = as.double(rep(0, N)), trace = as.double(0), diag = as.double(rep(0, 
-            N)), cv = as.double(0), ngrid = as.integer(0), xg = as.double(0), 
-        yg = as.double(0), job = as.integer(c(3, 0, 0)), ideriv = as.integer(0), 
-        ierr = as.integer(0))$trace)
+    temp <- .Fortran("css", PACKAGE="fields",
+                      h = as.double(h),
+                      npoint = as.integer(N), 
+                      x = as.double(info$x),
+                      y = as.double(rep(0, N)),
+                      wt = as.double(1/sqrt(info$wt)), 
+                      sy = as.double(rep(0, N)),
+                      trace = as.double(0),
+                      diag = as.double(rep(0, N)),
+                      cv = as.double(0),
+                      ngrid = as.integer(0),
+                      xg = as.double(0), 
+                      yg = as.double(0), job = as.integer(c(3, 0, 0)),
+                      ideriv = as.integer(0), 
+                      ierr = as.integer(0)
+                     )$trace
     return(temp)
 }

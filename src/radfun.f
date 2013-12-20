@@ -1,3 +1,8 @@
+c fields, Tools for spatial data
+c Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+c University Corporation for Atmospheric Research
+c Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+ 
 c evaluates thin plate spline radial basis function
        double precision function radfun(d2, par1, par2)
        double precision d2, par1, par2 

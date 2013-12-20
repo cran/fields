@@ -32,8 +32,8 @@ temp1<- predict( out, xnew=xnew, Z=Znew)
 temp2<- predict( out2, x=xnew, Z=Znew)
 test.for.zero( temp1,temp2, tag="new x's new Z's")
 
-temp1<- predict.surface( out, nx=20, ny=20, drop.Z=TRUE, extrap=TRUE)
-temp2<- predict.surface( out2, nx=20, ny=20, drop.Z=TRUE, extrap=TRUE)
+temp1<- predictSurface( out, nx=20, ny=20, drop.Z=TRUE, extrap=TRUE)
+temp2<- predictSurface( out2, nx=20, ny=20, drop.Z=TRUE, extrap=TRUE)
 test.for.zero( temp1$z,temp2$z, tag="predicting on surface with drop.Z")
 
 

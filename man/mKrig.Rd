@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -133,7 +133,7 @@ example the wendland.cov function supports derivatives.
 \code{mKrig.coef} finds the "d" and "c" coefficients represent the
 solution using the previous cholesky decomposition for a new data
 vector. This is used in computing the prediction standard error in
-predict.se.mKrig and can also be used to evalute the estimate
+predictSE.mKrig and can also be used to evalute the estimate
 efficiently at new vectors of observations provided the locations and
 covariance remain fixed.
 
@@ -255,7 +255,7 @@ to \code{np} then these are the diagonal elements of A(lamdba).}
 # nearly interpolate using defaults (Exponential covariance range = 2.0)
 # see also mKrig.MLE to choose lambda by maxmimum likelihood
   out<- mKrig( x,y, theta = 2.0, lambda=.01)
-  out.p<- predict.surface( out)
+  out.p<- predictSurface( out)
   surface( out.p)
 #
 # NOTE this should be identical to 
@@ -356,7 +356,7 @@ look2<-mKrig( x,y, cov.function="wendland.cov",k=2, theta=.2,
             lambda=.1)
 
 # take a look at fitted surface
-predict.surface(look2)-> out.p
+predictSurface(look2)-> out.p
 surface( out.p)
 
 # this works because the number of nonzero elements within distance theta

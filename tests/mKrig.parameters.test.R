@@ -158,31 +158,31 @@ t(Mc)%*%Mc -> test
 
 
 
-set.seed( 234)
-NSIM<- 100
-hold2<-rep( NA, NSIM)
-temp.fun<- function(lglam){
-            out<-mKrig( x,ytemp,
-                        cov.function =Exp.cov, theta=4, lambda=exp(lglam))
-            return(-1* out$lnProfileLike)}
+##D set.seed( 234)
+##D NSIM<- 100
+##D hold2<-rep( NA, NSIM)
+##D temp.fun<- function(lglam){
+##D             out<-mKrig( x,ytemp,
+##D                         cov.function =Exp.cov, theta=4, lambda=exp(lglam))
+##D             return(-1* out$lnProfileLike)}
 
-hold1<-rep( NA, NSIM)
-yt<- rep( 1, N) 
-obj<- Krig( x,yt, theta=4)
+##D hold1<-rep( NA, NSIM)
+##D yt<- rep( 1, N) 
+##D obj<- Krig( x,yt, theta=4)
 
 
-E<- matrix( rnorm( NSIM*N), ncol=NSIM)
+##D E<- matrix( rnorm( NSIM*N), ncol=NSIM)
 
-for ( j in 1:NSIM){
-cat( j, " ")
-ytemp <- x%*%c(1,2) +  t(Mc)%*%E[,j] 
-out<- optim( log(.2), temp.fun, method="BFGS")
-hold2[j]<- exp(out$par)
-hold1[j]<-  gcv.Krig(obj, y=ytemp)$lambda.est[6,1]
+##D for ( j in 1:NSIM){
+##D cat( j, " ")
+##D ytemp <- x%*%c(1,2) +  t(Mc)%*%E[,j] 
+##D out<- optim( log(.2), temp.fun, method="BFGS")
+##D hold2[j]<- exp(out$par)
+##D hold1[j]<-  gcv.Krig(obj, y=ytemp)$lambda.est[6,1]
 
-}
-test.for.zero( median( hold1), .2, tol=.08)
-test.for.zero( median( hold2), .2, tol=.12)
+##D }
+##D test.for.zero( median( hold1), .2, tol=.08)
+##D test.for.zero( median( hold2), .2, tol=.12)
 
 
 

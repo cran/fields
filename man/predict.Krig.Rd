@@ -1,11 +1,11 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 \name{predict.Krig}
 \alias{predict.Krig}
-\alias{predict.derivative.Krig}
+\alias{predictDerivative.Krig}
 
 \title{
   Evaluation of Krig spatial process estimate.  
@@ -21,7 +21,7 @@ object, x = NULL, Z = NULL, drop.Z = FALSE, just.fixed
                  = FALSE, lambda = NA, df = NA, model = NA,
                  eval.correlation.model = TRUE, y = NULL, yM = NULL,
                  verbose = FALSE, ...)
-\method{predict.derivative}{Krig}(object, x = NULL,  verbose = FALSE,...)
+predictDerivative.Krig(object, x = NULL,  verbose = FALSE,...)
 
 }
 \arguments{
@@ -94,7 +94,7 @@ evaluating partial derivatives does not provide the same flexibility as
 
 }
 \seealso{
-Krig, predict.surface gcv.Krig 
+Krig, predictSurface gcv.Krig 
 }
 
 \examples{
@@ -120,7 +120,7 @@ Krig, predict.surface gcv.Krig
   out.p<- as.surface( grid, look) # reformat into $x $y $z image-type object
   contour( out.p) 
 
-# see also the functions predict.surface and surface 
+# see also the functions predictSurface and surface 
 # for functions that combine these steps 
    
 
@@ -141,9 +141,9 @@ Krig, predict.surface gcv.Krig
   data(ozone2)
 # the 16th day of this ozone spatial dataset
   fit0<- Tps( ozone2$lon.lat, ozone2$y[16,], m=3)
-  look1<- predict.derivative.Krig( fit0)
+  look1<- predictDerivative.Krig( fit0)
 # for extra credit compare this to
-  look2<- predict.derivative.Krig( fit0, x=ozone2$lon.lat)  
+  look2<- predictDerivative.Krig( fit0, x=ozone2$lon.lat)  
 # (why are there more values in look2) 
 
 

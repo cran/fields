@@ -1,15 +1,15 @@
 # fields, Tools for spatial data
-# Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 stationary.image.cov <- function(ind1, ind2, Y, cov.obj = NULL, 
-    setup = FALSE, grid, M = NULL, N = NULL, cov.function="stationary.cov", ...) {
+    setup = FALSE, grid, M = NULL, N = NULL, cov.function="stationary.cov",delta=NULL, cov.args=NULL, ...) {
     #
     # if cov object is missing then create
     # basically need to enlarge domain and find the FFT of the
     # covariance
     #
-    cov.args<-list(...)
+    cov.args<-c( cov.args, list(...))
     if (is.null(cov.obj)) {
         dx <- grid$x[2] - grid$x[1]
         dy <- grid$y[2] - grid$y[1]
@@ -18,7 +18,12 @@ stationary.image.cov <- function(ind1, ind2, Y, cov.obj = NULL,
         #
         # determine size of padding
         # default is twice domain and will then yeild exact results
-        #
+        # delta indicates that covariance is zero beyond a distance delta
+        # so using a smaller grid than twice domain will stil give exact results.
+        if(!is.null(delta)){
+           M<- ceiling(m + 2*delta/dx)
+           N<- ceiling(n + 2*delta/dy)
+         }
         if (is.null(M)) 
             M <- (2 * m)
         if (is.null(N)) 
@@ -27,7 +32,7 @@ stationary.image.cov <- function(ind1, ind2, Y, cov.obj = NULL,
         center <- matrix(c((dx * M)/2, (dy * N)/2), nrow = 1, 
             ncol = 2)
         #
-        # here is where the actual covarinace form is used
+        # here is where the actual covariance form is used
         # note passed arguments from call for parameters etc.
         #
         out<- do.call(cov.function, c(cov.args, list(x1 = xg, x2 = center)))  
@@ -36,7 +41,7 @@ stationary.image.cov <- function(ind1, ind2, Y, cov.obj = NULL,
            out <- spam2full(out)
          }
         # coerce to a matrix (image)
-           out<- matrix( c(out), nrow = M, ncol = N) 
+           out<- matrix( c(out), nrow = M, ncol = N)
         temp <- matrix(0, nrow = M, ncol = N)
         #
         # a simple way to normalize. This could be avoided by

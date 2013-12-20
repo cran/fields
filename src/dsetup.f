@@ -1,3 +1,8 @@
+c fields, Tools for spatial data
+c Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+c University Corporation for Atmospheric Research
+c Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+ 
       SUBROUTINE dSETUP(X,WGHT,Y,NPOINT,V,QTY,NMAX,itp,ierr)
 C   PUT DELX=X(.+1)-X(.) INTO V(.,4)
 C   PUT THE THREE BANDS OF THE MATRIX Q-TRANSP*D INTO

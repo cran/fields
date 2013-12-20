@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
+% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -7,6 +7,7 @@
 \alias{stationary.image.cov}
 \alias{Exp.image.cov}
 \alias{Rad.image.cov}
+\alias{wendland.image.cov}
 \alias{matern.image.cov}
 \title{
 Exponential, Matern and general covariance functions for 2-d 
@@ -14,19 +15,23 @@ gridded locations.
 }
 \description{
 Given two sets of locations defined on a 2-d grid efficiently multiplies a 
-cross covariance with a vector.  Exp.image.cov and matern.image.cov will be  
-depreciated functions and are replaced by stationary.image.cov.
+cross covariance with a vector. The intermediate compuations (the setup)
+can also be used for fast simulation of the processes on a grid using the circulant
+embedding technique. 
 }
 \usage{
 stationary.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, 
-grid, M=NULL,N=NULL,cov.function="stationary.cov", ...) 
+grid, M=NULL,N=NULL,cov.function="stationary.cov", delta = NULL, cov.args = NULL, ...) 
 
 Exp.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...)
 
 Rad.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid, ...)
 
 matern.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, grid,
-M=NULL,N=NULL,...)
+M=NULL,N=NULL,theta= 1.0, smoothness=.5)
+
+wendland.image.cov(ind1, ind2, Y, cov.obj = NULL, 
+    setup = FALSE, grid, M = NULL, N = NULL, cov.args=NULL, ...)
 
 }
 \arguments{
@@ -43,6 +48,7 @@ be ind2. If ind1 is missing ind2 is coerced to be all grid locations.
 Vector to multiply by the cross covariance matrix. Y must be the same
 locations as those referred to by ind2.
 }
+\item{cov.args}{Any additional arguments or parameters to the covariance function.}
 \item{cov.obj}{
 A list with the information needed to do the multiplication by
 convolutions. This is usually found by using the returned list when
@@ -53,6 +59,8 @@ setup=T.
 If true do not do the multiplication but just return the covariance object
 required by this function. 
 }
+\item{delta}{A distance that indicates the range of the covariance when it has compact support.
+For example this is the theta parameter in the Wendland covariance.}
 \item{grid}{
 A grid list giving the X and Y grids for the image. (See example below.)
 This is only required if setup is true. 
@@ -67,13 +75,12 @@ result but  smaller values of M will yield an approximate, faster result.
 }
 
 \item{N}{Size of y-grid used to compute multiplication by the FFT.}
-
+\item{theta}{Scale parameter for Matern.}
+\item{smoothness}{Smoothness parameter for Matern (.5=Exponential)}
 \item{\dots}{
 Any arguments to pass to the covariance function in setting up the
 covariance object. This is only required if setup is TRUE.
-For the "Matern" the arguments are theta ( the range default=1), 
-and smoothness (default=.5 giving the exponential).
-theta can be a matrix reflecting a rotation and scaling of 
+For \code{stationary.image.cov} one can include \code{V} a matrix reflecting a rotation and scaling of 
 coordinates. See stationary.cov for details. }
 }
 \value{
@@ -195,17 +202,22 @@ image( matrix( result, 100,100)) # NOTE that is also a smoother!
  image.plot(cov.obj$grid$x,cov.obj$grid$y, temp)
 # or persp( cov.obj$grid$x,cov.obj$grid$y, temp) 
 
-# check out the Matern 
- cov.obj<- stationary.image.cov( 
-             setup=TRUE, grid=grid,Covariance="Matern", theta=1.25, smoothness=2)
+# check out the Matern
+ grid<- list( x= seq(-105,-99,,64), y= seq( 40,45,,64)) 
+ cov.obj<- matern.image.cov( 
+             setup=TRUE, grid=grid, theta=.55, smoothness=1.0)
  Y<- matrix(0,64,64)
  Y[16,16]<- 1
 
- result<- stationary.image.cov( Y= Y,cov.obj=cov.obj)
+ result<- matern.image.cov( Y= Y,cov.obj=cov.obj)
   temp<-  matrix( result, cov.obj$m,cov.obj$n)
  image.plot( cov.obj$grid$x,cov.obj$grid$y, temp)
 
-# Note we have centered at the location (16,16) for this case
+# Note we have centered at the location (grid$x[16],grid$y[16]) for this case
+#  using sim.rf to simulate an Matern field
+  look<- sim.rf( cov.obj)
+  image.plot( grid$x, grid$y, look)
+
 
 }
 

@@ -187,11 +187,11 @@ tps.fit<-Tps( x,y, scale.type="unscaled", Z= Zcov)
 ########### future debugging ...
 
 # full surface with covariate
-#   curv.mean1 <- predict.surface(tps.fit, grid.list = gridlist, extrap = TRUE,
+#   curv.mean1 <- predictSurface(tps.fit, grid.list = gridlist, extrap = TRUE,
 ##        Z =Zcov.grid, drop.Z = FALSE)$z
 
 # just the spline surface
-#   curv.mean2 <- predict.surface(tps.fit, grid.list = gridlist,
+#   curv.mean2 <- predictSurface(tps.fit, grid.list = gridlist,
 #                   extrap = TRUE,drop.Z=TRUE)$z
 
 # explicitly here is the difference surface of curv.mean1 and curv.mean2
@@ -200,22 +200,22 @@ tps.fit<-Tps( x,y, scale.type="unscaled", Z= Zcov)
 
 ## new tests
 
-   predict.surface.se( tps.fit, grid.list=gridlist, extrap=TRUE,
+   predictSurfaceSE( tps.fit, grid.list=gridlist, extrap=TRUE,
                drop.Z=TRUE)$z-> curv.var1
 
-   predict.se( tps.fit, xg, drop.Z=TRUE)-> curv.var2
+   predictSE( tps.fit, xg, drop.Z=TRUE)-> curv.var2
      test.for.zero( curv.var1, curv.var2)
 
 # SE with covariates included
-   predict.se( tps.fit, xg, Z=Zcov.grid, drop.Z=FALSE)**2-> curv.var1
+   predictSE( tps.fit, xg, Z=Zcov.grid, drop.Z=FALSE)**2-> curv.var1
 #   as.surface( gridlist, curv.var1)$z-> curv.var1
 
 # SE for just the spline part
-   predict.se( tps.fit, xg, drop.Z=TRUE)**2-> curv.var2
+   predictSE( tps.fit, xg, drop.Z=TRUE)**2-> curv.var2
 #   as.surface( gridlist, curv.var2)$z-> curv.var2
 
 # SE for just the fixed part
- predict.se( tps.fit, xg,Z=Zcov.grid, drop.Z=FALSE,
+ predictSE( tps.fit, xg,Z=Zcov.grid, drop.Z=FALSE,
                             just.fixed=TRUE )**2-> curv.var3
 # as.surface( gridlist, curv.var3)$z-> curv.var3
 
@@ -268,6 +268,6 @@ S1<- out$rhohat*Rad.cov(out$x, xg, p=2)
    look<- diag( look)
    test.for.zero(curv.var3 ,look, tag="SE for fixed part")
 
-cat("All done with Z tests and Krig/Tps including predict and predict.se !", 
+cat("All done with Z tests and Krig/Tps including predict and predictSE !", 
           fill=TRUE)
 options( echo=TRUE)
