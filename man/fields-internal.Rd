@@ -42,6 +42,8 @@
 \alias{krig.image.parameters}
 
 \alias{makeSimulationGrid}
+\alias{makeSimulationGrid2}
+\alias{makePredictionPoints}
 \alias{multWendlandGrid}
 
 \alias{minimax.crit}
@@ -50,8 +52,8 @@
 \alias{plot.spatial.design}
 \alias{predict.interp.surface}
 \alias{predict.krig.image}
-\alias{predict.sreg}
-\alias{predict.Tps}
+
+
 \alias{print.krig.image}
 \alias{print.spatial.design}
 \alias{print.sreg}
@@ -61,7 +63,6 @@
 \alias{print.summary.sreg}
 \alias{qr.q2ty}
 \alias{qr.yq2}
-
 \alias{plot.qsreg}
 \alias{predict.qsreg}
 \alias{print.qsreg}
@@ -158,8 +159,12 @@ imageplot.info (...)
 imageplot.setup(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
 horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
 
-makeSimulationGrid( mKrigObject, predictionGrid,
-                               nx, ny, gridRefinement, gridExpansion)
+
+makeSimulationGrid(mKrigObject, predictionPoints, nx, ny, nxSimulation,
+                 nySimulation, gridRefinement, gridExpansion)
+makeSimulationGrid2 (fastTpsObject, predictionPointsList,
+                               gridRefinement, gridExpansion)
+
 \method{image}{plot.plt}(...)
 \method{image}{plot.info}(...)
 
@@ -170,7 +175,7 @@ minimax.crit (obj, des = TRUE, R)
 \method{plot}{spatial.design}(x,...) 
  
 \method{predict}{interp.surface}(object, loc,...)  
-\method{predict}{sreg}(object, x, derivative = 0, model = 1,...) 
+
 \method{print}{spatial.design} (x,...) 
 \method{print}{sreg}(x, ...) 
 \method{print}{summary.Krig} (x, ...) 
@@ -178,7 +183,9 @@ minimax.crit (obj, des = TRUE, R)
 \method{print}{summary.spatial.design} (x, digits = 4,...) 
 \method{print}{summary.sreg} (x, ...) 
 
-multWendlandGrid( grid.list,center, delta, coef)
+makePredictionPoints(mKrigObject, nx, ny, predictionPointsList)
+
+multWendlandGrid( grid.list,center, delta, coef, xy = c(1, 2))
 
 qr.q2ty (qr, y) 
  

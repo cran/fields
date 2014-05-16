@@ -2,6 +2,45 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
+"predictSurfaceSE"<- function( object,...){
+  UseMethod("predictSurfaceSE")
+}
+
+"predictSurfaceSE.default" <- function(object, grid.list = NULL, 
+       extrap = FALSE, chull.mask = NA, nx = 80, ny = 80,
+       xy = c(1,2),  verbose = FALSE, ...) {
+    # NOTE: 
+    # without grid.list
+    # default is 80X80 grid on first two variables
+    # rest are set to median value of x.
+    if (is.null(grid.list)) {
+        grid.list <- fields.x.to.grid(object$x, nx = nx, ny = ny, 
+            xy = xy)
+    } 
+    # here is the heavy lifting
+    xg <- make.surface.grid(grid.list)
+# NOTE: the specific predict function called will need to do the checks
+# whether the evaluation of a large number of grid points makes sense. 
+    out <-  as.surface( xg, predictSE(object, xg,...) )
+    #
+    # if extrapolate is FALSE set all values outside convex hull to NA
+    if (!extrap) {
+        if( is.null( object$x)){
+          stop("need and x matrix in object")
+        }
+        if (is.na(chull.mask)) {
+            chull.mask <- unique.matrix(object$x[, xy])
+        }
+        out$z[!in.poly(xg[, xy], xp = chull.mask, convex.hull = TRUE)] <- NA
+    }
+    #
+    return(out)
+}
+# fields, Tools for spatial data
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "predictSE.Krig" <- function(object, x = NULL, cov = FALSE, 
     verbose = FALSE, ...) {
     #
@@ -106,3 +145,63 @@
         return(temp)
     }
 }
+
+# fields, Tools for spatial data
+# Copyright 2004-2009, Institute for Mathematics Applied to Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+"predictSE.mKrig" <- function(object, xnew = NULL, 
+    Z = NULL, verbose = FALSE, drop.Z = FALSE, ...) {
+    #
+    # name of covariance function
+    call.name <- object$cov.function.name
+    #
+    # default is to predict at data x's
+    if (is.null(xnew)) {
+        xnew <- object$x
+    }
+    if ((!drop.Z) & !is.null(object$Z)) {
+        Z <- object$Z
+    }
+    xnew <- as.matrix(xnew)
+    if (!is.null(Z)) {
+        Z <- as.matrix(Z)
+    }
+    if (verbose) {
+        print(xnew)
+        print(Z)
+    }
+    lambda <- object$lambda
+    rho <- object$rhohat
+    sigma2 <- lambda * rho
+    if (verbose) {
+        print(c(lambda, rho, sigma2))
+    }
+    k0 <- do.call(call.name, c(object$args, list(x1 = object$x, 
+        x2 = xnew)))
+    # fixed effects matrox includes both spatial drift and covariates.
+    if (!drop.Z) {
+        t0 <- t(cbind(fields.mkpoly(xnew, m = object$m), Z))
+    }
+    else {
+        stop(" drop.Z not supported")
+    }
+    #
+    # old form based on the predict function
+    #   temp1 <-  rho*(t0%*% object$Omega %*%t(t0)) -
+    #          rho*predict( object, y= k0, x=x) -
+    #          rho*predict( object, y= k0, x=x, just.fixed=TRUE)
+    
+    # alternative formula using the d and c coefficients directly.
+    hold <- mKrig.coef(object, y = k0)
+    temp1 <- rho * (colSums(t0 * (object$Omega %*% t0)) - colSums((k0) * 
+        hold$c) - 2 * colSums(t0 * hold$d))
+    # find marginal variances -- trival in the stationary case!
+    temp0 <- rho * do.call(call.name, c(object$args, list(x1 = xnew, 
+        marginal = TRUE)))
+    # Add marginal variance to part from estimate
+    temp <- temp0 + temp1
+    return(sqrt(temp))
+}
+
+

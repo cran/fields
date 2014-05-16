@@ -5,36 +5,39 @@
 
 \name{predictSurface}
 \alias{predictSurface}
+\alias{predictSurface.default}
 \alias{predictSurface.fastTps}
 \alias{predictSurfaceSE}
+\alias{predictSurfaceSE.default}
+
 
 \title{
-  Evaluates a fitted function as a surface that is suitable for plotting with 
+  Evaluates a fitted function or the prediction error as a surface that is suitable for plotting with 
 the image, persp, or contour functions.
 }
 \description{
-Evaluates a a fitted model on a 2-D grid keeping any other variables constant.
+Evaluates a a fitted model or the prediction error on a 2-D grid keeping any other variables constant.
 The resulting object is suitable for use with functions for viewing 3-d
 surfaces.  
 }
 \usage{
-predictSurface(object, grid.list = NA, extrap = FALSE, chull.mask =
-                 NA, nx = 80, ny = 80, xy = c(1, 2), order.variables="xy",
-                  verbose=FALSE,...)
+\method{predictSurface}{default}(object, grid.list = NULL, 
+                     extrap = FALSE, chull.mask = NA, nx = 80, ny = 80,
+                        xy = c(1,2),  verbose = FALSE, ...)
 
-predictSurface.fastTps(object, grid.list, ynew = NULL, Z = NULL, drop.Z =
-                                FALSE, just.fixed = FALSE)
+\method{predictSurface}{fastTps}(object, grid.list = NULL, 
+       extrap = FALSE, chull.mask = NA, nx = 80, ny = 80,
+       xy = c(1,2),  verbose = FALSE, ...)
 
+\method{predictSurfaceSE}{default}( object, grid.list = NULL, extrap =
+FALSE, chull.mask = NA, nx = 80, ny = 80, xy = c(1,2), verbose =
+FALSE, ...)
 
-
-predictSurfaceSE(object, grid.list = NA, extrap = FALSE, chull.mask =
-                 NA, nx = 80, ny = 80, xy = c(1, 2), 
-                 order.variables="xy",verbose=FALSE, ...)
 }
 \arguments{
 \item{object}{
 An object from fitting a function to data. In FIELDS this is usually a
-Krig object. 
+Krig, mKrig, or fastTps object. 
 }
 \item{grid.list}{
 A list with as many components as variables describing the surface. 
@@ -43,6 +46,7 @@ grid points for evaluation. If the matrix or data frame has column names,
 these must appear in the grid list. See the grid.list help file for more
 details. If this is omitted and the fit just depends on two variables the
 grid will be made from the ranges of the observed variables. 
+(See the function \code{fields.x.to.grid}.)
  
 }
 \item{extrap}{
@@ -64,10 +68,6 @@ hull. Default is to form the convex hull from the observations if this
 argument is missing (and extrap is false).  
 }
 
-\item{drop.Z}{If TRUE the fixed part of model depending on covariates is omitted.}
-
-\item{just.fixed}{If TRUE the nonparametric surface is omitted.}
-
 \item{nx}{
 Number of grid points in X axis. }
 \item{ny}{
@@ -82,39 +82,48 @@ second and fourth variables with  variables 1 and 3 fixed at their median
 values. NOTE: this argument is ignored if a grid.list arguments is 
 passed. }
 
-\item{order.variables}{
-If "xy" the variables in grid.list are taken in order as "x" then "y". 
-If "yx" the roles are reversed.  Suppose a grid.list had components
-lat, lon, elevation and one wanted  a lon/lat surface at a fixed 
-elevation. Then one would set to "yx" to make "x" lon and "y" lat. 
-}
-\item{ynew}{ New values of y used to reestimate the surface.}
- \item{verbose}{If TRUE prints out some imtermediate results for debugging.}
-\item{Z}{A matrix of covariates for the fixed part of model.}
+
  \item{\dots}{
 Any other arguments to pass to the predict function associated with the fit
 object. 
+
+Some usual arguments for several of the fields fitted objects include:
+\describe{
+\item{drop.Z}{If TRUE the fixed part of model depending on covariates is omitted.}
+
+\item{just.fixed}{If TRUE the nonparametric surface is omitted.}
+
+\item{ynew}{ New values of y used to reestimate the surface.}
+
+\item{Z}{A matrix of covariates for the fixed part of model.}
 }
 
+}
+
+ \item{verbose}{If TRUE prints out some imtermediate results for debugging.}
 }
 \value{
-The usual list components for making contour and perspective plots 
-(x,y,z) along  with labels for the x and y variables. For \code{predictSurface.derivative} the component \code{z} is a three dimensional array  with \code{nx}, \code{ny}, 2. }
-\details{
- This function creates the right grid using the grid.list information or
-the attribute in xg, calls the predict 
-function for the
-object with these points and also adding any extra arguments passed in the
-... section, and then reforms the results as a surface object
-(as.surface). To determine the what parts of the prediction grid are in
-the convex hull of the data the function \code{in.poly} is used. The
-argument inflation in this function is used to include a small margin
-around the outside of the polygon so that point on convex hull are
-included. This potentially confusing modification is to prevent excluding
-grid points that fall exactly on the ranges of the data. Also note that as written there is no computational savings for evaluting only the convex subset compared to the full grid. 
+The usual list components for making contour and perspective plots
+(x,y,z) along with labels for the x and y variables. For
+\code{predictSurface.derivative} the component \code{z} is a three
+dimensional array with \code{nx}, \code{ny}, 2. } \details{ This
+function creates the right grid using the grid.list information or the
+attribute in xg, calls the predict function for the object with these
+points and also adding any extra arguments passed in the ... section,
+and then reforms the results as a surface object (as.surface). To
+determine the what parts of the prediction grid are in the convex hull
+of the data the function \code{in.poly} is used. The argument
+inflation in this function is used to include a small margin around
+the outside of the polygon so that point on convex hull are
+included. This potentially confusing modification is to prevent
+excluding grid points that fall exactly on the ranges of the
+data. Also note that as written there is no computational savings for
+evaluting only the convex subset compared to the full grid.
 
-\code{predictSurface.fastTps} is a specific version ( m=2, and k=2) that can be much more efficient because it takes advantage of a low level FORTRAN call to evaluate the Wendland covariance function. Use \code{predictSurface} or 
-\code{predict} for other choices of m and k.
+\code{predictSurface.fastTps} is a specific version ( m=2, and k=2)
+that can be much more efficient because it takes advantage of a low
+level FORTRAN call to evaluate the Wendland covariance function. Use
+\code{predictSurface} or \code{predict} for other choices of m and k.
 
 
 

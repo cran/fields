@@ -84,7 +84,7 @@ test.for.zero(   mean(hold3), 0, relative=FALSE, tol=.02,
 
 
 data( ozone2)
-as.image(ozone2$y[16,], x= ozone2$lon.lat, ncol=24, nrow=20, 
+as.image(ozone2$y[16,], x= ozone2$lon.lat, ny=24, nx=20, 
           na.rm=TRUE)-> dtemp
 #
 # A useful disctrtized version of ozone2 data
@@ -139,7 +139,7 @@ cov", tol=1e-8)
 # redo data set to smaller grid size
 ##D N1<-4
 ##D N2<-5
-##D as.image(ozone2$y[16,], x= ozone2$lon.lat, ncol=N2, nrow=N1, 
+##D as.image(ozone2$y[16,], x= ozone2$lon.lat, ny=N2, nx=N1, 
 ##D          na.rm=TRUE)-> dtemp
 #
 # A useful discretized version of ozone2 data

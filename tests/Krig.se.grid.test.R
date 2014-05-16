@@ -13,7 +13,7 @@ test.for.zero.flag<-1
 long.test.flag<- FALSE
 
 data( ozone2)
-as.image(ozone2$y[16,], x= ozone2$lon.lat, ncol=24, nrow=20, 
+as.image(ozone2$y[16,], x= ozone2$lon.lat, ny=24, nx=20, 
           na.rm=TRUE)-> dtemp
 #
 # A useful discretized version of ozone2 data

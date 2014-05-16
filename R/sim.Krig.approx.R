@@ -2,7 +2,7 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"sim.Krig.approx" <- function(object, grid.list = NA, 
+"sim.Krig.approx" <- function(object, grid.list = NULL, 
     M = 1, nx = 40, ny = 40,  verbose = FALSE, 
      extrap = FALSE) {
     # check that this is a stationary covariance
@@ -10,10 +10,7 @@
         stop("covariance function is not stationary.cov")
     }
     # create grid if not passed
-    if (is.na(grid.list)[1]) {
-        if (is.null(object$x)) {
-            stop("Need a an X matrix in the output object")
-        }
+    if ( is.null(grid.list) ) {
         grid.list <- fields.x.to.grid(object$x, nx = nx, ny = ny) 
     }
     #
@@ -27,7 +24,6 @@
     #
     glist <- list(x = temp$x, y = temp$y)
     # figure out what sigma and rho should be
-   
         sigma2 <- object$best.model[2]
         rho <- object$best.model[3]
     #

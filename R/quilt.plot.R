@@ -3,12 +3,16 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "quilt.plot" <- function(x, y, z, nx = 64, ny = 64, 
-    nrow = nx, ncol = ny, grid = NULL, add.legend = TRUE, add = FALSE, 
-    col = tim.colors(256), ...) {
+     grid = NULL, add.legend = TRUE, add = FALSE, 
+    col = tim.colors(256),nrow = NULL, ncol = NULL, ...) {
     #
     # note that nrow and ncol refer to the resulting 'image format' for plotting.
     # here the x values are the rows and the y values are the columns
     #
+    if( !is.null(nrow)|!is.null(nrow)){
+      nx<- nrow
+      ny<- ncol
+     }
     x <- as.matrix(x)
     if (ncol(x) == 2) {
         z <- y
@@ -23,7 +27,7 @@
     # at this point x should be a 2 column matrix of x-y locations
     #  z is a vector or one column matrix of the z values.
     #discretize data
-    out.p <- as.image(z, x = x, nrow = nrow, ncol = ncol, na.rm = TRUE, 
+    out.p <- as.image(z, x = x, nx = nx, ny = ny, na.rm = TRUE, 
         grid = grid)
     #plot it
     if (add.legend) {

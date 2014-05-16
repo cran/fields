@@ -6,7 +6,7 @@
     setup = FALSE, grid = NULL, x = NULL, nrow = 64, ncol = 64, 
     surface = TRUE, cov.function = gauss.cov, Mwidth = NULL, 
     Nwidth = NULL, ...) {
-    temp <- as.image(Y, ind, grid = grid, nrow = nrow, ncol = ncol, 
+    temp <- as.image(Y, ind, grid = grid, nx = nrow, ny = ncol, 
         x = x)
     Y <- temp$z
     NN <- temp$weights

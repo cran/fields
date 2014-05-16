@@ -2,7 +2,7 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"surface.Krig" <- function(object, grid.list = NA, 
+"surface.Krig" <- function(object, grid.list = NULL, 
     extrap = FALSE, graphics.reset = NULL, xlab = NULL, ylab = NULL, 
     main = NULL, zlab = NULL, zlim = NULL, levels = NULL, type = "C", 
     nx = 80, ny = 80, ...) {
@@ -42,7 +42,7 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"surface.mKrig" <- function(object, grid.list = NA, 
+"surface.mKrig" <- function(object, grid.list = NULL, 
     extrap = FALSE, graphics.reset = NULL, xlab = NULL, ylab = NULL, 
     main = NULL, zlab = NULL, zlim = NULL, levels = NULL, type = "C", 
     nx = 80, ny = 80, ...) {

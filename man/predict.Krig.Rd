@@ -5,8 +5,9 @@
 
 \name{predict.Krig}
 \alias{predict.Krig}
+\alias{predict.Tps}
 \alias{predictDerivative.Krig}
-
+\alias{predict.fastTps}
 \title{
   Evaluation of Krig spatial process estimate.  
 }
@@ -23,34 +24,24 @@ object, x = NULL, Z = NULL, drop.Z = FALSE, just.fixed
                  verbose = FALSE, ...)
 predictDerivative.Krig(object, x = NULL,  verbose = FALSE,...)
 
+\method{predict}{Tps}(object, ... )
+
+\method{predict}{fastTps}(object, xnew = NULL, grid.list = NULL, ynew = NULL,
+                 derivative = 0, Z = NULL, drop.Z = FALSE, just.fixed =
+                 FALSE, xy = c(1, 2), ...)
+
 }
 \arguments{
-\item{object}{
-Fit object from the Krig or Tps function. 
-}
-\item{x}{
-Matrix of x values on which to evaluate the kriging surface. 
-If omitted, the data x values, i.e. out\$x  will be used. 
-}
-\item{Z}{ Vector/Matrix of additional covariates to be included in 
-fixed part of spatial model}
-\item{drop.Z}{ If TRUE only spatial fixed part of model is evaluated. 
-i.e. Z covariates are not used. 
-}
-\item{just.fixed}{
-Only fixed part of model is evaluated}
 
-\item{lambda}{
-Smoothing parameter. If omitted, out\$lambda will be used. 
-(See also df and gcv arguments)
-}
+\item{derivative}{The degree of the derivative to be evauated. Default is
+0 (evaluate the function itself), 1 is supported by some covariance functions,
+Higher derivatives are not supported in this version and for mKrig.}
+
 \item{df}{
 Effective degrees of freedom for the predicted surface. This can be used
 in place of lambda ( see the function Krig.df.to.lambda)
 }
-\item{model}{
-Generic argument that may be used to pass a different lambda.  
-}
+
 \item{eval.correlation.model}{
 If true ( the default) will multiply the predicted function by marginal
 sd's
@@ -58,25 +49,54 @@ and add the mean function. This usually what one wants. If false will
 return predicted surface in the standardized scale. The main use of this
 option is a call from Krig to find MLE's of rho and sigma2     
 }
-\item{y}{
-Evaluate the estimate using the new data vector y (in the same order as
-the old data). This is equivalent
-to recomputing the Krig object with this new data but is more efficient
-because many pieces can be reused. Note that the x values are assumed to
-be the same. 
-}
-\item{yM}{
-If not NULL evaluate the estimate using this vector as the replicate mean 
-data. That is, assume the full data has been collapsed into replicate 
-means in the same order as xM. The replicate weights are assumed to be 
-the same as the original data. (weightsM)
+
+\item{grid.list}{A \code{grid.list} specfiying a grid of locations to
+evaluate the fitted surface.}
+
+
+\item{just.fixed}{ Only fixed part of model is evaluated}
+
+
+\item{lambda}{ Smoothing parameter. If omitted, out\$lambda will be
+used.  (See also df and gcv arguments) } \item{model}{ Generic
+argument that may be used to pass a different lambda.  }
+\item{object}{ Fit object from the Krig, Tps, mKrig, or fastTps
+functions.  }
+
+ \item{verbose}{ Print out all kinds of intermediate stuff for
+debugging }
+
+\item{xy}{The column positions that locate the x and y variables for
+evaluating on a grid.  This is mainly useful if the surface has more
+than 2 dimensions.}
+
+\item{y}{ Evaluate the estimate using the new data vector y (in the
+same order as the old data). This is equivalent to recomputing the
+Krig object with this new data but is more efficient because many
+pieces can be reused. Note that the x values are assumed to be the
+same.  } \item{x}{ Matrix of x values on which to evaluate the kriging
+surface.  If omitted, the data x values, i.e. out\$x will be used.  }
+
+\item{xnew}{Same as x above.}
+
+\item{ynew}{Same as y above.}  
+
+\item{yM}{ If not NULL evaluate the
+estimate using this vector as the replicate mean data. That is, assume
+the full data has been collapsed into replicate means in the same
+order as xM. The replicate weights are assumed to be the same as the
+original data. (weightsM) }
+
+
+\item{Z}{ Vector/Matrix of additional covariates to be included in
+fixed part of spatial model} \item{drop.Z}{ If TRUE only spatial fixed
+part of model is evaluated.  i.e. Z covariates are not used.  }
+
+\item{\dots}{Other arguments passed to covariance function. In the case of
+\code{fastTps} these are the same arguments as \code{predict.mKrig}.
+This argument is usually not needed. 
 }
 
- \item{verbose}{
-Print out all kinds of intermediate stuff for debugging 
-}
-
-\item{\dots}{Other arguments passed to predict.}
 }
 \value{
 Vector of predicted responses or a matrix of the partial derivatives. 

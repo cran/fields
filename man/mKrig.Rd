@@ -24,7 +24,7 @@ mKrig(x, y, weights = rep(1, nrow(x)),  Z=NULL,
     m = 2, chol.args=NULL,cov.args=NULL, find.trA = TRUE, NtrA = 20,
                  iseed = 123, llambda=NULL,  ...)
 
-\method{predict}{mKrig}( object, xnew=NULL,ynew=NULL, derivative=0, Z=NULL,
+\method{predict}{mKrig}( object, xnew=NULL,ynew=NULL, grid.list = NULL, derivative=0, Z=NULL,
                            drop.Z=FALSE,just.fixed=FALSE, ...)
 \method{summary}{mKrig}(object, ...)
 \method{print}{mKrig}( x, digits=4,... )
@@ -78,7 +78,8 @@ calls to the covariance function.}
 freedom using a simple Monte Carlo method. This will add to the
 computational burden by approximately \code{NtrA} solutions of the
 linear system but the cholesky decomposition is reused.}
- 
+ \item{grid.list}{A grid.list to evaluate the surface in place of specifying 
+            arbitrary locations.}
 \item{NtrA}{Number of Monte Carlo samples for the trace. But if NtrA
 is greater than or equal to the number of observations the trace is
 computed exactly.}
@@ -123,6 +124,10 @@ over several data vectors without explicit looping.A big difference in
 the computations is that an exact expression for thetrace of the
 smoothing matrix is (trace A(lambda)) is computationally expensive and
 a Monte Carlo approximation is supplied instead.
+
+See \code{predictSE.mKrig} for prediction standard errors and 
+\code{sim.mKrig.approx} to quantify the uncertainty in the estimated function using conditional 
+simulation.  
 
 \code{predict.mKrig} will evaluate the derivatives of the estimated
 function if derivatives are supported in the covariance function.  For
@@ -243,7 +248,8 @@ to \code{np} then these are the diagonal elements of A(lamdba).}
 
 }
 \author{Doug Nychka, Reinhard Furrer }
-\seealso{Krig, surface.mKrig, Tps, fastTps, \code{ \link{mKrig.grid}}}
+\seealso{ Krig, surface.mKrig, Tps, fastTps, predictSurface, predictSE.mKrig, sim.mKrig.approx, 
+  \code{ \link{mKrig.grid}}}
 \examples{
 #
 # Midwest ozone data  'day 16' stripped of missings 

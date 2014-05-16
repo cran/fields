@@ -2,6 +2,12 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
+# wrapper for Tps object 
+"predict.Tps"<- function(object, ...){
+  UseMethod("Krig")
+ }
+
 "predict.Krig" <- function(object, x = NULL, Z = NULL, 
     drop.Z = FALSE, just.fixed = FALSE, lambda = NA, df = NA, 
     model = NA, eval.correlation.model = TRUE, y = NULL, yM = NULL, 

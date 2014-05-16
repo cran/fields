@@ -5,8 +5,9 @@
 
 \name{sreg}
 \alias{sreg}
+\alias{predict.sreg}
 \title{
-  Smoothing spline regression
+  Cubic smoothing spline regression
 }
 \description{
 Fits a cubic smoothing spline to univariate data. The amount of
@@ -21,6 +22,8 @@ sreg(x, y, lambda = NA, df = NA, offset = 0,
      lammax = NA, verbose = FALSE,
      do.cv = TRUE, method = "GCV", rmse = NA,
       na.rm =  TRUE)
+
+\method{predict}{sreg}(object, x, derivative = 0, model = 1,...) 
 }
 
 \arguments{
@@ -36,6 +39,8 @@ smoothing parameter estimated by GCV. NOTE: lam here is equivalent to
 the value lambda*N  in Tps/Krig  where N is the number of unique observations.
 See example below.}
 
+\item{object}{An sreg object.}
+\item{derivative}{Order of deriviatve to evaluate. Must be 0,1, or 2.}
 \item{df}{
 Amount of smoothing in term of effective degrees of freedom for the
 spline}
@@ -44,6 +49,8 @@ spline}
 an offset added to the term cost*degrees of freedom in the denominator of
 the GCV function. (This would be used for adjusting the df from fitting
 other models such as in back-fitting additive models.)}
+
+\item{model}{Specifies which model parameters to use.}
 
 \item{weights}{
 A vector that is proportional to the reciprocal variances of the
@@ -95,6 +102,8 @@ parameter. Choices are
 Value of the root mean square error to match by varying lambda.}
 
 \item{na.rm}{If TRUE NA's are removed from y before analysis.}
+
+\item{\dots}{Other optional arguments to pass to the predict function.}
 
 }
 \value{

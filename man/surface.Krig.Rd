@@ -16,15 +16,17 @@ quick way to look at the fitted function over reasonable default
 ranges.  
 }
 \usage{
-\method{surface}{Krig}(object, grid.list = NA, extrap = FALSE, graphics.reset =
-                 NULL, xlab = NULL, ylab = NULL, main = NULL, zlab =
-                 NULL, zlim = NULL, levels = NULL, type = "C", nx =
-                 80, ny = 80, ...)
+\method{surface}{Krig}(
+object, grid.list = NULL, extrap = FALSE,
+                 graphics.reset = NULL, xlab = NULL, ylab = NULL, main
+                 = NULL, zlab = NULL, zlim = NULL, levels = NULL, type
+                 = "C", nx = 80, ny = 80, ...)
 
-\method{surface}{mKrig}(object,
-grid.list = NA, extrap = FALSE, graphics.reset = NULL, xlab = NULL,
-        ylab = NULL, main = NULL, zlab = NULL, zlim = NULL, levels = NULL,
-        type = "C", nx=80, ny=80, ...)
+\method{surface}{mKrig}(
+object, grid.list = NULL, extrap = FALSE,
+                 graphics.reset = NULL, xlab = NULL, ylab = NULL, main
+                 = NULL, zlab = NULL, zlim = NULL, levels = NULL, type
+                 = "C", nx = 80, ny = 80, ...)
 }
 \arguments{
 \item{object}{

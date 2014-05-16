@@ -1,6 +1,6 @@
 
-R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
-Copyright (C) 2013 The R Foundation for Statistical Computing
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin10.8.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library(fields)
 Loading required package: spam
 Loading required package: grid
-Spam version 0.40-0 (2013-09-11) is loaded.
+Spam version 0.41-0 (2014-02-26) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
 and overview of this package.
 Help for individual functions is also obtained by adding the
@@ -94,4 +94,4 @@ All done with Z tests and Krig/Tps including predict and predictSE !
 > 
 > proc.time()
    user  system elapsed 
-  1.870   0.034   1.895 
+  1.361   0.032   1.383 

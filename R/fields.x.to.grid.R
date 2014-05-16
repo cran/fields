@@ -2,8 +2,10 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"fields.x.to.grid" <- function(x, nx = 80, ny = 80, 
-    xy = c(1, 2)) {
+"fields.x.to.grid" <- function(x, nx = 80, ny = 80, xy = c(1, 2)) {
+    if (is.null(x)) {
+       stop("Need a an x matrix to determine ranges for grid")
+        }
     M <- ncol(x)
     grid.list <- as.list(1:M)
     # add columns names

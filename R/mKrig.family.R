@@ -291,7 +291,7 @@ summary.mKrig <- function(object, ...) {
     print.mKrig(object, ...)
 }
 
-predict.mKrig <- function(object, xnew = NULL, ynew = NULL, 
+predict.mKrig <- function(object, xnew = NULL, ynew = NULL, grid.list=NULL,
     derivative = 0, Z = NULL, drop.Z = FALSE, just.fixed = FALSE, 
     ...) {
     # the main reason to pass new args to the covariance is to increase
@@ -300,6 +300,9 @@ predict.mKrig <- function(object, xnew = NULL, ynew = NULL,
     # list object$args
     cov.args <- list(...)
     # predict at observation locations by default
+    if( !is.null(grid.list)){
+        xnew<- make.surface.grid(grid.list)
+      }
     if (is.null(xnew)) {
         xnew <- object$x
     }

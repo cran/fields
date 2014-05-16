@@ -35,8 +35,8 @@ irregular 2-d points to a grid.
 parse.grid.list( grid.list, order.variables="xy")
 fields.x.to.grid(x,nx=80, ny=80, xy=c(1,2))
 fields.convert.grid( midpoint.grid )
-discretize.image( x, m = 64, n = 64,  grid = NULL,
-        expand = c(1, 1), boundary.grid=FALSE )
+discretize.image(x, m = 64, n = 64, grid = NULL, expand = c(1, 1),
+                 boundary.grid = FALSE, na.rm = TRUE)
 make.surface.grid( grid.list)
 }
 \arguments{
@@ -51,6 +51,7 @@ observations given to Krig.}
 \item{ny}{Number of grid points for y variable.}
 \item{m}{Number of grid points for x variable.}
 \item{n}{Number of grid points for y variable.}
+\item{na.rm}{Remove missing values if TRUE}
 \item{xy}{The column positions that locate the x and y variables for the 
 grid.} 
 \item{grid}{ A grid list!}
@@ -177,14 +178,13 @@ surface( out, grid.list=grid.l)
 #                       holding X2 equal to 1.0. 
 #
 
-discretize.image( RMprecip$x, m=15, n=15)-> look
-Z<- matrix( 0, 15,15)
+# indicator image of discretized locations
+look<- discretize.image( RMprecip$x, m=15, n=15)
+image.plot( look$grid$x, look$grid$y,look$hist )  
+# actual locations
+points( RMprecip$x,col="magenta", pch=".") 
 
-Z[look$ind]<- 1
 
-image( look$grid$x, look$grid$y, Z) # indicator image of discretized locations. 
-points( RMprecip$x,col="magenta") # actual locations
-# (there may be more than one location in the grid boxes)
 
 }
 \keyword{misc}

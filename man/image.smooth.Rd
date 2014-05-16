@@ -84,7 +84,7 @@ image.smooth.  this will save an FFT in computations.
 # first convert precip data to the 128X128 discretized image format ( with 
 # missing  values to indicate where data is not observed) 
 # 
-out<- as.image( RMprecip$y, x= RMprecip$x, nrow=128, ncol=128) 
+out<- as.image( RMprecip$y, x= RMprecip$x, nx=128, ny=128) 
 # out$z is the image matrix 
 
 dx<- out$x[2]- out$x[1] 

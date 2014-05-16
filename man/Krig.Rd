@@ -35,7 +35,7 @@ x, Y, cov.function = "stationary.cov", lambda = NA, df
                  sigma2 = NA, method = "GCV", verbose = FALSE, mean.obj
                  = NA, sd.obj = NA, null.function =
                  "Krig.null.function", wght.function = NULL, offset =
-                 0, outputcall = NULL, na.rm = TRUE, cov.args = NULL,
+                 0,  na.rm = TRUE, cov.args = NULL,
                  chol.args = NULL, null.args = NULL, wght.args = NULL,
                  W = NULL, give.warnings = TRUE, ...)
 
@@ -47,14 +47,20 @@ resid.Krig(object,...)
 
 }
 \arguments{
-\item{x}{
-Matrix of independent variables. These could the locations for spatial
-data or the indepedent variables in a regression. 
-}
-\item{Y}{
-Vector of dependent variables. These are the values of the surface
-(perhaps with measurement error) at the locations or the dependent
-response in a regression.
+
+
+
+
+
+\item{chol.args}{
+Arguments to be passed to the cholesky decomposition in Krig.engine.fixed. 
+The default if NULL, assigned at the top level of this function, is 
+list( pivot=FALSE). This argument is useful when working with 
+the sparse matrix package. }
+
+
+\item{cov.args}{
+A list with the arguments to call the covariance function. (in addition to the locations)
 }
 \item{cov.function}{
 Covariance function for data in the form of an R function (see 
@@ -64,17 +70,11 @@ See also \code{stationary.cov} for more general choice of covariance
 shapes. \code{exponential.cov} will be faster if only the exponential 
 covariance form is needed. 
 }
-\item{Z}{
-A vector of matrix of covariates to be include in the fixed part of the 
-model. If NULL (default) no addtional covariates are included.}
-
-\item{lambda}{
-Smoothing parameter that is the ratio of the error variance (sigma**2) 
-to the scale parameter of the  
-covariance function (rho). If omitted this is estimated by GCV ( see
-method below). 
+\item{cost}{
+Cost value used in GCV criterion. Corresponds to a penalty for  
+increased number of parameters. The default is 1.0 and corresponds to the
+usual GCV function. 
 }
-
 \item{df}{
 The effective number of parameters for the fitted surface. Conversely, 
 N- df, where N is the total number of observations is the degrees of
@@ -90,11 +90,8 @@ lambda or df are passed the estimate will be evaluated at those values,
 not at the GCV/REML estimates of lambda. 
 If FALSE Kriging  estimate is found under a fixed lambda model. }
 
-\item{cost}{
-Cost value used in GCV criterion. Corresponds to a penalty for  
-increased number of parameters. The default is 1.0 and corresponds to the
-usual GCV function. 
-}
+\item{give.warnings}{ If TRUE warnings are given in gcv grid search limits.
+If FALSE warnings are not given. Best to leave this TRUE!}
 
 \item{knots}{
 A matrix of locations similar to x. These can define an alternative set of
@@ -103,11 +100,35 @@ space-filling subset of the original x locations, thinning out the
 design where locations cluster. The 
 default is to put a "knot" at all unique locations. (See details.)
 }
-
-\item{weights}{
-Weights are proportional to the reciprocal variance of the measurement  
-error. The default is equal weighting i.e. vector of unit weights. 
+\item{lambda}{
+Smoothing parameter that is the ratio of the error variance (sigma**2) 
+to the scale parameter of the  
+covariance function (rho). If omitted this is estimated by GCV ( see
+method below). 
 }
+
+
+
+
+
+
+
+\item{method}{
+Determines what "smoothing" parameter should be used. The default 
+is to estimate standard GCV 
+Other choices are: GCV.model, GCV.one, RMSE, pure error and REML. The 
+differences are explained below.  
+}
+
+
+
+\item{mean.obj}{
+Object to predict the mean of the spatial process. This used in when
+fitting a correlation model with varying spatial means and varying
+marginal variances. (See details.)
+}
+
+
 
 \item{m}{
 A polynomial function of degree (m-1) will be  
@@ -117,15 +138,38 @@ derivative in the penalty function. With m=2 as the default a linear
 model in the locations  will be fit a fixed part of the model. 
 }
 
-\item{nstep.cv}{
-Number of grid points for the coarse grid search  to 
-minimize the GCV  RMLE and other related criteria for finding lambda, 
-the smoothing parameter. 
-Default is 200, fairly large to avoid some cases of closely spaced local 
-minima. Evaluations of the GCV and related objective functions are cheap
-given the matrix decompositions described below.  
+\item{na.rm}{If TRUE NAs will be removed from the \code{y} vector and the 
+corresponding rows of \code{x} -- with a warning. 
+If FALSE Krig will just stop with a message. Once NAs are removed all 
+subsequent analysis in fields does not use those data. }
+
+\item{nstep.cv}{ Number of grid points for the coarse grid search to
+minimize the GCV RMLE and other related criteria for finding lambda,
+the smoothing parameter.  Default is 200, fairly large to avoid some
+cases of closely spaced local minima. Evaluations of the GCV and
+related objective functions are cheap given the matrix decompositions
+described below.  }
+
+\item{null.args}{ Extra arguments for the null space function
+\code{null.function}.  If \code{fields.mkpoly} is passed as
+\code{null.function} then this is set to a list with the value of
+\code{m}. So the default is use a polynomial of degree m-1 for the
+null space (fixed part) of the model.  }
+
+\item{null.function}{
+An R function that creates the matrices for the null space model.  
+The default is fields.mkpoly, an R function that creates a polynomial 
+regression matrix with all terms up to degree m-1. (See Details)  
 }
 
+\item{offset}{ The offset to be used in the GCV criterion. Default is
+0. This would be used when Krig is part of a backfitting algorithm and
+the offset is other model degrees of freedom from other regression
+components.  }
+
+\item{rho}{
+Scale factor for covariance. 
+}
 \item{scale.type}{
 This is a character string among: "range", "unit.sd", "user", "unscaled".
 The independent variables and knots are scaled to the specified scale.type. 
@@ -137,16 +181,8 @@ user. The default for "user" is mean 0 and standard deviation 1. Scale
 type of "unscaled" does not scale the data. 
 }
 
-\item{x.center}{
-Centering values to be subtracted from each column of the x matrix. 
-}
-
-\item{x.scale}{
-Scale values that are divided into each column after centering. 
-}
-
-\item{rho}{
-Scale factor for covariance. 
+\item{sd.obj}{
+Object to predict the marginal standard deviation of the spatial process. 
 }
 
 \item{sigma2}{
@@ -155,32 +191,14 @@ specified then the error variance is sigma2 divided by weights.
 Note that lambda is defined as the ratio  sigma2/rho.
 }
 
-\item{method}{
-Determines what "smoothing" parameter should be used. The default 
-is to estimate standard GCV 
-Other choices are: GCV.model, GCV.one, RMSE, pure error and REML. The 
-differences are explained below.  
-}
-
 \item{verbose}{
 If true will print out all kinds of intermediate stuff. Default is false,
 of course as this is used mainly for debugging.
 }
 
-\item{mean.obj}{
-Object to predict the mean of the spatial process. This used in when
-fitting a correlation model with varying spatial means and varying
-marginal variances. (See details.)
-}
-
-\item{sd.obj}{
-Object to predict the marginal standard deviation of the spatial process. 
-}
-
-\item{null.function}{
-An R function that creates the matrices for the null space model.  
-The default is fields.mkpoly, an R function that creates a polynomial 
-regression matrix with all terms up to degree m-1. (See Details)  
+\item{weights}{
+Weights are proportional to the reciprocal variance of the measurement  
+error. The default is equal weighting i.e. vector of unit weights. 
 }
 
 \item{wght.function}{
@@ -190,50 +208,33 @@ The default is NULL indicating that the weight matrix is a diagonal, based
 on the weights argument. (See details)
 }
 
-\item{offset}{
-The offset to be used in the GCV criterion. Default is 0. This would be 
-used when Krig is part of a backfitting algorithm and the offset is 
-other model degrees of freedom from other regression components. 
-}
-
-\item{outputcall}{
-If NULL the output object will have a \$call argument based on this call. 
-If no NULL the output call will have whatever is passed. This is kludge
-for the Tps function so that it return a Krig object but have the right
-call argument. Sorry no one promised that fields would be pretty. 
-}
-
-\item{cov.args}{
-A list with the arguments to call the covariance function. (in addition to the locations)
-}
-
-\item{na.rm}{If TRUE NAs will be removed from the \code{y} vector and the 
-corresponding rows of \code{x} -- with a warning. 
-If FALSE Krig will just stop with a message. Once NAs are removed all 
-subsequent analysis in fields does not use those data. }
-
-\item{chol.args}{
-Arguments to be passed to the cholesky decomposition in Krig.engine.fixed. 
-The default if NULL, assigned at the top level of this function, is 
-list( pivot=FALSE). This argument is useful when working with 
-the sparse matrix package. }
+\item{W}{The  observation weight matrix.}
 
 \item{wght.args}{
 Optional arguments to be passed to the weight function  (wght.function) 
 used to create the observation weight matrix.} 
 
-\item{W}{The explicit observatoin weight matrix.}
-
-\item{null.args}{ Extra arguments for the null space function 
-\code{null.function}. 
-If \code{fields.mkpoly} is passed as 
-\code{null.function} then this is set to a list with the
-value of \code{m}. So the default is use a polynomial of degree m-1 for the
-null space (fixed part) of the model. 
+\item{x}{
+Matrix of independent variables. These could the locations for spatial
+data or the indepedent variables in a regression. 
 }
 
-\item{give.warnings}{ If TRUE warnings are given in gcv grid search limits.
-If FALSE warnings are not given. Best to leave this TRUE!}
+\item{x.center}{
+Centering values to be subtracted from each column of the x matrix. 
+}
+
+\item{x.scale}{
+Scale values that are divided into each column after centering. 
+}
+
+\item{Y}{
+Vector of dependent variables. These are the values of the surface
+(perhaps with measurement error) at the locations or the dependent
+response in a regression.
+}
+\item{Z}{
+A vector of matrix of covariates to be include in the fixed part of the 
+model. If NULL (default) no addtional covariates are included.}
 
 \item{\dots}{
  Optional arguments that appear are assumed to be additional arguments

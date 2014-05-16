@@ -14,12 +14,12 @@ with the z values in the right cells. For cells with more than one Z
 value the average is used.   
 }
 \usage{
-as.image(Z, ind=NULL, grid=NULL, x=NULL, nrow=64, ncol=64,weights=NULL,
- na.rm=FALSE, nx=NULL,ny=NULL, boundary.grid=FALSE)
+as.image(Z, ind=NULL, grid=NULL, x=NULL,weights=rep(1, length(Z)),
+ na.rm=FALSE, nx=64, ny=64, boundary.grid=FALSE,  nrow=NULL, ncol=NULL)
 }
 \arguments{
 \item{Z}{
-Values of image 
+Values of image. 
 }
 \item{ind}{
 A matrix giving the row and column subscripts for each image 
@@ -34,10 +34,10 @@ ranges of the data locations (x)  to construct a grid.
 Locations of image values. Not needed if  ind  is specified.  
 }
 \item{nrow}{
-Number of rows in image matrix ( x-axis direction) 
+Same as nx this is depreciated. 
 }
 \item{ncol}{
-Number of columns in image matrix ( y-axis direction) 
+Same as ny this is depreciated.  
 }
 \item{weights}{
 If two or more values fall into the same  
@@ -46,10 +46,10 @@ equal weights.
 }
 \item{na.rm}{ 
 If true NA's are removed from the Z vector.}
-\item{nx}{ Same as nrow}
-\item{ny}{ Same as ncol}
+\item{nx}{Number of grid point in X coordinate.}
+\item{ny}{Number of grid points in Y coordinate.}
 \item{boundary.grid}{If FALSE grid points are assumed to be the 
-midpoints. If TRUE they are the grid box boundaries.}
+grid midpoints. If TRUE they are the grid box boundaries.}
 }
 
 \value{
@@ -82,7 +82,7 @@ image.smooth, image.plot, Krig.discretize, Krig.replicates
 }
 \examples{
 # convert precip data to 50X50 image  
-look<- as.image( RMprecip$y, x= RMprecip$x, nrow=50, ncol=50)
+look<- as.image( RMprecip$y, x= RMprecip$x, nx=50, ny=50)
 image.plot( look) 
 
 # number of obs in each cell -- in this case equal to the 

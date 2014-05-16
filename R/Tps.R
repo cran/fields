@@ -12,21 +12,23 @@
         }
         p <- (2 * m - d)
         if (p <= 0) {
-            stop(" m is too small  you must have 2*m -d >0")
+            stop(" m is too small  you must have 2*m - dimension >0")
         }
     }
     Tpscall <- match.call()
     if (!lon.lat) {
         Tpscall$cov.function <- "Thin plate spline radial basis functions (Rad.cov) "
         Krig(x, Y, cov.function = Rad.cov, m = m, scale.type = scale.type, 
-            outputcall = Tpscall, p = p, GCV = TRUE, ...)
+            p = p, GCV = TRUE, ...)
     }
     else {
         # use different coding of the radial basis fucntions to use with great circle distance.
         Tpscall$cov.function <- "Thin plate spline radial basis functions (RadialBasis.cov) using great circle distance "
-        Krig(x, Y, cov.function = stationary.cov, m = m, scale.type = scale.type, 
-            outputcall = Tpscall, GCV = TRUE, cov.args = list(Covariance = "RadialBasis", 
+       obj<-  Krig(x, Y, cov.function = stationary.cov, m = m, scale.type = scale.type, 
+            GCV = TRUE, cov.args = list(Covariance = "RadialBasis", 
                 M = m, dimension = 2, Distance = "rdist.earth", 
                 Dist.args = list(miles = miles)), ...)
+        obj$call<- match.call()
+        class( obj) <- c("Krig", "Tps")
     }
 }

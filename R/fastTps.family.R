@@ -1,10 +1,115 @@
-  multWendlandGrid <- function( grid.list,center, delta, coef){
-     mx<- length( grid.list$x)
-     my<- length( grid.list$y)
-     dx<- (grid.list$x[mx] - grid.list$x[1])/(mx-1)
-     dy<- (grid.list$y[my] - grid.list$y[1])/(my-1)
-     centerScaled<- cbind( (center[,1] - grid.list$x[1])/dx + 1,
-                       (center[,2] - grid.list$y[1])/dy + 1 )
+
+# fields, Tools for spatial data
+# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# University Corporation for Atmospheric Research
+# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+"fastTps" <- function(x, Y, m = NULL, p = NULL, theta, 
+    lon.lat = FALSE, find.trA=TRUE,lambda=0, ...) {
+    x <- as.matrix(x)
+    d <- ncol(x)
+    if (is.null(p)) {
+        if (is.null(m)) {
+            m <- max(c(2, ceiling(d/2 + 0.1)))
+        }
+        p <- (2 * m - d)
+        if (p <= 0) {
+            stop(" m is too small  you must have 2*m -d >0")
+        }
+    }
+    # special arguments to send to the wendland covariance/taper function.
+    # see nearest.dist for some explanation of 'method'
+    cov.args <- list(k = p, Dist.args = list(method = ifelse(!lon.lat, 
+        "euclidean", "greatcircle")))
+    if( lambda==0){
+      warning("fastTps will interpolate observations")}
+    object<-mKrig(x, Y, cov.function = "wendland.cov", m = m, cov.args = cov.args, 
+        theta = theta, find.trA = find.trA,lambda=lambda, ...)
+    object$call<- match.call()
+     class(object) <- c( "fastTps", "mKrig")
+    return( object)
+}
+
+predict.fastTps <- function(object, xnew = NULL, grid.list=NULL,
+                            ynew = NULL,  derivative = 0,
+                            Z = NULL, drop.Z = FALSE, just.fixed = FALSE, xy=c(1,2), ...)
+  {
+    # the main reason to pass new args to the covariance is to increase
+    # the temp space size for sparse multiplications
+    # other optional arguments from mKrig are passed along in the
+    # list object$args
+    cov.args <- list(...)
+    # predict using grid.list or as default observation locations
+    if( !is.null(grid.list)){
+        xnew<- make.surface.grid( grid.list)
+    }
+    if( is.null(xnew) ) {
+        xnew <- object$x
+    }   
+    if (!is.null(ynew)) {
+        coef.hold <- mKrig.coef(object, ynew)
+        c.coef <- coef.hold$c
+        d.coef <- coef.hold$d
+    }
+    else {
+        c.coef <- object$c
+        d.coef <- object$d
+    }
+    # fixed part of the model this a polynomial of degree m-1
+    # Tmatrix <- fields.mkpoly(xnew, m=object$m)
+    #
+    if (derivative == 0){
+        if (drop.Z | object$nZ == 0) {
+            # just evaluate polynomial and not the Z covariate
+            temp1 <- fields.mkpoly(xnew, m = object$m) %*% d.coef[object$ind.drift, ]
+        }
+        else{
+            if( is.null(Z)) {
+                 Z <- object$Tmatrix[, !object$ind.drift]
+            }
+            temp1 <- cbind(fields.mkpoly(xnew, m = object$m), Z) %*% d.coef
+        }
+    }
+    else{
+        if (!drop.Z & object$nZ > 0) {
+            stop("derivative not supported with Z covariate included")
+        }
+        temp1 <- fields.derivative.poly(xnew, m = object$m, d.coef[object$ind.drift, 
+            ])
+    }
+    if (just.fixed) {
+        return(temp1)
+    }
+ 
+    useFORTRAN<-  (ncol(object$x)==2) & (object$args$k == 2) & (derivative==0) & (!is.null(grid.list))
+  
+    
+    # add nonparametric part. 
+    # call FORTRAN under a specific case  
+    if( useFORTRAN){
+        
+        temp2<- multWendlandGrid(grid.list, object$knots, delta=object$args$theta, c.coef, xy=xy)
+      
+    }
+    else{
+        temp2 <- do.call(object$cov.function.name, c(object$args, 
+                list(x1 = xnew, x2 = object$knots, C = c.coef, derivative = derivative), 
+                cov.args))
+    }  
+# add two parts together
+    return((temp1 + temp2))
+}
+
+multWendlandGrid <- function( grid.list,center, delta, coef, xy= c(1,2) ){
+     xGrid<- grid.list[[xy[1]]]
+     yGrid<- grid.list[[xy[2]]]
+     mx<- length( xGrid)
+     my<- length( yGrid)
+# transform centers to correspond to integer spacing of grid:
+# i.e. 1:nx and 1:ny
+     dx<- (xGrid[mx] - xGrid[1]) / (mx-1)
+     dy<- (yGrid[my] - yGrid[1]) / (my-1)
+     centerScaled<- cbind( ((center[,1] - xGrid[1]) / dx) + 1,
+                           ((center[,2] - yGrid[1]) / dy) + 1 )
      deltaX<- delta/dx
      deltaY<- delta/dy
      
@@ -25,63 +130,28 @@
      return( out$h)
    }
 
- predictSurface.fastTps<- function(  object, grid.list, ynew = NULL, 
-             Z = NULL, drop.Z = FALSE, just.fixed = FALSE) {
-   
-    if( ncol(object$x) !=2 | object$args$k != 2){
-      stop(" surface function only written for Wendland dim=2, k=2")}
-    if( is.list( Z)){
-      stop("Z must be passed as a matrix")}
-    if (is.null(Z)) {
-       drop.Z<- TRUE
-    }
-    if (!is.null(ynew)) {
-        coef.hold <- mKrig.coef(object, ynew)
-        c.coef <- coef.hold$c
-        d.coef <- coef.hold$d
-    }
-    else {
-        c.coef <- object$c
-        d.coef <- object$d
-    }
-    # fixed part of the model this a polynomial of degree m-1
-    # Tmatrix <- fields.mkpoly(xnew, m=object$m)
-    #
-        xnew<- make.surface.grid( grid.list)
-        if (drop.Z | object$nZ == 0) {
-            # just evaluate polynomial and not the Z covariate
-            temp <- fields.mkpoly(xnew, m = object$m) %*% d.coef[object$ind.drift, ]
-        }
-        else {
-            temp <- cbind(fields.mkpoly(xnew, m = object$m), Z) %*% d.coef
-        }
-    if (!just.fixed) {
-    # add nonparametric part. Covariance basis functions
-    # times coefficients.
-    temp2<- multWendlandGrid(grid.list, object$knots, delta=object$args$theta, c.coef)
-    temp <- temp + temp2
-    }
-    # add two parts together and coerce to vector
-    return( as.surface( grid.list,( temp ) ) )
-}
+#
+#"sim.fastTps.approx"<- function(fastTpsObject,...){
+#                           sim.mKrig.approx( fastTpsObject,...)}
+#
 
-"sim.fastTps.approx" <- function(fastTpsObject, predictionGridlist = NULL,
-                            simulationGridlist=NULL, gridRefinement=5, gridExpansion=1,
-    M = 1, nx = 40, ny = 40, delta=NULL,  verbose = FALSE ) {
+
+"sim.fastTps.approx" <- function(fastTpsObject, predictionPointsList,
+                            simulationGridList=NULL, gridRefinement=5, gridExpansion=1 + 1e-07,
+    M = 1, delta=NULL,  verbose = FALSE ) {
     # create grid if not passed
-    if (is.null(predictionGridlist)) {
-        predictionGridlist <- fields.x.to.grid(fastTpsObject$x, nx = nx, ny = ny)
-        names( predictionGridlist)<- c( "x", "y")
+    if( ncol( fastTpsObject$x) != 2){
+      stop("Only implemented for 2 dimensions")
     }
-    nx<- length((predictionGridlist$x))
-    ny<- length((predictionGridlist$y))
-    if ( is.null(simulationGridlist) ) {
-        fakePredictionGrid<- cbind( range(predictionGridlist$x), range(predictionGridlist$y))
-        simulationGridlist<- makeSimulationGrid( fastTpsObject,fakePredictionGrid ,
-                               nx, ny, gridRefinement, gridExpansion)
-    }
-    nxSimulation<- length(simulationGridlist$x)    
-    nySimulation<- length(simulationGridlist$y)
+# coerce names of grid to be x and  y    
+    names(predictionPointsList) <- c( "x", "y")
+    nx<- length((predictionPointsList$x))
+    ny<- length((predictionPointsList$y))
+    
+    simulationGridList<- makeSimulationGrid2( fastTpsObject, predictionPointsList ,
+                               gridRefinement, gridExpansion)
+    nxSimulation<- length(simulationGridList$x)    
+    nySimulation<- length(simulationGridList$y)
     sigma <- fastTpsObject$sigma.MLE
     rho <- fastTpsObject$rho.MLE
     #
@@ -95,7 +165,7 @@
     #
 #    print( system.time(
     covarianceObject <- wendland.image.cov( 
-                            setup = TRUE, grid =simulationGridlist,
+                            setup = TRUE, grid =simulationGridList,
                             cov.args=fastTpsObject$args )
 #    ))                   
      if (verbose) {
@@ -110,10 +180,9 @@
     # (these are added at the predict step).
     # from now on all predicted values are on the grid
     # represented by a matrix
-   #### hHat <- predict(fastTpsObject, x=predictionGrid)
-    hHat<- c(predictSurface.fastTps(fastTpsObject, predictionGridlist)$z)
+    hHat<- predict.fastTps(fastTpsObject, grid.list=predictionPointsList)
     # empty image object to hold simulated fields
-    hTrue<- c( simulationGridlist, list( z= matrix(NA, nxSimulation,nySimulation)))
+    hTrue<- c( simulationGridList, list( z= matrix(NA, nxSimulation,nySimulation)))
     ##########################################################################################
     ### begin the big loop
     ##########################################################################################
@@ -133,27 +202,29 @@
         #   bilinear interpolation to approximate values at data locations
         #
         hData <- interp.surface(hTrue,xData)
-        hPredictionGrid<- c(interp.surface.grid(hTrue, predictionGridlist)$z)
+        hPredictionGrid<- c(interp.surface.grid(hTrue, predictionPointsList)$z)
         ySynthetic <- hData + sigma * 1/sqrt(weightsError)* rnorm(nObs)
         # predict at grid using these data
         # and subtract from synthetic 'true' value
 
-        spatialError <- c(predictSurface.fastTps(fastTpsObject, predictionGridlist,
+        spatialError <- c(predictSurface.fastTps(fastTpsObject, grid.list=predictionPointsList,
                                                ynew = ySynthetic)$z) - hPredictionGrid
-#        spatialError <- predict(fastTpsObject, predictionGrid,
-#                                              ynew = ySynthetic) - hPredictionGrid
         # add the error to the actual estimate  (conditional mean)
         out[ , k] <- hHat + spatialError
     }
-    return( list( predictionGridlist=predictionGridlist, Ensemble=out, call=match.call()) )
+    return( list( predictionPointsList=predictionPointsList, Ensemble=out, call=match.call()) )
 }
 
-makeSimulationGrid<-function( mKrigObject, predictionGrid,
-                               nx, ny, gridRefinement, gridExpansion){
+
+  makeSimulationGrid2<-function( fastTpsObject, predictionPointsList,
+                               gridRefinement, gridExpansion){
+         nx<- length((predictionPointsList$x))
+         ny<- length((predictionPointsList$y)) 
         nxSimulation<- nx*gridRefinement*gridExpansion
         nySimulation<- ny*gridRefinement*gridExpansion
-        xRange<- range(c(mKrigObject$x[,1], predictionGrid[,1]) )
-        yRange<- range(c(mKrigObject$x[,2], predictionGrid[,2]) )
+        # range should include prediction grid and the data locations 
+        xRange<- range(c(fastTpsObject$x[,1], predictionPointsList$x) )
+        yRange<- range(c(fastTpsObject$x[,2], predictionPointsList$y) )
         midpointX<-               (xRange[2] + xRange[1])/2
         midpointY<-               (yRange[2] + yRange[1])/2
         deltaX<-    gridExpansion*(xRange[2] - xRange[1])/2 
@@ -163,5 +234,3 @@ makeSimulationGrid<-function( mKrigObject, predictionGrid,
                  y= seq( midpointY - deltaY, midpointY + deltaY,, nySimulation) )
                 )
 }
-
-  

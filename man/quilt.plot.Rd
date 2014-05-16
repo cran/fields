@@ -13,8 +13,9 @@ function produces an
 image-like plot where the locations are discretized to a grid  and the z 
 values are coded as a color level from a color scale. }
 \usage{
-quilt.plot(x, y, z, nx = 64, ny = 64,nrow=nx, ncol=ny,  grid = NULL, 
-                     add.legend=TRUE,add=FALSE,col=tim.colors(256),...)
+quilt.plot(x, y, z, nx = 64, ny = 64,  grid = NULL, 
+           add.legend=TRUE,add=FALSE,col=tim.colors(256),
+           nrow=NULL, ncol=NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,8 +26,8 @@ in x the z vector  }
   \item{z}{Values of the variable to be plotted.}
   \item{nx}{Number of grid boxes in x if a grid is not specified.}
   \item{ny}{Number of grid boxes in y. }
-  \item{nrow}{Number of grid boxes in x.}
-  \item{ncol}{Number of grid boxes in y. }
+  \item{nrow}{Depreciated, same as nx.}
+  \item{ncol}{Depreciated same as ny. }
   \item{grid}{A grid in the form of a \code{grid list}.  }
   \item{add.legend}{If TRUE a legend color strip is added}
   \item{add}{If FALSE add to existing plot.}
@@ -80,7 +81,7 @@ zr<- range( ozone2$y, na.rm=TRUE)
 
 for( k in 1:4){
 quilt.plot( ozone2$lon.lat, ozone2$y[15+k,], add.legend=FALSE,
- zlim=zr, col=coltab, nrow=40, ncol=40)
+ zlim=zr, col=coltab, nx=40, ny=40)
 US( add=TRUE)
 }
 par( oma=c(0,0,0,1))

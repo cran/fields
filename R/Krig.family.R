@@ -9,7 +9,7 @@
     x.center = rep(0, ncol(x)), x.scale = rep(1, ncol(x)), rho = NA, 
     sigma2 = NA, method = "GCV", verbose = FALSE, mean.obj = NA, 
     sd.obj = NA, null.function = "Krig.null.function", wght.function = NULL, 
-    offset = 0, outputcall = NULL, na.rm = TRUE, cov.args = NULL, 
+    offset = 0,  na.rm = TRUE, cov.args = NULL, 
     chol.args = NULL, null.args = NULL, wght.args = NULL, W = NULL, 
     give.warnings = TRUE, ...) # the verbose switch prints many intermediate steps as an aid in debugging.
 #
@@ -22,12 +22,7 @@
     #  First series of steps simply store pieces of the passed
     #    information to output list (i.e. the Krig object)
     ##########################################################
-    if (is.null(outputcall)) {
         out$call <- match.call()
-    }
-    else {
-        out$call <- outputcall
-    }
     #
     # save covariance function as its name
     #
