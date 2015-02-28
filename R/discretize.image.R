@@ -35,13 +35,18 @@
     m <- length(xcut) - 1
     n <- length(ycut) - 1
     grid <- grid
-    # 2 d histogram
-    hist<- matrix( 0, m, n)
+
+
     tempHist<- table( index[[1]], index[[2]])
+
     ix<- as.numeric(dimnames( tempHist)[[1]])
-    iy<- as.numeric(dimnames( tempHist)[[2]])    
+    iy<- as.numeric(dimnames( tempHist)[[2]])
+# 2 d histogram of locations
+    hist<- matrix( 0, m,n)
+    hist[ix,iy] <- tempHist
+#    
     if (!boundary.grid) {
-    #discretized locations
+    # compute discretized locations
         loc <- cbind( grid$x[ index[[1]] ], grid$y[ index[[2]] ] )  
     }
     else {

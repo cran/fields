@@ -68,7 +68,7 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"surface.surface" <- function(object, ...) {
-    #
-    plot.surface(object, ...)
-}
+#"surface.surface" <- function(object, ...) {
+#    #
+#    plot.surface(object, ...)
+#}

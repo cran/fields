@@ -18,10 +18,10 @@ set.seed(123)
 x<- rat.diet$t
 y<- rat.diet$trt
 
-sreg( x,y, lambda= 10)$fitted.values-> out
-Tps( x,y, scale="unscaled", lambda=10*length(y))$fitted.values-> out2
+sreg( x,y, lambda= 10)-> out
+Tps( x,y, scale="unscaled", lambda=10*length(y))-> out2
 
-test.for.zero( out, out2, tag="predict at lambda sreg/Tps")
+test.for.zero( out$fitted.values, out2$fitted.values, tag="predict at lambda sreg/Tps")
 
 
 #### GCV test

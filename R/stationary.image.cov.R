@@ -42,6 +42,7 @@ stationary.image.cov <- function(ind1, ind2, Y, cov.obj = NULL,
          }
         # coerce to a matrix (image)
            out<- matrix( c(out), nrow = M, ncol = N)
+        print( dim( out))
         temp <- matrix(0, nrow = M, ncol = N)
         #
         # a simple way to normalize. This could be avoided by

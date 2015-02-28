@@ -138,7 +138,7 @@ multWendlandGrid <- function( grid.list,center, delta, coef, xy= c(1,2) ){
 
 "sim.fastTps.approx" <- function(fastTpsObject, predictionPointsList,
                             simulationGridList=NULL, gridRefinement=5, gridExpansion=1 + 1e-07,
-    M = 1, delta=NULL,  verbose = FALSE ) {
+    M = 1, delta=NULL,  verbose = FALSE, ... ) {
     # create grid if not passed
     if( ncol( fastTpsObject$x) != 2){
       stop("Only implemented for 2 dimensions")
@@ -180,7 +180,7 @@ multWendlandGrid <- function( grid.list,center, delta, coef, xy= c(1,2) ){
     # (these are added at the predict step).
     # from now on all predicted values are on the grid
     # represented by a matrix
-    hHat<- predict.fastTps(fastTpsObject, grid.list=predictionPointsList)
+    hHat<- predict.fastTps(fastTpsObject, grid.list=predictionPointsList,...)
     # empty image object to hold simulated fields
     hTrue<- c( simulationGridList, list( z= matrix(NA, nxSimulation,nySimulation)))
     ##########################################################################################
@@ -207,8 +207,12 @@ multWendlandGrid <- function( grid.list,center, delta, coef, xy= c(1,2) ){
         # predict at grid using these data
         # and subtract from synthetic 'true' value
 
-        spatialError <- c(predictSurface.fastTps(fastTpsObject, grid.list=predictionPointsList,
-                                               ynew = ySynthetic)$z) - hPredictionGrid
+        spatialError <- c(
+                          predictSurface.fastTps(fastTpsObject, 
+                             grid.list = predictionPointsList,
+                                 ynew  = ySynthetic, ...
+                          )$z
+                          ) - hPredictionGrid
         # add the error to the actual estimate  (conditional mean)
         out[ , k] <- hHat + spatialError
     }

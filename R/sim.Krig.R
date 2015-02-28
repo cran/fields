@@ -3,7 +3,7 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sim.Krig" <- function(object, xp, M = 1, 
-    verbose = FALSE) {
+    verbose = FALSE, ...) {
         sigma2 <- object$best.model[2]
         rho <- object$best.model[3]
     #
@@ -79,7 +79,7 @@
     # don't multiply by sd or add mean if this is
     # a correlation model fit.
     # (these are added at the predict step).
-    h.hat <- predict(object, xp)
+    h.hat <- predict(object, xp, ...)
     # marginal standard deviation of field.
     temp.sd <- 1
     #
@@ -113,7 +113,7 @@
         # note that true values of field have to be expanded in the
         # case of common locations between xM and xp.
         h.true <- (h[xp.ind])
-        temp.error <- predict(object, xp, y = y.synthetic, eval.correlation.model = FALSE) - 
+        temp.error <- predict(object, xp, y = y.synthetic, eval.correlation.model = FALSE, ...) - 
             h.true
         # add the error to the actual estimate  (conditional mean)
         # and adjust by marginal standard deviation

@@ -1,9 +1,9 @@
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2004-2014, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "Tps" <- function(x, Y, m = NULL, p = NULL, scale.type = "range", 
-    lon.lat = FALSE, miles = TRUE, ...) {
+    lon.lat = FALSE, miles = TRUE, method="GCV", GCV=TRUE, ...) {
     x <- as.matrix(x)
     d <- ncol(x)
     if (is.null(p)) {
@@ -15,20 +15,23 @@
             stop(" m is too small  you must have 2*m - dimension >0")
         }
     }
-    Tpscall <- match.call()
+#    Tpscall <- match.call()
     if (!lon.lat) {
-        Tpscall$cov.function <- "Thin plate spline radial basis functions (Rad.cov) "
-        Krig(x, Y, cov.function = Rad.cov, m = m, scale.type = scale.type, 
-            p = p, GCV = TRUE, ...)
+#        Tpscall$cov.function <- "Thin plate spline radial basis functions (Rad.cov) "
+        obj<- Krig(x, Y, cov.function = Rad.cov, m = m, scale.type = scale.type, 
+            p = p, method=method, GCV = GCV, ...)
     }
     else {
-        # use different coding of the radial basis fucntions to use with great circle distance.
-        Tpscall$cov.function <- "Thin plate spline radial basis functions (RadialBasis.cov) using great circle distance "
+        # a different coding of the radial basis functions to use great circle distance.
+#        Tpscall$cov.function <- "Thin plate spline radial basis functions (RadialBasis.cov) using great circle distance "
        obj<-  Krig(x, Y, cov.function = stationary.cov, m = m, scale.type = scale.type, 
-            GCV = TRUE, cov.args = list(Covariance = "RadialBasis", 
+                method=method, GCV = GCV,
+                cov.args = list(Covariance = "RadialBasis", 
                 M = m, dimension = 2, Distance = "rdist.earth", 
                 Dist.args = list(miles = miles)), ...)
-        obj$call<- match.call()
-        class( obj) <- c("Krig", "Tps")
+              
     }
+    obj$call<- match.call()
+    class( obj) <- c("Krig", "Tps")
+    return(obj)
 }

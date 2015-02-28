@@ -2,7 +2,7 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"plot.Krig" <- function(x, digits = 4, which = 1:4, 
+"plot.spatialProcess" <- function(x, digits = 4, which = 1:4, 
     ...) {
     out <- x
     #
@@ -19,9 +19,8 @@
             bty = "n", ...)
         abline(0, 1)
         hold <- par("usr")
-        text(hold[1], hold[4], paste(" R**2 = ", format(round(100 * 
-            temp$covariance, 2)), "%", sep = ""), cex = 0.8, 
-            adj = 0)
+       title("Observations by predicted values")    
+
     }
     if (any(which == 2)) {
         plot(fitted.values, std.residuals, ylab = "(STD) residuals", 
@@ -32,6 +31,8 @@
             temp$enp)), digits))), cex = 0.8, adj = 0)
     }
     if (any(which == 3)) {
+    	mar.old<- par()$mar
+    	par( mar= mar.old + c(0,0,0,2) )
         if (nrow(out$gcv.grid) > 1) {
             ind <- out$gcv.grid[, 3] < 1e+19
             out$gcv.grid <- out$gcv.grid[ind, ]
@@ -49,13 +50,21 @@
             lines( out$gcv.grid[, 2], -out$gcv.grid[,7] ,
             lty=2, lwd=2, col="blue")
             axis( side=4)
-            mtext( side=4, line=3, "log profile likelihood ")
+            mtext( side=4, line=2, "log Profile Likelihood(lamdba)",cex=.75)
             title("GCV-points, solid-model, dots- single  \n REML dashed", 
                 cex = 0.6)
             box()
+            par( mar=mar.old)
         }
     }
     if (any(which == 4)) {
-        hist(std.residuals)
-    }
+    	plot( out$eval.grid[,c(1,6)], pch=16, xlab="theta (range parameter)", ylab="log Profile Likelihood (theta)")
+    	title("Profile likelihood for theta \n (range parameter)")
+    	xline( out$theta.MLE, lwd=2, col="grey")
+    	xr<- range( out$eval.grid[,1])
+    	xg<- seq( xr[1], xr[2],, 100)
+    	ind<- !duplicated(out$eval.grid[,1] )
+    	yg<- splint(out$eval.grid[ind,1], out$eval.grid[ind,6], xg )
+    	lines( xg, yg, col="grey", lty=2, lwd=1)
+           }
 }

@@ -92,7 +92,7 @@ test.for.zero( zhat, obj$fitted.values, tag="Tps 2-d m=2 sanity check")
 #### test Tps verses Krig note scaling must be the same
    out<- Tps( x,y)
    out2<- Krig( x,y, Covariance="RadialBasis", 
-           M=2, dimension=2, scale.type="range")
+           M=2, dimension=2, scale.type="range", method="GCV")
    test.for.zero( predict(out), predict(out2), tag="Tps vs.  Krig w/ GCV")
 
 # test for fixed lambda

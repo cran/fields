@@ -2,12 +2,13 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-image.plot.info<- function(...){
+#NOTE:
+# image.plot.info<- function(...){
 # this function has been renamed as imageplot.info to avoid confusion with
 # an S3 method
-   imageplot.info(...)}
+#   imageplot.info(...)}
 
-"imageplot.info" <- function(...) {
+"imagePlotInfo" <- function(..., breaks = NULL, nlevel) {
     temp <- list(...)
     #
     xlim <- NA
@@ -48,14 +49,27 @@ image.plot.info<- function(...){
         if (is.matrix(temp[[3]])) {
             xlim <- range(temp[[1]], na.rm = TRUE)
             ylim <- range(temp[[2]], na.rm = TRUE)
-            zlim <- range(temp[[3]], na.rm = TRUE)
+            zlim <- range(temp[[3]], na.rm = TRUE)           
         }
+    }
+    # if constant z values perturb the range (1e-8) by epsilon to 
+    # avoid other problems in drawing legend later on
+    if( !is.na( zlim[1] ) ){
+      if( zlim[1] == zlim[2]){
+    	if( zlim[1]==0){
+    		 zlim[1]<- -1e-8
+    		 zlim[2]<- 1e-8}
+        else{		 
+        zlim[1]<- zlim[1]*(1 - 1e-8)
+        zlim[2]<- zlim[1]*(1 + 1e-8)}
+      }
     }
     #### parse x,y,z if they are  named arguments
     # determine if  this is polygon grid (x and y are matrices)
     if (is.matrix(temp$x) & is.matrix(temp$y) & is.matrix(temp$z)) {
         poly.grid <- TRUE
     }
+# set limits from the usual $x $y $z format of image object    
     xthere <- match("x", names(temp))
     ythere <- match("y", names(temp))
     zthere <- match("z", names(temp))
@@ -65,24 +79,39 @@ image.plot.info<- function(...){
         xlim <- range(temp$x, na.rm = TRUE)
     if (!is.na(ythere)) 
         ylim <- range(temp$y, na.rm = TRUE)
-    # overwrite zlims with passed values
+        
+# overwrite limits with passed values
     if (!is.null(temp$zlim)) 
         zlim <- temp$zlim
     if (!is.null(temp$xlim)) 
         xlim <- temp$xlim
     if (!is.null(temp$ylim)) 
         ylim <- temp$ylim
-    list(xlim = xlim, ylim = ylim, zlim = zlim, poly.grid = poly.grid)
+# At this point xlim, ylim and zlim should be correct 
+# using all the different possibilities and defaults for these values
+#        
+#  Now set up the breaks
+    if( is.null(breaks)){
+    	midpoints<- seq( zlim[1], zlim[2],,nlevel)
+    	delta<- (midpoints[2]- midpoints[1])/2
+    	# nlevel +1 breaks with the min and max as midpoints 
+    	# of the first and last bins.
+    
+    	breaks <- c( midpoints[1]- delta, midpoints + delta)
+    }        
+        
+    list(xlim = xlim, ylim = ylim, zlim = zlim, poly.grid = poly.grid,
+       breaks=breaks)
 }
 # fields, Tools for spatial data
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-
- image.plot.plt<- function(...){
+# NOTE:
+# image.plot.plt<- function(...){
 # this function has been renamed as imageplot.setup to avoid confusion with
 # an S3 method
-   imageplot.setup(...)}
+#   imageplot.setup(...)}
 
 "imageplot.setup" <- function(x, add = FALSE, legend.shrink = 0.9, 
     legend.width = 1, horizontal = FALSE, legend.mar = NULL, 
@@ -298,3 +327,58 @@ designer.colors <- function(n = 256, col = c("darkgreen",
 fieldsPlotColors<- function( col, ...){
                N<- length(col)
                image.plot( 1:N, 1, matrix(1:N,N,1), col=col,axes=FALSE, xlab='', ylab='',...)}
+
+
+imageplot.info<- function (...) 
+{
+    temp <- list(...)
+    xlim <- NA
+    ylim <- NA
+    zlim <- NA
+    poly.grid <- FALSE
+    if (is.list(temp[[1]])) {
+        xlim <- range(temp[[1]]$x, na.rm = TRUE)
+        ylim <- range(temp[[1]]$y, na.rm = TRUE)
+        zlim <- range(temp[[1]]$z, na.rm = TRUE)
+        if (is.matrix(temp[[1]]$x) & is.matrix(temp[[1]]$y) & 
+            is.matrix(temp[[1]]$z)) {
+            poly.grid <- TRUE
+        }
+    }
+    if (length(temp) >= 3) {
+        if (is.matrix(temp[[1]]) & is.matrix(temp[[2]]) & is.matrix(temp[[3]])) {
+            poly.grid <- TRUE
+        }
+    }
+    if (is.matrix(temp[[1]]) & !poly.grid) {
+        xlim <- c(0, 1)
+        ylim <- c(0, 1)
+        zlim <- range(temp[[1]], na.rm = TRUE)
+    }
+    if (length(temp) >= 3) {
+        if (is.matrix(temp[[3]])) {
+            xlim <- range(temp[[1]], na.rm = TRUE)
+            ylim <- range(temp[[2]], na.rm = TRUE)
+            zlim <- range(temp[[3]], na.rm = TRUE)
+        }
+    }
+    if (is.matrix(temp$x) & is.matrix(temp$y) & is.matrix(temp$z)) {
+        poly.grid <- TRUE
+    }
+    xthere <- match("x", names(temp))
+    ythere <- match("y", names(temp))
+    zthere <- match("z", names(temp))
+    if (!is.na(zthere)) 
+        zlim <- range(temp$z, na.rm = TRUE)
+    if (!is.na(xthere)) 
+        xlim <- range(temp$x, na.rm = TRUE)
+    if (!is.na(ythere)) 
+        ylim <- range(temp$y, na.rm = TRUE)
+    if (!is.null(temp$zlim)) 
+        zlim <- temp$zlim
+    if (!is.null(temp$xlim)) 
+        xlim <- temp$xlim
+    if (!is.null(temp$ylim)) 
+        ylim <- temp$ylim
+    list(xlim = xlim, ylim = ylim, zlim = zlim, poly.grid = poly.grid)
+}

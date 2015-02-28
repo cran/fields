@@ -7,14 +7,13 @@
     lambda = NA, df = NA, GCV = FALSE, Z = NULL, cost = 1, knots = NA, 
     weights = NULL, m = 2, nstep.cv = 200, scale.type = "user", 
     x.center = rep(0, ncol(x)), x.scale = rep(1, ncol(x)), rho = NA, 
-    sigma2 = NA, method = "GCV", verbose = FALSE, mean.obj = NA, 
+    sigma2 = NA, method = "REML", verbose = FALSE, mean.obj = NA, 
     sd.obj = NA, null.function = "Krig.null.function", wght.function = NULL, 
     offset = 0,  na.rm = TRUE, cov.args = NULL, 
     chol.args = NULL, null.args = NULL, wght.args = NULL, W = NULL, 
     give.warnings = TRUE, ...) # the verbose switch prints many intermediate steps as an aid in debugging.
 #
-{
-    
+{ 
     #
     # create output list
     out <- list()
@@ -26,7 +25,12 @@
     #
     # save covariance function as its name
     #
+    if( !is.character( cov.function)){
     out$cov.function.name <- as.character(substitute(cov.function))
+    }
+    else{ 
+    	out$cov.function.name<-cov.function
+    	} 
     #
     # save null space function as its name
     #
@@ -247,13 +251,23 @@
             cat("call to gcv.Krig", fill = TRUE)
         }
         gcv.out <- gcv.Krig(out, nstep.cv = nstep.cv, verbose = verbose, 
-            cost = out$cost, offset = out$offset, give.warnings = give.warnings)
+            cost = out$cost, offset = out$offset, give.warnings=FALSE)
         out$gcv.grid <- gcv.out$gcv.grid
         #  a handy summary table of the search results
         out$lambda.est <- gcv.out$lambda.est
-        # assign the preferred lambda either from GCV/REML/MSE or the user value
+        out$warningTable<- gcv.out$warningTable
+        if( verbose){
+        	cat("summaries from grid search/optimization", fill=TRUE)
+        	print(out$lambda.est)
+        	print(out$warningTable)
+        }
+        if( give.warnings){
+        	#NOTE: only print out grid search warning forthe method of interest.
+        	printGCVWarnings( gcv.out$warningTable, method=method)
+        }
+          # assign the preferred lambda either from GCV/REML/MSE or the user value
         # NOTE: gcv/reml can be done but the estimate is
-        # still evaluted at the passed  user values of lambda (or df)
+        # still evaluted at the passed user values of lambda (or df)
         # If df is passed need to calculate the implied lambda value
         if (out$method != "user") {
             out$lambda <- gcv.out$lambda.est[out$method, 1]
@@ -272,7 +286,8 @@
     # end GCV/REML block
     ##########################
     #
-    # Now we clean up what has happen and stuff into output object.
+    # Now we clean up what has happened and stuff 
+    # information into output object.
     #
     ##########################################
     # find coefficients at prefered lambda
@@ -986,7 +1001,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     # If the denominator is negative then flag this as a bogus case
     # by making the GCV function 'infinity'
     #
-    ifelse(den > 0, MSE/den^2, NA)
+    ifelse(den > 0, MSE/den^2, 1e20)
 }
 
 "Krig.fgcv.model" <- function(lam, obj) {
@@ -994,7 +1009,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     MSE <- sum(((obj$matrices$u * lD)/(1 + lD))^2)/length(lD)
     trA <- sum(1/(1 + lD))
     den <- (1 - (obj$cost * (trA - obj$nt - obj$offset) + obj$nt)/length(lD))
-    ifelse(den > 0, obj$shat.pure.error^2 + MSE/den^2, NA)
+    ifelse(den > 0, obj$shat.pure.error^2 + MSE/den^2, 1e20)
 }
 
 "Krig.fgcv.one" <- function(lam, obj) {
@@ -1006,66 +1021,6 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     # by making the GCV function 'infinity'
     #
     ifelse(den > 0, (RSS/obj$N)/den^2, 1e+20)
-}
-
-"Krig.find.REML" <- function(info, lambda.grid, llike, 
-    llike.fun, tol, verbose = TRUE, give.warnings = FALSE) {
-    #
-    # NOTE give.warnings set to FALSE to avoid numerous messages for
-    # the standard fields examples.
-    #
-    ind <- !is.na(llike)
-    lambda.grid <- lambda.grid[ind]
-    llike <- llike[ind]
-    nstep.cv <- length(lambda.grid)
-    il <- order(llike)[1]
-    lambda.llike <- lambda.grid[il]
-    llike.raw <- min(llike)
-    if (verbose) {
-        cat("Results of coarse search lambda and  restricted Log Likelihood:", 
-            lambda.llike[il], llike.raw, fill = TRUE)
-    }
-    if ((il > 1) & (il < nstep.cv)) {
-        out <- golden.section.search(lambda.grid[il - 1], lambda.grid[il], 
-            lambda.grid[il + 1], llike.fun, f.extra = info, tol = abs(tol * 
-                llike.raw))
-        return(out$x)
-    }
-    else {
-        if (give.warnings) {
-            warning("Search for REML estimate of smoothing paramter gives a\nmaximum at the endpoints of the grid search")
-        }
-        return(lambda.llike)
-    }
-}
-
-"Krig.find.gcvmin" <- function(info, lambda.grid, 
-    gcv, gcv.fun, tol, verbose = FALSE, give.warnings = TRUE) {
-    ind <- !is.na(gcv)
-    lambda.grid <- lambda.grid[ind]
-    gcv <- gcv[ind]
-    nstep.cv <- length(lambda.grid)
-    il <- order(gcv)[1]
-    lambda.gcv <- lambda.grid[il]
-    gcv.raw <- min(gcv)
-    if (verbose) {
-        cat("#### Call for refined search using", as.character(substitute(gcv.fun)), 
-            fill = TRUE)
-        cat("Results of coarse search lambda and GCV:", lambda.grid[il], 
-            gcv.raw, fill = TRUE)
-    }
-    if ((il > 1) & (il < nstep.cv)) {
-        out <- golden.section.search(lambda.grid[il - 1], lambda.grid[il], 
-            lambda.grid[il + 1], gcv.fun, f.extra = info, tol = tol * 
-                gcv.raw)
-        return(out$x)
-    }
-    else {
-        if (give.warnings) {
-            warning("GCV search gives a minimum at the endpoints of the\ngrid search")
-        }
-        return(lambda.gcv)
-    }
 }
 
 "Krig.flplike" <- function(lambda, obj) {
@@ -1084,14 +1039,13 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     
     -1 * (-N2/2 - log(2 * pi) * (N2/2) - (N2/2) * log(rho.MLE) - 
         (1/2) * lnDetCov)
+      
     
 }
 
 "Krig.fs2hat" <- function(lam, obj) {
-    lD <- obj$matrices$D * lam
+    lD  <- obj$matrices$D * lam
     RSS <- obj$pure.ss + sum(((obj$matrices$u * lD)/(1 + lD))^2)
-    #\tprint(RSS)
-    #\ttrA <- sum(1/(1 + lD)) + obj$offset
     den <- obj$N - (sum(1/(1 + lD)) + obj$offset)
     if (den < 0) {
         return(NA)
@@ -1105,7 +1059,7 @@ Krig.Amatrix <- function(object, x0 = object$x, lambda = NULL,
     sum(1/(1 + lam * D))
 }
 
-Krig.make.W <- function(out, verbose = FALSE) {
+"Krig.make.W" <- function(out, verbose = FALSE) {
     if (verbose) {
         cat("W", fill = TRUE)
         print(out$W)
@@ -1146,7 +1100,7 @@ Krig.make.W <- function(out, verbose = FALSE) {
     }
 }
 
-Krig.make.Wi <- function(out, verbose = FALSE) {
+"Krig.make.Wi" <- function(out, verbose = FALSE) {
     #
     # If a weight matrix has been passed use it.
     #
@@ -1266,12 +1220,17 @@ Krig.null.function <- function(x, Z = NULL, drop.Z = FALSE,
         rhohat = rhohat)
 }
 
-"Krig.replicates" <- function(out, verbose = FALSE) {
+"Krig.replicates" <- function(out=NULL, x,y, Z=NULL, weights=rep( 1, length(y)),
+                               verbose = FALSE) {
+    if( is.null(out)){
+      out<- list( x=x, y=y, N= length(y), Z=Z, weights=weights)
+    }
     rep.info <- cat.matrix(out$x)
     if (verbose) {
         cat("replication info", fill = TRUE)
         print(rep.info)
     }
+    # If no replicates are found then reset output list to reflect this condition
     uniquerows <- !duplicated(rep.info)
     if (sum(uniquerows) == out$N) {
         shat.rep <- NA
@@ -1289,6 +1248,7 @@ Krig.null.function <- function(x, Z = NULL, drop.Z = FALSE,
             ZM <- NULL
         }
     }
+    # collapse over spatial replicates
     else {
         rep.info.aov <- fast.1way(rep.info, out$y, out$weights)
         shat.pure.error <- sqrt(rep.info.aov$MSE)

@@ -4,7 +4,7 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sim.Krig.approx" <- function(object, grid.list = NULL, 
     M = 1, nx = 40, ny = 40,  verbose = FALSE, 
-     extrap = FALSE) {
+     extrap = FALSE,...) {
     # check that this is a stationary covariance
     if (object$cov.function.name != "stationary.cov") {
         stop("covariance function is not stationary.cov")
@@ -56,7 +56,7 @@
     # (these are added at the predict step).
     # from now on all predicted values are on the grid
     # represented by a matrix
-    h.hat <- predictSurface(object, grid.list = grid.list, extrap = extrap)$z
+    h.hat <- predictSurface(object, grid.list = grid.list, extrap = extrap,...)$z
     if (verbose) {
         cat("mean predicted field", fill = TRUE)
         image.plot(h.hat)
@@ -103,7 +103,7 @@
         # and subtract from 'true' value
         temp.error <- predictSurface(object, grid.list = grid.list, 
             yM = y.synthetic, eval.correlation.model = FALSE, 
-            extrap = TRUE)$z - h.true$z
+            extrap = TRUE,...)$z - h.true$z
         if (verbose) {
             cat("mean predicted field", fill = TRUE)
             image.plot(temp.error)

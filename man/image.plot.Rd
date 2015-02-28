@@ -19,17 +19,21 @@ often arise from regular grids transformed with a map projection.
 
 }
 \usage{
-
 \method{image}{plot}(...,
-                 add = FALSE, nlevel = 64, horizontal = FALSE,
-                 legend.shrink = 0.9, legend.width = 1.2, legend.mar =
-                 ifelse(horizontal, 3.1, 5.1), legend.lab = NULL,legend.line = 2,
-                 graphics.reset = FALSE, bigplot = NULL, smallplot =
-                 NULL, legend.only = FALSE, col = tim.colors(nlevel),
-                 lab.breaks = NULL, axis.args = NULL, legend.args =
-                 NULL, midpoint=FALSE, border=NA, lwd=1.0)}
+                 add = FALSE, 
+                 breaks= NULL, nlevel = 64, col = NULL,  
+    horizontal = FALSE, legend.shrink = 0.9, legend.width = 1.2, 
+    legend.mar = ifelse(horizontal, 3.1, 5.1), legend.lab = NULL,
+    legend.line= 2,                    
+    graphics.reset = FALSE, bigplot = NULL, smallplot = NULL, 
+    legend.only = FALSE,  lab.breaks = NULL, 
+    axis.args = NULL, legend.args = NULL, legend.cex=1.0, midpoint = FALSE, border = NA, 
+    lwd = 1,verbose = FALSE )
+}
 
-\arguments{ \item{\dots}{
+\arguments{ 
+	
+\item{\dots}{
  The usual arguments to the \code{image} function as x,y,or z or as a
 list with x,y,z as components. One can also include a \code{breaks} an
 argument for an unequal spaced color scale with color scale boundaries
@@ -50,28 +54,27 @@ colorbar labels.
 If true add image and a legend strip to the existing plot. 
 }
 
-\item{border}{This only works if x and y are matrices -- if NA the quadralaterals will have a border color that is 
-the same as the interior color. Otherwise this specifies the color to use.}
-
- 
-
 \item{bigplot}{
 Plot coordinates for image plot. If not passed
 these will
 be determined within the function.  
 }
-\item{smallplot }{
-Plot coordinates for legend strip.  If not passed these will be determined within
-the function. Be sure to leave room for the axis labels. For example, if the legend is on the
-right side  \code{smallplot= c(.85,.9,0,1) } will leave (.1 in plot coordinates) for the
-axis labels to the right of the color strip. This argument is useful for drawing a 
-plot with the legend that is the same size as the plots without legends.
-}
+
+\item{border}{This only works if x and y are matrices -- if NA the quadralaterals will 
+have a border color that is 
+the same as the interior color. Otherwise this specifies the color to use.}
+
+\item{breaks}{Break points in sorted order to indicate the intervals for assigning
+	the colors. Note that if there are nlevel colors there should be  (nlevel+1)
+ breakpoints. If \code{breaks} is not specified (nlevel+1) equally spaced breaks are created where the first and last bin have their midpoints at the minimum and maximum values in \code{z} or at \code{zlim}.   }
+
+
+
 
 \item{col}{
-Color table to use for image ( see help file on image for details).
+Color table to use for image (See help file on image for details.).
 Default is a pleasing range of 64 divisions suggested by Tim Hoar and is similar to 
-the MATLAB (TM) jet color scheme.
+the MATLAB (TM) jet color scheme. Note that if \code{breaks} is specified there must be one less colors specified than the number of breaks. 
 }
 
 \item{graphics.reset}{
@@ -102,6 +105,8 @@ is determined from the \code{zlim} argument.
 legend label. This is in the form of list and is just passed to the 
 mtext function. Usually this will not be needed. 
 (See example below.)}
+
+\item{legend.cex}{Character expansion to change size of the legend label.}
 
 \item{legend.line}{Distance in units of character height (as in \code{mtext})
  of the legend label from the 
@@ -135,13 +140,20 @@ to surround the  z locations as midpoints. If TRUE z values will be averaged
 to yield a midpoint value and the original grid points be used to define the
 quadralaterals. (See help on poly.image for details). In most cases
 midpoint should be FALSE to preserve exact values for z and 
-let the grid polygons be modified.
- }
+let the grid polygons be modified.}
 
 \item{nlevel}{
 Number of color levels used in legend strip  
 }
 
+\item{smallplot}{
+Plot coordinates for legend strip.  If not passed these will be determined within
+the function. Be sure to leave room for the axis labels. For example, if the legend is on the
+right side  \code{smallplot= c(.85,.9,0,1) } will leave (.1 in plot coordinates) for the
+axis labels to the right of the color strip. This argument is useful for drawing a 
+plot with the legend that is the same size as the plots without legends.
+}
+\item{verbose}{If TRUE prints intermediate information about setting up plots (for debugging). }
 }
 \section{Side Effects}{
 After exiting, the
@@ -153,7 +165,7 @@ If \code{xlim} and \code{ylim} are specified the pixels may overplot the axis li
 Just use the \code{box} function to redraw them. 
 }
 \details{
-How this function works:
+\strong{How this function works:}
 The strategy for \code{image.plot} is simple, divide the plotting region
 into two smaller regions \code{bigplot} and \code{smallplot}. The image
 goes in one and the legend in the other. This way there is always room for
@@ -167,7 +179,7 @@ have to change the default character sizes or margins to make things fit.
 Sometimes this function will not reset the type of margins correctly and the
 "null" call \code{par(mar = par("mar"))} may help to fix this issue.
 
-Almost cloropleths too:  It  should be noted that this image function is slightly
+\strong{Almost cloropleths too:}  It  should be noted that this image function is slightly
 different than a cloropleth map because
 the legend is assuming that a continous scale has been discretized into a series of colors.
 To make image.plot function as a  cloropleth graphic one would of course use the
@@ -176,17 +188,18 @@ and for clarity perhaps code the different regions as different integer values.
 In addition, for publication quality one would want to use the \code{legend.args} to
 add more descriptive labels at the midpoints in the color strip. 
 
-Relationship of x, y and z:
+\strong{Relationship of x, y and z:}
  If the z component is a matrix then the user should be aware that
 this function locates the matrix element z[i,j] at the grid locations
 (x[i], y[j]) this is very different than simply listing out the
 matrix in the usual row column tabular form. See the example below
-fo details on the difference in formatting. What does one do
-if you don't really have the "z" values on a regular grid? See the
+for details on the difference in formatting. What does one do
+if you do not really have the "z" values on a regular grid? See the
 functions \code{quilt.plot.Rd} and \code{as.image} to discretise
-irregular observations to a grid.  
+irregular observations to a grid. If the values makes sense as points on 
+a smooth surface see \code{Tps} and \code{fastTps} for surface interpolation.
 
-Grids with unequally spacing:
+\strong{Grids with unequally spacing:}
 If x and y are matrices that are a smooth transformation of a regular grid  then
 z[i,j] is rendered at a quadrilateral that is centered at x[i,j] and
 y[i,j] (\code{midpoint} TRUE). The details of how this cell is found
@@ -205,16 +218,18 @@ easily because these choices are jsut passed onto the polygon function.
 Adding the pixel grid for rectangular images:
 For adding the grid of pixel borders to a rectangular image try this example
 after calling \code{image.plot}
-\preformatted{ 
- dx<- x[2] - x[1]
- dy <- y[2]-y[1]
- xtemp<- seq(  min( x)- dx/2, max(x)+ dx/2,, length(x) +1)
- ytemp<- seq(  min( y)- dy/2, max(y)+ dy/2,, length(y) +1)
- xline( xtemp, col="grey50", lwd=2);  yline( ytemp, col="grey50", lwd=2)
-}
+
+%\preformatted{ 
+\code{ dx<- x[2] - x[1]} \cr
+\code{ dy <- y[2]-y[1]} \cr
+\code{ xtemp<- seq(  min( x)- dx/2, max(x)+ dx/2,, length(x) +1) } \cr
+\code{ ytemp<- seq(  min( y)- dy/2, max(y)+ dy/2,, length(y) +1)} \cr
+\code{ xline( xtemp, col="grey50", lwd=2);  yline( ytemp, col="grey50", lwd=2)} 
+%}
+
 Here \code{x} and \code{y} here are the x and y grid values from the image list.  
 
- Fine tuning color scales: This function gives some flexibility in
+\strong{Fine tuning color scales:} This function gives some flexibility in
 tuning the color scale to fit the rendering of z values. This can
 either be specially designed color scale with specific colors ( see
 help on \code{designer.colors}), positioning the colors at specific
@@ -224,8 +239,8 @@ supplying \code{lab.break} strings or axis parameters one can
 annotate the legend axis in an informative matter. 
 
 
-The details of placing the legend and 
-dividing up the plotting real estate:
+\strong{The details of placing the legend and 
+dividing up the plotting real estate:}
 It is surprising how hard it is to automatically add the
 legend! All "plotting coordinates" mentioned here are in device
 coordinates. The plot region is assumed to be [0,1]X[0,1] and plotting
@@ -255,7 +270,7 @@ similar function to image.plot and a formula syntax in the call.
 
 
 By keeping the \code{zlim} argument the same across images one can generate the
-same color scale. (See the image help file.)  One useful technique for a
+same color scale. (See the \code{image} help file.)  One useful technique for a
 panel of images is to just draw the images with \code{image} 
 and then use image.plot to add a legend to the last plot. (See example 
 below for messing with the outer margins to make this work.) 
@@ -265,11 +280,11 @@ adjustments. See the examples below for more complicated arrangements
  of multiple image plots and a summary 
 legends.  
 
-Adding just the legend strip:
+\strong{Adding just the legend strip:}
 Note that to add just the legend strip all the numerical information one
 needs is the \code{zlim} argument and the color table!
 
-About color tables:  
+\strong{About color tables:}
 We like \code{tim.colors}
 as a default color scale and so if this what you use this can be omitted.   The
 topographic color scale (\code{topo.colors}) is

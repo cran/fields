@@ -17,9 +17,11 @@ This function also works for just a single dimension  and is a special case of a
 (Kriging).  A "fast" version of this function uses a compactly supported Wendland covariance and computes the estimate for a fixed smoothing parameter.
 }
 \usage{
-Tps(x, Y, m = NULL, p = NULL, scale.type = "range", lon.lat = FALSE, miles = TRUE, ...)
+Tps(x, Y, m = NULL, p = NULL, scale.type = "range", lon.lat = FALSE,
+         miles = TRUE, method = "GCV", GCV = TRUE, ...)
 
-fastTps(x, Y, m = NULL, p = NULL,  theta, lon.lat=FALSE, find.trA = TRUE, lambda=0, ...)
+fastTps(x, Y, m = NULL, p = NULL,  theta, lon.lat=FALSE,
+          find.trA = TRUE, lambda=0, ...)
 
 }
 \arguments{
@@ -65,7 +67,12 @@ latitude and great circle distance is used to find distances among
 locations. The theta scale parameter for \code{fast.Tps} (setting the
 compact support of the Wendland function) in this case is in units of
 miles (see example and caution below). }
-
+ 
+ \item{method}{ Determines what "smoothing" parameter should be
+     used. The default is to estimate standard GCV Other choices are:
+     GCV.model, GCV.one, RMSE, pure error and REML. The differences
+     are explained in the Krig help file.}
+ \item{GCV}{If TRUE the decompositions are done to efficiently evaluate the estimate, GCV function and likelihood at multiple values of lambda. }    
 \item{miles}{If TRUE great circle distances are in miles if FALSE
 distances are in kilometers}
 
@@ -79,7 +86,7 @@ distances are in kilometers}
 using a simple Monte Carlo method. This will add to the computational
 burden by approximately \code{NtrA} solutions of the linear system but
 the cholesky decomposition is reused.}
- 
+  
 \item{\dots}{For \code{Tps} any argument that is valid for the
 \code{Krig} function. Some of the main ones are listed below.
 
@@ -123,10 +130,7 @@ Arguments for Tps:
   \item{sigma2}{ Variance of errors or if weights are not equal to 1
      the variance is sigma**2/weight.}
 
-  \item{method}{ Determines what "smoothing" parameter should be
-     used. The default is to estimate standard GCV Other choices are:
-     GCV.model, GCV.one, RMSE, pure error and REML. The differences
-     are explained below.}
+ 
 
    \item{verbose}{ If true will print out all kinds of intermediate
       stuff.  }

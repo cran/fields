@@ -1,7 +1,7 @@
 
-R version 3.1.0 (2014-04-10) -- "Spring Dance"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin10.8.0 (64-bit)
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -25,7 +25,7 @@ Type 'q()' to quit R.
 > library( fields)
 Loading required package: spam
 Loading required package: grid
-Spam version 0.41-0 (2014-02-26) is loaded.
+Spam version 1.0-1 (2014-09-09) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
 and overview of this package.
 Help for individual functions is also obtained by adding the
@@ -73,23 +73,17 @@ testing:  wendland.cov quad 2-d
     PASSED test at tolerance  0.005
 testing:  stationary.cov/Wendland cubic 2-d
     PASSED test at tolerance  0.01
-Warning messages:
-1: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV, Krig.fgcv,  :
-  GCV search gives a minimum at the endpoints of the
-grid search
-2: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, Krig.fgcv.one,  :
-  GCV search gives a minimum at the endpoints of the
-grid search
+Warning: 
+Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
+  (REML) Restricted maximum likelihood 
+   minimum at  right endpoint  lambda  =  1.938365e-08 (eff. df= 380 )
 testing:  stationary.cov/Wendland cubic 2-d
     PASSED test at tolerance  0.005
     PASSED test at tolerance  0.005
-Warning messages:
-1: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV, Krig.fgcv,  :
-  GCV search gives a minimum at the endpoints of the
-grid search
-2: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, Krig.fgcv.one,  :
-  GCV search gives a minimum at the endpoints of the
-grid search
+Warning: 
+Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
+  (GCV) Generalized Cross-Validation 
+   minimum at  right endpoint  lambda  =  4.881835e-06 (eff. df= 380 )
 testing:  Tps derivative x1
     PASSED test at tolerance  2e-04
 testing:  Tps derivative x2
@@ -99,4 +93,4 @@ done with dervative tests
 > 
 > proc.time()
    user  system elapsed 
-  3.616   0.179   3.787 
+  4.080   0.168   4.279 

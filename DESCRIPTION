@@ -1,7 +1,7 @@
 Package: fields
-Version: 7.1
-Date: May 15, 2014
-Title: Tools for spatial data
+Version: 8.2-1
+Date: February 27, 2015
+Title: Tools for Spatial Data
 Authors@R: c( person("Douglas", "Nychka", role = c("aut", "cre"),
                email = "nychka@ucar.edu"),
             person("Reinhard", "Furrer", role = c("aut"),
@@ -16,23 +16,24 @@ Description: Fields is for curve, surface and function
  Kriging and compact covariances for large data sets. The splines and
  Kriging methods are supporting by functions that can determine the
  smoothing parameter (nugget and sill variance) by cross validation
- and also by restricted maximum likelihood.  A major feature is that
- any covariance function implemented in R  and following a simple fields
- format can be used for spatial prediction. Some tailored optimization
- functions are supplied for finding the MLEs for the Matern family of
- covariances.  There are also many useful functions for plotting and
+ and also by restricted maximum likelihood. For Kriging there is
+ an easy to function that also estimates the correlation scale (range).
+ A major feature is that
+ any covariance function implemented in R and following a simple fields
+ format can be used for spatial prediction. There are also many useful
+ functions for plotting and
  working with spatial data as images. This package also contains an
  implementation of sparse matrix methods for large spatial data sets and
  currently requires the sparse matrix (spam) package.
- But spam is not required for the standard
- spatial functions. Use help(fields) to get started and for an
- overview.  The fields source code is heavily commented and
+ Use help(fields) to get started and for an
+ overview.  The fields source code is deliberately commented and
  provides useful explanations of numerical details in addition to the
- manual pages.
+ manual pages. The commented source code can be viewed by expanding the
+ source code .tar.gz file and looking in R subdirectory. 
 License: GPL (>= 2)
 URL: http://www.image.ucar.edu/Software/Fields
 Depends: R (>= 3.0), methods, spam, maps
-Packaged: 2014-05-16 12:24:44 UTC; nychka
+Packaged: 2015-02-27 21:14:42 UTC; nychka
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2014-05-16 16:10:31
+Date/Publication: 2015-02-28 06:50:20

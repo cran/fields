@@ -1,7 +1,7 @@
 
-R version 3.1.0 (2014-04-10) -- "Spring Dance"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin10.8.0 (64-bit)
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -25,7 +25,7 @@ Type 'q()' to quit R.
 > library( fields)
 Loading required package: spam
 Loading required package: grid
-Spam version 0.41-0 (2014-02-26) is loaded.
+Spam version 1.0-1 (2014-09-09) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
 and overview of this package.
 Help for individual functions is also obtained by adding the
@@ -62,13 +62,10 @@ testing:  Tps vs.  Krig w/ GCV
     PASSED test at tolerance  1e-08
 testing:  Tps vs. radial basis w Krig
     PASSED test at tolerance  1e-08
-Warning messages:
-1: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV, Krig.fgcv,  :
-  GCV search gives a minimum at the endpoints of the
-grid search
-2: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, Krig.fgcv.one,  :
-  GCV search gives a minimum at the endpoints of the
-grid search
+Warning: 
+Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
+  (GCV) Generalized Cross-Validation 
+   minimum at  right endpoint  lambda  =  6.735369e-05 (eff. df= 475 )
     PASSED test at tolerance  0.001
     PASSED test at tolerance  0.001
 > cat("all done testing Tps", fill=TRUE)
@@ -79,4 +76,4 @@ all done testing Tps
 > 
 > proc.time()
    user  system elapsed 
-  1.491   0.038   1.519 
+  1.790   0.055   1.829 

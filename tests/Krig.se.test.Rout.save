@@ -1,7 +1,7 @@
 
-R version 3.1.0 (2014-04-10) -- "Spring Dance"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin10.8.0 (64-bit)
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -24,7 +24,7 @@ Type 'q()' to quit R.
 > library( fields)
 Loading required package: spam
 Loading required package: grid
-Spam version 0.41-0 (2014-02-26) is loaded.
+Spam version 1.0-1 (2014-09-09) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
 and overview of this package.
 Help for individual functions is also obtained by adding the
@@ -54,12 +54,6 @@ testing:  Marginal standard Cond. Sim.
     PASSED test at tolerance  0.015
 testing:  Full covariance standard Cond. Sim.
     PASSED test at tolerance  0.02
-Warning messages:
-1: In Krig.find.gcvmin(info, lambda.grid, gcv.grid$GCV.one, Krig.fgcv.one,  :
-  GCV search gives a minimum at the endpoints of the
-grid search
-2: In gcv.Krig(out, nstep.cv = nstep.cv, verbose = verbose, cost = out$cost,  :
-  Value of pure error estimate  is outside possible range
 testing:  Amatrix vs. predict
     PASSED test at tolerance  1e-08
 testing:  Weighted case and exact for ozone2 full 
@@ -69,4 +63,4 @@ all done testing predictSE
 > 
 > proc.time()
    user  system elapsed 
-  6.784   0.036   6.811 
+  6.982   0.044   7.016 

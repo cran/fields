@@ -20,21 +20,21 @@ generate a conditional sample for a large regular grid but is restricted
 to stationary correlation functions. 
  }
 \usage{
-sim.Krig(object, xp, M = 1, verbose = FALSE)
+sim.Krig(object, xp, M = 1, verbose = FALSE, ...)
 
 sim.Krig.approx(object, grid.list = NULL, M = 1, nx = 40, ny = 40,
-                 verbose = FALSE, extrap = FALSE)
+                 verbose = FALSE, extrap = FALSE,...)
 
 sim.mKrig.approx(mKrigObject, predictionPoints = NULL,
                  predictionPointsList = NULL, simulationGridList =
                  NULL, gridRefinement = 5, gridExpansion = 1 + 1e-07, M
                  = 1, nx = 40, ny = 40, nxSimulation = NULL,
-                 nySimulation = NULL, delta = NULL, verbose = FALSE)
+                 nySimulation = NULL, delta = NULL, verbose = FALSE,...)
  
 sim.fastTps.approx(fastTpsObject, 
                  predictionPointsList, simulationGridList =
                  NULL, gridRefinement = 5, gridExpansion = 1 + 1e-07, M
-                 = 1,  delta = NULL, verbose=FALSE)
+                 = 1,  delta = NULL, verbose=FALSE,...)
 
 } 
 %- maybe also 'usage' for other objects documented here. 
@@ -86,7 +86,10 @@ or from the range and and \code{nxSimulation}, \code{nySimulation}.}
  
   \item{xp}{Same as predictionPoints above.}
 
- \item{\dots}{Any other arguments to be passed to the predict function. }
+ \item{\dots}{Any other arguments to be passed to the predict function.
+ 	Usually this is the \code{Z} or \code{drop.Z} argument when there are 
+ 	additional covariates in the fixed part of the model.
+ 	(See example below.) }
 
   \item{verbose}{If true prints out intermediate information. }
 }
@@ -98,16 +101,18 @@ process under Gaussian assumptions. An important assumption throughout
 these functions is that all covariance parameters are fixed at their 
 estimated or prescribed values from the passed object. 
 
-Given a spatial process  Z(x)= P(x) + h(x) observed at 
+Given a spatial process  h(x)= P(x) + g(x) observed at 
 
-Y.k = P(x.k) + h(x.k) + e.k
+Y.k =  Z(x.k)d + P(x.k) + g(x.k) + e.k
 
-where P(x) is a low order, fixed polynomial and h(x) a Gaussian spatial 
-process.
+where P(x) is a low order, fixed polynomial and g(x) a Gaussian spatial 
+process and Z(x.k) is a vector of covariates that are also indexed by space (such as elevation). Z(x.k)d is a linear combination of the the covariates with the parameter vector d being a component of the fixed part of the 
+model and estimated in the usual way by generalized least squares.
+
 With Y= Y.1, ..., Y.N,
 the goal is to sample the conditional distribution of the process. 
  
-[Z(x) | Y ]
+[h(x) | Y ]  or the full prediction Z(x)d + h(x)
 
 For fixed a covariance this is just a multivariate normal sampling
 problem.  \code{sim.Krig.standard} samples this conditional process at
@@ -118,7 +123,7 @@ approximate sampling on a grid.
 The outline of the algorithm is
 
 0) Find the spatial prediction at the unobserved locations based on
- the actual data. Call this Z.hat(x).
+ the actual data. Call this h.hat(x) and this is the conditional mean. 
 
 1) Generate an unconditional spatial process and from this process
 simluate synthetic observations.  At this point the approximation is
@@ -131,9 +136,11 @@ estimate the spatial process at unobserved locations.
 3) Find the difference between the simulated process and its
 prediction based on synthetic observations. Call this e(x).
 
-4) Z.hat(x) + e(x) is a draw from [Z(x) | Y ].
+4) h.hat(x) + e(x) is a draw from [h(x) | Y ].
 
-\code{sim.Krig.standard} follows this algorithm exactly. 
+\code{sim.Krig} follows this algorithm exactly. Note the inclusion of
+drop.Z=TRUE or FALSE will determine whether the conditional simulation 
+includes the covariates Z or not. (See example below.) 
 
 \code{sim.Krig.approx} and \code{sim.mKrig.approx} evaluate the
 conditional surface on grid and simulates the values of h(x) off the
@@ -224,6 +231,35 @@ image.plot( look, zlim=zr)
 title("mean surface")
 for ( k in 1:5){
 image( sim.out$x, sim.out$y, sim.out$z[,,k], col=tim.colors(), zlim =zr)
+}
+
+\dontrun{
+# conditional simulation with covariates
+# colorado climate example
+  data(COmonthlyMet)
+  fit1E<- spatialProcess(CO.loc,CO.tmin.MAM.climate, Z=CO.elev   )
+# conditional simulation at missing data
+  good<- !is.na(CO.tmin.MAM.climate ) 
+  infill<- sim.Krig( fit1E, xp=CO.loc[!good,],  Z= CO.elev[!good], M= 100)
+# get an elevation grid  ... NGRID<- 50 gives a nicer image but takes longer 
+ NGRID <- 25  
+ # get elevations on a grid  
+   COGrid<- list( x=seq( -109.5, -101, ,NGRID), y= seq(39, 41.5,,NGRID) )
+   COGridPoints<- make.surface.grid( COGrid)
+ # elevations are a bilinear interpolation from the 4km
+ # Rocky Mountain elevation fields data set.   
+   data( RMelevation)
+   COElevGrid<- interp.surface( RMelevation, COGridPoints )
+# NOTE call to sim.Krig treats the grid points as just a matrix
+# of locations the plot has to "reshape" these into a grid 
+# to use with image.plot 
+   SEout<- sim.Krig( fit1E, xp=COGridPoints,  Z= COElevGrid, M= 30)
+# for just the smooth surface in lon/lat
+#  SEout<- sim.Krig( fit1E, xp=COGridPoints,  drop.Z=TRUE, M= 30)
+# in practice M should be larger to reduce Monte Carlo error.      
+   surSE<- apply( SEout, 2, sd )
+   image.plot( as.surface( COGridPoints, surSE)) 
+   points( fit1E$x, col="magenta", pch=16) 
 }
 \dontrun{
 data( ozone2)

@@ -6,10 +6,10 @@
 \name{sim.rf}
 \alias{sim.rf}
 \title{
-  Simulates a random field  
+  Simulates a Stationary Gaussian random field  
 }
 \description{
-Simulates a random Gaussian field on a regular grid. 
+Simulates a stationary Gaussian random field on a regular grid. 
 }
 \usage{
 sim.rf(obj)
@@ -17,7 +17,7 @@ sim.rf(obj)
 \arguments{
 \item{obj}{
 A covariance object that includes information about the covariance function 
-and the grid for evaluation. Usually this created by a setup call to 
+and the grid for evaluation. Usually this is created by a setup call to 
 Exp.image.cov. (See details below.) 
 }
 \item{\dots}{
@@ -31,26 +31,26 @@ A matrix with the random field values
 This function takes an object that includes some preliminary calculations 
 and so is more efficient for simulating more than one field from the same 
 covariance. However, the algorithm using a 2-d FFT may not always work if 
-the correlation scale is large (See the FIELDS manual for more details.)
-The simple fix is increase the size of the domain so that the correlation 
-sale becomes smaller relative to the extent of th domain. 
+the correlation scale is large.
+The simple fix is to increase the size of the domain so that the correlation 
+scale becomes smaller relative to the extent of the domain. Increasing the size can be computationally expensive however and so this method has some limitations.  
 
 For a stationary model the covariance object has the components: 
 
 names( obj) 
- "m"    "n"    "grid" "N"    "M"    "wght"   
+ "m"    "n"    "grid" "N"    "M"    "wght",   
 
-.
-where m and n are the number of grid points in x and y grid is a list with 
-the grid point values for x and y N and M is the size of the larger grid 
-that is used for simulation ( usually M= 2*m and N=2*n) to minimize 
-periodic effects. wght is a matrix from the FFT of the covariance 
+where m and n are the number of grid points in x and y, grid  is a list with 
+components  x and y giving the grid points in each coordinate. 
+N and M is the size of the larger grid 
+that is used for simulation. Usually M = 2*m and N =2*n and results in an 
+exact simulation of the stationary Gaussian field.  wght is a matrix from the FFT of the covariance 
 function.  The easiest way to create this object is to use for example 
 Exp.image.cov with setup=T ( see below). 
 
 The classic reference for this algorithm is 
 Wood, A.T.A. and Chan, G. (1994).
-    Simulation of Stationary Gaussian Processes in [0,1]d . Journal of
+    Simulation of Stationary Gaussian Processes in [0,1]^d . Journal of
 Computational and Graphical Statistics, 3, 409-432. 
 
 }

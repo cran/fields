@@ -1,7 +1,7 @@
 
-R version 3.1.0 (2014-04-10) -- "Spring Dance"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin10.8.0 (64-bit)
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library(fields)
 Loading required package: spam
 Loading required package: grid
-Spam version 0.41-0 (2014-02-26) is loaded.
+Spam version 1.0-1 (2014-09-09) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
 and overview of this package.
 Help for individual functions is also obtained by adding the
@@ -59,6 +59,8 @@ testing:  d coef Krig.coef fixed
     PASSED test at tolerance  1e-08
 testing:  c coef Krig.coef fixed
     PASSED test at tolerance  1e-08
+testing:  Amatrix no reps
+    PASSED test at tolerance  5e-08
 testing:  d coef new y
     PASSED test at tolerance  1e-08
 testing:  c coef new y
@@ -79,6 +81,10 @@ testing:  Krig with fixed lam argument
     PASSED test at tolerance  1e-08
 testing:  Krig with fixed lam argument
     PASSED test at tolerance  1e-08
+Warning: 
+Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
+  (REML) Restricted maximum likelihood 
+   minimum at  right endpoint  lambda  =  2983.87 (eff. df= 3.001004 )
 testing:   d coef
     PASSED test at tolerance  1e-08
 testing:  c coef
@@ -91,6 +97,10 @@ testing:  d fixed case
     PASSED test at tolerance  1e-08
 testing:   c fixed case
     PASSED test at tolerance  1e-08
+Warning: 
+Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
+  (REML) Restricted maximum likelihood 
+   minimum at  right endpoint  lambda  =  2983.87 (eff. df= 3.001004 )
 testing:   d new y
     PASSED test at tolerance  1e-08
 testing:  c new y
@@ -99,12 +109,24 @@ testing:  d new y fixed
     PASSED test at tolerance  1e-08
 testing:  c new y fixed
     PASSED test at tolerance  1e-08
+Warning: 
+Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
+  (REML) Restricted maximum likelihood 
+   minimum at  right endpoint  lambda  =  42494.84 (eff. df= 3.00092 )
 testing:   d reps
     PASSED test at tolerance  1e-08
 testing:  c reps
     PASSED test at tolerance  1e-08
+Warning: 
+Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
+  (REML) Restricted maximum likelihood 
+   minimum at  right endpoint  lambda  =  42494.84 (eff. df= 3.00092 )
 testing:   pure sums of squares
     PASSED test at tolerance  1e-08
+Warning: 
+Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
+  (REML) Restricted maximum likelihood 
+   minimum at  right endpoint  lambda  =  42494.84 (eff. df= 3.00092 )
 testing:  Amatrix prediction
     PASSED test at tolerance  1e-08
     PASSED test at tolerance  1e-08
@@ -119,16 +141,6 @@ testing:  pure sums of squares
     PASSED test at tolerance  1e-08
 testing:   check trace
     PASSED test at tolerance  1e-08
-testing:  GCV one
-    PASSED test at tolerance  1e-08
-testing:  GCV model
-    PASSED test at tolerance  1e-08
-testing:  Tps/gcv for ozone2
-    PASSED test at tolerance  1e-08
-testing:  Tps/gcv for ozone2 new data
-    PASSED test at tolerance  1e-08
-done with Krig tests
-> 
 > proc.time()
    user  system elapsed 
-  1.648   0.032   1.671 
+  1.643   0.033   1.676 

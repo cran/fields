@@ -186,7 +186,7 @@ look75 <- QTps( x,y,f.start= look50$fitted.values, df=15, alpha=.75)
 }
 
 \dontrun{
-# this example test the quantile estimate by Monte Carlo
+# this example tests the quantile estimate by Monte Carlo
 # by creating many replicate point to increase the sample size. 
 # Replicate points are used because the computations for the 
 # spline are dominated by the number of unique locations not the 
@@ -194,7 +194,7 @@ look75 <- QTps( x,y,f.start= look50$fitted.values, df=15, alpha=.75)
 set.seed(123)
 N<- 80
 M<- 200
-x<- matrix( runif( N), ncol=1)
+x<- matrix( sort(runif( N)), ncol=1)
 x<- matrix( rep( x[,1],M), ncol=1)
 
 true.g<- x *(1-x)*2

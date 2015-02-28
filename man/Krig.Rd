@@ -27,18 +27,17 @@ subsequent analysis. Krig also supports a correlation model where the mean
 and marginal variances are supplied. 
 }
 \usage{
-Krig(
-x, Y, cov.function = "stationary.cov", lambda = NA, df
-                 = NA, GCV=FALSE, Z = NULL, cost = 1, knots = NA, weights = NULL,
-                 m = 2, nstep.cv = 200, scale.type = "user", x.center =
-                 rep(0, ncol(x)), x.scale = rep(1, ncol(x)), rho = NA,
-                 sigma2 = NA, method = "GCV", verbose = FALSE, mean.obj
-                 = NA, sd.obj = NA, null.function =
-                 "Krig.null.function", wght.function = NULL, offset =
-                 0,  na.rm = TRUE, cov.args = NULL,
+Krig(x, Y, cov.function = "stationary.cov", lambda = NA, df
+                 = NA, GCV = FALSE, Z = NULL, cost = 1, knots = NA,
+                 weights = NULL, m = 2, nstep.cv = 200, scale.type =
+                 "user", x.center = rep(0, ncol(x)), x.scale = rep(1,
+                 ncol(x)), rho = NA, sigma2 = NA, method = "REML",
+                 verbose = FALSE, mean.obj = NA, sd.obj = NA,
+                 null.function = "Krig.null.function", wght.function =
+                 NULL, offset = 0, na.rm = TRUE, cov.args = NULL,
                  chol.args = NULL, null.args = NULL, wght.args = NULL,
                  W = NULL, give.warnings = TRUE, ...)
-
+                 
 \method{fitted}{Krig}(object,...)
 
 \method{coef}{Krig}(object,...)

@@ -38,8 +38,8 @@
     # empty image matrices to hold weights and  weighted means
      w<- z <- matrix( NA, nrow=temp$m, ncol=temp$n)
      # find stats
-     tempz<- tapply( Z*weights, temp$index, sum, na.rm=na.rm )
-     tempw<- tapply( weights, temp$index, sum, na.rm=na.rm )
+     tempz<- tapply( Z*weights, temp$index, sum, na.rm=FALSE )
+     tempw<- tapply( weights, temp$index, sum, na.rm=FALSE)
      # these are the indices that are represented by the locations
      # they may not include the entire set ( 1:nx and 1:ny)
      # so define what they do have.

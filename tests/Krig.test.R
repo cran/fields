@@ -45,10 +45,24 @@ test.for.zero( test.c, test$c, tag= "c coef Krig.coef" )
 Krig.coef( fit2)->test
 test.for.zero( test.d, test$d,tag="d coef Krig.coef fixed" )
 test.for.zero( test.c, test$c, tag="c coef Krig.coef fixed" )
+# checking A matrix in the case of noreps
 
+set.seed( 222)
+weights<-  10+ runif( length(ozone$y))
+#weights<- rep( 1, 20)
+test2<- Krig( ozone$x, ozone$y, theta=50, weights= weights)
+Atest<- Krig.Amatrix( test2)
+K<-Exp.cov(ozone$x, ozone$x,theta=50)
+H<- matrix(0, 23,23)
+H[(1:20)+3 , (1:20)+3]<- K
+X<- cbind( fields.mkpoly( ozone$x, 2), K)
+lambda<- test2$lambda
+ Alam <-  X%*%solve(
+                 t(X)%*%diag(weights)%*%X + lambda*H
+                 )%*% t(X)%*%diag(weights) 
+ test.for.zero( Alam, Atest, tag="Amatrix no reps", tol=5e-8)
 
 # test for new y fixed case
-
 set.seed( 123)
 ynew<- rnorm( fit2$N)
 
@@ -265,6 +279,13 @@ knots<- x[1:10,]
 
 Krig( x,y, knots=knots,  weights=weights, cov.function=Exp.cov)-> out.new
 
+NP<- out.new$np
+NK <- nrow( knots)
+K<- Exp.cov( knots, knots)
+H<- matrix(0, NP,NP)
+H[(1:NK)+3 , (1:NK)+3]<- K
+X<- cbind( fields.mkpoly( x, 2), Exp.cov( x, knots))
+
 
 
 lambda<- out.new$lambda
@@ -324,48 +345,3 @@ test2<- out.new$eff.df
 
 test.for.zero( test,test2, tag=" check trace")
 
-Krig.fgcv.one( lam=lambda, out.new)-> test
-# compare to 
-test2<- (1/N)*sum(  (y - c(Alam%*% y))**2 *weights) / (1- sum(diag( Alam))/N)**2
-
-test.for.zero( test,test2, tag="GCV one" )
-
-
-test<- Krig.fgcv.model( lam=lambda, out.new)
- 
-test<- test - out.new$shat.pure.error**2
-
-# compare to 
-ybest<- X%*%solve(t(X)%*%diag(weights)%*%X) %*% t(X)%*%diag(weights)%*% y
-M<- ncol( X)
-test2<- (1/M)*sum(  
-(ybest - c(Alam%*% y))**2 *weights) / (1- sum(diag( Alam))/M)**2 
-
-
-test.for.zero( test,test2,tag="GCV model")
-
-####### tests with higher level gcv.Krig
-
-data( ozone2)
-x<- ozone2$lon.lat
-y<- ozone2$y[16,]
-Tps( x,y)-> out
-gcv.Krig( out)-> out2
-
-test.for.zero(out$lambda.est[1,], 
-       out2$lambda.est[1,], tag="Tps/gcv for ozone2")
-
-# try with "new" data (linear transform should give identical 
-# results for GCV eff df
-
-gcv.Krig( out, y=(11*out$y + 5) )-> out3
-
-test.for.zero(out$lambda.est[1,2], 
-       out3$lambda.est[1,2], tag="Tps/gcv for ozone2 new data")
-
-#cat("done with GCV case", fill=TRUE)
-
-
-
-cat("done with Krig tests", fill=TRUE)
-options( echo=TRUE)

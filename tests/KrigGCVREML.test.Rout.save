@@ -15,15 +15,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> # fields, Tools for spatial data
-> # Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-> # University Corporation for Atmospheric Research
-> # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-> 
-> 
-> # test of sreg and related functions
-> 
-> library( fields)
+> library(fields)
 Loading required package: spam
 Loading required package: grid
 Spam version 1.0-1 (2014-09-09) is loaded.
@@ -39,33 +31,32 @@ The following objects are masked from 'package:base':
     backsolve, forwardsolve
 
 Loading required package: maps
-> options(echo=FALSE)
-testing:  predict at lambda sreg/Tps
+> #
+> #
+> #  test of fixed lambda case
+> #  Check against linear algebra
+> #
+> 
+> options( echo=FALSE)
+Warning: 
+Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
+  (REML) Restricted maximum likelihood 
+   minimum at  right endpoint  lambda  =  0.2767992 (eff. df= 9.499985 )
+testing:  sanity check
+    PASSED test at tolerance  3e-08
     PASSED test at tolerance  1e-08
+testing:  GCV
+FAILED test value =  35.79109  at tolerance  1e-08
+testing:  GCV one
+    PASSED test at tolerance  1e-08
+testing:  GCV model
+    PASSED test at tolerance  1e-08
+testing:  Tps/gcv for ozone2
     PASSED test at tolerance  5e-04
-testing:  GCV sreg/Tps
-    PASSED test at tolerance  2.1e-06
-Warning message:
-In golden.section.search(ax = starts[1], bx = starts[2], cx = starts[3],  :
-  Maximum iterations reached
-Warning message:
-In golden.section.search(ax = starts[1], bx = starts[2], cx = starts[3],  :
-  Maximum iterations reached
-testing:  GCV sreg/Tps reps case
+testing:  Tps/gcv for ozone2 new data
     PASSED test at tolerance  1e-06
-testing:  GCV sreg/Tps reps case
-    PASSED test at tolerance  1e-06
-All done with sreg tests
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
+done with GCV and REML tests
 > 
 > proc.time()
    user  system elapsed 
-  1.341   0.037   1.373 
+  1.257   0.036   1.280 

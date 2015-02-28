@@ -3,5 +3,5 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 fitted.Krig <- function(object, ...) {
-    object$residuals
+    object$fitted.values 
 }

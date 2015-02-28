@@ -21,8 +21,34 @@ nu<- 1.5
 x<-x[1:75,]
 y<- y[1:75]
 
+# testing REML formula as used in gcv.Krig
 
-
+ loglmvn <- function(pars, nu, x, y) {
+        N <- length(y)
+        Tmatrix <- fields.mkpoly(x, 2)
+        qr.T <- qr(Tmatrix)
+        Q2 <- qr.yq2(qr.T, diag(1, N))
+        ys <- t(Q2) %*% y
+        N2 <- length(ys)
+        lrho = pars[1]
+        ltheta = pars[2]
+        lsig2 = pars[3]
+        d <- rdist(x, x)
+        A <- (Matern(d, scale = exp(lrho), range = exp(ltheta), 
+            smoothness = nu) + exp(lsig2) * diag(N))
+        A <- t(Q2) %*% A %*% Q2
+        A <- chol(A)
+        w = backsolve(A, ys, transpose = TRUE)
+        ycept <- (N2/2) * log(2 * pi) + sum(log(diag(A))) + (1/2) * 
+            t(w) %*% w   
+            return( ycept)
+    }
+    
+out<- Krig( x,y, Covariance="Matern", smoothness= nu, theta= 2.0, method="REML"  )
+pars<- c(log( out$rho.MLE), log( 2.0), log( out$shat.MLE^2) )
+ REML0<- out$lambda.est[6,5]
+ REML1<- loglmvn( pars,nu, x,y)
+test.for.zero( REML0, REML1, tol=2e-4, tag="sanity check for REML from Krig")
 
 ##D hold1<- MaternGLS.test( x,y, nu)
 ##D hold2<- MaternGLSProfile.test( x,y,nu)

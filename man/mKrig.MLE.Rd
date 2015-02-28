@@ -1,6 +1,7 @@
 \name{mKrig.MLE}
 \alias{mKrig.MLE}
 \alias{fastTps.MLE}
+
 \title{
  Maximizes likelihood for the process marginal variance (rho) and
  nugget standard deviation (sigma) parameters (e.g. lambda) over a
@@ -12,6 +13,8 @@ different covariance parameters with the option of maximizing over
 sigma and rho.
 }
 \usage{
+
+	
 mKrig.MLE( x, y, weights = rep(1, nrow(x)), Z = NULL, ...,
                  par.grid = NULL, lambda = NULL, lambda.profile = TRUE,
                  verbose = FALSE, relative.tolerance = 1e-04)

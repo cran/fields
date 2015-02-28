@@ -5,20 +5,24 @@
 
 \name{summary.Krig}
 \alias{summary.Krig}
+\alias{summary.spatialProcess}
 \title{
-  Summary for Krig spatial process estimate 
+  Summary for Krig or spatialProcess estimated models. 
 }
 \description{
 Creates a list of summary results including estimates for  the nugget
 variance (sigma) and the smoothing
-parameter (lambda). This list is usually printed using print.summary.Krig.
+parameter (lambda). This list is usually printed using  a "print.summary"
+function for nice formatting.
 }
 \usage{
 \method{summary}{Krig}(object, digits=4,...)
+\method{summary}{spatialProcess}(object, digits=4,...)
+
 }
 \arguments{
 \item{object}{
-A Krig object. 
+A Krig or spatialProcess object. 
 }
 \item{digits}{
 Number of significant digits in summary. 

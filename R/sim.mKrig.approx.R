@@ -5,7 +5,7 @@
 "sim.mKrig.approx" <- function(mKrigObject, predictionPoints = NULL, 
     predictionPointsList = NULL, simulationGridList = NULL, gridRefinement = 5, 
     gridExpansion = 1 + 1e-07, M = 1, nx = 40, ny = 40, nxSimulation = NULL, 
-    nySimulation = NULL, delta = NULL, verbose = FALSE) {
+    nySimulation = NULL, delta = NULL, verbose = FALSE,...) {
     if (ncol(mKrigObject$x) != 2) {
         stop("conditional simulation only implemented for 2 dimensions")
     }
@@ -41,7 +41,7 @@
     }
     #
     # find conditional mean field from initial fit
-    hHat <- predict(mKrigObject, xnew = predictionPoints, grid.list = predictionPointsList)
+    hHat <- predict(mKrigObject, xnew = predictionPoints, grid.list = predictionPointsList, ...)
     # setup output array to hold ensemble
     out <- matrix(NA, length(hHat), M)
     # empty image object to hold simulated fields
@@ -77,7 +77,7 @@
         # predict at grid using these data
         # and subtract from synthetic 'true' value
         spatialError <- predict(mKrigObject, xnew = predictionPoints, 
-            grid.list = predictionPointsList, ynew = ySynthetic) - 
+            grid.list = predictionPointsList, ynew = ySynthetic, ...) - 
             hPredictionGrid
         # add the error to the actual estimate  (conditional mean)
         out[, k] <- hHat + spatialError

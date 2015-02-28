@@ -12,13 +12,11 @@
 \alias{Krig.fgcv}
 \alias{Krig.fgcv.model}
 \alias{Krig.fgcv.one}
-\alias{Krig.find.gcvmin}
-\alias{Krig.find.REML}
+
 \alias{Krig.flplike}
 \alias{Krig.fs2hat}
 \alias{Krig.ftrace}
 \alias{Krig.parameters}
-\alias{Krig.replicates}
 \alias{Krig.updateY}
 \alias{Krig.which.lambda}
 \alias{Krig.ynew}
@@ -36,8 +34,7 @@
 \alias{gauss.cov}
 \alias{golden.section.search}
 \alias{imageplot.info}
-\alias{image.plot.plt}
-\alias{image.plot.info}
+\alias{imagePlotInfo}
 \alias{imageplot.setup}
 \alias{krig.image.parameters}
 
@@ -58,9 +55,11 @@
 \alias{print.spatial.design}
 \alias{print.sreg}
 \alias{print.summary.Krig}
+\alias{print.summary.spatialProcess}
 \alias{print.summary.krig.image}
 \alias{print.summary.spatial.design}
 \alias{print.summary.sreg}
+\alias{printGCVWarnings}
 \alias{qr.q2ty}
 \alias{qr.yq2}
 \alias{plot.qsreg}
@@ -72,6 +71,7 @@
 \alias{qsreg.psi.OLD}
 \alias{qsreg.rho.OLD}
 \alias{qsreg.trace}
+\alias{quickPrint}
 \alias{summary.qsreg}
 \alias{radbas.constant}
 \alias{sim.krig.image}
@@ -92,7 +92,6 @@
 \alias{surface}
 \alias{surface.default}
 \alias{surface.krig.image}
-\alias{surface.surface}
 \alias{unscale}
 \alias{world.dat}
 
@@ -110,15 +109,10 @@ Krig.fdf (llam, info)
 Krig.fgcv (lam, obj) 
 Krig.fgcv.model (lam, obj) 
 Krig.fgcv.one (lam, obj) 
-Krig.find.gcvmin (info, lambda.grid, gcv, gcv.fun, tol, verbose =FALSE, 
-give.warnings = TRUE)
-Krig.find.REML (info, lambda.grid, llike, llike.fun, tol, verbose = TRUE, 
-give.warnings = FALSE)
 Krig.flplike (lambda, obj)
 Krig.fs2hat (lam, obj) 
 Krig.ftrace (lam, D) 
 Krig.parameters (obj, mle.calc=obj$mle.calc)
-Krig.replicates (out, verbose = FALSE) 
 Krig.updateY (out, Y, verbose = FALSE, yM=NA) 
 Krig.which.lambda(out)
 Krig.ynew (out, y=NULL, yM=NULL ) 
@@ -155,7 +149,8 @@ gauss.cov (...)
 golden.section.search (ax, bx, cx, f, niter = 25, f.extra = NA, 
      tol = 1e-05, gridx=NA) 
  
-imageplot.info (...) 
+imagePlotInfo (...,breaks, nlevel) 
+imageplot.info(...)
 imageplot.setup(x, add=FALSE,  legend.shrink = 0.9, legend.width = 1, 
 horizontal = FALSE, legend.mar=NULL, bigplot = NULL, smallplot = NULL,...)
 
@@ -165,8 +160,6 @@ makeSimulationGrid(mKrigObject, predictionPoints, nx, ny, nxSimulation,
 makeSimulationGrid2 (fastTpsObject, predictionPointsList,
                                gridRefinement, gridExpansion)
 
-\method{image}{plot.plt}(...)
-\method{image}{plot.info}(...)
 
   
 minimax.crit (obj, des = TRUE, R) 
@@ -179,10 +172,12 @@ minimax.crit (obj, des = TRUE, R)
 \method{print}{spatial.design} (x,...) 
 \method{print}{sreg}(x, ...) 
 \method{print}{summary.Krig} (x, ...) 
-
+\method{print}{summary.spatialProcess} (x, ...)
 \method{print}{summary.spatial.design} (x, digits = 4,...) 
 \method{print}{summary.sreg} (x, ...) 
-
+ 
+printGCVWarnings( Table,  method = "all")
+ 
 makePredictionPoints(mKrigObject, nx, ny, predictionPointsList)
 
 multWendlandGrid( grid.list,center, delta, coef, xy = c(1, 2))
@@ -203,6 +198,8 @@ qsreg.trace(x, y, lam, maxit = 50, maxit.cv = 10, tol = 1e-04,
              wt = rep(1, length(x)), cost = 1)
 qsreg.rho.OLD(r, alpha = 0.5, C = 1)
 qsreg.psi.OLD(r, alpha = 0.5, C = 1)
+
+quickPrint(obj, max.values = 10)
 
 \method{summary}{qsreg} (object, ...) 
 
@@ -228,7 +225,6 @@ summaryGCV.sreg (object, lambda, cost = 1, nstep.cv = 20,
 surface(object , ...) 
 \method{surface}{default} (object, ...) 
 
-\method{surface}{surface} (object, ...)
 
 unscale (x, x.center, x.scale) 
 

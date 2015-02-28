@@ -3,8 +3,8 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "quilt.plot" <- function(x, y, z, nx = 64, ny = 64, 
-     grid = NULL, add.legend = TRUE, add = FALSE, 
-    col = tim.colors(256),nrow = NULL, ncol = NULL, ...) {
+     grid = NULL, add.legend = TRUE, add = FALSE, nlevel=64, 
+    col = tim.colors(nlevel), nrow = NULL, ncol = NULL, ...) {
     #
     # note that nrow and ncol refer to the resulting 'image format' for plotting.
     # here the x values are the rows and the y values are the columns
@@ -31,7 +31,7 @@
         grid = grid)
     #plot it
     if (add.legend) {
-        image.plot(out.p, col = col, add = add, ...)
+        image.plot(out.p, nlevel = nlevel, col = col, add = add, ...)
     }
     else {
         image(out.p, col = col, add = add, ...)

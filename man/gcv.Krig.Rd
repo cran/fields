@@ -18,13 +18,15 @@ independently with different data sets (the y's) if the covariates ( the
 x's) are the same and thus reduce the computation. 
 }
 \usage{
-gcv.Krig(out, lambda.grid = NA, cost = 1, nstep.cv = 200, rmse = NA, 
-                  verbose = FALSE, tol = 1e-05, offset = 0, 
-                  y = NULL, give.warnings = TRUE, give.warnings.REML = FALSE)
+gcv.Krig(
+out, lambda.grid = NA, cost = 1, nstep.cv = 200, rmse
+                 = NA, verbose = FALSE, tol = 1e-05, offset = 0, y =
+                 NULL, give.warnings = TRUE)
 
-gcv.sreg (out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse =
-     NA, offset = 0, trmin = NA, trmax = NA, verbose = FALSE, tol = 1e-05)
-
+gcv.sreg (
+out, lambda.grid = NA, cost = 1, nstep.cv = 80, rmse =
+                 NA, offset = 0, trmin = NA, trmax = NA, verbose =
+                 FALSE, tol = 1e-05, give.warnings = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -42,10 +44,8 @@ equally spaced on effective degree of freedom scale. }
   \item{y}{A new data vector to be used in place of the one associated with the
 Krig object (obj) }
   \item{give.warnings}{ If FALSE will suppress warnings about grid search being out of 
-range for various estimates based on GCV.}
-  \item{give.warnings.REML}{ If FALSE will suppress warnings about grid search being 
-out of 
-range when finding REML estimate of lambda.}
+range for various estimates based on GCV and REML.}
+ 
 \item{trmin}{Minimum value of lambda for grid search specified in terms
 of effective degrees of freedom.}
 \item{trmax}{Maximum value for grid search.}
@@ -104,7 +104,7 @@ print( out$lambda.est) # results agree with Tps summary
 
 sreg( rat.diet$t, rat.diet$trt)-> out
 gcv.sreg( out, tol=1e-10) # higher tolerance search for minimum 
-
+\dontrun{
 # a simulation example
 x<- seq( 0,1,,150)
 f<-  x**2*( 1-x)
@@ -116,17 +116,21 @@ y<- f + rnorm( 150)*sigma
 
 Tps( x,y)-> obj # create Krig object
 
-hold<- matrix( NA, ncol=5, nrow=100)
+hold<- hold2<- matrix( NA, ncol=6, nrow=200)
 
-for( k in 1:10){
+for( k in 1:200){
 # look at GCV estimates of lambda
 # new data simulated
    y<- f + rnorm(150)*sigma 
 # save GCV estimates
-hold[k,]<-  gcv.Krig(obj,  y=y, give.warnings=FALSE)$lambda.est[1,]
+lambdaTable<- gcv.Krig(obj,  y=y, give.warnings=FALSE)$lambda.est
+hold[k,]<-  lambdaTable[1,]
+hold2[k,]<-  lambdaTable[6,]
 }
-plot( hold[,2], hold[,4], xlab="estimated eff. df", ylab="sigma hat")
-yline( sigma, col=2)
-# note some occaisional flaky behaviour with GCV ( eff df > 15!)
+matplot( cbind(hold[,2], hold2[,2]),cbind( hold[,4],hold2[,4]),
+ xlab="estimated eff. df", ylab="sigma hat", pch=16, col=c("orange3", "green2"), type="p")
+yline( sigma, col="grey", lwd=2)
+
+}
 }
 \keyword{spatial}

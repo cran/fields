@@ -5,9 +5,11 @@
 
 \name{plot.Krig}
 \alias{plot.Krig}
+\alias{plot.spatialProcess}
 \alias{plot.sreg}
+
 \title{
-  Diagnostic and summary plots of a Kriging or spline object 
+  Diagnostic and summary plots of a Kriging, spatialProcess or spline object. 
 }
 \description{
 Plots a series of four diagnostic plots that summarize the fit. 
@@ -15,6 +17,7 @@ Plots a series of four diagnostic plots that summarize the fit.
 \usage{
 \method{plot}{Krig}(x, digits=4, which= 1:4,...)
 \method{plot}{sreg}(x, digits = 4, which = 1:4, ...)
+\method{plot}{spatialProcess}(x, digits=4, which= 1:4,...)
 
 
 }
@@ -53,25 +56,35 @@ the GCV function may be plotted.  GCV function is with respect to the
 standardized data if a correlation model is specified. A vertical line
 indicates the minimium found.
 
-The fourth plot is a histogram of the standardized residuals. 
+For \code{Krig} and \code{sreg} objects the fourth plot is a histogram of the standardized residuals. 
 For sreg if multiple lambdas are given plotted are boxplots of the  
 residuals for each fit. 
+
+For \code{spatialProcess} object the fourth plot is the profile likelihood for the
+theta parameter. Points are the actual evaluated log likelihoods and the dashed line is
+just a spline interpolation to help with visualization. 
+
 }
 \seealso{
-Krig, summary.Krig, Tps, set.panel
+Krig, spatialProcess, summary.Krig, Tps, set.panel
 }
 \examples{
 
 fit<-Krig(ozone$x, ozone$y, theta=200)  
 # fitting a surface to ozone  
 # measurements 
-
 set.panel( 2,2)
 plot(fit)
 
-fit<-sreg(rat.diet$t,rat.diet$con)
+fit<-spatialProcess(ozone$x, ozone$y)  
+# fitting a spatial process model to ozone  
+# measurements 
+# Although an example does not make too much sense for only 20 observations!
+set.panel( 2,2)
+plot(fit)
 
 # fit rat data
+fit<-sreg(rat.diet$t,rat.diet$con)
 set.panel(2,2)
 plot(fit)       
 
