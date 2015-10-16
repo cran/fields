@@ -1,6 +1,6 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R Under development (unstable) (2015-10-05 r69468) -- "Unsuffered Consequences"
+Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library( fields)
 Loading required package: spam
 Loading required package: grid
-Spam version 1.0-1 (2014-09-09) is loaded.
+Spam version 1.2-1 (2015-09-30) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
 and overview of this package.
 Help for individual functions is also obtained by adding the
@@ -36,7 +36,16 @@ The following objects are masked from 'package:base':
     backsolve, forwardsolve
 
 Loading required package: maps
+
+ # ATTENTION: maps v3.0 has an updated 'world' map.        #
+ # Many country borders and names have changed since 1990. #
+ # Type '?world' or 'news(package="maps")'. See README_v3. #
+
+
 > options( echo=FALSE)
+NULL
+testing:  addToDiag
+    PASSED test at tolerance  1e-08
 testing:  spam vs no spam
     PASSED test at tolerance  1e-08
 testing:  Krig mKrig d coef
@@ -74,9 +83,25 @@ testing:  fastTps interp1
     PASSED test at tolerance  1e-08
 testing:  fastTps interp2
     PASSED test at tolerance  0.01
+[1] "testing using distance matrix"
+testing:  predict: stationary.cov versus Exp.cov
+    PASSED test at tolerance  1e-08
+testing:  predict: no distance matrix versus compact distance matrix
+    PASSED test at tolerance  1e-08
+testing:  predict: no distance matrix versus distance matrix
+    PASSED test at tolerance  1e-08
+[1] "testing using predictSE"
+testing:  predictSE: stationary.cov with exponential versus Exp.cov
+    PASSED test at tolerance  1e-08
+testing:  predictSE: no distance matrix versus compact distance matrix
+    PASSED test at tolerance  1e-08
+testing:  predictSE: no distance matrix versus distance matrix
+    PASSED test at tolerance  1e-08
 all done with mKrig tests
+> 
+> 
 > 
 > 
 > proc.time()
    user  system elapsed 
-  1.790   0.080   1.859 
+  1.280   0.092   1.363 

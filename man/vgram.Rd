@@ -5,15 +5,32 @@
 
 \name{vgram}
 \alias{vgram}
+\alias{crossCoVGram}
+\alias{plot.vgram}
+\alias{boxplotVGram}
 \title{
-  Finds a traditional or robust variogram for spatial data. 
+  Traditional or robust variogram methods for spatial data
 }
 \description{
-Computes pairwise squared differences as a function of distance. 
-Returns either raw values or statistics from binning. 
+\code{vgram} computes pairwise squared differences as a function of distance. 
+Returns an S3 object of class "vgram" with either raw values or statistics from 
+binning. \code{crossCoVGram} is the same as \code{vgram} but differences are 
+taken across different variables rather than the same variable.  \code{plot.vgram} 
+and \code{boxplotVGram} create lineplots and boxplots of vgram objects output 
+by the \code{vgram} function.
 }
 \usage{
-vgram(loc, y, id=NULL, d=NULL, lon.lat=FALSE, dmax=NULL, N=NULL, breaks=NULL)
+vgram(loc, y, id = NULL, d = NULL, lon.lat = FALSE, 
+                    dmax = NULL, N = NULL, breaks = NULL, 
+                    type=c("variogram", "covariogram", "correlogram"))
+
+crossCoVGram(loc1, loc2, y1, y2, id = NULL, d = NULL, lon.lat = FALSE, 
+                        dmax = NULL, N = NULL, breaks = NULL, 
+                        type=c("cross-covariogram", "cross-correlogram"))
+
+boxplotVGram(x, N=10, breaks = pretty(x$d, N, eps.correct = 1), plot=TRUE, ...)
+
+\method{plot}{vgram}(x, N=10, breaks = pretty(x$d, N, eps.correct = 1), add=FALSE, ...)
 }
 \arguments{
 \item{loc}{
@@ -22,6 +39,20 @@ of the field
 }
 \item{y}{
 Value of the field at locations
+}
+\item{loc1}{
+Matrix where each row is the coordinates of an observed point
+of field 1
+}
+\item{loc2}{
+Matrix where each row is the coordinates of an observed point
+of field 2
+}
+\item{y1}{
+Value of field 1 at locations
+}
+\item{y2}{
+Value of field 2 at locations
 }
 \item{id}{
 A 2 column matrix that specifies which variogram differnces to find. 
@@ -35,9 +66,8 @@ directly from loc.
 }
 \item{lon.lat }{
 If true, locations are assumed to be longitudes and latitudes
-and 
-distances found are great circle distances ( in miles see rdist.earth).
-Default is false. 
+and distances found are great circle distances (in miles see 
+\link{rdist.earth}).  Default is FALSE. 
 }
 \item{dmax}{
 Maximum distance to compute variogram.
@@ -49,10 +79,31 @@ Number of bins to use.
 Bin boundaries for binning variogram values. Need not be equally spaced
 but must be ordered. 
 }
+\item{x}{
+An object of class "vgram" (an object returned by \code{vgram})
+}
+\item{add}{
+If \code{TRUE}, adds empirical variogram lineplot to current plot.  Otherwise 
+creates new plot with empirical variogram lineplot.
+}
+\item{plot}{
+If \code{TRUE}, creates a plot, otherwise returns variogram statistics output by 
+\code{bplot.xy}.
+}
+\item{type}{
+One of "variogram", "covariogram", "correlogram", "cross-covariogram", and 
+"cross-correlogram".  \code{vgram} supports the first three of these and 
+\code{crossCoVGram} supports the last two.
+}
+\item{...}{
+Additional argument passed to \code{plot} for \code{plot.vgram} or to 
+\code{bplot.xy} for \code{boxplotVGram}.
+}
 }
 \value{
-A list with these components. 
-\item{vgram}{Variogram values} 
+\code{vgram} and \code{crossCoVGram} return a "vgram" object containing the 
+following values:
+\item{vgram}{Variogram or covariogram values} 
 \item{d}{Pairwise distances} 
 \item{call}{Calling string} 
 \item{stats}{Matrix of statistics for values in each bin. 
@@ -60,15 +111,18 @@ A list with these components.
   If not either breaks or N arguments are not supplied then this
   component is not computed.} 
 \item{centers}{Bin centers.}
+
+If \code{boxplotVGram} is called with \code{plot=FALSE}, it returns a 
+list with the same components as returned by \code{bplot.xy}
 }
 
 \section{References}{
 See any standard reference on spatial statistics. For example 
 Cressie, Spatial Statistics  
 }
+\author{John Paige, Doug Nychka}
 \seealso{
-vgram.matrix
-bplot.xy, vgram.matrix 
+\link{vgram.matrix}, \link{bplot.xy}, \link{bplot}
 }
 \examples{
 #
@@ -90,8 +144,23 @@ brk<- seq( 0, 250,,25)
  
 ## or some boxplot bin summaries
 
-bplot.xy( look$d, sqrt(look$vgram), breaks=brk,ylab="sqrt(VG)")
-lines(look$centers, look$stats["mean",], col=4)
+boxplotVGram(look, breaks=brk)
+plot(look, add=TRUE, breaks=brk, col=4)
+
+#
+# compute equivalent covariogram, but leave out the boxplots
+#
+look<-vgram( x,y, N=15, lon.lat=TRUE, type="covariogram")
+plot(look, breaks=brk, col=4)
+
+#
+# compute equivalent cross-covariogram of the data with itself 
+#(it should look almost exactly the same as the covariogram of 
+#the original data, except with a few more points in the 
+#smallest distance boxplot and many points plotted twice)
+#
+look = crossCoVGram(x, x, y, y, N=15, lon.lat=TRUE, type="cross-covariogram")
+plot(look, breaks=brk, col=4)
 
 }
 \keyword{spatial}

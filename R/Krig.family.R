@@ -22,6 +22,10 @@
     #    information to output list (i.e. the Krig object)
     ##########################################################
         out$call <- match.call()
+    #   turn off warning based on options
+        if( options()$warn < 0 ){
+        	give.warnings<- FALSE
+        }
     #
     # save covariance function as its name
     #
@@ -397,6 +401,9 @@ Krig.check.xY <- function(x, Y, Z, weights, na.rm,
     # if NAs can be removed then remove them and warn the user
     if (na.rm) {
         ind <- is.na(Y)
+        if(all(ind)){
+        	stop("Oops! All Y values are missing!")
+        }
         if (any(ind)) {
             Y <- Y[!ind]
             x <- as.matrix(x[!ind, ])
@@ -404,11 +411,10 @@ Krig.check.xY <- function(x, Y, Z, weights, na.rm,
                 Z <- Z[!ind, ]
             }
             weights <- weights[!ind]
-            #            warning('NA's have been removed from Y ')
         }
     }
     #
-    # check for NA's in x matrix -- there should not be any to proceed!
+    # check for NA's in x matrix -- there should not be any !
     if (any(c(is.na(x)))) {
         stop(" NA's in x matrix")
     }

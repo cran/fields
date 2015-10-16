@@ -2,7 +2,7 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"rdist.earth" <- function(x1, x2, miles = TRUE, R = NULL) {
+"rdist.earth" <- function(x1, x2=NULL, miles = TRUE, R = NULL) {
     if (is.null(R)) {
         if (miles) 
             R <- 3963.34
@@ -12,7 +12,7 @@
     sinlat1 <- sin((x1[, 2] * pi)/180)
     coslon1 <- cos((x1[, 1] * pi)/180)
     sinlon1 <- sin((x1[, 1] * pi)/180)
-    if (missing(x2)) {
+    if (is.null(x2)) {
         pp <- cbind(coslat1 * coslon1, coslat1 * sinlon1, sinlat1) %*% 
             t(cbind(coslat1 * coslon1, coslat1 * sinlon1, sinlat1))
         return(R * acos(ifelse(abs(pp) > 1, 1 * sign(pp), pp)))

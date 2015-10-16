@@ -6,10 +6,12 @@
 \name{predictSurface}
 \alias{predictSurface}
 \alias{predictSurface.default}
+\alias{predictSurface.mKrig}
+\alias{predictSurface.Krig}
 \alias{predictSurface.fastTps}
 \alias{predictSurfaceSE}
 \alias{predictSurfaceSE.default}
-
+\alias{predict.surface}
 
 \title{
   Evaluates a fitted function or the prediction error as a surface that is suitable for plotting with 
@@ -28,15 +30,23 @@ surfaces.
 \method{predictSurface}{fastTps}(object, grid.list = NULL, 
        extrap = FALSE, chull.mask = NA, nx = 80, ny = 80,
        xy = c(1,2),  verbose = FALSE, ...)
+       
+\method{predictSurface}{Krig}(object, grid.list = NULL, extrap = FALSE, chull.mask = NA, 
+nx = 80, ny = 80, xy = c(1, 2), verbose = FALSE, ZGrid = NULL, 
+    drop.Z = FALSE, just.fixed=FALSE,  ...)
+    
+\method{predictSurface}{mKrig}(object,  ...)
 
 \method{predictSurfaceSE}{default}( object, grid.list = NULL, extrap =
 FALSE, chull.mask = NA, nx = 80, ny = 80, xy = c(1,2), verbose =
 FALSE, ...)
 
+\method{predict}{surface}(object,...)
 }
+
 \arguments{
 \item{object}{
-An object from fitting a function to data. In FIELDS this is usually a
+An object from fitting a function to data. In fields this is usually a
 Krig, mKrig, or fastTps object. 
 }
 \item{grid.list}{
@@ -79,34 +89,48 @@ matrix used to define the multidimensional surface. This argument is
 provided in lieu of generating the grid list. If a 4 dimensional surface
 is fit to data then \code{ xy= c(2,4)} will evaluate a surface using the 
 second and fourth variables with  variables 1 and 3 fixed at their median 
-values. NOTE: this argument is ignored if a grid.list arguments is 
+values. NOTE: this argument is ignored if a grid.list argument is 
 passed. }
-
-
+\item{drop.Z}{If TRUE the fixed part of model depending on covariates is omitted.}
+\item{just.fixed}{If TRUE the nonparametric surface is omitted.}
  \item{\dots}{
 Any other arguments to pass to the predict function associated with the fit
 object. 
-
-Some usual arguments for several of the fields fitted objects include:
+Some of the usual arguments for several of the fields fitted objects include:
 \describe{
-\item{drop.Z}{If TRUE the fixed part of model depending on covariates is omitted.}
-
-\item{just.fixed}{If TRUE the nonparametric surface is omitted.}
 
 \item{ynew}{ New values of y used to reestimate the surface.}
 
 \item{Z}{A matrix of covariates for the fixed part of model.}
 }
+}
 
+\item{ZGrid}{An array  or list form of covariates to use for
+	 prediction. This must match the
+\code{grid.list} argument. e.g. ZGrid and grid.list describe the same
+ grid. 
+If ZGrid is an array then the first two indices are the x and y
+ locations in the 
+grid. The third index, if present, indexes the covariates. e.g. For
+ evaluation on 
+a 10X15 grid and with 2 covariates. \code{ dim( ZGrid) == c(10,15, 2)}.
+If ZGrid is a list then the components x and y shold match those of
+ grid.list and
+the z component follows the shape described above for the no list 
+case. 
 }
 
  \item{verbose}{If TRUE prints out some imtermediate results for debugging.}
+
 }
+
 \value{
 The usual list components for making contour and perspective plots
 (x,y,z) along with labels for the x and y variables. For
 \code{predictSurface.derivative} the component \code{z} is a three
-dimensional array with \code{nx}, \code{ny}, 2. } \details{ This
+dimensional array with \code{nx}, \code{ny}, 2.
+ } 
+\details{ This
 function creates the right grid using the grid.list information or the
 attribute in xg, calls the predict function for the object with these
 points and also adding any extra arguments passed in the ... section,
@@ -125,7 +149,10 @@ that can be much more efficient because it takes advantage of a low
 level FORTRAN call to evaluate the Wendland covariance function. Use
 \code{predictSurface} or \code{predict} for other choices of m and k.
 
-
+\code{predictSurface.Krig} is designed to also include covariates for the fixed in terms of grids. Due to similarity in output and the model. \code{predictSurface.mKrig} just uses the Krig method.
+ 
+NOTE: \code{predict.surface} has been depreciated and just prints out
+a warning when called. 
 
  }
 \seealso{

@@ -2,7 +2,7 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-cubic.cov <- function(x1, x2, theta = 1, C = NA, marginal = FALSE) {
+cubic.cov <- function(x1, x2=NULL, theta = 1, C = NA, marginal = FALSE) {
     # comments in Exp.simple.cov for more details about the
     # required parts of this covariance
     
@@ -11,10 +11,9 @@ cubic.cov <- function(x1, x2, theta = 1, C = NA, marginal = FALSE) {
             stop(" x is a matrix this is a  1-d covariance")
         }
     }
-    
-    if (missing(x2)) {
-        x2 <- x1
-    }
+    if( is.null( x2) ){
+    	x2<- x1
+    } 
     # local function
     fun.temp <- function(u, v) {
         1 + ifelse(u < v, v * (u^2)/2 - (u^3)/6, u * (v^2)/2 - 

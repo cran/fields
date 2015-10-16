@@ -257,7 +257,7 @@ at different values of the smoothing parameter.}
 \seealso{  \code{\link{Krig}}, \code{\link{Tps}} }
 \examples{
 
-Krig( ozone$x, ozone$y, theta=100)-> out
+Krig( ChicagoO3$x, ChicagoO3$y, theta=100)-> out
 
 Krig.engine.default( out)-> stuff
 
@@ -267,7 +267,7 @@ look1<- Krig.coef( out)
 look1$c
 # compare to out$c
 
-look2<- Krig.coef( out, yM = ozone$y)
+look2<- Krig.coef( out, yM = ChicagoO3$y)
 look2$c
 # better be the same even though we pass as new data!
 

@@ -68,5 +68,20 @@ hold2<- hold2[!ind]
 
 test.for.zero( hold, out$vgram, tag="vgram more than one time point")
 
+# test covariogram versus correlogram
+y<- ozone2$y[16,]
+x<- ozone2$lon.lat
 
+sigma2 = var(y, na.rm=TRUE)
+lookCov = vgram(x, y, lon.lat=TRUE, type="covariogram")
+lookCor = vgram(x, y, lon.lat=TRUE, type="correlogram")
 
+test.for.zero(lookCov$vgram*(1/sigma2), lookCor$vgram, tag="correlogram versus covariogram")
+
+# test cross-covariogram versus cross-correlogram
+
+sigma2 = var(y, na.rm=TRUE)
+lookCov = crossCoVGram(x, x, y, y, lon.lat=TRUE, type="cross-covariogram")
+lookCor = crossCoVGram(x, x, y, y, lon.lat=TRUE, type="cross-correlogram")
+
+test.for.zero(lookCov$vgram*(1/sigma2), lookCor$vgram, tag="correlogram versus covariogram")

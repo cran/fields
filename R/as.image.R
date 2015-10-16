@@ -4,7 +4,8 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "as.image" <- function(Z, ind = NULL, grid = NULL, 
     x = NULL,  weights = rep(1, length(Z)), na.rm = FALSE, 
-    nx = 64, ny = 64, boundary.grid = FALSE, nrow = NULL, ncol = NULL) {
+    nx = 64, ny = 64, boundary.grid = FALSE, nrow = NULL, ncol = NULL,
+    FUN=NULL) {
     # NOTE that throughout ind is a two column integer matrix of
     # discretized locations in the image matrix.
     # Thanks to J. Rougier for fixing bugs in this function.
@@ -38,19 +39,27 @@
     # empty image matrices to hold weights and  weighted means
      w<- z <- matrix( NA, nrow=temp$m, ncol=temp$n)
      # find stats
-     tempz<- tapply( Z*weights, temp$index, sum, na.rm=FALSE )
      tempw<- tapply( weights, temp$index, sum, na.rm=FALSE)
+     if( is.null(FUN)){
+# usual weighted means case:     
+     tempz<- tapply( Z*weights, temp$index,sum, na.rm=FALSE )
+     tempz<- tempz/ tempw
+     }
+     else{
+# just apply FUN to values in the grid box -- no weighting!     	
+     	tempz<- tapply( Z, temp$index,FUN, na.rm=FALSE )
+     	}
      # these are the indices that are represented by the locations
      # they may not include the entire set ( 1:nx and 1:ny)
      # so define what they do have.
   
      # insert the tabled values into the right rows and columns.
-      z[ temp$ix, temp$iy] <- tempz/ tempw
+      z[ temp$ix, temp$iy] <- tempz
       w[ temp$ix, temp$iy] <- tempw
      # save call
      # xd created because it is a  pain to do otherwise and handy to have
     call <- match.call()
     list(x = grid$x, y = grid$y, z = z, call = call, ind = cbind(temp$index[[1]], temp$index[[2]]) , 
         weights = w, xd = cbind(grid$x[temp$index[[1]]], grid$y[temp$index[[2]]] ), 
-        call = match.call() )
+        call = match.call(), FUN = FUN )
 }

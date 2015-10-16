@@ -2,7 +2,7 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"ozone" <- structure(list(x = structure(c(10.2420950223404, 
+"ChicagoO3" <- structure(list(x = structure(c(10.2420950223404, 
     3.80376523711237, 9.10894898014071, 9.62401536295848, -2.42853799498812, 
     -12.626852374789, -0.419779101996896, -7.88824165286121, 
     3.54623204570348, -16.9019033521803, -27.2032310085453, -6.18852258956094, 

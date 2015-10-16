@@ -16,14 +16,14 @@ test.for.zero.flag<- 1
 x0<- expand.grid( c(-8,-4,0,20,30), c(10,8,4,0))
 
 
-Krig( ozone$x, ozone$y, cov.function = "Exp.cov", theta=50)-> out
+Krig( ChicagoO3$x, ChicagoO3$y, cov.function = "Exp.cov", theta=50)-> out
 
 
 # direct calculation
 Krig.Amatrix( out, x=x0)-> A
-test.for.zero( A%*%ozone$y, predict( out, x0),tag="Amatrix vs. predict")
+test.for.zero( A%*%ChicagoO3$y, predict( out, x0),tag="Amatrix vs. predict")
 
-Sigma<- out$rhohat*Exp.cov( ozone$x, ozone$x, theta=50)
+Sigma<- out$rhohat*Exp.cov( ChicagoO3$x, ChicagoO3$x, theta=50)
 S0<- out$rhohat*c(Exp.cov( x0, x0, theta=50))
 S1<- out$rhohat*Exp.cov( out$x, x0, theta=50)
 
@@ -40,7 +40,7 @@ look<- S0 - t(S1)%*% t(A) - A%*%S1 +
 test2<- predictSE( out, x= x0) 
 test.for.zero( sqrt(diag(  look)), test2,tag="Marginal predictSE")
 
-out2<- Krig( ozone$x, ozone$y, cov.function = "Exp.cov", theta=50,
+out2<- Krig( ChicagoO3$x, ChicagoO3$y, cov.function = "Exp.cov", theta=50,
             lambda=out$lambda)
 
 test2<- predictSE( out2, x= x0) 

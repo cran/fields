@@ -49,7 +49,7 @@ scale
 }
 \examples{
 #
-newx<-transformx( ozone$x, scale.type="range")
+newx<-transformx( ChicagoO3$x, scale.type="range")
 }
 \keyword{manip}
 % docclass is function

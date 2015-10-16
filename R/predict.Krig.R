@@ -24,10 +24,15 @@
         temp.c <- object$c
         temp.d <- object$d
     }
-    # check for passed x but no Z -- this is an error if there Z covariates
-    # in model and drop.Z is FALSE
-    if (!is.null(x) & is.null(Z) & !is.null(object$Z) & !drop.Z) {
-        stop("Need to specifify drop.Z as TRUE or pass Z values")
+    # check for passed x but no Z -- this is an error
+    # if there  are Z covariates in the model and drop.Z is FALSE
+    ZinModel<- !is.null(object$Z)
+    newX<- !is.null(x)
+    missingZ<- is.null(Z)
+    if( ZinModel&newX){
+    if( missingZ  & !drop.Z) {
+        stop("Need to specify drop.Z as TRUE or pass Z values")
+    }
     }
     # default is to predict at data x's
     if (is.null(x)) {
@@ -87,12 +92,7 @@
         cat("c coefs", fill = TRUE)
         print(temp.c)
     }
-    #
-    # The covariance function is
-    # evaluated by using it name, do.call function and any
-    # additional arguments.
-    #
-    #
+    
     # this is the fixed part of predictor
     #
     Tmatrix <- do.call(object$null.function.name, c(object$null.args, 
@@ -109,6 +109,10 @@
         # Now find sum of covariance functions times coefficients
         # Note that the multiplication of the cross covariance matrix
         # by the coefficients is done implicitly in the covariance function
+        #
+        # The covariance function is
+        # evaluated by using its name, the do.call function, and any
+        # additional arguments.
         #
         temp <- temp + do.call(object$cov.function.name, c(object$args, 
             list(x1 = x, x2 = object$knots, C = temp.c)))

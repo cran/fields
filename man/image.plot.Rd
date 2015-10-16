@@ -165,6 +165,9 @@ If \code{xlim} and \code{ylim} are specified the pixels may overplot the axis li
 Just use the \code{box} function to redraw them. 
 }
 \details{
+	
+
+
 \strong{How this function works:}
 The strategy for \code{image.plot} is simple, divide the plotting region
 into two smaller regions \code{bigplot} and \code{smallplot}. The image
@@ -178,6 +181,12 @@ regions in fitting both of these elements in the plot region and one may
 have to change the default character sizes or margins to make things fit.
 Sometimes this function will not reset the type of margins correctly and the
 "null" call \code{par(mar = par("mar"))} may help to fix this issue.
+
+\strong{Why image.plot and not image?} The R Base function \code{image} is very 
+useful but it is awkward to place a legend quickly. However, that said if you are
+drawing several image plots and want ao common legend use the \code{image} function 
+and just just use \code{image.plot} to add the legend. See the example in the 
+help file.
 
 \strong{Almost cloropleths too:}  It  should be noted that this image function is slightly
 different than a cloropleth map because
@@ -337,9 +346,7 @@ add.image, colorbar.plot, tim.colors, designer.colors }
 # quantiles of z. 
 # Two add some color scales together here is an example of  5 blues to white to 5 reds
 # with white being a specific size.
- blues<- designer.colors(6, c( "blue", "white") )
- reds <- designer.colors(6, c( "white","red")  )
- colorTable<- c( blues[-6], reds)
+ colorTable<- designer.colors(11, c( "blue","white", "red") )
 # breaks with a gap of 10 to 17 assigned the white color
  brks<- c(seq( 1, 10,,6), seq( 17, 25,,6)) 
  image.plot( x,y,z,breaks=brks, col=colorTable)
@@ -376,7 +383,10 @@ set.panel( 2,2) # 2X2 matrix of plots
 
 # now draw all your plots using usual image command
 for (  k in 1:4){
-image( matrix( rnorm(150), 10,15), zlim=c(-4,4), col=tim.colors())
+  data<- matrix( rnorm(150), 10,15)
+  image( data, zlim=c(-4,4), col=tim.colors())
+# and just for fun add a contour plot  
+  contour( data, add=TRUE)
 }
 
 par(oma=c( 0,0,0,1))# reset margin to be much smaller.

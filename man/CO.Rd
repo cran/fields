@@ -20,6 +20,8 @@
 \alias{CO.tmax.MAM.climate}
 \alias{CO.tmean.MAM.climate}
 \alias{CO.tmin.MAM.climate}
+\alias{CO.elevGrid}
+\alias{CO.Grid}
 
 \title{Monthly surface meterology for Colorado 1895-1997}
 
@@ -56,11 +58,16 @@ This group of data sets is organized with the following  objects:
 \describe{
 \item{CO.info}{A data frame with columns: station id, elev, lon, lat, station name}
 
+
 \item{CO.elev}{elevation in meters}
+
+\item{CO.elevGrid}{An image object being elevation in meters on a 4 km grid covering Colorado. }
 
 \item{CO.id}{ alphanumeric station id codes}
 
 \item{CO.loc}{locations in lon/lat}
+
+\item{CO.Grid}{Just the grid.list used in the CO.elevGrid.}
 
 \item{CO.ppt CO.tmax CO.tmin}{Monthly means as three dimensional arrays ( Year, Month, Station).
 Temperature is in degrees C and precipitation in total monthly
@@ -94,6 +101,13 @@ matplot( CO.elev, cbind( CO.tmax.MAM[103,], CO.tmin.MAM[103,]),
   pch="o", type="p",
   col=c("red", "blue"), xlab="Elevation (m)", ylab="Temperature (C)")
 title("Recorded MAM max (red) and min (blue) temperatures 1997")
+
+#Fitting a spatial model:
+obj<- Tps(CO.loc,CO.tmax.MAM.climate,  Z= CO.elev )
+good<- !is.na(CO.tmax.MAM.climate )
+out<- MLE.Matern(CO.loc[good,],CO.tmax.MAM.climate[good], 
+          smoothness=1.0, Z= CO.elev[good] )
+#MLE search on range suggests Tps model           
 
 
 }

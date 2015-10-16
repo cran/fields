@@ -2,7 +2,7 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"Rad.cov" <- function(x1, x2, p = 1, m = NA, with.log = TRUE, 
+"Rad.cov" <- function(x1, x2=NULL, p = 1, m = NA, with.log = TRUE, 
     with.constant = TRUE, C = NA, marginal = FALSE, derivative = 0) {
     #
     # mth order thin plate spline radial basis functions
@@ -23,6 +23,9 @@
     # coerce locations to matrices, if x2 is missing use x1
     if (!is.matrix(x1)) 
         x1 <- as.matrix(x1)
+    if( is.null( x2)){
+    	x2<- x1
+    }    
     if (!is.matrix(x2)) 
         x2 <- as.matrix(x2)
     d <- ncol(x1)

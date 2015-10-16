@@ -45,6 +45,10 @@ predict.surface.default<- function(object,...){
     return(out)
 }
 
+"predictSurface.mKrig" <- function( object, ...){
+	NextMethod("predictSurface.Krig")
+}
+
 "predictSurface.fastTps" <- function(object, grid.list = NULL, 
        extrap = FALSE, chull.mask = NA, nx = 80, ny = 80,
        xy = c(1,2),  verbose = FALSE, ...) {
@@ -53,7 +57,6 @@ predict.surface.default<- function(object,...){
         grid.list <- fields.x.to.grid(object$x, nx = nx, ny = ny, 
             xy = xy)
     } 
-
 # in the case of fastTps pass the grid list instead of the locations of grid points
 #  (see xg in predictSurface.default)
     out <-  predict(object, grid.list=grid.list, xy=xy, ...)

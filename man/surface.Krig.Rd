@@ -95,7 +95,7 @@ the model will be evaluated.
 predictSurface, plot.surface, image.plot
 }
 \examples{
-fit<- Krig(ozone$x,ozone$y, theta=30)  # krig fit 
+fit<- Krig(ChicagoO3$x,ChicagoO3$y, theta=30)  # krig fit 
 
 #Image plot of surface with nice, smooth  contours and shading
 

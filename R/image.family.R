@@ -60,8 +60,10 @@
     		 zlim[1]<- -1e-8
     		 zlim[2]<- 1e-8}
         else{		 
-        zlim[1]<- zlim[1]*(1 - 1e-8)
-        zlim[2]<- zlim[1]*(1 + 1e-8)}
+         delta<- .01*abs(zlim[1])
+        zlim[1]<- zlim[1] - delta
+        zlim[2]<- zlim[2] + delta
+        }
       }
     }
     #### parse x,y,z if they are  named arguments
@@ -99,7 +101,6 @@
     
     	breaks <- c( midpoints[1]- delta, midpoints + delta)
     }        
-        
     list(xlim = xlim, ylim = ylim, zlim = zlim, poly.grid = poly.grid,
        breaks=breaks)
 }

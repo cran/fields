@@ -30,7 +30,7 @@ Selected summary results from Krig.
 print, summary.Krig, Krig 
 }
 \examples{
-fit<- Krig(ozone$x,ozone$y, theta=100) 
+fit<- Krig(ChicagoO3$x,ChicagoO3$y, theta=100) 
 print(fit) # print the summary 
 fit # this will work too 
 }

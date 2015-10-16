@@ -50,6 +50,7 @@
 \alias{predict.interp.surface}
 \alias{predict.krig.image}
 
+\alias{predict.surface.default}
 
 \alias{print.krig.image}
 \alias{print.spatial.design}
@@ -95,6 +96,7 @@
 \alias{unscale}
 \alias{world.dat}
 
+\alias{MLESpatialProcess.fast}
 
 \title{
   Fields internal and secondary functions 
@@ -169,6 +171,10 @@ minimax.crit (obj, des = TRUE, R)
  
 \method{predict}{interp.surface}(object, loc,...)  
 
+\method{predict}{surface}(object, ...) 
+\method{predict}{surface.default}(object, ...) 
+ 
+
 \method{print}{spatial.design} (x,...) 
 \method{print}{sreg}(x, ...) 
 \method{print}{summary.Krig} (x, ...) 
@@ -227,6 +233,10 @@ surface(object , ...)
 
 
 unscale (x, x.center, x.scale) 
+
+MLESpatialProcess.fast(x, y, lambda.start = NULL, theta.start = NULL,
+ cov.function = "stationary.cov", cov.args = list(Covariance = "Matern", smoothness = 1),
+ relative.tolerance = 0.001, Distance = "rdist", verbose = FALSE, ...)
 
 }
 \keyword{internal}

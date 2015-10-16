@@ -3,17 +3,24 @@
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
-\name{ozone}
+\name{Chicago ozone test data}
+\alias{ChicagoO3}
 \alias{ozone}
 \title{
   Data set of ozone measurements at 20 Chicago monitoring stations. 
 }
 \description{
-The \code{ozone} data is a list of 
+This data set used be named  \code{ozone} but was 
+changed to avoid conflict with other packages.
+The \code{ChicagoO3} data is a list of 
 components, x and y.  x 
 component is longitude and latitude position of each of the 20 
 Chicago monitoring stations, y is the average 
 daily ozone values over the time period 6/3/87-8/30/87.
+These data are used extensively for the test scripts and 
+simple examples. The lasting scientific value is probably 
+minimal. 
+
 }
 
 \format{
@@ -34,7 +41,7 @@ AIRS, the EPA air quality data base.
 Tps, Krig  
 }
 \examples{
-fit<- Tps(ozone$x, ozone$y) 
+fit<- Tps(ChicagoO3$x, ChicagoO3$y) 
 # fitting a surface to ozone measurements. 
 surface( fit, type="I")
 }

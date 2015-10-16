@@ -96,7 +96,7 @@ and the columns are the estimated values  for lambda, trA, GCV, shat.
 \examples{
 
 # 
-Tps( ozone$x, ozone$y)-> obj # default is to find lambda by GCV
+Tps( ChicagoO3$x, ChicagoO3$y)-> obj # default is to find lambda by GCV
 summary( obj)
 
 gcv.Krig( obj)-> out

@@ -13,9 +13,9 @@ library(fields)
 options( echo=FALSE)
 test.for.zero.flag<-1
 
-Krig( ozone$x, ozone$y, theta=50)-> fit
+Krig( ChicagoO3$x, ChicagoO3$y, theta=50)-> fit
 
-x<- ozone$x
+x<- ChicagoO3$x
 K<- Exp.cov(x, x,theta=50)
 T<- fields.mkpoly(x, 2)
 W<- diag( 20)
@@ -30,7 +30,7 @@ test.for.zero( test.d, fit$d, tag="Compare d coef" )
 #compare to  fit$d
 test.for.zero( test.c, fit$c,tag="Compare c coef" )
 
-Krig( ozone$x, ozone$y, theta=50,lambda= fit$lambda)-> fit2
+Krig( ChicagoO3$x, ChicagoO3$y, theta=50,lambda= fit$lambda)-> fit2
 #compare to  fit$d
 test.for.zero( test.d, fit2$d, tag="Compare d coef fixed lambda" )
 #compare to  fit$d
@@ -48,14 +48,14 @@ test.for.zero( test.c, test$c, tag="c coef Krig.coef fixed" )
 # checking A matrix in the case of noreps
 
 set.seed( 222)
-weights<-  10+ runif( length(ozone$y))
+weights<-  10+ runif( length(ChicagoO3$y))
 #weights<- rep( 1, 20)
-test2<- Krig( ozone$x, ozone$y, theta=50, weights= weights)
+test2<- Krig( ChicagoO3$x, ChicagoO3$y, theta=50, weights= weights)
 Atest<- Krig.Amatrix( test2)
-K<-Exp.cov(ozone$x, ozone$x,theta=50)
+K<-Exp.cov(ChicagoO3$x, ChicagoO3$x,theta=50)
 H<- matrix(0, 23,23)
 H[(1:20)+3 , (1:20)+3]<- K
-X<- cbind( fields.mkpoly( ozone$x, 2), K)
+X<- cbind( fields.mkpoly( ChicagoO3$x, 2), K)
 lambda<- test2$lambda
  Alam <-  X%*%solve(
                  t(X)%*%diag(weights)%*%X + lambda*H
@@ -92,23 +92,23 @@ test.for.zero( test.c, test2$c[,2], tag=" c coef several new y fixed"  )
 
 # checking passing lambda or df to Krig
 
-Tps( ozone$x, ozone$y,lambda=.001 )-> out
+Tps( ChicagoO3$x, ChicagoO3$y,lambda=.001 )-> out
 predict( out, lambda=.001)-> out2
 test.for.zero( out2, predict( out), tag="Tps with fixed lam")
 
-Tps( ozone$x, ozone$y, df=5)-> out
+Tps( ChicagoO3$x, ChicagoO3$y, df=5)-> out
 predict( out, df=5)-> out2
 test.for.zero( out2, predict( out), tag="Tps with fixed df")
 
 # same for Krig
 
-Krig( ozone$x, ozone$y, theta=50,lambda=.5)-> out0
-Krig( ozone$x, ozone$y, theta=50,lambda=.5,GCV=TRUE)-> out
+Krig( ChicagoO3$x, ChicagoO3$y, theta=50,lambda=.5)-> out0
+Krig( ChicagoO3$x, ChicagoO3$y, theta=50,lambda=.5,GCV=TRUE)-> out
 test.for.zero( 
       predict(out0), predict( out), tag="Krig with fixed lam argument")
 
-Krig( ozone$x, ozone$y, theta=50)-> out0
-Krig( ozone$x, ozone$y, theta=50, df=6,GCV=TRUE)-> out
+Krig( ChicagoO3$x, ChicagoO3$y, theta=50)-> out0
+Krig( ChicagoO3$x, ChicagoO3$y, theta=50, df=6,GCV=TRUE)-> out
 predict( out0, df=6)-> out2
 test.for.zero( out2, predict( out), tag="Krig with fixed lam argument")
 

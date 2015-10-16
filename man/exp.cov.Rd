@@ -23,12 +23,20 @@ of spareness, implement more efficient multiplcation of the
 cross covariance by a vector or matrix and also return a marginal 
 variance to be consistent with calls by the Krig function.  
 
+\code{stationary.cov} and \code{Exp.cov} have additional arguments for 
+precomputed distance matrices and for calculating only the upper triangle 
+and diagonal of the output covariance matrix to save time.  Also, they 
+support using the \code{rdist} function with \code{compact=TRUE} or input 
+distance matrices in compact form, where only the upper triangle of the 
+distance matrix is used to save time.
+
 Note: These functions have been been renamed from the previous fields functions
 using 'Exp' in place of 'exp' to avoid conflict with the generic exponential 
-function (\code{exp(...)})in R. 
+function (\code{exp(...)})in R.
 }
 \usage{
-Exp.cov(x1, x2, theta = rep(1, ncol(x1)), p = 1, C = NA, marginal=FALSE)
+Exp.cov(x1, x2=NULL, theta = 1, p=1, distMat = NA, 
+  C = NA, marginal = FALSE, onlyUpper=FALSE)
 
 Exp.simple.cov(x1, x2, theta =1, C=NA,marginal=FALSE)
 
@@ -40,8 +48,9 @@ cubic.cov(x1, x2, theta = 1, C=NA, marginal=FALSE)
 Rad.simple.cov(x1, x2, p=1, with.log = TRUE, with.constant = TRUE, 
                C = NA, marginal=FALSE)
 
-stationary.cov(x1, x2, Covariance="Exponential", Distance="rdist",
-               Dist.args=NULL, theta=1.0,V=NULL,C=NA, marginal=FALSE,derivative = 0,...)
+stationary.cov(x1, x2=NULL, Covariance = "Exponential", Distance = "rdist", 
+  Dist.args = NULL, theta = 1, V = NULL, C = NA, marginal = FALSE, 
+  derivative = 0, distMat = NA, onlyUpper = FALSE, ...)
 
 stationary.taper.cov(x1, x2, Covariance="Exponential", 
            Taper="Wendland", 
@@ -62,7 +71,7 @@ coordinatesof a particular point. If this is missing x1 is used. }
 
 \item{theta}{ Range (or scale) parameter. This should be a scalar (use
 the V argument for other scaling options). Any distance calculated for
-a covariance function is divided theta before the covariance function
+a covariance function is divided by theta before the covariance function
 is evaluated.}
  
 \item{V}{ A matrix that describes the inverse linear transformation of
@@ -134,6 +143,25 @@ derivative is taken with respect to \code{x1}.  }
 
 \item{verbose}{If TRUE prints out some useful information for
 debugging.}
+
+\item{distMat}{
+If the distance matrix between \code{x1} and \code{x2} has already been 
+computed, it can be passed via this argument so it won't need to be 
+recomputed.
+}
+\item{onlyUpper}{
+For internal use only, not meant to be set by the user.  Automatically 
+set to \code{TRUE} by \code{mKrig.MLE} if \code{lambda.profile} 
+is set to \code{TRUE}, but set to \code{FALSE} for the final 
+parameter fit so output is compatible with rest of \code{fields}.
+
+If \code{TRUE}, only the upper triangle and diagonal of the covariance 
+matrix is computed to save time (although if a non-compact distance 
+matrix is used, the onlyUpper argument is set to FALSE).  If \code{FALSE}, 
+the entire covariance matrix is computed.  In general, it should 
+only be set to \code{TRUE} for \code{mKrig.MLE}, and the default 
+is set to \code{FALSE} so it is compatible with all \code{fields}.
+}
 
 \item{\dots}{ Any other arguments that will be passed to the
 covariance function. e.g. \code{smoothness} for the Matern.}  }
@@ -259,18 +287,18 @@ Wendland.cov, mKrig}
 \examples{
 # exponential covariance matrix ( marginal variance =1) for the ozone
 #locations 
-out<- Exp.cov( ozone$x, theta=100)
+out<- Exp.cov( ChicagoO3$x, theta=100)
 
 # out is a 20X20 matrix
 
-out2<- Exp.cov( ozone$x[6:20,],ozone$x[1:2,], theta=100)
+out2<- Exp.cov( ChicagoO3$x[6:20,],ChicagoO3$x[1:2,], theta=100)
 # out2 is 15X2 matrix 
 
 # Kriging fit where the nugget variance is found by GCV 
 # Matern covariance shape with range of 100.
 # 
 
-fit<- Krig( ozone$x, ozone$y, Covariance="Matern", theta=100,smoothness=2)
+fit<- Krig( ChicagoO3$x, ChicagoO3$y, Covariance="Matern", theta=100,smoothness=2)
 
 data( ozone2)
 x<- ozone2$lon.lat

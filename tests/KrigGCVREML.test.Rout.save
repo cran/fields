@@ -1,6 +1,6 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R Under development (unstable) (2015-10-05 r69468) -- "Unsuffered Consequences"
+Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -18,7 +18,7 @@ Type 'q()' to quit R.
 > library(fields)
 Loading required package: spam
 Loading required package: grid
-Spam version 1.0-1 (2014-09-09) is loaded.
+Spam version 1.2-1 (2015-09-30) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
 and overview of this package.
 Help for individual functions is also obtained by adding the
@@ -31,10 +31,14 @@ The following objects are masked from 'package:base':
     backsolve, forwardsolve
 
 Loading required package: maps
+
+ # ATTENTION: maps v3.0 has an updated 'world' map.        #
+ # Many country borders and names have changed since 1990. #
+ # Type '?world' or 'news(package="maps")'. See README_v3. #
+
+
 > #
 > #
-> #  test of fixed lambda case
-> #  Check against linear algebra
 > #
 > 
 > options( echo=FALSE)
@@ -42,11 +46,12 @@ Warning:
 Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
   (REML) Restricted maximum likelihood 
    minimum at  right endpoint  lambda  =  0.2767992 (eff. df= 9.499985 )
-testing:  sanity check
+testing:   predict sanity check
     PASSED test at tolerance  3e-08
+testing:  predict using direct linear algebra
     PASSED test at tolerance  1e-08
 testing:  GCV
-FAILED test value =  35.79109  at tolerance  1e-08
+    PASSED test at tolerance  1e-08
 testing:  GCV one
     PASSED test at tolerance  1e-08
 testing:  GCV model
@@ -59,4 +64,4 @@ done with GCV and REML tests
 > 
 > proc.time()
    user  system elapsed 
-  1.257   0.036   1.280 
+  0.909   0.036   0.932 

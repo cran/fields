@@ -118,7 +118,7 @@ Krig, predictSurface gcv.Krig
 }
 
 \examples{
-  Krig(ozone$x,ozone$y, theta=50) ->fit
+  Krig(ChicagoO3$x,ChicagoO3$y, theta=50) ->fit
   predict( fit) # gives predicted values at data points should agree with fitted.values
                 #  in fit object 
 
@@ -127,7 +127,7 @@ Krig, predictSurface gcv.Krig
   predict( fit,x= x0)
 
 # redoing predictions at data locations:
-   predict( fit, x=ozone$x)
+   predict( fit, x=ChicagoO3$x)
 
 # only the fixed part of the model
   predict( fit, just.fixed=TRUE) 

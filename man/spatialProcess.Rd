@@ -15,7 +15,8 @@
 }
 \usage{
 spatialProcess(x, y, cov.function = "stationary.cov",
-         cov.args = list(Covariance = "Matern", smoothness = 1), ...)
+         cov.args = list(Covariance = "Matern", smoothness = 1),
+         ngrid = 10, theta.grid = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -37,6 +38,10 @@ spatialProcess(x, y, cov.function = "stationary.cov",
   	
 %%     ~~Describe \code{cov.args} here~~
 }
+\item{ngrid}{Number of grid points to search over the scale parameter, theta.}
+\item{theta.grid}{Theta grid to use in search. If omitted default
+	is ngrid equally spaced values on a log scale related to the
+	range of the domain and closeness of the locations. }
   \item{\dots}{
   	Any other arguments that will be passed to the \code{Krig} function. 
   	Some typical ones are \code{Z} a vector or matrix of covariates for the

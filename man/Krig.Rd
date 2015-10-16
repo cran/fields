@@ -90,7 +90,9 @@ not at the GCV/REML estimates of lambda.
 If FALSE Kriging  estimate is found under a fixed lambda model. }
 
 \item{give.warnings}{ If TRUE warnings are given in gcv grid search limits.
-If FALSE warnings are not given. Best to leave this TRUE!}
+If FALSE warnings are not given. Best to leave this TRUE!
+This argument is set ot FALSE if warn is less than zero in the
+top level, R  options function. See options()$warn}
 
 \item{knots}{
 A matrix of locations similar to x. These can define an alternative set of
@@ -466,7 +468,7 @@ surface.Krig
 # fitting a surface to ozone  
 # measurements. Exponential covariance, range parameter is 20 (in miles) 
 
-fit <- Krig(ozone$x, ozone$y, theta=20)  
+fit <- Krig(ChicagoO3$x, ChicagoO3$y, theta=20)  
  
 summary( fit) # summary of fit 
 set.panel( 2,2) 
@@ -501,7 +503,7 @@ predict( fit, df=7.5)
 # Using another stationary covariance. 
 # smoothness is the shape parameter for the Matern. 
 
-fit <- Krig(ozone$x, ozone$y, Covariance="Matern", theta=10, smoothness=1.0)  
+fit <- Krig(ChicagoO3$x, ChicagoO3$y, Covariance="Matern", theta=10, smoothness=1.0)  
 summary( fit)
 
 #
@@ -545,11 +547,11 @@ test.cov <- function(x1,x2,theta,marginal=FALSE,C=NA){
 #  In the example below p = 2*2 - 2 = 2  
 #
 
- out<- Krig( ozone$x, ozone$y,cov.function="Rad.cov", 
+ out<- Krig( ChicagoO3$x, ChicagoO3$y,cov.function="Rad.cov", 
                        m=2,p=2,scale.type="range") 
 
 # See also the Fields function Tps
-# out  should be identical to  Tps( ozone$x, ozone$y)
+# out  should be identical to  Tps( ChicagoO3$x, ChicagoO3$y)
 # 
 
 # A Knot example

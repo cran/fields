@@ -15,7 +15,8 @@ value the average is used.
 }
 \usage{
 as.image(Z, ind=NULL, grid=NULL, x=NULL,weights=rep(1, length(Z)),
- na.rm=FALSE, nx=64, ny=64, boundary.grid=FALSE,  nrow=NULL, ncol=NULL)
+ na.rm=FALSE, nx=64, ny=64, boundary.grid=FALSE,  nrow=NULL, ncol=NULL,
+ FUN = NULL)
 }
 \arguments{
 \item{Z}{
@@ -50,6 +51,9 @@ If true NA's are removed from the Z vector.}
 \item{ny}{Number of grid points in Y coordinate.}
 \item{boundary.grid}{If FALSE grid points are assumed to be the 
 grid midpoints. If TRUE they are the grid box boundaries.}
+\item{FUN}{The function to apply to common values in a grid box. 
+	The default is a mean (or weighted mean). If FUN is specified the 
+	weights are not used. }
 }
 
 \value{

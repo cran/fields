@@ -11,6 +11,7 @@
 \alias{fields.convert.grid}
 \alias{discretize.image}
 \alias{make.surface.grid}
+\alias{unrollZGrid}
 
 \title{
 Some simple functions for working with gridded data and 
@@ -38,6 +39,7 @@ fields.convert.grid( midpoint.grid )
 discretize.image(x, m = 64, n = 64, grid = NULL, expand = c(1, 1),
                  boundary.grid = FALSE, na.rm = TRUE)
 make.surface.grid( grid.list)
+unrollZGrid( grid.list, ZGrid)
 }
 \arguments{
 \item{grid.list}{ No surprises here -- a grid list! These can be unequally 
@@ -64,7 +66,20 @@ grid beyond the range of the observations.}
 \item{boundary.grid}{ If TRUE interpret grid points as boundaries  of 
 grid boxes. If FALSE interpret as the midpoints of the boxes. }
 
-
+\item{ZGrid}{An array  or list form of covariates to use for
+	 prediction. This must match the
+\code{grid.list} argument. e.g. ZGrid and grid.list describe the same
+ grid. 
+If ZGrid is an array then the first two indices are the x and y
+ locations in the 
+grid. The third index, if present, indexes the covariates. e.g. For
+ evaluation on 
+a 10X15 grid and with 2 covariates. \code{ dim( ZGrid) == c(10,15, 2)}.
+If ZGrid is a list then the components x and y shold match those of
+ grid.list and
+the z component follows the shape described above for the no list 
+case. 
+}
 }
 \details{The form of a grid.list is  
 
@@ -136,6 +151,9 @@ points are determined by extrapolating so that the first and last box
 has the midpoint in its center. (See the code in fields.convert.grid for
 details.) If grid is NULL then midpoints are found from m and n and the
 range of the x matrix. 
+
+\code{unrollZGrid} Checks that the ZGrid object is compatible with th e grid.list and concatenates the grid arrays into vectors. This version of the covariates are used the usual predict function. 
+
 }
 
 \seealso{

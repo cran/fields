@@ -16,7 +16,8 @@ values are coded as a color level from a color scale. }
 quilt.plot(x, y, z, nx = 64, ny = 64,  grid = NULL, 
            add.legend=TRUE,add=FALSE, nlevel=64, 
            col = tim.colors(nlevel),
-           nrow=NULL, ncol=NULL,...)
+           nrow=NULL, ncol=NULL,FUN =
+                 NULL, plot=TRUE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -35,6 +36,8 @@ in x the z vector  }
   \item{add}{If FALSE add to existing plot.}
   \item{col}{Color scale for the image, the default is tim.colors --
     a pleasing spectrum.}
+    \item{plot}{If FALSE just returns the image object instead of plotting it.}
+    \item{FUN}{The function to apply to values that are common to a grid box. The default is to find the mean. (see \code{as.image}).}
   \item{\dots}{ arguments to be passed to the image.plot function }
 }
 \details{

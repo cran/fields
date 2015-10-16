@@ -6,19 +6,24 @@
 \name{rdist}
 \alias{rdist}
 \alias{fields.rdist.near}
+\alias{rdist.vec}
 
 \title{
-  Euclidean distance matrix 
+  Euclidean distance matrix or vector 
 }
 \description{
-Given two sets of locations computes the full Euclidean distance  matrix
-among all pairings or a sparse version for points within a fixed threshhold distance.
+Given two sets of locations \code{rdist} and \code{fields.rdist.near} computes the full 
+Euclidean distance matrix among all pairings or a sparse version for points within a 
+fixed threshhold distance.  \code{rdist.vec} computes a vector of pairwise distances 
+between corresponding elements of the input locations and is used in empirical 
+variogram calculations.
 }
 \usage{
-rdist(x1, x2)
+rdist(x1, x2 = NULL, compact = FALSE)
 
 fields.rdist.near(x1,x2, delta, max.points= NULL, mean.neighbor = 50)
 
+rdist.vec(x1, x2)
 }
 \arguments{
 \item{x1}{
@@ -28,7 +33,10 @@ point.
 }
 \item{x2}{
 Matrix of second set of locations where each row gives the coordinates of
-a particular point. If this is missing x1 is used. 
+a particular point. If this is not passed or given as NULL x1 is used. 
+}
+\item{compact}{
+Whether or not to return a distance matrix in compact form inheriting class ``dist'' (as returned by the \code{dist} function in base R).  Only values for one triangle of the symmetric distance matrix are returned. This saves time evaluating the returned matrix and the covariance.  Note that this option is ignored when \code{x2} is not NULL.
 }
 \item{delta}{ Threshhold distance. All pairs of points that separated by more than 
 delta in distance are ignored. }
@@ -84,14 +92,14 @@ It possible that for certain x1 points there are no x2 points within a distance
 delta. This situation will cause an error if the list is converted to spam format. 
 
 }
-
-\seealso{  Exp.cov, rdist.earth, ind2spam, ind2full }
+\author{Doug Nychka, John Paige}
+\seealso{ \link{stationary.cov}, \link{Exp.cov}, \link{rdist.earth}, \link{dist}, ind2spam, ind2full }
 \examples{
 
-out<- rdist( ozone$x)
+out<- rdist( ChicagoO3$x)
 # out is a 20X20 matrix.
 
-out2<- rdist( ozone$x[1:5,], ozone$x[11:20,])
+out2<- rdist( ChicagoO3$x[1:5,], ChicagoO3$x[11:20,])
 #out2 is a 5X10 matrix
 
 set.seed(123)
@@ -118,6 +126,15 @@ temp[ out3$ind] <- out3$ra
  temp2<- rdist( x1,x2)
  temp2[ temp2<= .5] <- NA
 
+#compute pairwise distance vector
+x1 = 1:10
+x2 = seq(from=10, to=1)
+rdist.vec(x1, x2)
+
+#calculate output matrix in compact form:
+distOut = rdist(1:10, compact=TRUE)
+distOut
+as.vector(distOut)
 }
 \keyword{spatial}
 % docclass is function

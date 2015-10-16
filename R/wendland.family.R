@@ -13,7 +13,7 @@ Wendland2.2 <- function(d, theta = 1) {
 #
 # the monster
 #
-"wendland.cov" <- function(x1, x2, theta = 1, V = NULL, 
+"wendland.cov" <- function(x1, x2=NULL, theta = 1, V = NULL, 
     k = 2, C = NA, marginal = FALSE, Dist.args = list(method = "euclidean"), 
     spam.format = TRUE, derivative = 0,  verbose = FALSE) {
     #
@@ -25,12 +25,14 @@ Wendland2.2 <- function(d, theta = 1) {
     #  the rest of the possiblities require some computing
     # setup the two matrices of locations
     #
-    if (!is.matrix(x1)) 
+    if (!is.matrix(x1)) {
         x1 <- as.matrix(x1)
-    if (missing(x2)) 
-        x2 <- x1
-    if (!is.matrix(x2)) 
+        }
+    if( is.null( x2) ) {
+    	 x2<- x1}  
+    if (!is.matrix(x2) ) {
         x2 <- as.matrix(x2)
+        }
     d <- ncol(x1)
     n1 <- nrow(x1)
     n2 <- nrow(x2)

@@ -1,11 +1,12 @@
 \name{mKrig.MLE}
 \alias{mKrig.MLE}
+\alias{mKrig.MLE.joint}
 \alias{fastTps.MLE}
-
+%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
- Maximizes likelihood for the process marginal variance (rho) and
+Maximizes likelihood for the process marginal variance (rho) and
  nugget standard deviation (sigma) parameters (e.g. lambda) over a
- list of covariance models or a grid of covariance parameter values.
+ many covariance models or covariance parameter values.
 }
 \description{
 This function is designed to explore the likelihood surface for
@@ -13,11 +14,15 @@ different covariance parameters with the option of maximizing over
 sigma and rho.
 }
 \usage{
+mKrig.MLE(x, y, weights = rep(1, nrow(x)), cov.fun="stationary.cov", cov.args = NULL, 
+          Z = NULL, par.grid = NULL, lambda = NULL, lambda.profile = TRUE, 
+          verbose = FALSE, relative.tolerance = 1e-04, ...)
 
-	
-mKrig.MLE( x, y, weights = rep(1, nrow(x)), Z = NULL, ...,
-                 par.grid = NULL, lambda = NULL, lambda.profile = TRUE,
-                 verbose = FALSE, relative.tolerance = 1e-04)
+mKrig.MLE.joint(x, y, weights = rep(1, nrow(x)), 
+                lambda.guess = 1, cov.params.guess=NULL, 
+                cov.fun="stationary.cov", cov.args=NULL, 
+                Z = NULL, optim.args=NULL, find.trA.MLE = FALSE, 
+                ..., verbose = FALSE)
 
 fastTps.MLE(x, y, weights = rep(1, nrow(x)), Z = NULL, ...,
                  par.grid=NULL, theta, lambda = NULL, lambda.profile = TRUE,
@@ -25,46 +30,104 @@ fastTps.MLE(x, y, weights = rep(1, nrow(x)), Z = NULL, ...,
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-
- \item{x}{ Matrix of unique spatial locations (or in print or surface
-    the returned mKrig object.) }
-
- \item{y}{ Vector or matrix of observations at spatial locations,
-    missing values are not allowed! Or in \code{mKrig.coef} a new
-    vector of observations. If y is a matrix the columns are assumed
-    to be independent observations vectors generated from the same
-    covariance and measurement error model. }
- 
- \item{\dots}{ Additional arguments that would also be included in a
-     call to \code{mKrig} to specify the covariance model and fixed
-     model covariables.}
-  
-  \item{lambda}{If \code{lambda.profile=FALSE} the values of lambda to
-   evaluate the likelihood if \code{TRUE} the starting values for the
-   optimization. If lambda is NA then the optimum value from previous
-   search is used as the starting value. If lambda is NA and it is the
-   first value the starting value defaults to 1.0.}
-     
-  \item{par.grid}{ A list or data frame with components being
-     parameters for different covariance models. A typical component
-     is \code{theta} comprising a vector of scale parameters to
-     try. If par.grid is \code{NULL} then the covariance model is
-     fixed at values that are given in \dots.}
-  
-  \item{lambda.profile}{If TRUE maximize likelihood over lambda.}
-
-  \item{relative.tolerance}{Tolerance used to declare convergence when
-           maximizing likelihood over lambda.}
-
+  \item{x}{
+%%     ~~Describe \code{x} here~~
+Matrix of unique spatial locations (or in print or surface 
+  the returned mKrig object.)
+}
+  \item{y}{
+%%     ~~Describe \code{y} here~~
+Vector or matrix of observations at spatial locations, 
+  missing values are not allowed! Or in mKrig.coef a new 
+  vector of observations. If y is a matrix the columns are 
+  assumed to be independent observations vectors generated 
+  from the same covariance and measurment error model.
+}
+\item{cov.fun}{
+The name, a text string, of the covariance function.
+}
+\item{cov.args}{
+Additional arguments that would also be included in calls
+  to the covariance function to specify the fixed part of 
+  the covariance model.
+}
+  \item{weights}{
+%%     ~~Describe \code{weights} here~~
+Precision ( 1/variance) of each observation
+}
+  \item{Z}{
+%%     ~~Describe \code{Z} here~~
+Linear covariates to be included in fixed part of the 
+  model that are distinct from the default low order 
+  polynomial in \code{x}
+}
+  \item{par.grid}{
+A list or data frame with components being parameters for
+  different covariance models. A typical component is "theta"
+  comprising a vector of scale parameters to try. If par.grid
+  is "NULL" then the covariance model is fixed at values that
+  are given in \dots.
+}
+\item{cov.params.guess}{
+A list of initial guesses for covariance parameters over which 
+  the user wishes to perform likelihood maximization.  The list 
+  contains the names of the parameters as well as the values.
+}
+  \item{lambda}{
+If \code{lambda.profile=FALSE} the values of lambda to evaluate
+  the likelihood if "TRUE" the starting values for the
+  optimization. If lambda is NA then the optimum value from
+  previous search is used as the starting value. If lambda is
+  NA and it is the first value the starting value defaults to
+  1.0.
+}
+  \item{lambda.guess}{
+The initial guess for lambda in the joint log-likelihood 
+  maximization process
+}
+  \item{lambda.profile}{
+  If \code{TRUE} maximize likelihood over lambda.
+}
+\item{optim.args}{
+Additional arguments that would also be included in calls
+  to the optim function in joint likelihood maximization.  If 
+  \code{NULL}, this will be set to use the "BFGS-" 
+  optimization method.  See \code{\link{optim}} for more 
+  details.  The default value is: 
+  \code{optim.args = list(method = "BFGS", 
+             control=list(fnscale = -1, 
+                          ndeps = rep(log(1.1), length(cov.params.guess)+1), 
+                          reltol=1e-04, maxit=10))}
+  Note that the first parameter is lambda and the others are 
+  the covariance parameters in the order they are given in 
+  \code{cov.params.guess}.  Also note that the optimization 
+  is performed on a log-scale, and this should be taken into 
+  consideration when passing arguments to \code{optim}.
+}
+  \item{find.trA.MLE}{
+If TRUE will estimate the effective degrees of freedom using 
+  a simple Monte Carlo method throughout joint likelihood maximization.  
+  Either way, the trace of the mKrig object with the best 
+  log-likelihood is calculated depending on \code{find.trA}. Computing 
+  the trace will add to the computational burden by approximately NtrA 
+  solutions of the linear system but the cholesky decomposition is 
+  reused.
+}
+\item{\dots}{
+Additional arguments that would also be included in a call to 
+  \code{mKrig} to specify the covariance model and fixed model 
+  covariables.
+}
+  \item{verbose}{
+%%     ~~Describe \code{verbose} here~~
+If \code{TRUE} print out interesting intermediate results.
+}
+  \item{relative.tolerance}{
+Tolerance used to declare convergence when
+  maximizing likelihood over lambda.
+}
   \item{theta}{Range parameter for compact Wendland covariance. (see
   fastTps)}
-
-  \item{verbose}{If TRUE print out interesting intermediate results. }
-
-  \item{weights}{Same weighting argument as used in \code{mKrig}.}
-
-  \item{Z}{Same argument as \code{mKrig} to include spatial
-  covariates.}
 }
 \details{
 The observational model follows the same as that described in the
@@ -80,11 +143,14 @@ then maximized numerically over lambda when \code{ lambda.profile =
 TRUE}.
 
 Note that \code{fastTps.MLE} is a convenient variant of this more general
-version to use directly with fastTps.
-
+version to use directly with fastTps, and \code{mKrig.MLE.joint} is 
+similar to \code{mKrig.MLE}, except it uses the \code{optim} function 
+to optimize over the specified covariance parameters and lambda jointly 
+rather than optimizing on a grid.  Unlike \code{mKrig.MLE}, it returns 
+an mKrig object.
 }
 \value{
-A list with the components:
+\code{mKrig.MLE} returns a list with the components:
 
 \item{summary}{A matrix giving the results for evaluating the
  likelihood for each covariance model.}
@@ -100,12 +166,35 @@ obj$cov.args.MLE,list(lambda=obj$lambda.opt)) )} where \code{obj} is
 the list returned by this function.}
 
 \item{call}{The calling arguments to this function.}
+
+\code{mKrig.MLE.joint} returns an mKrig object with the best 
+computed log-likelihood computed in the maximization process
+with the addition of the summary table for the mKrig object 
+log-likelihood and:
+
+\item{lnLike.eval}{
+A table containing information on all likelihood evaluations 
+performed in the maximization process.
+}
+}
+\references{
+%% ~put references to the literature/web site here ~
+http://cran.r-project.org/web/packages/fields/fields.pdf
+http://www.image.ucar.edu/~nychka/Fields/
 }
 \author{
-Douglas W. Nychka
+%%  ~~who you are~~
+Douglas W. Nychka, John Paige
 }
+
+%% ~Make other sections like Warning with \section{Warning }{....} ~
+
 \seealso{
-Krig.MLE, mKrig
+%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{mKrig}}
+\code{\link{Krig}}
+\code{\link{stationary.cov}}
+\code{\link{optim}}
 }
 \examples{
 # some synthetic data
@@ -134,7 +223,36 @@ Krig.MLE, mKrig
   obj<- mKrig.MLE( x,Y, Covariance="Matern",lambda=c(.02,rep(NA,4)),
                                   smoothness=1.0, par.grid=par.grid)
 }
+
+#perform joint likelihood maximization over lambda and theta. 
+#optim can get a bad answer with poor initial guesses.
+set.seed(123)
+obj<- mKrig.MLE.joint(x,Y[,1], 
+                      cov.args=list(Covariance="Matern", smoothness=1.0), 
+                      cov.params.guess=list(theta=.2), lambda.guess=.1)
+
+#look at lnLik evaluations
+obj$lnLik.eval
+
+\dontrun{
+#perform joint likelihood maximization over lambda, theta, and smoothness.  
+#optim can get a bad answer with poor initial guesses.
+set.seed(123)
+obj<- mKrig.MLE.joint(x,Y[,1], 
+                      cov.args=list(Covariance="Matern"), 
+                      cov.params.guess=list(theta=.2, smoothness=1), lambda.guess=.1)
+
+#look at lnLik evaluations
+obj$lnLik.eval
+
+#generate surface plot of results of joint likelihood maximization
+#NOTE: mKrig.MLE.joint returns mKrig object while mKrig.MLE doesn't, 
+#so this won't work for mKrig.MLE.
+surface(obj)
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{spatial}
+\keyword{ Kriging }
+\keyword{ MLE }
+\keyword{ spatial }

@@ -3,18 +3,21 @@
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 vgram.matrix <- function(dat, R = 5, dx = 1, dy = 1) {
-    # useful function for matching shifted indices
+
+# a useful function for matching shifted indices
+# (the kind of internal function Dorit does not like!)
     SI <- function(ntemp, delta) {
         n1 <- 1:ntemp
         n2 <- n1 + delta
         good <- (n2 >= 1) & (n2 <= ntemp)
-        cbind(n1[good], n2[good])
-    }
+        return(cbind(n1[good], n2[good]))
+     }
+#  
+    M<- nrow(dat)
+    N<- ncol( dat)
     # create all possible separations for a grid up to a distance R
-    N <- ncol(dat)
-    M <- nrow(dat)
-    m <- min(c(round(R/dx), M))
-    n <- min(c(round(R/dy), N))
+    m <- min( c(round(R/dx),M) )
+    n <- min( c(round(R/dy),N) )
     #
     # all relavent combinations:  note that negative increments are
     # needed as well as  positive ones
@@ -33,20 +36,21 @@ vgram.matrix <- function(dat, R = 5, dx = 1, dy = 1) {
     nbin <- nrow(ind)
     holdVG <- rep(NA, nbin)
     holdRVG <- rep(NA, nbin)
-    holdN <- rep(NA, nbin)
+    holdN <- rep(0, nbin)
     # loop over each separation
     for (k in 1:nbin) {
         # indices for original and shifted image that are within array bounds
         MM <- SI(M, ind[k, 1])
-        NN <- SI(N, ind[k, 2])
-        # number of differences and their values
-        holdN[k] <- length(MM) * length(NN)
-        BigDiff <- (dat[MM[, 1], NN[, 1]] - dat[MM[, 2], NN[, 
-            2]])
-        # standard and the  Cressie robust version.
+        NN <- SI(N, ind[k, 2]) 
+        if( length(MM)>0 & length(NN)>0){     
+        # find differences       
+          BigDiff <- (dat[MM[, 1], NN[, 1] ] - dat[MM[, 2], NN[,2] ] )  
+        # standard and the Cressie robust version.
         # modified to handle NAs
-        holdVG[k] <- mean(0.5 * (BigDiff)^2, na.rm = TRUE)
-        holdRVG[k] <- mean(abs(BigDiff)^0.5, na.rm = TRUE)
+          holdVG[k] <-  mean(0.5 * (BigDiff)^2, na.rm = TRUE)
+          holdRVG[k] <- mean(abs(BigDiff)^0.5, na.rm = TRUE)
+          holdN[k]   <-   sum( !is.na(BigDiff) ) 
+        }
     }
     # finish robust estimate Cressie (1993) formula 2.4.12
     holdRVG <- 0.5 * (holdRVG^4)/(0.457 + 0.494 * holdN)

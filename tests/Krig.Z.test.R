@@ -168,8 +168,8 @@ test.for.zero( hold, hold4, tag="predict for null" )
 
 
 ####### tests using predict.se
- x<- ozone$x
- y<- ozone$y
+ x<- ChicagoO3$x
+ y<- ChicagoO3$y
  Zcov<-  x[,1]**3 + x[,2]**3
 
 

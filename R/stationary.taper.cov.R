@@ -2,7 +2,7 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-"stationary.taper.cov" <- function(x1, x2, Covariance = "Exponential", 
+"stationary.taper.cov" <- function(x1, x2=NULL, Covariance = "Exponential", 
     Taper = "Wendland", Dist.args = NULL, Taper.args = NULL, 
     theta = 1, V = NULL, C = NA, marginal = FALSE, spam.format = TRUE, 
     verbose = FALSE, ...) {
@@ -13,7 +13,7 @@
         x1 <- as.matrix(x1)
     if (!is.matrix(x1)) 
         x1 <- matrix(c(x1), ncol = 1)
-    if (missing(x2)) 
+    if (is.null(x2)) 
         x2 <- x1
     if (is.data.frame(x2)) 
         x2 <- as.matrix(x1)

@@ -264,7 +264,7 @@ Krig, summary.Krig, predict.Krig, predictSE.Krig, predictSurface, predictSurface
 \examples{
 #2-d example 
 
-fit<- Tps(ozone$x, ozone$y)  # fits a surface to ozone measurements. 
+fit<- Tps(ChicagoO3$x, ChicagoO3$y)  # fits a surface to ozone measurements. 
 
 set.panel(2,2)
 plot(fit) # four diagnostic plots of  fit and residuals. 
@@ -292,7 +292,7 @@ surface( fit) # Quick image/contour plot of GCV surface.
 # Note that the GCV function is still computed and minimized
 # but the lambda values used correpsonds to 7.5 df.
 
-fit1<- Tps(ozone$x, ozone$y,df=7.5)
+fit1<- Tps(ChicagoO3$x, ChicagoO3$y,df=7.5)
 
 set.panel(2,2)
 plot(fit1) # four diagnostic plots of  fit and residuals.
@@ -318,6 +318,17 @@ image( out.p)
 # number of parameters 
 out.p<-predictSurface( fit,df=10)
 
+\dontrun{
+# predicting on a grid along with a covariate
+  data( COmonthlyMet)	
+# predicting average daily minimum temps for spring in Colorado
+  obj<- Tps( CO.loc, CO.tmin.MAM.climate, Z= CO.elev)
+  out.p<-predictSurface( obj,
+        grid.list=CO.Grid, ZGrid= CO.elevGrid)
+  image.plot( out.p)        
+  US(add=TRUE, col="grey")
+  contour( CO.elevGrid, add=TRUE, levels=c(2000), col="black")
+}
 \dontrun{
 #A 1-d example  with confidence intervals
   out<-Tps( rat.diet$t, rat.diet$trt) # lambda found by GCV 
@@ -349,7 +360,7 @@ out.p<-predictSurface( fit,df=10)
   lines(xgrid, fhat - 1.96*SE, col="red", lty=2)
 }
 
-# Adding a covariate to the fixed part of model
+# More involved example adding a covariate to the fixed part of model
 \dontrun{
 set.panel( 1,3)
 # without elevation covariate
@@ -359,7 +370,7 @@ set.panel( 1,3)
 
 # with elevation covariate
   out<- Tps( RMprecip$x,RMprecip$y, Z=RMprecip$elev)
-# NOTE: out$d[4] is the estimated elevation coeficient
+# NOTE: out$d[4] is the estimated elevation coefficient
 # it is easy to get the smooth surface separate from the elevation.
   out.p<-predictSurface( out, drop.Z=TRUE)
   surface( out.p)
@@ -368,47 +379,27 @@ set.panel( 1,3)
 # a simple discretizing -- does not work in this case!
   quilt.plot( out$x, out$fitted.values)
 #
-# however the correct way to do this is evaluate the estimate
+# the exact way to do this is evaluate the estimate
 # on a grid where you also have elevations 
-# To evaluate with elevations on a grid takes some more 
-# work because we need to use the same grid where elevations are available.
-#
 # An elevation DEM from the PRISM climate data product (4km resolution)
   data(RMelevation)  
   grid.list<- list( x=RMelevation$x, y= RMelevation$y)
-# now create single big 2 column matrix with all  the lon.lat locations in this grid
-  bigX<- make.surface.grid( grid.list)
-# and create a big vector of the elevations in the grid
-  bigZ<- c( RMelevation$z)
-#NOTE:  nrow( bigX) = 69938 = 289X242, length( bigZ)= 69938
-  fit<- predict(out, x= bigX, Z= bigZ)
-# fit is just a big vector 
-# now coerce back into grid format (x,y,z components) 
-# this function works because bigX has some attributes set that indicate the parent grid.
-  fit<- as.surface( bigX, fit)
-# 
-# decomposing into the different pieces:
-# this is just the spatial model without elevation
-  fit0<- predict(out0, x=bigX)
-  fit0<- as.surface( bigX, fit0)
-
-# this is the linear fixed part of the second spatial model: lon,lat and elevation
-  fit.fixed<- predict( out, x= bigX, just.fixed=TRUE, Z= bigZ)
-  fit.fixed<- as.surface( bigX, fit.fixed)
-
+  fit.full<- predictSurface( out, grid.list, ZGrid= RMelevation)
+# this is the linear fixed part of the second spatial model:
+# lon,lat and elevation
+  fit.fixed<- predictSurface( out, grid.list, just.fixed=TRUE, ZGrid= RMelevation)
 # This is the smooth part but also with the linear lon lat terms. 
-  fit.smooth<- predict( out, x= bigX, drop.Z=TRUE)
-  fit.smooth<- as.surface( bigX, fit.smooth)
+  fit.smooth<-predictSurface( out, grid.list, drop.Z=TRUE)
 #
-  set.panel( 2,2)
+  set.panel( 3,1)
+  
+  fit0<- predictSurface( out0, grid.list)
   image.plot( fit0)
   title(" first spatial model (w/o elevation)")
   image.plot( fit.fixed)
-  title(" fixed part of second model")
-  image.plot( fit.smooth)
-  title("smoothed component second model")
+  title(" fixed part of second model (lon,lat,elev linear model)")
   US( add=TRUE)
-  image.plot( fit)
+  image.plot( fit.full)
   title("full prediction second model")
   set.panel()
 }

@@ -4,11 +4,12 @@
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "quilt.plot" <- function(x, y, z, nx = 64, ny = 64, 
      grid = NULL, add.legend = TRUE, add = FALSE, nlevel=64, 
-    col = tim.colors(nlevel), nrow = NULL, ncol = NULL, ...) {
+    col = tim.colors(nlevel), nrow = NULL, ncol = NULL, FUN=NULL,
+    plot=TRUE, ...) {
     #
     # note that nrow and ncol refer to the resulting 'image format' for plotting.
     # here the x values are the rows and the y values are the columns
-    #
+    # FUN = NULL means the weighted means are found for each grid cell
     if( !is.null(nrow)|!is.null(nrow)){
       nx<- nrow
       ny<- ncol
@@ -28,12 +29,18 @@
     #  z is a vector or one column matrix of the z values.
     #discretize data
     out.p <- as.image(z, x = x, nx = nx, ny = ny, na.rm = TRUE, 
-        grid = grid)
-    #plot it
+        grid = grid, FUN=FUN)
+    # besides the image information this list has the indices that 
+    # map each z value to a grid box
+    #    
+    # plot it
+    if( plot){
     if (add.legend) {
         image.plot(out.p, nlevel = nlevel, col = col, add = add, ...)
     }
     else {
         image(out.p, col = col, add = add, ...)
     }
+    }
+    invisible(out.p)
 }

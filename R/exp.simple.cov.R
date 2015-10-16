@@ -2,7 +2,7 @@
 # Copyright 2004-2013, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
-Exp.simple.cov <- function(x1, x2, theta = 1, C = NA, 
+Exp.simple.cov <- function(x1, x2=NULL, theta = 1, C = NA, 
     marginal = FALSE) {
     # this is a simple exponential covariance function
     # with the calling format and behaviour used in fields.
@@ -14,7 +14,10 @@ Exp.simple.cov <- function(x1, x2, theta = 1, C = NA,
     # 1) cross covaraince matrix
     # 2) cross covariance matrix times a vector (C)
     # 3) the diagonal elements of covariance matrix at locations x1.
-    # CASE 1:
+    if( !is.null(x2)){
+    	x2<- x1
+    }
+    # CASE 1:   
     if (is.na(C[1]) & !marginal) {
         # rdist finds the cross distance matrix between the
         # locations at x1, x2.

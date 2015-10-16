@@ -70,13 +70,13 @@ Krig, spatialProcess, summary.Krig, Tps, set.panel
 }
 \examples{
 
-fit<-Krig(ozone$x, ozone$y, theta=200)  
+fit<-Krig(ChicagoO3$x, ChicagoO3$y, theta=200)  
 # fitting a surface to ozone  
 # measurements 
 set.panel( 2,2)
 plot(fit)
 
-fit<-spatialProcess(ozone$x, ozone$y)  
+fit<-spatialProcess(ChicagoO3$x, ChicagoO3$y)  
 # fitting a spatial process model to ozone  
 # measurements 
 # Although an example does not make too much sense for only 20 observations!

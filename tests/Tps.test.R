@@ -67,8 +67,8 @@ temp2<- RadialBasis( rdist( x,x), M=2, dimension=2)%*%C
 test.for.zero( temp, temp2)
 
 #### Basic matrix form for Tps as sanity check
-x<- ozone$x
-y<- ozone$y
+x<- ChicagoO3$x
+y<- ChicagoO3$y
 
 obj<-Tps( x,y, scale.type="unscaled", with.constant=FALSE)
 
@@ -77,7 +77,7 @@ N<-length(y)
 
 Tmatrix<- cbind( rep( 1,N), x)
 D<- rdist( x,x)
-R<- D**2 * log(D)
+R<- ifelse( D==0, 0, D**2 * log(D))
 A<- rbind(
           cbind( R+diag(lam.test,N), Tmatrix),
           cbind( t(Tmatrix), matrix(0,3,3)))

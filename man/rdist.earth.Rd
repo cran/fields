@@ -5,16 +5,21 @@
 
 \name{rdist.earth}
 \alias{rdist.earth}
+\alias{rdist.earth.vec}
+
 \title{
-  Great circle distance matrix 
+  Great circle distance matrix or vector
 }
 \description{
-Given two sets of longitude/latitude locations computes the Great circle
-(geographic)  distance matrix
-among all pairings. 
+Given two sets of longitude/latitude locations, \code{rdist.earth} computes 
+the Great circle (geographic) distance matrix among all pairings and 
+\code{rdist.earth.vec} computes a vector of pairwise great circle distances 
+between corresponding elements of the input locations using the Haversine 
+method and is used in empirical variogram calculations.
 }
 \usage{
 rdist.earth(x1, x2, miles = TRUE, R = NULL)
+rdist.earth.vec(x1, x2, miles = TRUE, R = NULL)
 }
 \arguments{
 \item{x1}{
@@ -41,11 +46,12 @@ The great circle distance matrix if nrow(x1)=m and nrow(
 x2)=n then the returned matrix will be mXn. 
 }
 \details{
-Surprisingly this all done efficiently in R by dot products of the
+Surprisingly the distance matrix is computed efficiently in R by dot products of the
 direction cosines. Thanks to Qing Yang for pointing this out a long time 
 ago. }
+\author{Doug Nychka, John Paige}
 \seealso{
-  rdist, stationary.cov,  fields.rdist.near 
+  \link{rdist}, \link{stationary.cov}, \link{fields.rdist.near}
 }
 \examples{
 data(ozone2)
@@ -54,6 +60,12 @@ out<- rdist.earth ( ozone2$lon.lat)
 upper<-  col(out)> row( out)
 # histogram of all pairwise distances. 
 hist( out[upper])
+
+#get pairwise distances between first 10 and second 10 lon/lat points
+x1 = ozone2$lon.lat[1:10,]
+x2 = ozone2$lon.lat[11:20,]
+dists = rdist.earth.vec(x1, x2)
+print(dists)
 }
 \keyword{spatial}
 % docclass is function

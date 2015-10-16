@@ -1,8 +1,6 @@
 library(fields)
 #
 #
-#  test of fixed lambda case
-#  Check against linear algebra
 #
 
 options( echo=FALSE)
@@ -15,8 +13,10 @@ x<- rbind( x0,x0, x0[3:7,])
 y<- rnorm( nrow( x))*.05 + + x[,1]**2 +  x[,2]**2
 weights<- 8 + runif( nrow( x))
 
+# x0 are the unique values.
 
-Krig( x,y,   weights=weights, cov.function=Exp.cov)-> out.new
+
+out.new<- Krig( x,y,   weights=weights, cov.function=Exp.cov)
 n<- length(y)
 n0<- nrow( x0)
 NK <- nrow( x0) 
@@ -29,22 +29,29 @@ X0<- cbind( fields.mkpoly( x0, 2), Exp.cov( x0, x0) )
 Alam <-  X%*%solve(
                   t(X)%*%diag(weights)%*%X + out.new$lambda*H
                   )%*% t(X)%*%diag(weights) 
-# predict sanity check
+# predict sanity check using replicates 
 set.seed( 123)
 ynew<- rnorm(n)
-test.for.zero( Alam%*%ynew, predict( out.new, y=ynew), tag="sanity check",tol=3e-8) 
+test.for.zero( Alam%*%ynew, predict( out.new, y=ynew), tag=" predict sanity check",tol=3e-8) 
+
+# predict using unique obs
+ynew<- rnorm(nrow(x0))
 Alam0<- X0%*%solve(
                   t(X0)%*%diag(out.new$weightsM)%*%X0 + out.new$lambda*H
                   )%*% t(X0)%*%diag(out.new$weightsM) 
-                  ynew<- rnorm(nrow(x0))
-test.for.zero( Alam0%*%ynew, predict( out.new,x=x0, yM=ynew) )
+ 
+# Alam0 is the A matrix                  
+test.for.zero( Alam0%*%ynew, predict( out.new,x=x0, yM=ynew), tag="predict using direct linear algebra" )
 
-#STOPPED HERE
+#
 test<- Krig.fgcv( lam=out.new$lambda, out.new)
 y0<- out.new$yM
 n0<- length(y0)
 # compare to 
-test2<- (1/n0)*sum(  (y0 - c(Alam0%*% y0))**2 *out.new$weightsM) / (1- sum(diag( Alam0))/n0)**2
+#test2<- (1/n0)*sum(  (y0 - c(Alam0%*% y0))**2 *out.new$weightsM) / (1- sum(diag( Alam0))/n0)**2
+NUM<- mean(  (y0 - c(Alam0%*% y0))**2 *out.new$weightsM)  + out.new$pure.ss/( n -n0 )
+DEN<- (1- sum(diag( Alam0))/n0)
+test2<- NUM/ DEN^2
 test.for.zero( test,test2, tag="GCV" )
 
 test<- Krig.fgcv.one( lam=out.new$lambda, out.new)
