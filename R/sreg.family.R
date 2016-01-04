@@ -1,6 +1,6 @@
 
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg" <- function(x, y, lambda = NA, df = NA, offset = 0, 
@@ -147,7 +147,7 @@
     return(out)
 }
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.df.to.lambda" <- function(df, x, wt, guess = 1, 
@@ -180,35 +180,35 @@
     exp(out)
 }
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fdf" <- function(h, info) {
     sreg.trace(h, info) - info$df
 }
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fgcv" <- function(lam, obj) {
     sreg.fit(lam, obj)$gcv
 }
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fgcv.model" <- function(lam, obj) {
     sreg.fit(lam, obj)$gcv.model
 }
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fgcv.one" <- function(lam, obj) {
     sreg.fit(lam, obj)$gcv.one
 }
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fit" <- function(lam, obj, verbose = FALSE) {
@@ -269,14 +269,14 @@
         gcv.one = gcv.one)
 }
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.fs2hat" <- function(lam, obj) {
     sreg.fit(lam, obj)$shat^2
 }
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "sreg.trace" <- function(h, info) {

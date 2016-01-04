@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2015-10-05 r69468) -- "Unsuffered Consequences"
+R version 3.2.2 (2015-08-14) -- "Fire Safety"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
@@ -25,7 +25,7 @@ Type 'q()' to quit R.
 > library( fields)
 Loading required package: spam
 Loading required package: grid
-Spam version 1.2-1 (2015-09-30) is loaded.
+Spam version 1.3-0 (2015-10-24) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
 and overview of this package.
 Help for individual functions is also obtained by adding the
@@ -45,58 +45,58 @@ Loading required package: maps
 
 
 > options(echo=FALSE)
-testing:  radial basis function exact
-    PASSED test at tolerance  1e-06
-testing:  sanity test of stationary.cov with RadialBasis
-    PASSED test at tolerance  1e-08
-testing:  sanity test of Rad.cov
-    PASSED test at tolerance  1e-08
-testing:  stat.cov Radbas C multiply
-    PASSED test at tolerance  1e-08
-testing:  Rad.cov C multiply
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-06
-testing:  Wendland exact
-    PASSED test at tolerance  1e-06
-    PASSED test at tolerance  1e-08
-testing:  Wendland C multiply
-    PASSED test at tolerance  1e-08
-testing:  Wendland.cov theta=1.0
-    PASSED test at tolerance  1e-07
-testing:  Wendland.cov theta=.75
-    PASSED test at tolerance  1e-07
-testing:  stationary.cov and exact C multiply for Wendland
-    PASSED test at tolerance  1e-08
-testing:    Wendland C multiply
-    PASSED test at tolerance  1e-08
-testing:  2-d derivs from wend.cov/mKrig
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-testing:  2-d derivs from stationary-wend/mKrig
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-testing:  wendland.cov quad 2-d
-    PASSED test at tolerance  0.005
-testing:  stationary.cov/Wendland cubic 2-d
-    PASSED test at tolerance  0.01
+Testing:  radial basis function exact
+PASSED test at tolerance  1e-06
+Testing:  sanity test of stationary.cov with RadialBasis
+PASSED test at tolerance  1e-08
+Testing:  sanity test of Rad.cov
+PASSED test at tolerance  1e-08
+Testing:  stat.cov Radbas C multiply
+PASSED test at tolerance  1e-08
+Testing:  Rad.cov C multiply
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-06
+Testing:  Wendland exact
+PASSED test at tolerance  1e-06
+PASSED test at tolerance  1e-08
+Testing:  Wendland C multiply
+PASSED test at tolerance  1e-08
+Testing:  Wendland.cov theta=1.0
+PASSED test at tolerance  1e-07
+Testing:  Wendland.cov theta=.75
+PASSED test at tolerance  1e-07
+Testing:  stationary.cov and exact C multiply for Wendland
+PASSED test at tolerance  1e-08
+Testing:    Wendland C multiply
+PASSED test at tolerance  1e-08
+Testing:  2-d derivs from wend.cov/mKrig
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+Testing:  2-d derivs from stationary-wend/mKrig
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+Testing:  wendland.cov quad 2-d
+PASSED test at tolerance  0.005
+Testing:  stationary.cov/Wendland cubic 2-d
+PASSED test at tolerance  0.01
 Warning: 
 Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
   (REML) Restricted maximum likelihood 
    minimum at  right endpoint  lambda  =  1.938365e-08 (eff. df= 380 )
-testing:  stationary.cov/Wendland cubic 2-d
-    PASSED test at tolerance  0.005
-    PASSED test at tolerance  0.005
+Testing:  stationary.cov/Wendland cubic 2-d
+PASSED test at tolerance  0.005
+PASSED test at tolerance  0.005
 Warning: 
 Grid searches over lambda (nugget and sill variances) with  minima at the endpoints: 
   (GCV) Generalized Cross-Validation 
    minimum at  right endpoint  lambda  =  4.881835e-06 (eff. df= 380 )
-testing:  Tps derivative x1
-    PASSED test at tolerance  2e-04
-testing:  Tps derivative x2
-    PASSED test at tolerance  2e-04
+Testing:  Tps derivative x1
+PASSED test at tolerance  2e-04
+Testing:  Tps derivative x2
+PASSED test at tolerance  2e-04
 done with dervative tests
 > 
 > 
 > proc.time()
    user  system elapsed 
-  2.653   0.207   2.851 
+  2.771   0.224   2.986 

@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2015-10-05 r69468) -- "Unsuffered Consequences"
+R version 3.2.2 (2015-08-14) -- "Fire Safety"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library( fields)
 Loading required package: spam
 Loading required package: grid
-Spam version 1.2-1 (2015-09-30) is loaded.
+Spam version 1.3-0 (2015-10-24) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
 and overview of this package.
 Help for individual functions is also obtained by adding the
@@ -44,59 +44,59 @@ Loading required package: maps
 
 > options( echo=FALSE)
 NULL
-testing:  addToDiag
-    PASSED test at tolerance  1e-08
-testing:  spam vs no spam
-    PASSED test at tolerance  1e-08
-testing:  Krig mKrig d coef
-    PASSED test at tolerance  1e-08
-testing:  Krig mKrig c coef
-    PASSED test at tolerance  1e-08
-testing:  test of predict at new locations
-    PASSED test at tolerance  1e-08
-testing:  test of matrix Y predicts
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-testing:  predictSurface with mKrig
-    PASSED test at tolerance  1e-08
-testing:  Wendland/no spam
-    PASSED test at tolerance  1e-08
-testing:  Wendland/spam
-    PASSED test at tolerance  1e-08
-testing:  new coef c no spam
-    PASSED test at tolerance  1e-08
-testing:  new d coef no spam
-    PASSED test at tolerance  1e-08
-testing:  new coef c spam
-    PASSED test at tolerance  1e-08
-testing:  new d coef spam
-    PASSED test at tolerance  1e-08
-testing:  nzero in call to mKrig
-    PASSED test at tolerance  1e-08
-testing:  mKrig vs. Krig for ozone2
-    PASSED test at tolerance  1e-08
-testing:  predict Wendland  mKrig vs Krig
-    PASSED test at tolerance  1e-08
+Testing:  addToDiag
+PASSED test at tolerance  1e-08
+Testing:  spam vs no spam
+PASSED test at tolerance  1e-08
+Testing:  Krig mKrig d coef
+PASSED test at tolerance  1e-08
+Testing:  Krig mKrig c coef
+PASSED test at tolerance  1e-08
+Testing:  test of predict at new locations
+PASSED test at tolerance  1e-08
+Testing:  test of matrix Y predicts
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+Testing:  predictSurface with mKrig
+PASSED test at tolerance  1e-08
+Testing:  Wendland/no spam
+PASSED test at tolerance  1e-08
+Testing:  Wendland/spam
+PASSED test at tolerance  1e-08
+Testing:  new coef c no spam
+PASSED test at tolerance  1e-08
+Testing:  new d coef no spam
+PASSED test at tolerance  1e-08
+Testing:  new coef c spam
+PASSED test at tolerance  1e-08
+Testing:  new d coef spam
+PASSED test at tolerance  1e-08
+Testing:  nzero in call to mKrig
+PASSED test at tolerance  1e-08
+Testing:  mKrig vs. Krig for ozone2
+PASSED test at tolerance  1e-08
+Testing:  predict Wendland  mKrig vs Krig
+PASSED test at tolerance  1e-08
 Warning message:
 In fastTps(xdat, ydat, theta = 0.3) : fastTps will interpolate observations
-testing:  fastTps interp1
-    PASSED test at tolerance  1e-08
-testing:  fastTps interp2
-    PASSED test at tolerance  0.01
+Testing:  fastTps interp1
+PASSED test at tolerance  1e-08
+Testing:  fastTps interp2
+PASSED test at tolerance  0.01
 [1] "testing using distance matrix"
-testing:  predict: stationary.cov versus Exp.cov
-    PASSED test at tolerance  1e-08
-testing:  predict: no distance matrix versus compact distance matrix
-    PASSED test at tolerance  1e-08
-testing:  predict: no distance matrix versus distance matrix
-    PASSED test at tolerance  1e-08
+Testing:  predict: stationary.cov versus Exp.cov
+PASSED test at tolerance  1e-08
+Testing:  predict: no distance matrix versus compact distance matrix
+PASSED test at tolerance  1e-08
+Testing:  predict: no distance matrix versus distance matrix
+PASSED test at tolerance  1e-08
 [1] "testing using predictSE"
-testing:  predictSE: stationary.cov with exponential versus Exp.cov
-    PASSED test at tolerance  1e-08
-testing:  predictSE: no distance matrix versus compact distance matrix
-    PASSED test at tolerance  1e-08
-testing:  predictSE: no distance matrix versus distance matrix
-    PASSED test at tolerance  1e-08
+Testing:  predictSE: stationary.cov with exponential versus Exp.cov
+PASSED test at tolerance  1e-08
+Testing:  predictSE: no distance matrix versus compact distance matrix
+PASSED test at tolerance  1e-08
+Testing:  predictSE: no distance matrix versus distance matrix
+PASSED test at tolerance  1e-08
 all done with mKrig tests
 > 
 > 
@@ -104,4 +104,4 @@ all done with mKrig tests
 > 
 > proc.time()
    user  system elapsed 
-  1.280   0.092   1.363 
+  1.304   0.105   1.401 

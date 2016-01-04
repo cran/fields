@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 spind2full <- function(obj) {

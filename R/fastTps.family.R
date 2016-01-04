@@ -1,6 +1,6 @@
 
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "fastTps" <- function(x, Y, m = NULL, p = NULL, theta, 

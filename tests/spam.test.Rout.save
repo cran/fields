@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2015-10-05 r69468) -- "Unsuffered Consequences"
+R version 3.2.2 (2015-08-14) -- "Fire Safety"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
@@ -27,7 +27,7 @@ Type 'q()' to quit R.
 > library( fields)
 Loading required package: spam
 Loading required package: grid
-Spam version 1.2-1 (2015-09-30) is loaded.
+Spam version 1.3-0 (2015-10-24) is loaded.
 Type 'help( Spam)' or 'demo( spam)' for a short introduction 
 and overview of this package.
 Help for individual functions is also obtained by adding the
@@ -47,24 +47,24 @@ Loading required package: maps
 
 
 > options(echo=FALSE)
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
-    PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
 All done with SPAM tests
 > 
 > proc.time()
    user  system elapsed 
-  0.732   0.034   0.757 
+  0.726   0.039   0.755 

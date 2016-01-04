@@ -1,5 +1,5 @@
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -203,7 +203,7 @@ qsreg.rho <- function(r, alpha = 0.5, C = 1) {
     temp
 }
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "qsreg.trace" <- function(x, y, lam, maxit = 50, maxit.cv = 10, 
@@ -224,7 +224,7 @@ qsreg.rho <- function(r, alpha = 0.5, C = 1) {
     return(temp[3])
 }
 # fields, Tools for spatial data
-# Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+# Copyright 2015, Institute for Mathematics Applied Geosciences
 # University Corporation for Atmospheric Research
 # Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 "summary.qsreg" <- function(object, ...) {

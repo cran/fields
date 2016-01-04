@@ -1,5 +1,5 @@
 % fields, Tools for spatial data
-% Copyright 2004-2013, Institute for Mathematics Applied Geosciences
+% Copyright 2015, Institute for Mathematics Applied Geosciences
 % University Corporation for Atmospheric Research
 % Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
@@ -21,7 +21,7 @@ comparing the tests in a meaninful and documented way.
 }
 
 \usage{
-test.for.zero( xtest,xtrue,  tol= 1.0e-8, relative=TRUE, tag=NULL)
+test.for.zero( xtest, xtrue,  tol= 1.0e-8, relative=TRUE, tag=NULL)
 }
 
 \arguments{
@@ -41,6 +41,32 @@ test.for.zero( xtest,xtrue,  tol= 1.0e-8, relative=TRUE, tag=NULL)
 }
 
 \details{
+IMPORTANT: If the R object \code{test.for.zero.flag} exists with any
+value ( e.g. \code{test.for.zero.flag <- 1} ) then when the test fails
+this function will also generate an error in addition to printing a
+message. This option is added to insure
+that any test scripts will generate an error when any individual test
+fails.  
+
+An example:
+\preformatted{
+> test.for.zero( 1:10, 1:10 + 1e-10, tag="First test")
+Testing:  First test
+PASSED test at tolerance  1e-08
+}
+
+\preformatted{
+> test.for.zero( 1:10, 1:10 + 1e-10, tag="First test", tol=1e-12)
+Testing:  First test
+FAILED test value =  1.818182e-10  at tolerance  1e-12
+}
+\preformatted{
+> test.for.zero.flag <- 1
+Testing:  First test
+FAILED test value =  1.818182e-10  at tolerance  1e-12
+Error in test.for.zero(1:10, 1:10 + 1e-10, tag = "First test", tol = 1e-12) :
+}
+
 The scripts in the \code{tests} subdirectory are 
 
 \describe{
@@ -77,28 +103,18 @@ matrix methods. }
 }
 
 To run the tests just attach the fields library and source the testing
-file.  In the the fields source code these are in a subdirectory
+file.  In the  fields source code these are in a subdirectory
 "tests". Compare the output to the "XXX.Rout.save" text file. 
-Keeping in mind that no test messages should print if all is well, this is
-really a formality. The main reason these comparisions are provided is for 
-matching the conventions of the R package checking utilities. 
 
  \code{test.for.zero} is used to print out the result for each
 individual comparison.
-Failed tests are potentially very bad and are reported with a
+Failed tests are potentially  bad and are reported with a
 string beginning 
 
 "FAILED test value = ... "
 
-If the object test.for.zero.flag exists (it can have any value),
-all the tests that pass print  text beginning,
-
- "    PASSED  test at tolerance ..."
-
-This startegy means that if all tests succeed nothing and the
-\code{object test.for.zero.flag} does not exist then nothing is printed
-in the test scripts.  This is option simplifies the output scripts for
-running through the tests -- no news is good news. 
+If the object test.for.zero.flag exists then an error is also generated
+when the test fails.
 
 
 FORM OF COMPARISON:
@@ -107,7 +123,7 @@ The actual test done is the sum of absolute differnces:
 test value = \code{ 
 sum( abs(c(xtest) - c( xtrue) ) ) /denom}
 
-Where \code{demon} is either  \code{ mean( abs(c(xtrue)))} for relative error
+Where \code{denom} is either  \code{ mean( abs(c(xtrue)))} for relative error
 or 1.0 otherwise. 
 
 Note the use of "c" here to stack any structure in xtest and xtrue into
