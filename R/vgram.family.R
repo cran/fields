@@ -1,3 +1,23 @@
+# fields  is a package for analysis of spatial data written for
+# the R software environment .
+# Copyright (C) 2016
+# University Corporation for Atmospheric Research (UCAR)
+# Contact: Douglas Nychka, nychka@ucar.edu,
+# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with the R software environment if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# or see http://www.r-project.org/Licenses/GPL-2    
 "vgram" <- function(loc, y, id = NULL, d = NULL, lon.lat = FALSE, 
                     dmax = NULL, N = NULL, breaks = NULL, 
                     type=c("variogram", "covariogram", "correlogram")) {
@@ -149,72 +169,51 @@ plot.vgram = function(x, N=10, breaks = pretty(x$d, N, eps.correct = 1), add=FAL
   #set y axis label if not set by user
   if(is.null(otherArgs$ylab)) {
     if(type=="variogram")
-      ylab = "sqrt(Variance)"
+      otherArgs$ylab = "sqrt(Variance)"
     else if(type == "covariogram" || type=="cross-covariogram")
-      ylab = "Covariance"
+      otherArgs$ylab = "Covariance"
     else if(type == "correlogram" || type=="cross-correlogram")
-      ylab = "Correlation"
+      otherArgs$ylab = "Correlation"
     else
       stop("vgram 'type' argument must be either 'variogram', 'covariogram', 'correlogram', 'cross-covariogram', or 'cross-correlogram'")
-  } else {
-    ylab = otherArgs$ylab
-    otherArgs$ylab = NULL
   }
   
   #set x axis label if not set by user
   if(is.null(otherArgs$xlab))
-    xlab = "Distance (Miles)"
-  else {
-    xlab = otherArgs$xlab
-    otherArgs$xlab = NULL
-  }
+    otherArgs$xlab = "Distance"
   
   #set plot title if not set by user
   if(is.null(otherArgs$main)) {
     if(type=="variogram")
-      main = "Empirical Variogram"
+      otherArgs$main = "Empirical Variogram"
     else if(type=="covariogram")
-      main = "Empirical Covariogram"
+      otherArgs$main = "Empirical Covariogram"
     else if(type=="correlogram")
-      main = "Empirical Correlogram"
+      otherArgs$main = "Empirical Correlogram"
     else if(type=="cross-covariogram")
-      main = "Empirical Cross-Covariogram"
+      otherArgs$main = "Empirical Cross-Covariogram"
     else if(type=="cross-correlogram")
-      main = "Empirical Cross-Correlogram"
+      otherArgs$main = "Empirical Cross-Correlogram"
     else
       stop("vgram 'type' argument must be either 'variogram', 'covariogram', 'correlogram', 'cross-covariogram', or 'cross-correlogram'")
-  }
-  else {
-    main = otherArgs$main
-    otherArgs$main = NULL
   }
   
   #set ylim for correlogram if not set by user
   if(is.null(otherArgs$ylim)) {
     if(type == "correlogram" || type=="cross-correlogram")
-      ylim = c(-1, 1)
-    else
-      ylim = NULL
-  }
-  else {
-    ylim = otherArgs$ylim
-    otherArgs$ylim = NULL
+      otherArgs$ylim = c(-1, 1)
   }
   
   #set line type if not set by user
   if(is.null(otherArgs$type))
-    type = "o"
-  else {
-    type = otherArgs$type
-    otherArgs$type = NULL
-  }
+    otherArgs$type = "o"
   
-  #get boxplot object
-  dat = do.call("boxplotVGram", c(list(x=x, N=N, breaks=breaks, plot=FALSE), otherArgs))
+  #get bin data
+  dat = getVGMean(x, breaks=breaks)
   
   #get bin centers versus bin means
   centers = dat$centers
-  ys = dat$boxplot.obj$stats[3,]
+  ys = dat$ys
   
   #remove NAs
   notNas = !is.na(ys)
@@ -223,12 +222,13 @@ plot.vgram = function(x, N=10, breaks = pretty(x$d, N, eps.correct = 1), add=FAL
   
   #plot
   if(!add)
-    do.call(plot, c(list(centers, ys, main=main, xlab=xlab, ylab=ylab, type=type, ylim=ylim), otherArgs))
+    do.call("plot", c(list(centers, ys), otherArgs))
   else
-    do.call(lines, c(list(centers, ys, main=main, xlab=xlab, ylab=ylab, type=type, ylim=ylim), otherArgs))
+    do.call("lines", c(list(centers, ys), otherArgs))
 }
 
-"boxplotVGram" = function(x, N=10, breaks = pretty(x$d, N, eps.correct = 1), plot=TRUE, ...) {
+"boxplotVGram" = function(x, N=10, breaks = pretty(x$d, N, eps.correct = 1), plot=TRUE, 
+                          plot.args=NULL, ...) {
   dists = x$d
   type=x$type
   if(type == "variogram")
@@ -240,58 +240,83 @@ plot.vgram = function(x, N=10, breaks = pretty(x$d, N, eps.correct = 1), add=FAL
   #set y axis label if not set by user
   if(is.null(otherArgs$ylab)) {
     if(type=="variogram")
-      ylab = "sqrt(Variance)"
+      otherArgs$ylab = "sqrt(Variance)"
     else if(type == "covariogram" || type=="cross-covariogram")
-      ylab = "Covariance"
+      otherArgs$ylab = "Covariance"
     else if(type == "correlogram" || type=="cross-correlogram")
-      ylab = "Correlation"
+      otherArgs$ylab = "Correlation"
     else
       stop("vgram 'type' argument must be either 'variogram', 'covariogram', 'correlogram', 'cross-covariogram', or 'cross-correlogram'")
-  } else {
-    ylab = otherArgs$ylab
-    otherArgs$ylab = NULL
   }
   
   #set x axis label if not set by user
   if(is.null(otherArgs$xlab))
-    xlab = "Distance (Miles)"
-  else {
-    xlab = otherArgs$xlab
-    otherArgs$xlab = NULL
-  }
+    otherArgs$xlab = "Distance"
   
   #set plot title if not set by user
   if(is.null(otherArgs$main)) {
     if(type=="variogram")
-      main = "Empirical Variogram"
+      otherArgs$main = "Empirical Variogram"
     else if(type=="covariogram")
-      main = "Empirical Covariogram"
+      otherArgs$main = "Empirical Covariogram"
     else if(type=="correlogram")
-      main = "Empirical Correlogram"
+      otherArgs$main = "Empirical Correlogram"
     else if(type=="cross-covariogram")
-      main = "Empirical Cross-Covariogram"
+      otherArgs$main = "Empirical Cross-Covariogram"
     else if(type=="cross-correlogram")
-      main = "Empirical Cross-Correlogram"
+      otherArgs$main = "Empirical Cross-Correlogram"
     else
       stop("vgram 'type' argument must be either 'variogram', 'covariogram', 'correlogram', 'cross-covariogram', or 'cross-correlogram'")
-  }
-  else {
-    main = otherArgs$main
-    otherArgs$main = NULL
   }
   
   #set ylim for correlogram if not set by user
   if(is.null(otherArgs$ylim)) {
     if(type == "correlogram" || type=="cross-correlogram")
-      ylim = c(-1, 1)
-    else
-      ylim = NULL
-  }
-  else {
-    ylim = otherArgs$ylim
-    otherArgs$ylim = NULL
+      otherArgs$ylim = c(-1, 1)
   }
   
-  do.call("bplot.xy", c(list(x=dists, y=y, N=N, breaks=breaks, plot=plot, ylab=ylab, 
-                             xlab=xlab, main=main, ylim=ylim), otherArgs))
+  #make boxplot
+  bplot = do.call("bplot.xy", c(list(x=dists, y=y, N=N, breaks=breaks, plot=plot), otherArgs))
+  
+  #return bplot.xy statistics if plot==FALSE
+  if(!plot)
+    return(bplot)
+  
+  #plot bin means with plot parameters given in plot.args (with defaults to look pretty)
+  plot.args$x=x
+  plot.args$add=TRUE
+  plot.args$breaks=breaks
+  if(is.null(plot.args$col))
+    plot.args$col = "red"
+  if(is.null(plot.args$type))
+    plot.args$type = "p"
+  do.call("plot.vgram", plot.args)
+}
+
+# Returns the variogram bin centers and means
+getVGMean = function(x, N = 10, breaks = pretty(x$d, N, eps.correct = 1)) 
+{
+  # Can calculate mean or other statistical functions of the values in the bins
+  VGstat = function(VG, minD=-Inf, maxD=Inf, statFun="mean", ...) {
+    ind = (VG$d > minD) & (VG$d < maxD)
+    do.call(statFun, c(list(VG$vgram[ind]), list(...)))
+  }
+  
+  #helper function to get mean from any single bin
+  meansFromBreak = function(breakBounds = c(-Inf, Inf)) {
+    VGstat(x, minD=breakBounds[1], maxD=breakBounds[2], na.rm=TRUE)
+  }
+  
+  #apply helper function to all bins
+  lowBreaks = breaks
+  highBreaks = c(breaks[2:length(breaks)], Inf)
+  breakBounds = cbind(lowBreaks, highBreaks)
+  centers = apply(breakBounds, 1, mean, na.rm=TRUE)
+  ys = apply(breakBounds, 1, meansFromBreak)
+  
+  #take square root if variogram
+  if(x$type == "variogram")
+    ys=sqrt(ys)
+  
+  return(list(centers=centers, ys=ys, type=x$type))
 }

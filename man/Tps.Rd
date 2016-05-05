@@ -1,7 +1,23 @@
-% fields, Tools for spatial data
-% Copyright 2004-2011, Institute for Mathematics Applied Geosciences
-% University Corporation for Atmospheric Research
-% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+%# fields  is a package for analysis of spatial data written for
+%# the R software environment .
+%# Copyright (C) 2016
+%# University Corporation for Atmospheric Research (UCAR)
+%# Contact: Douglas Nychka, nychka@ucar.edu,
+%# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+%#
+%# This program is free software; you can redistribute it and/or modify
+%# it under the terms of the GNU General Public License as published by
+%# the Free Software Foundation; either version 2 of the License, or
+%# (at your option) any later version.
+%# This program is distributed in the hope that it will be useful,
+%# but WITHOUT ANY WARRANTY; without even the implied warranty of
+%# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%# GNU General Public License for more details.
+%#
+%# You should have received a copy of the GNU General Public License
+%# along with the R software environment if not, write to the Free Software
+%# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+%# or see http://www.r-project.org/Licenses/GPL-2    
 
 \name{Tps}
 \alias{Tps}
@@ -322,9 +338,12 @@ out.p<-predictSurface( fit,df=10)
 # predicting on a grid along with a covariate
   data( COmonthlyMet)	
 # predicting average daily minimum temps for spring in Colorado
+# NOTE to create an  4km  elevation grid: 
+# data(PRISMelevation); CO.elev1 <- crop.image(PRISMelevation, CO.loc )
+# then use same grid for the predictions: CO.Grid1<- CO.elev1[c("x","y")]
   obj<- Tps( CO.loc, CO.tmin.MAM.climate, Z= CO.elev)
   out.p<-predictSurface( obj,
-        grid.list=CO.Grid, ZGrid= CO.elevGrid)
+            grid.list=CO.Grid, ZGrid= CO.elevGrid)
   image.plot( out.p)        
   US(add=TRUE, col="grey")
   contour( CO.elevGrid, add=TRUE, levels=c(2000), col="black")

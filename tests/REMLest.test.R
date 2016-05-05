@@ -34,7 +34,7 @@ y<- y[1:75]
         ltheta = pars[2]
         lsig2 = pars[3]
         d <- rdist(x, x)
-        A <- (Matern(d, scale = exp(lrho), range = exp(ltheta), 
+        A <- (exp(lrho)*Matern(d, range = exp(ltheta), 
             smoothness = nu) + exp(lsig2) * diag(N))
         A <- t(Q2) %*% A %*% Q2
         A <- chol(A)

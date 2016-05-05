@@ -1,7 +1,23 @@
-# fields, Tools for spatial data
-# Copyright 2015, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+# fields  is a package for analysis of spatial data written for
+# the R software environment .
+# Copyright (C) 2016
+# University Corporation for Atmospheric Research (UCAR)
+# Contact: Douglas Nychka, nychka@ucar.edu,
+# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with the R software environment if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# or see http://www.r-project.org/Licenses/GPL-2    
 "ChicagoO3" <- structure(list(x = structure(c(10.2420950223404, 
     3.80376523711237, 9.10894898014071, 9.62401536295848, -2.42853799498812, 
     -12.626852374789, -0.419779101996896, -7.88824165286121, 

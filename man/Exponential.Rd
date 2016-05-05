@@ -1,7 +1,23 @@
-% fields, Tools for spatial data
-% Copyright 2015, Institute for Mathematics Applied Geosciences
-% University Corporation for Atmospheric Research
-% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+%# fields  is a package for analysis of spatial data written for
+%# the R software environment .
+%# Copyright (C) 2016
+%# University Corporation for Atmospheric Research (UCAR)
+%# Contact: Douglas Nychka, nychka@ucar.edu,
+%# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+%#
+%# This program is free software; you can redistribute it and/or modify
+%# it under the terms of the GNU General Public License as published by
+%# the Free Software Foundation; either version 2 of the License, or
+%# (at your option) any later version.
+%# This program is distributed in the hope that it will be useful,
+%# but WITHOUT ANY WARRANTY; without even the implied warranty of
+%# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%# GNU General Public License for more details.
+%#
+%# You should have received a copy of the GNU General Public License
+%# along with the R software environment if not, write to the Free Software
+%# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+%# or see http://www.r-project.org/Licenses/GPL-2    
 
 \name{Exponential, Matern, Radial Basis}
 \alias{Exponential}
@@ -11,12 +27,16 @@
 \title{Covariance functions}
 \description{
 Functional form of covariance function assuming the argument is a
-distance between locations. 
+distance between locations.  As they are defined here, they are in 
+fact correlation functions.  To set the marginal variance (sill) 
+parameter, use the \code{rho} argument in \code{mKrig} or \code{Krig}.  
+To set the nugget variance, use te \code{sigma2} argument in 
+\code{mKrig} or \code{Krig}.
 }
 \usage{
-Exponential(d, range = 1, alpha = 1/range, phi = 1)
-Matern (d , scale = 1, range = 1,alpha=1/range,
-     smoothness = 0.5, nu= smoothness, phi=scale) 
+Exponential(d, range = 1, alpha = 1/range, phi=1.0)
+Matern(d , range = 1,alpha=1/range, smoothness = 0.5, 
+       nu= smoothness, phi=1.0) 
 Matern.cor.to.range(d, nu, cor.target=.5, guess=NULL,...)
 RadialBasis(d,M,dimension, derivative = 0)
 
@@ -31,10 +51,14 @@ RadialBasis(d,M,dimension, derivative = 0)
            scaling argument  used in fields covariance functions) }
 
   \item{alpha}{1/range }
-
-  \item{scale}{Same as phi }
-
-  \item{phi}{ Marginal variance.}
+  
+  \item{phi}{This parameter option is added to be compatible with older
+  versions of fields and refers to the marginal variance of the process.
+  e.g. \code{phi* exp( -d/theta)} is the exponential covariance for points
+  separated by distance and range theta. Throughout fields this parameter
+  is equivalent to rho and it recommended that rho be used. If one is
+  simulating random fields. See the help on \code{\link{sim.rf}} for
+  more details. } 
 
   \item{smoothness}{ Smoothness parameter in Matern. Controls the number
 of derivatives in the process. Default is 1/2 corresponding to an exponential 
@@ -53,11 +77,11 @@ covariance.}
 \details{
 Exponential: 
 
-phi* exp( -d/range)
+exp( -d/range)
 
 Matern:
 
-   phi*con*(d\^nu) * besselK(d , nu )
+   con*(d\^nu) * besselK(d , nu )
 
  Matern covariance function transcribed from Stein's book page 31
 nu==smoothness, alpha ==  1/range
@@ -65,8 +89,7 @@ nu==smoothness, alpha ==  1/range
  GeoR parameters map to kappa==smoothness and phi == range
 check for negative distances
 
-\code{con} is a constant that normalizes the expression to be 1.0  when phi=1.0
-and d=0. 
+\code{con} is a constant that normalizes the expression to be 1.0 when d=0. 
 
 Matern.cor.to.range: 
     This function is useful to find  Matern covariance parameters that are 

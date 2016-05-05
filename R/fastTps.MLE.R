@@ -1,8 +1,31 @@
+# fields  is a package for analysis of spatial data written for
+# the R software environment .
+# Copyright (C) 2016
+# University Corporation for Atmospheric Research (UCAR)
+# Contact: Douglas Nychka, nychka@ucar.edu,
+# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with the R software environment if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# or see http://www.r-project.org/Licenses/GPL-2    
 fastTps.MLE <- function(x, y, weights = rep(1, nrow(x)), 
-    Z = NULL, ..., par.grid=NULL, theta, lambda = NULL, lambda.profile = TRUE, 
+                        Z = NULL, ..., par.grid=NULL, theta, lambda = NULL,
+                        lambda.profile = TRUE, 
     verbose = FALSE, relative.tolerance = 1e-04) {
-    # these are all the arguments needed to call mKrig except lambda and those in par.grid.
-    fastTpsArgs <- c(list(x = x, Y = y, weights = weights, Z = Z, theta=theta), 
+# these are all the arguments needed to call mKrig except
+#  lambda and those in par.grid.
+    fastTpsArgs <- c(list(x = x, Y = y, weights = weights, Z = Z,
+                          theta=theta), 
         list(...))
     lnProfileLike.max <- -1e+20
     # find NG --  number of parameters to try
@@ -36,13 +59,16 @@ fastTps.MLE <- function(x, y, weights = rep(1, nrow(x)),
     # Define the objective function as a tricksy call to mKrig
     # if Y is a matrix of replicated data sets use the log likelihood for the complete data sets
     temp.fn <- function(x) {
-        # NOTE: FULL refers to estimates collapsed across the replicates if Y is a matrix
-        # assign to hold only a few components returned by mKrig
-     
+# NOTE: FULL refers to estimates collapsed across the replicates if
+#Y is a matrix
+# assign to hold only a few components returned by mKrig  
        hold <- do.call("fastTps", c(fastTpsArgs, 
             list(lambda = exp(x)),list(find.trA=FALSE), cov.args.temp ))[
-                   c("lambda.fixed", "rho.MLE.FULL", "sigma.MLE.FULL", "lnProfileLike.FULL")]
-        # add this evalution to an object (i.e. here a matrix) in the calling frame
+                                           c("lambda.fixed",
+                                             "rho.MLE.FULL",
+                                             "sigma.MLE.FULL",
+                                             "lnProfileLike.FULL")]
+# add this evalution to an object (i.e. here a matrix) in the calling frame
         temp.eval <- get("capture.evaluations")
         assign("capture.evaluations", rbind(temp.eval, unlist(hold)), 
             envir = capture.env)
@@ -98,8 +124,10 @@ fastTps.MLE <- function(x, y, weights = rep(1, nrow(x)),
             cat("Summary: ", k, summary[k, 1:8], fill = TRUE)
         }
     }
-    return(list(summary = summary, par.grid = par.grid, cov.args.MLE = cov.args.MLE, 
-        mKrig.args = list(...), lambda.best = lambda.best, lambda.MLE = lambda.best, 
+    return(list(summary = summary, par.grid = par.grid,
+                cov.args.MLE = cov.args.MLE, 
+                mKrig.args = list(...), lambda.best = lambda.best,
+                lambda.MLE = lambda.best, 
         call = match.call(), lnLike.eval = lnLike.eval))
 }
 

@@ -1,13 +1,30 @@
-% fields, Tools for spatial data
-% Copyright 2015, Institute for Mathematics Applied Geosciences
-% University Corporation for Atmospheric Research
-% Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+%# fields  is a package for analysis of spatial data written for
+%# the R software environment .
+%# Copyright (C) 2016
+%# University Corporation for Atmospheric Research (UCAR)
+%# Contact: Douglas Nychka, nychka@ucar.edu,
+%# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+%#
+%# This program is free software; you can redistribute it and/or modify
+%# it under the terms of the GNU General Public License as published by
+%# the Free Software Foundation; either version 2 of the License, or
+%# (at your option) any later version.
+%# This program is distributed in the hope that it will be useful,
+%# but WITHOUT ANY WARRANTY; without even the implied warranty of
+%# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%# GNU General Public License for more details.
+%#
+%# You should have received a copy of the GNU General Public License
+%# along with the R software environment if not, write to the Free Software
+%# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+%# or see http://www.r-project.org/Licenses/GPL-2    
 
 \name{vgram}
 \alias{vgram}
 \alias{crossCoVGram}
 \alias{plot.vgram}
 \alias{boxplotVGram}
+\alias{getVGMean}
 \title{
   Traditional or robust variogram methods for spatial data
 }
@@ -15,9 +32,14 @@
 \code{vgram} computes pairwise squared differences as a function of distance. 
 Returns an S3 object of class "vgram" with either raw values or statistics from 
 binning. \code{crossCoVGram} is the same as \code{vgram} but differences are 
-taken across different variables rather than the same variable.  \code{plot.vgram} 
-and \code{boxplotVGram} create lineplots and boxplots of vgram objects output 
-by the \code{vgram} function.
+taken across different variables rather than the same variable.
+
+\code{plot.vgram} and \code{boxplotVGram} create lineplots and boxplots of 
+vgram objects output by the \code{vgram} function.  \code{boxplotVGram} plots 
+the base R boxplot function, and plots estimates of the mean over the boxplot.
+
+The \code{getVGMean} function returns the bin centers and means of the \code{vgram} 
+object based on the bin breaks provided by the user.
 }
 \usage{
 vgram(loc, y, id = NULL, d = NULL, lon.lat = FALSE, 
@@ -28,9 +50,11 @@ crossCoVGram(loc1, loc2, y1, y2, id = NULL, d = NULL, lon.lat = FALSE,
                         dmax = NULL, N = NULL, breaks = NULL, 
                         type=c("cross-covariogram", "cross-correlogram"))
 
-boxplotVGram(x, N=10, breaks = pretty(x$d, N, eps.correct = 1), plot=TRUE, ...)
+boxplotVGram(x, N=10, breaks = pretty(x$d, N, eps.correct = 1), plot=TRUE, plot.args, ...)
 
 \method{plot}{vgram}(x, N=10, breaks = pretty(x$d, N, eps.correct = 1), add=FALSE, ...)
+
+getVGMean(x, N = 10, breaks = pretty(x$d, N, eps.correct = 1)) 
 }
 \arguments{
 \item{loc}{
@@ -90,6 +114,9 @@ creates new plot with empirical variogram lineplot.
 If \code{TRUE}, creates a plot, otherwise returns variogram statistics output by 
 \code{bplot.xy}.
 }
+\item{plot.args}{
+Additional arguments to be passed to \code{plot.vgram}.
+}
 \item{type}{
 One of "variogram", "covariogram", "correlogram", "cross-covariogram", and 
 "cross-correlogram".  \code{vgram} supports the first three of these and 
@@ -137,14 +164,14 @@ y<- ozone2$y[16,good]
 look<-vgram( x,y, N=15, lon.lat=TRUE) # locations are in lon/lat so use right
 #distance
 # take a look:
-#plot( look$d, look$vgram)
+plot(look, pch=19)
 #lines(look$centers, look$stats["mean",], col=4)
 
 brk<- seq( 0, 250,,25)
  
 ## or some boxplot bin summaries
 
-boxplotVGram(look, breaks=brk)
+boxplotVGram(look, breaks=brk, plot.args=list(type="o"))
 plot(look, add=TRUE, breaks=brk, col=4)
 
 #
@@ -157,7 +184,7 @@ plot(look, breaks=brk, col=4)
 # compute equivalent cross-covariogram of the data with itself 
 #(it should look almost exactly the same as the covariogram of 
 #the original data, except with a few more points in the 
-#smallest distance boxplot and many points plotted twice)
+#smallest distance boxplot and points are double counted)
 #
 look = crossCoVGram(x, x, y, y, N=15, lon.lat=TRUE, type="cross-covariogram")
 plot(look, breaks=brk, col=4)

@@ -1,8 +1,23 @@
-
-# fields, Tools for spatial data
-# Copyright 2015, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+# fields  is a package for analysis of spatial data written for
+# the R software environment .
+# Copyright (C) 2016
+# University Corporation for Atmospheric Research (UCAR)
+# Contact: Douglas Nychka, nychka@ucar.edu,
+# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with the R software environment if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# or see http://www.r-project.org/Licenses/GPL-2    
 "Krig" <- function(x, Y, cov.function = "stationary.cov", 
     lambda = NA, df = NA, GCV = FALSE, Z = NULL, cost = 1, knots = NA, 
     weights = NULL, m = 2, nstep.cv = 200, scale.type = "user", 
@@ -11,7 +26,8 @@
     sd.obj = NA, null.function = "Krig.null.function", wght.function = NULL, 
     offset = 0,  na.rm = TRUE, cov.args = NULL, 
     chol.args = NULL, null.args = NULL, wght.args = NULL, W = NULL, 
-    give.warnings = TRUE, ...) # the verbose switch prints many intermediate steps as an aid in debugging.
+                   give.warnings = TRUE, ...)
+# the verbose switch prints many intermediate steps as an aid in debugging.
 #
 { 
     #
@@ -19,7 +35,7 @@
     out <- list()
     ###########################################################
     #  First series of steps simply store pieces of the passed
-    #    information to output list (i.e. the Krig object)
+    #    information to the output list (i.e. the Krig object)
     ##########################################################
         out$call <- match.call()
     #   turn off warning based on options
@@ -56,7 +72,7 @@
     }
     #
     # logical to indicate if the 'C' argument is present in cov.function
-    #
+    # -- a bit of esoteric R code!
     C.arg.missing <- all(names(formals(get(out$cov.function.name))) != 
         "C")
     if (C.arg.missing) 
@@ -96,6 +112,7 @@
     out$offset <- offset
     #
     # the cost is the multiplier applied to the GCV eff.df
+    # 
     # lambda and df are two ways of parameterizing the smoothness
     # and are related by a monotonic function that unfortunately
     # depends on the locations of the data.
@@ -137,12 +154,13 @@
     # note that many of these manipulations follow a strategy
     # of passing the Krig object (out) to a function and
     # then appending the information from this function to
-    # the Krig object. In this way the Krig object  is built up
-    # in steps and it is hoped easier to follow.
+    # the Krig object (usually also called "out").
+    #In this way the Krig object  is built up
+    # in steps and the process is easier to follow.
     ###############################################################
     # various checks on x and  Y including removal of NAs in Y
     # Here is an instance of adding to the Krig object
-    # in this case some onerous bookkeeping making sure arguments are consistent
+    # in this case also some onerous bookkeeping making sure arguments are consistent
     out2 <- Krig.check.xY(x, Y, Z, weights, na.rm, verbose = verbose)
     out <- c(out, out2)
     # transform to correlation model (if appropriate)
@@ -173,16 +191,18 @@
     # and replicate observations.
     if (out$nondiag.W) {
         if (out$knot.model | out$fixed.model) {
-            stop("Non diagonal weight matrix for observations not supported\nwith knots or fixed lambda.")
+            stop("Non diagonal weight matrix for observations
+                    not supported\nwith knots or fixed lambda.")
         }
         if (!is.na(out$shat.pure.error)) {
-            stop("Non diagonal weight matrix not implemented with replicate\nlocations")
+            stop("Non diagonal weight matrix not implemented
+                    with replicate locations")
         }
     }
     #  make weight matrix and its square root having passed checks
     out <- c(out, Krig.make.W(out, verbose = verbose))
     ########################################################
-    #  You have reached the Engines!
+    #  You have reached the Engines where the actual computing happens!
     ########################################################
     #   Do the intensive linear algebra to find the solutions
     #   this is where all the heavy lifting happens.
@@ -201,7 +221,8 @@
     ###########################################################
     if (out$fixed.model) {
         out$matrices <- Krig.engine.fixed(out, verbose = verbose)
-        # can't find the trace of A matrix in fixed lambda case so set this to NA.
+    #  The trace of A matrix in fixed lambda case is not easily computed
+    #  so set this to NA.
         out$eff.df <- NA
     }
     #
@@ -226,7 +247,7 @@
     out$np <- out$matrices$np
     out$decomp <- out$matrices$decomp
     #
-    # Now determine a logical vector indices for coefficients tied to  the
+    # Now determine a logical vector to indicate coefficients tied to  the
     # the 'spatial drift' i.e. the fixed part of the model
     # that is not due to the Z covariates.
     # NOTE that the spatial drift coefficients must be the first columns of the
@@ -249,6 +270,7 @@
     #########################
     #################################################
     # Do GCV and REML search over lambda if not fixed or if GCV variable is TRUE
+    # gcv.Krig, not named well,  also does a search over likelihood for lambda.
     #################################################
     if (!out$fixed.model | out$GCV) {
         if (verbose) {
@@ -257,7 +279,7 @@
         gcv.out <- gcv.Krig(out, nstep.cv = nstep.cv, verbose = verbose, 
             cost = out$cost, offset = out$offset, give.warnings=FALSE)
         out$gcv.grid <- gcv.out$gcv.grid
-        #  a handy summary table of the search results
+        #   save a handy summary table of the search results
         out$lambda.est <- gcv.out$lambda.est
         out$warningTable<- gcv.out$warningTable
         if( verbose){
@@ -298,7 +320,6 @@
     # and evaluate the solution at observations
     ##########################################
     #   pass replicate group means -- no need to recalculate these.
-
     out2 <- Krig.coef(out, yM = out$yM, verbose = verbose)
     out <- c(out, out2)
     #######################################################################
