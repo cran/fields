@@ -251,12 +251,10 @@ surface(object , ...)
 
 unscale (x, x.center, x.scale) 
 
-MLESpatialProcess.fast(x, y, lambda.start = NULL, theta.start = NULL,
- cov.function = "stationary.cov", cov.args = list(Covariance = "Matern", smoothness = 1),
- relative.tolerance = 0.001, Distance = "rdist", verbose = FALSE, ...)
-
-
-
+MLESpatialProcess.fast(x, y, lambda.start=.5, theta.start = NULL, 
+  cov.function = "stationary.cov", 
+  cov.args = list(Covariance = "Matern", smoothness = 1), 
+  Distance = "rdist", verbose=FALSE, optim.args=NULL, ...)
 
 }
 \keyword{internal}

@@ -18,24 +18,67 @@
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2    
-spatialProcess <- function(x, y, cov.function = "stationary.cov", 
-	cov.args = list(Covariance = "Matern", smoothness = 1),
-	 ngrid=10, theta.grid = NULL, ...) {
-	MLEfit <- MLESpatialProcess(x, y, cov.function = cov.function, 
-		cov.args = cov.args, ngrid=ngrid, theta.grid = theta.grid,
-		 ...)
+spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
+                  mKrig.args = list( m=2),
+                cov.function = "stationary.cov", 
+                   	cov.args = list(Covariance = "Matern", smoothness = 1),
+              	 theta.start = NULL,
+                lambda.start = .5, 
+                 theta.range = NULL, 
+                      abstol = 1e-4,
+                       na.rm = TRUE,
+                  	 verbose = FALSE,
+                           ...) {
+ 
+# NOTE all ... information is assumed to be for the cov.args list
+# overwrite the default choices (some R arcania!)
+  ind<- match( names( cov.args), names(list(...) ) )
+  cov.args <- c(cov.args[is.na(ind)], list(...))
+  if( verbose){
+    cat("extra arguments from ... " , names( list(...)) , fill=TRUE)
+    cat(" full list from cov.args: ", names(cov.args) )
+  }
+# NOTE MLEspatialProcess omits NAs
+	MLEInfo <- MLESpatialProcess(x, y, weights = weights, Z=Z, 
+	                                mKrig.args = mKrig.args,
+	                              cov.function = cov.function, 
+	                                  cov.args = cov.args,
+	                               theta.start = theta.start, 
+	                               theta.range = theta.range, 
+	                                   	gridN = 20,
+                            	 lambda.start = lambda.start,
+	                                   abstol = abstol,
+                                		verbose = verbose
+	                                       	 )
+	if( verbose){
+	  cat("Summary from joint optimization", fill=TRUE)
+	  print( MLEInfo$MLEJoint$summary )
+	  print( MLEInfo$MLEJoint$pars.MLE)
+	}
 # now fit spatial model with MLE for theta (range parameter)
-# reestimate the other parameters for simplicity to get the complete Krig
-# object.		
-	obj <- Krig(x, y, cov.function = cov.function, cov.args = cov.args, 
-		theta = MLEfit$pars[1],  
-		method = "REML", give.warnings=TRUE, 
-		...)
-	obj <- c(obj, MLEfit)
-	obj$theta.MLE<- MLEfit$pars[1]
-# replace call with this top level one
-    obj$call<- match.call()	
-	class(obj) <- c( "spatialProcess","Krig")
+# reestimate the other parameters for simplicity to get the complete mKrig object
+	obj <- do.call( "mKrig", 
+	                c( list(x=x,
+	                        y=y,
+	                  weights=weights,
+	                        Z=Z),
+	                  mKrig.args,
+	          list( na.rm=na.rm),
+	             list(           
+	              cov.function = cov.function,
+	              cov.args = cov.args, 
+	              lambda = MLEInfo$MLEJoint$pars.MLE[1],
+	              theta  = MLEInfo$MLEJoint$pars.MLE[2]
+	             )
+	            	)
+	)
+	obj <- c(obj, list(  MLEInfo = MLEInfo, 
+	                   theta.MLE =  MLEInfo$MLEJoint$pars.MLE[2],
+	                   lambda.MLE = MLEInfo$MLEJoint$pars.MLE[1])
+	        )
+# replace call to mKrig with this top level one
+  obj$call<- match.call()	
+	class(obj) <- c( "spatialProcess","mKrig")
  
 	return(obj)
 }

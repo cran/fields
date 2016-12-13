@@ -21,7 +21,6 @@
 
 \name{plot.Krig}
 \alias{plot.Krig}
-\alias{plot.spatialProcess}
 \alias{plot.sreg}
 
 \title{
@@ -33,7 +32,6 @@ Plots a series of four diagnostic plots that summarize the fit.
 \usage{
 \method{plot}{Krig}(x, digits=4, which= 1:4,...)
 \method{plot}{sreg}(x, digits = 4, which = 1:4, ...)
-\method{plot}{spatialProcess}(x, digits=4, which= 1:4,...)
 
 
 }
@@ -86,23 +84,26 @@ Krig, spatialProcess, summary.Krig, Tps, set.panel
 }
 \examples{
 
-fit<-Krig(ChicagoO3$x, ChicagoO3$y, theta=200)  
+data( ozone2)
+x<- ozone2$lon.lat
+y<- ozone2$y[16,]
+fit1<-Krig(x,y, theta=200)  
 # fitting a surface to ozone  
 # measurements 
 set.panel( 2,2)
-plot(fit)
+plot(fit1)
 
-fit<-spatialProcess(ChicagoO3$x, ChicagoO3$y)  
+fit2<-spatialProcess(x,y)  
 # fitting a spatial process model to ozone  
 # measurements 
 # Although an example does not make too much sense for only 20 observations!
 set.panel( 2,2)
-plot(fit)
+plot(fit2)
 
 # fit rat data
-fit<-sreg(rat.diet$t,rat.diet$con)
+fit3<-sreg(rat.diet$t,rat.diet$con)
 set.panel(2,2)
-plot(fit)       
+plot(fit3)       
 
 set.panel(1,1) # reset graphics window. 
 
