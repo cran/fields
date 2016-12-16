@@ -1,4 +1,4 @@
-120422cd11cad4a635a620b6b48e0c0b *DESCRIPTION
+d4908d989139ef948801b02005bb66c4 *DESCRIPTION
 3b1b7ce654d028cbe16127df91148c8b *LICENSE.note
 261f1736191361437a3e0ad33485bc47 *NAMESPACE
 e24b9156fb538c2ed74f6803ee556913 *R/BD.R
@@ -280,6 +280,7 @@ ade7564799b2f99fe97763c6291e619c *src/compactToMatCOLD.c
 231feaeaef4b8efa9fdce849366a94af *src/ddfind.f
 f51870819457cb1fba891a7e77c99507 *src/dlv.f
 3bad15162c758abbe4958d8b83931b0b *src/dmaket.f
+0a9ee2097dc6d203d5b95fa164006c68 *src/dotprd.f
 e7acd7a47f6e19311e25b0c7bd1a49ef *src/drdfun.f
 b0d6111c6c4270373475986eb4447bdc *src/dsetup.f
 0a2b6aebd9ec7ee8041b17154161030c *src/evlpoly.f
@@ -292,7 +293,7 @@ bf2868ca65617cd7303c6c05d0f08e56 *src/igpoly.f
 6dcf003479ec830f507fb8959755dc25 *src/mltdrb.f
 8fdda17b4568dfd65f7a621365bc7bc9 *src/mltdtd.f
 cafd1d85a218aa6ab96634e87ee2431b *src/multW.f
-2d254651477f4eed0bcd333bbdbb7b93 *src/multebC.c
+a278ad1804dc0408f7cd126d4a5d88f1 *src/multebC.c
 d183fa3abd292845ef7f82a50de739dc *src/multrb.f
 dfba1d00020eaf943548ebdc5f1c8189 *src/radbas.f
 723f6d5e4905bef12775428e134e05da *src/radfun.f
@@ -321,7 +322,7 @@ c7638a841c2c7f39e79edebc09e6a836 *tests/Likelihood.test.Rout.save
 4e13b6ed6eab433253cb3ab919f3da1c *tests/REMLest.test.R
 c426ea595db46f2daec52904ce113632 *tests/REMLest.test.Rout.save
 b34ecdc489b768d372c187cddd207c34 *tests/Tps.test.R
-6d94f8b642d38b48bf2fcaceeb0dff74 *tests/Tps.test.Rout.save
+f7cfd42414021b3645f15b26edb816c6 *tests/Tps.test.Rout.save
 f0f7a1174f64da5b606e1d1cb6c0306f *tests/Wend.test.R
 d71e2f52ec934a431e4f089655e76445 *tests/Wend.test.Rout.save
 7175d8f2a71045043e0850b57089e2fc *tests/cmdfile
