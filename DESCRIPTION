@@ -1,6 +1,6 @@
 Package: fields
-Version: 8.8
-Date: 2016-12-15
+Version: 8.10
+Date: 2016-12-16
 Title: Tools for Spatial Data
 Authors@R: c( person("Douglas", "Nychka", role = c("aut", "cre"),
                email = "nychka@ucar.edu"),
@@ -37,6 +37,6 @@ License: GPL (>= 2)
 URL: http://www.image.ucar.edu/fields
 Depends: R (>= 3.0), methods, spam, maps
 NeedsCompilation: yes
-Packaged: 2016-12-15 18:02:41 UTC; nychka
+Packaged: 2016-12-16 20:55:45 UTC; nychka
 Repository: CRAN
-Date/Publication: 2016-12-16 11:13:26
+Date/Publication: 2016-12-16 23:26:03
