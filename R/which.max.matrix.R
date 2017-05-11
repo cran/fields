@@ -17,18 +17,23 @@
 # You should have received a copy of the GNU General Public License
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-# or see http://www.r-project.org/Licenses/GPL-2    
-ExponentialUpper = function(distMat, range = 1, alpha = 1/range) {
-  # Evaluates the exponential covariance function over the upper triangle of the distance matrix
-  
-  if(nrow(distMat) != ncol(distMat))
-    stop('distance matrix is non-symmetric.  Should not be calling ExponentialUpper.')
-  
-  return(.Call("ExponentialUpperC", as.double(distMat), as.integer(nrow(distMat)), as.double(alpha), PACKAGE = "fields"))
-  
-  #convert ans to standard matrix
-  #ans = ans[[1]]
-  #dim(ans) = dim(distMat)
-  
-  #return(ans)
+# or see http://www.r-project.org/Licenses/GPL-2 
+which.max.matrix <- function(z) {
+    if (!is.matrix(z)) {
+        stop("Not a matrix")
+    }
+    m <- nrow(z)
+    n <- ncol(z)
+    # take care of NAs
+    ind <- which.max(z)
+    iy <- trunc((ind - 1)/m) + 1
+    ix <- ind - (iy - 1) * m
+    return(cbind(ix, iy))
+}
+
+
+which.max.image <- function(obj) {
+    ind.z <- which.max.matrix(obj$z)
+    return(list(x = obj$x[ind.z[, 1]], y = obj$y[ind.z[, 2]], 
+        z = obj$z[ind.z], ind = ind.z))
 }

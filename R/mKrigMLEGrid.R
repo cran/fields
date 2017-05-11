@@ -78,7 +78,6 @@ mKrigMLEGrid <- function(x, y, weights = rep(1, nrow(x)), Z = NULL,
   lnLike.eval <- list()
   # Define the objective function as a tricksy call to mKrig
   # if Y is a matrix of replicated data sets use the log likelihood for the complete data sets
- 
   #
   # begin loop over covariance arguments
   lnLike.eval<- list()
@@ -89,8 +88,8 @@ mKrigMLEGrid <- function(x, y, weights = rep(1, nrow(x)), Z = NULL,
     # par.grid has been coerced to a data frame so one has a concept of a row subscript.
     cov.args.temp <- as.list(par.grid[k, ])
     names(cov.args.temp) <- names(par.grid)
-    
-    #optimize over lambda if lambda.profile is TRUE
+    currentCov.args<- c(cov.args.temp, cov.args) 
+    # optimize over lambda if lambda.profile is TRUE
     optim.args = list(method = "BFGS", 
                       control = list(fnscale = -1, parscale = c(0.5), 
                                      ndeps = c(0.05)))
@@ -101,7 +100,7 @@ mKrigMLEGrid <- function(x, y, weights = rep(1, nrow(x)), Z = NULL,
                          cov.params.start = NULL, 
                                   cov.fun = cov.fun,
                                optim.args = optim.args,
-                                 cov.args = cov.args,
+                                 cov.args = currentCov.args,
                                     na.rm = na.rm,
                                mKrig.args = mKrig.args,
                                      REML = REML,
@@ -114,12 +113,14 @@ mKrigMLEGrid <- function(x, y, weights = rep(1, nrow(x)), Z = NULL,
       lambda.opt <- lambda.start
     }
     
-# final fit at optimal value (or starting value if not refinement/maximization for lambda)
+# final fit at optimal value 
+#    (or starting value if not refinement/maximization for lambda)
     obj <- do.call("mKrig", c(
       list(x = x, y = y, weights = weights, Z = Z, na.rm = na.rm),
                                     mKrig.args,
-      list(lambda=lambda.opt),
-      list( cov.fun= cov.fun, cov.args=c(cov.args.temp, cov.args)))
+       list(lambda=lambda.opt),
+       list( cov.fun= cov.fun, cov.args = currentCov.args)
+      )
       )
     nameCriterion<- ifelse( !REML,
                             "lnProfileLike.FULL",
