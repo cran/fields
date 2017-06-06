@@ -1,6 +1,6 @@
 # fields  is a package for analysis of spatial data written for
 # the R software environment .
-# Copyright (C) 2016
+# Copyright (C) 2017
 # University Corporation for Atmospheric Research (UCAR)
 # Contact: Douglas Nychka, nychka@ucar.edu,
 # National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
@@ -40,7 +40,8 @@ mKrig.trace <- function(object, iseed, NtrA) {
         # create random normal 'data'
         Ey <- matrix(rnorm(np * NtrA), nrow = np, 
             ncol = NtrA)
-        trA.info <- colSums(Ey * (predict.mKrig(object, ynew = Ey)))
+        trA.info <- colSums(Ey * (predict.mKrig(object, ynew = Ey,
+                                    collapseFixedEffect=FALSE)))
         trA.est <- mean(trA.info)
     }
     if (NtrA < np) {
@@ -115,6 +116,7 @@ print.mKrig <- function(x, digits = 4, ...) {
     if (NData > 1) {
         c1 <- c(c1, "Number of data sets fit:")
         c2 <- c(c2, NData)
+        
     }
     
     c1 <- c(c1, "Degree of polynomial null space ( base model):")
@@ -150,16 +152,30 @@ print.mKrig <- function(x, digits = 4, ...) {
         c1 <- c(c1, "MLE rho")
         c2 <- c(c2, signif(x$rho.MLE, digits))
     }
+   
     
     c1 <- c(c1, "Nonzero entries in covariance")
     c2 <- c(c2, x$nonzero.entries)
     sum <- cbind(c1, c2)
     dimnames(sum) <- list(rep("", dim(sum)[1]), rep("", dim(sum)[2]))
+########### print out call and table of information    
     cat("Call:\n")
     dput(x$call)
     print(sum, quote = FALSE)
+########### assorted remarks
+    if (NData > 1) {
+      cat(" ", fill = TRUE)
+      if( x$collapseFixedEffect){
+      cat("Estimated fixed effects pooled across replicates", fill=TRUE)
+      }
+      else{
+        cat("Estimated fixed effects found separately for each replicate", fill=TRUE) 
+      }
+      cat("collapseFixedEffect :", x$collapseFixedEffect, fill=TRUE)
+    }
+    
     cat(" ", fill = TRUE)
-    cat(" Covariance Model:", x$cov.function, fill = TRUE)
+    cat("Covariance Model:", x$cov.function, fill = TRUE)
     if (x$cov.function == "stationary.cov") {
         cat("   Covariance function:  ", ifelse(is.null(x$args$Covariance), 
             "Exponential", x$args$Covariance), fill = TRUE)
@@ -190,12 +206,12 @@ summary.mKrig <- function(object, ...) {
 
 predict.mKrig <- function(object, xnew = NULL, ynew = NULL, grid.list=NULL,
     derivative = 0, Z = NULL, drop.Z = FALSE, just.fixed = FALSE,
-    collapseFixedEffect=TRUE, 
+    collapseFixedEffect = object$collapseFixedEffect, 
     ...) {
     # the main reason to pass new args to the covariance is to increase
     # the temp space size for sparse multiplications
-    # other optional arguments from mKrig are passed along in the
-    # list object$args
+    # other optional arguments that typically describe the covariance function 
+    # from mKrig are passed along in the list object$args
     cov.args <- list(...)
     # predict at observation locations by default
     if( !is.null(grid.list)){

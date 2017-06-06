@@ -31,8 +31,9 @@ Type 'q()' to quit R.
 >   # but WITHOUT ANY WARRANTY; without even the implied warranty of
 >   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 >   # GNU General Public License for more details.
+> # Test adapted from fields package, under GPL license
 > 
-> library( fields)
+> library( fields )
 Loading required package: spam
 Loading required package: grid
 Spam version 1.4-0 (2016-08-29) is loaded.
@@ -49,12 +50,45 @@ The following objects are masked from 'package:base':
 
 Loading required package: maps
 > options( echo=FALSE)
-Testing:  fast.1way means
 PASSED test at tolerance  1e-08
-Testing:  fast.1way vectorized means
 PASSED test at tolerance  1e-08
-All done with testing misc functions
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  0.002
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  1e-08
+PASSED test at tolerance  0.02
+PASSED test at tolerance  0.02
+PASSED test at tolerance  0.002
+PASSED test at tolerance  0.02
+PASSED test at tolerance  0.02
+PASSED test at tolerance  0.002
+PASSED test at tolerance  0.02
+PASSED test at tolerance  0.02
+PASSED test at tolerance  0.002
+lnProfileLike.FULL             lambda              theta           sigmaMLE 
+       -61.8145417          0.1015556          0.1002546          0.3185669 
+            rhoMLE            funEval           gradEval 
+         0.9993032          8.0000000          6.0000000 
+lnProfileREML.FULL             lambda              theta           sigmaMLE 
+       -61.8145417          0.1015556          0.1002546          0.3185669 
+            rhoMLE            funEval           gradEval 
+         0.9993032          8.0000000          6.0000000 
+lnProfileLike.FULL             lambda              theta           sigmaMLE 
+       -61.8143732          0.1015557          0.1002514          0.3185628 
+            rhoMLE            funEval           gradEval 
+         0.9992768          8.0000000          6.0000000 
+1  2  3  4  5  6  7  8  9  10  all done with mKrigMLEGrid tests
+> 
+> test.for.zero( trueTheta, mean(hold[,3]), tol=2e-3,tag="Monte Carlo theta")
+Testing:  Monte Carlo theta
+PASSED test at tolerance  0.002
+> test.for.zero( trueLambda, mean(hold[,2]), tol=2e-2,tag="Monte Carlo theta")
+Testing:  Monte Carlo theta
+PASSED test at tolerance  0.02
+> 
 > 
 > proc.time()
    user  system elapsed 
-  0.507   0.035   0.533 
+ 17.036   1.064  18.124 

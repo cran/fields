@@ -1,6 +1,6 @@
 # fields  is a package for analysis of spatial data written for
 # the R software environment .
-# Copyright (C) 2016
+# Copyright (C) 2017
 # University Corporation for Atmospheric Research (UCAR)
 # Contact: Douglas Nychka, nychka@ucar.edu,
 # National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
@@ -18,9 +18,6 @@
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2    
-"summary.spatial.design" <- function(object, digits = 4, 
-    ...) {
-    x <- object
-    class(x) <- ("summary.spatial.design")
-    x
+"[.spatialDesign" <- function(x, ...) {
+    x$design[...]
 }
