@@ -1,6 +1,6 @@
  # fields is a package for analysis of spatial data written for
   # the R software environment .
-  # Copyright (C) 2017
+  # Copyright (C) 2018
   # University Corporation for Atmospheric Research (UCAR)
   # Contact: Douglas Nychka, nychka@ucar.edu,
   # National Center for Atmospheric Research,
@@ -14,9 +14,8 @@
   # but WITHOUT ANY WARRANTY; without even the implied warranty of
   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   # GNU General Public License for more details.
-# Test adapted from fields package, under GPL license
 
-library( fields )
+suppressMessages(library( fields ))
 options( echo=FALSE)
 
 #
@@ -142,6 +141,11 @@ M<- 1e4
 set.seed( 332)
 y = t(U)%*%matrix( rnorm(n*M), n,M)
 
+out<- mKrig( x,y, lambda=trueLambda, theta=trueTheta*.1, 
+       cov.function ="stationary.cov",cov.args = list(Covariance = "Matern",
+                                                      smoothness=1.0)
+)
+       
 optim.args = list(method = "BFGS", 
                   control = list(fnscale = -1, parscale = c(0.5, 0.5), 
                                  ndeps = c(0.05,0.05)))

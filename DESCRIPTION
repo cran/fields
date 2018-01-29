@@ -1,17 +1,20 @@
 Package: fields
-Version: 9.0
-Date: 2017-06-03
+Version: 9.6
+Date: 2018-01-15
 Title: Tools for Spatial Data
 Authors@R: c( person("Douglas", "Nychka", role = c("aut", "cre"),
-               email = "nychka@ucar.edu"),
+               email = "douglasnychka@gmail.com"),
             person("Reinhard", "Furrer", role = c("aut"),
                email = "reinhard.furrer@math.uzh.ch"),
             person("John", "Paige", role = c("aut"),
                email = "paigejo@uw.edu"),
             person("Stephan", "Sain", role = "aut",
                email = "sainsr2@gmail.com")) 
-Author: Douglas Nychka [aut, cre], Reinhard Furrer [aut], John Paige [aut], Stephan Sain [aut]
-Maintainer: Douglas Nychka <nychka@ucar.edu>
+Author: Douglas Nychka [aut, cre],
+  Reinhard Furrer [aut],
+  John Paige [aut],
+  Stephan Sain [aut]
+Maintainer: Douglas Nychka <douglasnychka@gmail.com>
 Description: For curve, surface and function fitting with an emphasis
  on splines, spatial data and spatial statistics. The major methods
  include cubic, and thin plate splines, Kriging, and compactly supported
@@ -36,6 +39,6 @@ License: GPL (>= 2)
 URL: http://www.image.ucar.edu/fields
 Depends: R (>= 3.0), methods, spam, maps
 NeedsCompilation: yes
-Packaged: 2017-06-04 22:20:38 UTC; nychka
+Packaged: 2018-01-29 00:06:11 UTC; nychka
 Repository: CRAN
-Date/Publication: 2017-06-06 17:06:25 UTC
+Date/Publication: 2018-01-29 22:53:33 UTC

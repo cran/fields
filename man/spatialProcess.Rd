@@ -1,6 +1,6 @@
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment .
-%# Copyright (C) 2017
+%# Copyright (C) 2018
 %# University Corporation for Atmospheric Research (UCAR)
 %# Contact: Douglas Nychka, nychka@ucar.edu,
 %# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
@@ -370,7 +370,8 @@ set.panel(1,1)
   # compare to 
   stuffFields<- obj$MLEInfo$MLEJoint$summary[c(1,3,4,5)]
   stuffGeoR<- c( ml.n$loglik, ml.n$phi, sqrt(ml.n$nugget),ml.n$sigmasq) 
-  test.for.zero( stuffFields, stuffGeoR, tol=.005)         
+  test.for.zero(  max(stuffFields/stuffGeoR), 1, tol=.004)    
 }
 }
-\keyword{ spatial}% __ONLY ONE__ keyword per line
+\keyword{ spatial}
+% __ONLY ONE__ keyword per line

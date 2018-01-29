@@ -1,6 +1,6 @@
 # fields  is a package for analysis of spatial data written for
 # the R software environment .
-# Copyright (C) 2017
+# Copyright (C) 2018
 # University Corporation for Atmospheric Research (UCAR)
 # Contact: Douglas Nychka, nychka@ucar.edu,
 # National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
@@ -73,7 +73,7 @@
     #
     if(is.na(distMat[1])) {
       # distMat not supplied so must compute it along with covariance matrix
-      # note overall scalling by theta (which is just theta under isotropic case)
+      # note overall scaling by theta (which is just theta under isotropic case)
       if(is.null(x2))
         distMat <- do.call(Distance, c(list(x1), Dist.args))
       else

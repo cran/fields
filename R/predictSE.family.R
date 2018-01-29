@@ -1,6 +1,6 @@
 # fields  is a package for analysis of spatial data written for
 # the R software environment .
-# Copyright (C) 2017
+# Copyright (C) 2018
 # University Corporation for Atmospheric Research (UCAR)
 # Contact: Douglas Nychka, nychka@ucar.edu,
 # National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
@@ -53,10 +53,7 @@
     #
     return(out)
 }
-# fields, Tools for spatial data
-# Copyright 2015, Institute for Mathematics Applied Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "predictSE.Krig" <- function(object, x = NULL, cov = FALSE, 
     verbose = FALSE, ...) {
     #
@@ -162,10 +159,7 @@
     }
 }
 
-# fields, Tools for spatial data
-# Copyright 2004-2009, Institute for Mathematics Applied to Geosciences
-# University Corporation for Atmospheric Research
-# Licensed under the GPL -- www.gpl.org/licenses/gpl.html
+
 "predictSE.mKrig" <- function(object, xnew = NULL, 
     Z = NULL, verbose = FALSE, drop.Z = FALSE, ...) {
     #
@@ -216,8 +210,8 @@
     temp1 <- rho * (colSums(t0 * (object$Omega %*% t0)) - colSums((k0) * 
         hold$c) - 2 * colSums(t0 * hold$d))
     # find marginal variances -- trival in the stationary case!
-    temp0 <- rho * do.call(call.name, c(object$args, list(x1 = xnew, 
-        marginal = TRUE)))
+    temp0 <- rho * do.call(call.name,
+          c(object$args, list(x1 = xnew, marginal = TRUE)))
     # Add marginal variance to part from estimate
     temp <- temp0 + temp1
     # return square root as the standard error in units of observations.

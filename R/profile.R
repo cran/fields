@@ -17,37 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-# or see http://www.r-project.org/Licenses/GPL-2    
-
-"summary.ncdf" <- function (object, ...) 
-{
-     tempList<- NULL
-     varNames<- NULL
-#
-    cat("DIMENSIONS", fill=TRUE)
-    for (i in names(object$dim) ) {
-        vname = i
-        ndims = length(object$dim[[i]]$vals)
-         cat(vname, " has size", ndims, fill=TRUE)
-    }
-    cat(fill=TRUE) 
-    cat("VARIABLES", fill=TRUE)
-    for (i in 1:object$nvars) {
-        vname = object$var[[i]]$name
-        ndims = object$var[[i]]$ndims
-        dimstring = paste(vname, "( variable ",i , 
-            ") has shape")
-        dimTemp<- NULL
-        for (j in 1:ndims) {
-            dimTemp<- c( dimTemp, object$var[[i]]$dim[[j]]$len)
-        }
-        temp<- ( dimTemp)
-        varNames<- c(varNames, vname)
-        tempList<- c( tempList, list(dimTemp))
-        if( is.null(dimTemp) ){
-           dimTemp<- NA}
-        cat( i,":",  vname, "has size ", dimTemp, sep=" ", fill = TRUE)
-    }
-     names(tempList) <- varNames
-     invisible( tempList)
-}
+# or see http://www.r-project.org/Licenses/GPL-2 
+".onAttach" <- function (lib, pkg) {
+    packageStartupMessage("See www.image.ucar.edu/~nychka/Fields for
+ a vignette and other supplements. ")
+ }

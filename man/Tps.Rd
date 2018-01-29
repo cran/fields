@@ -1,6 +1,6 @@
-%# fields  is a package for analysis of spatial data written for
+ %# fields  is a package for analysis of spatial data written for
 %# the R software environment .
-%# Copyright (C) 2017
+%# Copyright (C) 2018
 %# University Corporation for Atmospheric Research (UCAR)
 %# Contact: Douglas Nychka, nychka@ucar.edu,
 %# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
@@ -446,10 +446,11 @@ surface( out2)
 
 #
 # now use great circle distance for this smooth 
-# note the different  "theta" for the taper support  ( there are
-# about 70 miles in one degree of latitude).
+# Here "theta" for the taper support is the great circle distance in degrees latitude.
+# Typically for data analysis it more convenient to think in degrees. A degree of
+# latitude is about 68 miles (111 km).
 #
-fastTps( RMprecip$x,RMprecip$y,m=2,lambda= 1e-2,lon.lat=TRUE, theta=210) -> out3
+fastTps( RMprecip$x,RMprecip$y,m=2,lambda= 1e-2,lon.lat=TRUE, theta= 3.0) -> out3
 print( out3)  # note the effective degrees of freedom is different.
 surface(out3)
 

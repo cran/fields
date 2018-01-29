@@ -1,6 +1,6 @@
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment .
-%# Copyright (C) 2017
+%# Copyright (C) 2018
 %# University Corporation for Atmospheric Research (UCAR)
 %# Contact: Douglas Nychka, nychka@ucar.edu,
 %# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
@@ -32,7 +32,7 @@ image and image.plot.
  
 }
 \usage{
-as.surface(obj, z, order.variables="xy")
+as.surface(obj, z, location=NULL, order.variables="xy")
 }
 \arguments{
 \item{obj}{
@@ -45,6 +45,8 @@ the grid.list as an attribute.
 \item{z}{
 The value of the function evaluated at the gridded points. 
 }
+\item{location}{A logical or two column matrix of indices indicating 
+                 the location of the z values within the image matrix.}
 \item{order.variables}{
 Either "xy" or "yx" specifies how the x and y variables used to 
 evaluate the function are matched with the x and y grids in the surface 

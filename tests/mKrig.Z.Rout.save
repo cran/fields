@@ -1,7 +1,7 @@
 
-R version 3.4.0 (2017-04-21) -- "You Stupid Darkness"
-Copyright (C) 2017 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
+R Under development (unstable) (2018-01-05 r74057) -- "Unsuffered Consequences"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin16.7.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -17,7 +17,7 @@ Type 'q()' to quit R.
 
 >  # fields is a package for analysis of spatial data written for
 >   # the R software environment .
->   # Copyright (C) 2017
+>   # Copyright (C) 2018
 >   # University Corporation for Atmospheric Research (UCAR)
 >   # Contact: Douglas Nychka, nychka@ucar.edu,
 >   # National Center for Atmospheric Research,
@@ -32,22 +32,7 @@ Type 'q()' to quit R.
 >   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 >   # GNU General Public License for more details.
 > 
-> library( fields)
-Loading required package: spam
-Loading required package: grid
-Spam version 1.4-0 (2016-08-29) is loaded.
-Type 'help( Spam)' or 'demo( spam)' for a short introduction 
-and overview of this package.
-Help for individual functions is also obtained by adding the
-suffix '.spam' to the function name, e.g. 'help( chol.spam)'.
-
-Attaching package: 'spam'
-
-The following objects are masked from 'package:base':
-
-    backsolve, forwardsolve
-
-Loading required package: maps
+> suppressMessages(library(fields))
 > options( echo=FALSE)
 Testing:  Full prediction
 PASSED test at tolerance  1e-08
@@ -64,4 +49,4 @@ all done with mKrig Z tests
 > 
 > proc.time()
    user  system elapsed 
-  1.140   0.056   1.189 
+  1.065   0.070   1.121 

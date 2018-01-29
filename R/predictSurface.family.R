@@ -1,6 +1,6 @@
 # fields  is a package for analysis of spatial data written for
 # the R software environment .
-# Copyright (C) 2017
+# Copyright (C) 2018
 # University Corporation for Atmospheric Research (UCAR)
 # Contact: Douglas Nychka, nychka@ucar.edu,
 # National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
@@ -62,7 +62,7 @@ predict.surface.default<- function(object,...){
 }
 
 "predictSurface.mKrig" <- function( object, ...){
-	NextMethod("predictSurface.Krig")
+	predictSurface.Krig(object, ...)
 }
 
 "predictSurface.fastTps" <- function(object, grid.list = NULL, 
@@ -73,9 +73,16 @@ predict.surface.default<- function(object,...){
         grid.list <- fields.x.to.grid(object$x, nx = nx, ny = ny, 
             xy = xy)
     } 
-# in the case of fastTps pass the grid list instead of the locations of grid points
+#  in the case of fastTps and not great circle distance
+#  pass the grid list instead of the locations of grid points
 #  (see xg in predictSurface.default)
+    if( object$args$Dist.args$method =="greatcircle"){
+      out <-  predict(object, xnew= make.surface.grid(grid.list), xy=xy, ...)
+    }
+    else{
     out <-  predict(object, grid.list=grid.list, xy=xy, ...)
+    }
+# coerce to image format   
     out <-  as.surface(grid.list, out )
     #
     # if extrapolate is FALSE set all values outside convex hull to NA
