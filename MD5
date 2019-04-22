@@ -1,4 +1,4 @@
-8f193ffd04640f6506a2b9820ed041a4 *DESCRIPTION
+43a0cb8bdd0bcf3ad5d0a5ca2029c2b0 *DESCRIPTION
 3b1b7ce654d028cbe16127df91148c8b *LICENSE.note
 505d08a813d31e7f784e0b8ef1f86087 *NAMESPACE
 17898c9ca008b9372be2eee420ffce5d *R/BD.R
@@ -192,7 +192,7 @@ ffaf7f11a4d0cacf1b091db0891096db *man/Krig.Amatrix.Rd
 807048e9c203ed13cf6df007a39b2f0f *man/Krig.Rd
 84e8a537ddd12b1cf9a5e4632080a25c *man/Krig.engine.default.Rd
 fd5561e35e6b250e1f99222a17789165 *man/Krig.null.function.Rd
-ffedadbd99d04a331018791042281af7 *man/Krig.replicates.Rd
+89d48f5f799e07d5196b9acd63420a58 *man/Krig.replicates.Rd
 0c51eedd818d308f539241835eca04ad *man/MLESpatialProcess.Rd
 b389602644b1d5c1ef229029dcb63404 *man/NorthAmericanRainfall.Rd
 bc581d71505284f5a81f8372bf00441e *man/QTps.Rd
@@ -318,15 +318,15 @@ f7ea72c857d41a617f484c436c10da55 *tests/diag.multiply.test.Rout.save
 45c397309fbe048331f630fb5ff06fec *tests/fastTpsPredict.test.R
 e87976efad1bdb5ab8176c1cb3a0f36f *tests/fastTpsPredict.test.Rout.save
 f5fd7ba196013caa39512930d37ce6b6 *tests/mKrig.MLE.test.R
-856a8b76addfc107fc5f1409a339fba3 *tests/mKrig.MLE.test.Rout.save
+8ce630c4f5a9afe398dcdb3988e46c7d *tests/mKrig.MLE.test.Rout.save
 460b3e8ecea3c44b9bf7812b2d7a7a13 *tests/mKrig.Z.R
 e5ac645afebbb2cf061d28d77e556c55 *tests/mKrig.Z.Rout.save
 443dde51214135424ca7aeae6158dfae *tests/mKrig.parameters.test.R
 9a239f2c06d053ef4aef32edc1c85ce9 *tests/mKrig.parameters.test.Rout.save
 596bc7546a2fb6203fffc9c310386bc9 *tests/mKrig.se.test.R
 aea3086e8472a4e1fd9466d71e56c7fa *tests/mKrig.se.test.Rout.save
-586c7d1ae931eb2d5c3c69c0b58f4809 *tests/mKrig.test.R
-7def061303263869d61d8f10c1332ef0 *tests/mKrig.test.Rout.save
+b24fe1d806ee1007606dd880295ee0af *tests/mKrig.test.R
+67734ef078feb64f3032e3e9cd73b77c *tests/mKrig.test.Rout.save
 1203fb7cd1b8dbb48e4a8fa4f7ab0397 *tests/mKrigMLETest.R
 1ddd76c814d856360d40cafc53e9a7e7 *tests/mKrigMLETest.Rout.save
 f8eb7fe8353b6943313ddc2ceb52668a *tests/mKrigREMLTest.R
