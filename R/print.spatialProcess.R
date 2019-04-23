@@ -80,11 +80,18 @@ print.spatialProcess <- function(x, digits = 4, ...) {
   sum <- cbind(c1, c2)
   dimnames(sum) <- list(rep("", dim(sum)[1]), rep("", dim(sum)[2]))
   
-  cat("Call:\n")
+  cat("CALL:\n")
   dput(x$call)
+  cat("\n")
+  cat("SUMMARY OF MODEL FIT:\n")
   print(sum, quote = FALSE)
-  cat(" ", fill = TRUE)
-  cat(" Covariance Model:", x$cov.function, fill = TRUE)
+  cat("\n")
+  cat(" ESTIMATED COEFFICIENTS FOR FIXED PART:", fill = TRUE)
+  cat("\n")
+  temp<- data.frame( Coefficient=x$d, "Standard Error" = x$dcoefSE)
+  print( temp)
+  cat("\n")
+  cat(" COVARIANCE MODEL:", x$cov.function, fill = TRUE)
   if (x$cov.function == "stationary.cov") {
     cat("   Covariance function:  ", ifelse(is.null(x$args$Covariance), 
                                             "Exponential", x$args$Covariance), fill = TRUE)

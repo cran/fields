@@ -220,7 +220,7 @@ out.p<-predictSurface( out, grid=gl, extrap=TRUE)
 test.for.zero( ydat, c( out.p$z)[ind], tag="fastTps interp1")
 #image.plot(x,y,matrix( ztrue, nx,ny)- out.p$z) 
 rmse<- sqrt(mean( (ztrue- c( out.p$z))^2)/ mean( (ztrue)^2))
-test.for.zero( rmse,0,tol=0.02, relative=FALSE,tag="fastTps interp2")
+test.for.zero( rmse,0,tol=.02, relative=FALSE,tag="fastTps interp2")
 
 
 ##### test precomputing distance matrices:

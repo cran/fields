@@ -143,10 +143,12 @@ mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
     Omega <- Rinv %*% t(Rinv)
 #    
 #  Omega is  solve(t(Tmatrix)%*%solve( Sigma)%*%Tmatrix)
-# proportional to fixed effects covariance matrix.    
-#  Sigma = cov.function( x,x) + lambda/object$weights
-#  this is proportional to the covariance matrix for the GLS estimates of
+#   where Sigma = cov.function( x,x) + lambda/object$weights    
+#   proportional to fixed effects covariance matrix.
+#    for the GLS estimates of
 #  the fixed linear part of the model. 
+#    
+#  SEdcoef = diag( Omega) * rho.MLE.FULL
 #     
     R2diag<-  diag( qr.R(qr.VT) )^2
     lnDetOmega<- -1* sum( log(R2diag) ) 
@@ -227,6 +229,7 @@ mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
               qr.VT = qr.VT, 
               Mc = Mc,
           Tmatrix = Tmatrix, ind.drift = ind.drift, nZ = nZ,
+          dcoefSE = sqrt(diag( Omega) * rho.MLE.FULL),  
           collapseFixedEffect= collapseFixedEffect)
   )
   #

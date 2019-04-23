@@ -66,10 +66,10 @@
             zlim <- range(temp[[3]], na.rm = TRUE)           
         }
     }
-    # if constant z values perturb the range (1e-8) by epsilon to 
+    # if constant z values perturb the range by epsilon (1e-8) to 
     # avoid other problems in drawing legend later on
     if( !is.na( zlim[1] ) ){
-      if( zlim[1] == zlim[2]){
+      if( abs(zlim[1] - zlim[2]) <= 1e-14 ){
     	if( zlim[1]==0){
     		 zlim[1]<- -1e-8
     		 zlim[2]<- 1e-8}
@@ -95,7 +95,6 @@
         xlim <- range(temp$x, na.rm = TRUE)
     if (!is.na(ythere)) 
         ylim <- range(temp$y, na.rm = TRUE)
-        
 # overwrite limits with passed values
     if (!is.null(temp$zlim)) 
         zlim <- temp$zlim
