@@ -72,7 +72,6 @@
 \alias{print.spatialDesign}
 \alias{print.sreg}
 \alias{print.summary.Krig}
-\alias{print.summary.spatialProcess}
 \alias{print.summary.krig.image}
 \alias{print.summarySpatialDesign}
 \alias{print.summary.sreg}
@@ -196,7 +195,6 @@ minimax.crit (obj, des = TRUE, R)
 \method{print}{spatialDesign} (x,...) 
 \method{print}{sreg}(x, ...) 
 \method{print}{summary.Krig} (x, ...) 
-\method{print}{summary.spatialProcess} (x, ...)
 \method{print}{summarySpatialDesign} (x, digits = 4,...) 
 \method{print}{summary.sreg} (x, ...) 
  
