@@ -1,6 +1,6 @@
 Package: fields
-Version: 9.8-1
-Date: 2019-05-07
+Version: 9.8-3
+Date: 2019-05-28
 Title: Tools for Spatial Data
 Authors@R: c( person("Douglas", "Nychka", role = c("aut", "cre"),
                email = "douglasnychka@gmail.com"),
@@ -9,14 +9,18 @@ Authors@R: c( person("Douglas", "Nychka", role = c("aut", "cre"),
             person("John", "Paige", role = c("aut"),
                email = "paigejo@uw.edu"),
             person("Stephan", "Sain", role = "aut",
-               email = "sainsr2@gmail.com")) 
+               email = "sainsr2@gmail.com"),
+	       person("University Corporation for Atmospheric Research",
+	       role="cph", email="nychka@ucar.edu")
+	       ) 
 Author: Douglas Nychka [aut, cre],
   Reinhard Furrer [aut],
   John Paige [aut],
-  Stephan Sain [aut]
+  Stephan Sain [aut],
+  University Corporation for Atmospheric Research [cph]
 Maintainer: Douglas Nychka <douglasnychka@gmail.com>
 Description: For curve, surface and function fitting with an emphasis
- on splines, spatial data and spatial statistics. The major methods
+ on splines, spatial data, geostatistics,  and spatial statistics. The major methods
  include cubic, and thin plate splines, Kriging, and compactly supported
  covariance functions for large data sets. The splines and Kriging methods are
  supported by functions that can determine the smoothing parameter
@@ -42,6 +46,6 @@ License: GPL (>= 2)
 URL: https://github.com/NCAR/Fields
 Depends: R (>= 3.0), methods, spam, maps
 NeedsCompilation: yes
-Packaged: 2019-05-07 17:33:03 UTC; nychka
+Packaged: 2019-05-28 19:23:48 UTC; nychka
 Repository: CRAN
-Date/Publication: 2019-05-14 21:10:03 UTC
+Date/Publication: 2019-05-28 21:20:03 UTC
