@@ -29,8 +29,11 @@ color.scale <- function(z, col = tim.colors(256),
     }
     z[(z < zlim[1]) | (z > zlim[2])] <- NA
     NC <- length(col)
-    breaks <- seq(zlim[1] * (1 - eps), zlim[2] * (1 + eps), , 
-        NC + 1)
+    span<- zlim[2]-zlim[1]
+    # expand breaks slightly to include obs on the boundaries. 
+    breaks <- seq(zlim[1] - span*eps,
+                  zlim[2] + span*eps , 
+                    length.out= NC + 1)
     # the magic of R ...
     icolor <- cut(c(z), breaks)@.Data
     # returned values is a vector of character hex strings encoding the colors.
@@ -40,6 +43,9 @@ color.scale <- function(z, col = tim.colors(256),
 # legend.     
     attr( colorMap,"zlim")<- zlim
     attr(colorMap,"col")<- col
+    # potential hooks for colorBar functions
+    #colorMapInfo<- list( col=col, zlim=zlim)
+    #assign( ".colorMapInfo", colorMapInfo, pos=1)
     return( colorMap)
 }
 

@@ -33,23 +33,5 @@
         "#FF5000", "#FF4000", "#FF3000", "#FF2000", "#FF1000", 
         "#FF0000", "#EF0000", "#DF0000", "#CF0000", "#BF0000", 
         "#AF0000", "#9F0000", "#8F0000", "#800000")
-    if (n == 64 & alpha == 1) 
-        return(orig)
-    rgb.tim <- t(col2rgb(orig))
-    temp <- matrix(NA, ncol = 3, nrow = n)
-    x <- seq(0, 1, , 64)
-    xg <- seq(0, 1, , n)
-    for (k in 1:3) {
-        hold <- splint(x, rgb.tim[, k], xg)
-        hold[hold < 0] <- 0
-        hold[hold > 255] <- 255
-        temp[, k] <- round(hold)
-    }
-    if (alpha == 1) {
-        rgb(temp[, 1], temp[, 2], temp[, 3], maxColorValue = 255)
-    }
-    else {
-        rgb(temp[, 1], temp[, 2], temp[, 3], maxColorValue = 255, 
-            alpha = alpha)
-    }
+  designer.colors( n, col=orig, alpha=alpha)
 }
