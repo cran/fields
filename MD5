@@ -1,4 +1,4 @@
-41d969466abbab977355c2f1fa5308c7 *DESCRIPTION
+262604e4f007d959c33eda72a3c13bd2 *DESCRIPTION
 3b1b7ce654d028cbe16127df91148c8b *LICENSE.note
 8a21e321fa7451d2b09eff4110f80d62 *NAMESPACE
 17898c9ca008b9372be2eee420ffce5d *R/BD.R
@@ -17,6 +17,7 @@ d5b7584447f69571d03f7eb9a4051c1b *R/QSreg.R
 36d41a139b7ce46b4097323ead665c4e *R/REMLtest.R
 183b1bffce8e0a166f7017e1e48d6360 *R/RMprecip.R
 b6141463428ea636631643a7023fe189 *R/RadialBasis.R
+af03cb7a27c54cd9929fa3ac73616849 *R/RdistEarth.R
 1e801b269abd2b4a30ac0f2bc08ecb66 *R/SUBSCRIPTINGSpatialDesign.R
 952572785664f0221b0207b49708bf61 *R/Tps.R
 49bc114df3e46c5ca170b54c48d65f9f *R/US.R
@@ -42,6 +43,7 @@ f40220f51ce4cf17ac81e6482aafe11d *R/describe.R
 8d08bd2074be7ebe85248d20873b6660 *R/drape.plot.R
 e6fc736f5698768a62ed08bf80ba55f6 *R/dyadic.2check.R
 609aab9419c818ef1f9927df2bb286a3 *R/dyadic.check.R
+50a2e42eb3aea8af4ca2479551fdc57f *R/envelopePlot.R
 b2628bc0a9f381d12b7cb408089963cd *R/evlpoly.R
 15eb46e0346dd0eda9b5152985114424 *R/evlpoly2.R
 cdbb47544e27629465fd1bd6b779420b *R/exp.cov.R
@@ -58,7 +60,7 @@ cdbb47544e27629465fd1bd6b779420b *R/exp.cov.R
 08aae65ba4485ef11002709148ce4960 *R/fields.diagonalize.R
 12a36f0975c4ade8ea58a2eefd32b314 *R/fields.diagonalize2.R
 9c6655bfd99eb4c0740bfc691229d028 *R/fields.duplicated.matrix.R
-8da97c0f1324b25435b18c168944e5e3 *R/fields.mkpoly.R
+dee5336afd9f82d83dd4d5457192a3f6 *R/fields.mkpoly.R
 483b9beabcb14972c1aed6a3dcc651f6 *R/fields.rdist.near.R
 dc242b6612e1ccca3629cdcbdd84b61d *R/fields.style.R
 803f9e72e54183705e8a8f261131d102 *R/fields.x.to.grid.R
@@ -185,7 +187,7 @@ c909744661a3fbd93bbc36773d7183d3 *data/ozone2.rda
 cafddcfafb1344f9158d8607867d0575 *data/world.dat.rda
 f983e849848defc1f667b30f82b1948e *inst/CITATION
 4f54caa4e8caa1dd27d8ade54d67ad78 *man/BD.Rd
-d982c22c0015b683ff2bd70b1d670749 *man/CO.Rd
+bbaf865d09a4f2a68b17141b9e981531 *man/CO.Rd
 935a5649ade44bef8e183d7368093442 *man/CO2.Rd
 b468b4b8bdfec8734f6c6a17c3a4ea97 *man/CovarianceUpper.Rd
 f57167100cf8657551025fd367ef6eec *man/Exponential.Rd
@@ -198,9 +200,9 @@ faaa7593774cb1864a73abddacc5b051 *man/Krig.engine.default.Rd
 7b083bb0f361792c070d848bbb365f4c *man/MLESpatialProcess.Rd
 a2fff2e4410eae24eeb37cc27876baec *man/NorthAmericanRainfall.Rd
 1deead4259a203a2207bd94f00e55784 *man/QTps.Rd
-c588ab14b7c7fcc729ce895909d81d5b *man/RCMexample.Rd
+159c317cf11b7a63c86d81d39be206fe *man/RCMexample.Rd
 8a003750f7fc1547362e6eb3a6e7fc8f *man/REML.test.Rd
-64338119b29e953c96d6382dd552351f *man/RMprecip.Rd
+22eaca16c94198870e03151e64a80bff *man/RMprecip.Rd
 629339d9a22d5ba4a48c51295d98c991 *man/Tps.Rd
 f29a6d4aab8fb756ed401a401ba24fee *man/US.Rd
 9292d0bfd0c38a6a5f7d486c8e066dc3 *man/US.dat.Rd
@@ -216,6 +218,7 @@ bd30ea1fb1d9842b4812f265bc134dcd *man/colorbar.plot.Rd
 0576a05e42e457484e32ddde5b9d0710 *man/compactToMat.Rd
 4c1ddcd6ef2a61820b733642580d1070 *man/cover.design.Rd
 1ab045d83eb2a113047761451dc70fe5 *man/drape.plot.Rd
+e58ce14251bb4a93ebedbed9c437c918 *man/envelopePlot.Rd
 91ce436a4c0c03f6b96f726629fefdd7 *man/exp.cov.Rd
 824fb29245a87636497519ccdb0cc411 *man/fields-internal.Rd
 9d4ae2acac6e44505fb47d9cb233b1d5 *man/fields-stuff.Rd
@@ -250,7 +253,7 @@ df08e6a1771c33b4e35fe18178a76a58 *man/qsreg.Rd
 8603f622a9f6267ad63706cf585eb5d8 *man/quilt.plot.Rd
 5bc80721cf2abee4737b5d8e0dd65858 *man/rat.diet.Rd
 0d97f26c3204ff436d32346ade810a26 *man/rdist.Rd
-24344f42f772cf9e5e0ffafee27a12e0 *man/rdist.earth.Rd
+7adcccc393847654bcb93cfba7b55a64 *man/rdist.earth.Rd
 bcd1b51d7005ea354ea0ee55bc4d3334 *man/registeredC.Rd
 e74332db86346ea5e2eed8602f33c55b *man/ribbon.plot.Rd
 3205253790e755716cfd8e813aa02b15 *man/set.panel.Rd
@@ -275,6 +278,7 @@ f7b97a3d324719481b961a5be93d1a28 *man/vgram.matrix.Rd
 6916947fa0615afc554b15858ac9f207 *man/xline.Rd
 461e6db35136ad77745ae14144c87ea5 *man/yline.Rd
 d6621f72345f8b583ba2fc844e436ce1 *src/ExponentialUpperC.c
+8a4db0a4a45d07aaa6b52eef529e8557 *src/RdistEarth.c
 beec7a2c592eb85f1e3a62c51cb4c065 *src/addToDiagC.c
 ca7ce08599c43df98991056e5555f849 *src/compactToMatC.c
 66b9c403ae8577007f8ffbd90f9fad23 *src/expfnC.c
@@ -321,8 +325,8 @@ ae79bda4deefb2fa372b730c94595213 *tests/diag.multiply.test.Rout.save
 488ac63c10cd1e7b7595f9c8c06bf854 *tests/evlpoly.test.Rout.save
 45c397309fbe048331f630fb5ff06fec *tests/fastTpsPredict.test.R
 da721f382a72f382e576b8d5233cac9e *tests/fastTpsPredict.test.Rout.save
-f5fd7ba196013caa39512930d37ce6b6 *tests/mKrig.MLE.test.R
-ff7b5a766a811e82ee5bd2ee463abdd1 *tests/mKrig.MLE.test.Rout.save
+53799ceeec6953a20f35dfdd811b4426 *tests/mKrig.MLE.test.R
+737f34e168b467d01d6ebabe7a2562aa *tests/mKrig.MLE.test.Rout.save
 460b3e8ecea3c44b9bf7812b2d7a7a13 *tests/mKrig.Z.R
 8a7effbf8bfe6667892dd3f7c72daec8 *tests/mKrig.Z.Rout.save
 443dde51214135424ca7aeae6158dfae *tests/mKrig.parameters.test.R
