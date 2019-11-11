@@ -1,4 +1,4 @@
-262604e4f007d959c33eda72a3c13bd2 *DESCRIPTION
+23f37faf80da165c4fce255e13a10029 *DESCRIPTION
 3b1b7ce654d028cbe16127df91148c8b *LICENSE.note
 8a21e321fa7451d2b09eff4110f80d62 *NAMESPACE
 17898c9ca008b9372be2eee420ffce5d *R/BD.R
@@ -253,8 +253,8 @@ df08e6a1771c33b4e35fe18178a76a58 *man/qsreg.Rd
 8603f622a9f6267ad63706cf585eb5d8 *man/quilt.plot.Rd
 5bc80721cf2abee4737b5d8e0dd65858 *man/rat.diet.Rd
 0d97f26c3204ff436d32346ade810a26 *man/rdist.Rd
-7adcccc393847654bcb93cfba7b55a64 *man/rdist.earth.Rd
-bcd1b51d7005ea354ea0ee55bc4d3334 *man/registeredC.Rd
+5bd05540abac3b51cf8d0a7bfe4120b3 *man/rdist.earth.Rd
+bb07941544df9f1a14eda87f5430c446 *man/registeredC.Rd
 e74332db86346ea5e2eed8602f33c55b *man/ribbon.plot.Rd
 3205253790e755716cfd8e813aa02b15 *man/set.panel.Rd
 5126b3b82c402cd9dff4176caa6ddda6 *man/sim.Krig.Rd
@@ -283,7 +283,7 @@ beec7a2c592eb85f1e3a62c51cb4c065 *src/addToDiagC.c
 ca7ce08599c43df98991056e5555f849 *src/compactToMatC.c
 66b9c403ae8577007f8ffbd90f9fad23 *src/expfnC.c
 b4675416955c21f4af7aaa6ea3ba505d *src/fieldsF77Code.f
-7d73372017d46ad85ae6fde7a5f24b9e *src/init.c
+9596583bc08d99dbf7c406b551918087 *src/init.c
 d17d031b0f8f86066dba6f029e892498 *src/multebC.c
 cc0ae12f403309c82568f081fc11f705 *src/rdistC.c
 9395b1b3925fc2cc0ed5ccced79c9382 *tests/Krig.Z.test.R
