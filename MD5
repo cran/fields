@@ -1,4 +1,4 @@
-23f37faf80da165c4fce255e13a10029 *DESCRIPTION
+4216262cd5ba5b99ace233437006abcb *DESCRIPTION
 3b1b7ce654d028cbe16127df91148c8b *LICENSE.note
 8a21e321fa7451d2b09eff4110f80d62 *NAMESPACE
 17898c9ca008b9372be2eee420ffce5d *R/BD.R
@@ -143,10 +143,10 @@ d80f594d9363c8b580019e32461f78f4 *R/sim.rf.R
 0a21d590fd1e11cddcf2ac98f95b9644 *R/snow.colors.R
 0cd488a2736e78f83d424ee95617b072 *R/spam_2lz.R
 01e144ca9483644da3bf18568db4e1c8 *R/spatialProcess.R
-98ac0ebef9232edf48e12c4ed96f8d1c *R/splint.R
-7981807efbfd391417e7f9a94e465860 *R/sreg.family.R
+ade645c367243f024be5cd60ab05c1e8 *R/splint.R
+b95735b0ffe0080a05b1f96da8d0a0be *R/sreg.family.R
 ded8850616e889baee7d862d3b782b83 *R/stationary.cov.R
-835db59af52d50264dc1537cf8d6f5c5 *R/stationary.image.cov.R
+0b116b8da1761e548f8683bffd883e0d *R/stationary.image.cov.R
 be3f72742fa69bf36b6a5833097c8139 *R/stationary.taper.cov.R
 05c874af388f34071088b560dad2fd59 *R/stats.R
 1d54c6e3ec45c7c58ec9afbdf0415e16 *R/stats.bin.R
@@ -282,7 +282,7 @@ d6621f72345f8b583ba2fc844e436ce1 *src/ExponentialUpperC.c
 beec7a2c592eb85f1e3a62c51cb4c065 *src/addToDiagC.c
 ca7ce08599c43df98991056e5555f849 *src/compactToMatC.c
 66b9c403ae8577007f8ffbd90f9fad23 *src/expfnC.c
-b4675416955c21f4af7aaa6ea3ba505d *src/fieldsF77Code.f
+d9317c79ce19d8aded07ec27a565657b *src/fieldsF77Code.f
 9596583bc08d99dbf7c406b551918087 *src/init.c
 d17d031b0f8f86066dba6f029e892498 *src/multebC.c
 cc0ae12f403309c82568f081fc11f705 *src/rdistC.c
