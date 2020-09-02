@@ -57,13 +57,16 @@ summary.spatialProcess <- function(object, ...) {
   c1 <- c(c1, "MLE process variance (rho)")
   c2 <- c(c2, signif(object$rho.MLE.FULL, digits))
   
+  c1 <- c(c1, "Value for lambda = sigma^2/rho")
+  c2 <- c(c2, signif(object$lambdaModel, digits))
+  
   
   c1 <- c(c1, "MLE range parameter (theta, units of distance): ")
   c2 <- c(c2, signif(object$theta.MLE, digits))
   
-  c1 <- c(c1, "Approx 95% CI for theta:  ")
-  c2<-  c( c2, paste( "[",signif( object$theta.95CI[1], digits), ",",
-                      signif( object$theta.95CI[2], digits), "]"  ) 
+  c1 <- c(c1, paste0( "Approx ", object$confidenceLevel,  "% CI for theta:  ") ) 
+  c2<-  c(c2, paste( "[",signif( object$theta.CI[1], digits), ",",
+                      signif( object$theta.CI[2], digits), "]"  ) 
            )
   
   if (!is.na(object$eff.df)) {
@@ -74,14 +77,23 @@ summary.spatialProcess <- function(object, ...) {
       c2 <- c(c2, signif(sd(object$trA.info)/sqrt(length(object$trA.info)), 
                          digits))
     }
-   }
+  }
+  
   c1 <- c(c1, "Nonzero entries in covariance")
   c2 <- c(c2, object$nonzero.entries)
+  
+  c1<- c(c1, "log Likelihood: " )
+  c2<- c( c2, object$lnProfileLike.FULL)
+  c1<- c(c1, "log Likelihood REML: " )
+  c2<- c( c2, object$lnProfileREML.FULL)
+  
   sum <- cbind(c1, c2)
   dimnames(sum) <- list(rep("", dim(sum)[1]), rep("", dim(sum)[2]))
-  outObject$summaryTable <- sum
 ###########  
   outObject$collapseFixedEffect<- object$collapseFixedEffect
+###########
+  outObject$MLEpars<-  names( object$MLEInfo$pars.MLE) 
+  outObject$MLESummary<- object$summary
 ########### information for SE for fixed effects
   if( outObject$collapseFixedEffect | (nData==1) ){
     outObject$fixedEffectsCov<- object$fixedEffectsCov
