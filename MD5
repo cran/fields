@@ -1,4 +1,4 @@
-4b7e56a50d13847740ec09000f1da463 *DESCRIPTION
+5d638a227c11881c3ce176ef75b37fd0 *DESCRIPTION
 3b1b7ce654d028cbe16127df91148c8b *LICENSE.note
 0624509f5f7e3f394abfc2d962f3edb3 *NAMESPACE
 17898c9ca008b9372be2eee420ffce5d *R/BD.R
@@ -147,7 +147,7 @@ f32dbed74fa397f0b96793e5fc81ab0a *R/simSpatialData.R
 0a21d590fd1e11cddcf2ac98f95b9644 *R/snow.colors.R
 0cd488a2736e78f83d424ee95617b072 *R/spam_2lz.R
 9b44b2657f0389de85a9827a17d73c14 *R/spatialProcess.R
-a59c24bed35dae63a300a027c50f7ed7 *R/splint.R
+565d53a0818df35cad265491b7fbc5b3 *R/splint.R
 713a0f71d55f6218302ae7bbb5f3e087 *R/sreg.family.R
 ded8850616e889baee7d862d3b782b83 *R/stationary.cov.R
 0b116b8da1761e548f8683bffd883e0d *R/stationary.image.cov.R
@@ -340,7 +340,7 @@ c041ad896b013788e0b019c55fd2dc4d *tests/mKrig.Z.Rout.save
 ed69b4a918fd93e7242bd35d19b4769a *tests/mKrig.test.R
 f13069bfa1bc9a0200e07e261e5ed9ae *tests/mKrig.test.Rout.save
 2e791129767cb235ee116af4aaa72130 *tests/mKrigMLETest.R
-c6020bb368bbf1875796f404f3b48596 *tests/mKrigMLETest.Rout.save
+ef07d422b445fa0addaf032bd6cd7f68 *tests/mKrigMLETest.Rout.save
 f8eb7fe8353b6943313ddc2ceb52668a *tests/mKrigREMLTest.R
 9ae79cf387c9ea3078cada6c47ab6708 *tests/mKrigREMLTest.Rout.save
 ec1ad82023667c166251ceb710aebbbe *tests/misc.test.R
@@ -348,6 +348,6 @@ f71070bdf0f71229e771c817bc05ac51 *tests/misc.test.Rout.save
 5c5f04eb3b6c892ebfbdbb3a693664ca *tests/spam.test.R
 0c5b657b7cc039507379bcae2ed46a01 *tests/spam.test.Rout.save
 3cf7a6203a76ecd3e1a4d66809545c9a *tests/sreg.test.R
-61d622f60cf2d562b8aaf47482f23c43 *tests/sreg.test.Rout.save
+f497815c2cba99d2be050dad8c72420d *tests/sreg.test.Rout.save
 9377743df5ba3de8897875ab744080d4 *tests/vgram.test.R
 7ff5862cb65e80867c3b954c0145cc04 *tests/vgram.test.Rout.save
