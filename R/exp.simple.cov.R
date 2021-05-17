@@ -18,8 +18,8 @@
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2    
-Exp.simple.cov <- function(x1, x2=NULL, theta = 1, C = NA, 
-    marginal = FALSE) {
+Exp.simple.cov <- function(x1, x2=NULL, aRange = 1, C = NA, 
+    marginal = FALSE, theta=NULL) {
     # this is a simple exponential covariance function
     # with the calling format and behaviour used in fields.
     #
@@ -30,6 +30,11 @@ Exp.simple.cov <- function(x1, x2=NULL, theta = 1, C = NA,
     # 1) cross covaraince matrix
     # 2) cross covariance matrix times a vector (C)
     # 3) the diagonal elements of covariance matrix at locations x1.
+    #
+    # theta argument has been depreciated.
+    if( !is.null( theta)){
+        aRange<- theta
+    }
     if( !is.null(x2)){
     	x2<- x1
     }
@@ -38,12 +43,12 @@ Exp.simple.cov <- function(x1, x2=NULL, theta = 1, C = NA,
         # rdist finds the cross distance matrix between the
         # locations at x1, x2.
         #
-        return(exp(-rdist(x1, x2)/theta))
+        return(exp(-rdist(x1, x2)/aRange))
     }
     # CASE 2:
     # or return  multiplication of cov( x2,x1) with vector C
     if (!is.na(C[1])) {
-        return(exp(-rdist(x1, x2)/theta) %*% C)
+        return(exp(-rdist(x1, x2)/aRange) %*% C)
         #
         # if the rows of X1 are large
         # this line could be replaced by a call to C or FORTRAN

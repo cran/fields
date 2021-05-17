@@ -1,6 +1,6 @@
 
-R version 4.0.2 (2020-06-22) -- "Taking Off Again"
-Copyright (C) 2020 The R Foundation for Statistical Computing
+R version 4.0.5 (2021-03-31) -- "Shake and Throw"
+Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin17.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -44,8 +44,6 @@ Type 'q()' to quit R.
 > options( echo=FALSE)
 Testing:  check ccoef
 PASSED test at tolerance  1e-08
-Testing:  llike full verses rhohat
-PASSED test at tolerance  1e-08
 Testing:  llike profile from mKrig
 PASSED test at tolerance  1e-08
 Testing:  ccoefs
@@ -59,13 +57,9 @@ Testing:  det
 PASSED test at tolerance  1e-08
 Testing:  REML using matrices
 PASSED test at tolerance  1e-08
-Testing:  REML profile flplike
-PASSED test at tolerance  1e-08
-Testing:  REML profile flplike
-PASSED test at tolerance  1e-08
 all done with likelihood  tests
 >       
 > 
 > proc.time()
    user  system elapsed 
-  0.766   0.101   0.845 
+  0.933   0.097   1.025 

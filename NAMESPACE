@@ -11,6 +11,8 @@ importFrom("stats", "D", "approx", "coef", "cor", "dist", "fft", "mad",
              "rnorm", "sd", "var","qchisq","pnorm")
 importFrom("utils", "object.size")
 importFrom("maps","map")
+importFrom("viridis","viridis")
+importFrom("stats", "qnorm")
 
 S3method("[",spatialDesign)
 S3method(coef, Krig)

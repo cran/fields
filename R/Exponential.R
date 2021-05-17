@@ -18,7 +18,8 @@
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2    
-"Exponential" <- function(d, range = 1, alpha = 1/range, phi = 1.0) {
+"Exponential" <- function(d, range = 1, alpha = 1/range, phi = 1.0,
+                          theta=NULL) {
     #
     # Matern covariance function transcribed from Stein's book page 31
     # nu==smoothness==.5, alpha ==  1/range
@@ -26,10 +27,14 @@
     # GeoR parameters map to kappa==smoothness and phi == range
     # to make old code from Fuentes and also the package SEHmodel
     # phi is accepted as the marginal variance of the process (see below)
-    # within fields this parameter is "rho"
+    # within fields this parameter is "sigma"
 
                                         #
     # check for negative distances
+    # theta argument has been depreciated.
+    if( !is.null( theta)){
+        aRange<- theta
+    }
     if (any(d < 0)) 
         stop("distance argument must be nonnegative")
     #

@@ -21,12 +21,13 @@
 
 mKrigMLEGrid <- function(x, y, weights = rep(1, nrow(x)), Z = NULL,
                        mKrig.args = NULL,
-                          cov.fun = "stationary.cov", 
+                          cov.function = "stationary.cov", 
                          cov.args = NULL,
                            na.rm = TRUE, 
                          par.grid = NULL, 
-               relative.tolerance = 1e-04,
+                           reltol = 1e-06,
                              REML = FALSE,
+                             GCV  = FALSE,
                        optim.args = NULL,
                  cov.params.start = NULL,
                           verbose = FALSE) {
@@ -39,13 +40,14 @@ mKrigMLEGrid <- function(x, y, weights = rep(1, nrow(x)), Z = NULL,
   }
   #check which optimization options the covariance function supports
   #precompute distance matrix if possible so it only needs to be computed once
-  supportsDistMat = supportsArg(cov.fun, "distMat")
+  supportsDistMat = supportsArg(cov.function, "distMat")
   #precompute distance matrix if possible so it only needs to be computed once
   if(supportsDistMat) {
     #Get distance function and arguments if available
     #If user left all distance settings NULL, use rdist with compact option.
     #Use rdist function by default in general.
     #
+   
     if(is.null(cov.args$Distance)) {
       cov.args$Distance  <-  "rdist"
       cov.args$Dist.args <- list(compact=TRUE)
@@ -68,25 +70,43 @@ mKrigMLEGrid <- function(x, y, weights = rep(1, nrow(x)), Z = NULL,
     names(cov.args.temp) <- names( par.grid)
     currentCov.args<- c( cov.args.temp, cov.args) 
     if( verbose){
-      cat( "grid value: " , k, fill=TRUE)
-      #cat( names(currentCov.args ), fill=TRUE, sep=", ")
+      
+      cat( "********grid value: " , k, fill=TRUE)
+      cat( "Cov args", names(currentCov.args ), fill=TRUE, sep=", ")
+      cat("value  aRange", fill=TRUE)
+      print( currentCov.args$aRange)
+      cat("value  lambda", fill=TRUE)
+      print( currentCov.args$lambda)
+      
+      cat("start values", fill=TRUE)
+      print( cov.params.start)
+      cat("optim.args", fill=TRUE)
+      print( optim.args)
     }
-    
-# 
+  
     MLEfit0 <- mKrigMLEJoint(x, y, 
                                   weights = weights, Z=Z, 
-                                  cov.fun = cov.fun,
+                                  cov.function = cov.function,
                                optim.args = optim.args,
                                  cov.args = currentCov.args,
                                     na.rm = na.rm,
                                mKrig.args = mKrig.args,
                                      REML = REML,
+                                     GCV  = GCV,
+                                   reltol = reltol,
                          cov.params.start = cov.params.start,
                                   verbose = verbose)
      summary <- rbind( summary, MLEfit0$summary)
   }
   summary<- cbind( summary, par.grid)
+  if( REML){
+    indMax<- which.max( summary[,"lnProfileLike.FULL"]) 
+  } 
+  else{
+    indMax<- which.max( summary[,"lnProfileREML.FULL"]) 
+  }
+  
   return(list(summary = summary, par.grid = par.grid,
-              call = match.call())
+              call = match.call(), indMax= indMax )
          )
 }

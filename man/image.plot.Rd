@@ -21,6 +21,8 @@
 
 \name{image.plot}
 \alias{image.plot}
+\alias{setupLegend}
+\alias{addLegend}
 \title{
   Draws an image plot with a legend strip for the color scale based on either
 a regular grid or a grid of quadrilaterals.  
@@ -31,7 +33,9 @@ placement of a legend. This is done by splitting the plotting region
 into two parts. Putting the image in one and the legend in the other. After the
 legend is added the plot region is reset to the image plot.
 This function also allows for plotting quadrilateral cells in the image format that
-often arise from regular grids transformed with a map projection or a scaling and rotation of coordinates. See the example where this function can create a similar graphic to the ggplot package. 
+often arise from regular grids transformed with a map projection or a scaling and rotation of coordinates. See the example where this function can create a similar graphic to the ggplot package.
+Two additional functions are provided to add color scale to other kinds
+of figures. 
 
 }
 \usage{
@@ -43,8 +47,18 @@ often arise from regular grids transformed with a map projection or a scaling an
     legend.line= 2,                    
     graphics.reset = FALSE, bigplot = NULL, smallplot = NULL, 
     legend.only = FALSE,  lab.breaks = NULL, 
-    axis.args = NULL, legend.args = NULL, legend.cex=1.0, midpoint = FALSE, border = NA, 
+    axis.args = NULL, legend.args = NULL, legend.cex=1.0,
+    midpoint = FALSE, border = NA, 
     lwd = 1,verbose = FALSE )
+
+setupLegend( horizontal = FALSE,
+                        legend.shrink = 0.9, 
+                        legend.width = 1.2, 
+                        legend.mar = ifelse(horizontal, 3.1, 5.1)
+			)
+	addLegend(legendLayout, col, zlim, axis.args = NULL, legend.args
+                 = NULL, legend.cex = 1, legend.lab = NULL, legend.line
+                 = 2)		
 }
 
 \arguments{ 
@@ -60,7 +74,8 @@ locations. The basic concept is that the coordinates of x and y still
 define a grid but the image cells are quadrilaterals rather than being
 restricted to rectangles. NOTE: graphical argruments passed here will only have impact
 on the image plot. To change the graphical defaults for the legend use
- the individual legend arguments and \code{legend.arg} listed below. 
+ the individual legend arguments and/or  \code{legend.arg} listed 
+ below. 
 }
 
 \item{add}{
@@ -79,10 +94,7 @@ the same as the interior color. Otherwise this specifies the color to use.}
 
 \item{breaks}{Break points in sorted order to indicate the intervals for assigning
 	the colors. Note that if there are nlevel colors there should be  (nlevel+1)
- breakpoints. If \code{breaks} is not specified (nlevel+1) equally spaced breaks are created where the first and last bin have their midpoints at the minimum and maximum values in \code{z} or at \code{zlim}.   }
-
-
-
+ breakpoints. If \code{breaks} is not specified (nlevel+1) equally spaced breaks are created where the first and last bin have their midpoints at the minimum and maximum values in \code{z} or at \code{zlim}.}
 
 \item{col}{
 Color table to use for image (See help file on image for details.).
@@ -101,9 +113,11 @@ values before entering the function.
 If false (default) legend will be a vertical strip on the right side. If
 true the legend strip will be along the bottom.  
 }
+
 \item{lab.breaks}{ If breaks are supplied these are text string labels
 to put at each break value. This is intended to label axis on a
 transformed scale such as logs.}
+
 \item{axis.args}{Additional arguments for the axis function used to 
 create the legend axis. (See example below adding a log scaling.)}
 
@@ -133,13 +147,18 @@ for a vertical legend and 3.1 for a horizontal legend.}
 label as this is usual evident from the plot title.}
 
 \item{legend.shrink}{
- Amount to shrink the size of legend relative to the full height or width
+ Amount to shrink the size of legend relative to the full height or
+ width
 of the plot.  
 }
 
 \item{legend.width}{
-Width in characters of the legend strip. Default is 1.2, a little bigger 
+Width in characters of the legend strip. Default is 1.2, a little
+bigger 
 that the width of a character. }
+
+\item{legendLayout}{The list returned by \code{setupLegend} used to layout
+    the legend after a plot is drawn. }
 
 \item{lwd}{Line width of bordering lines around pixels.
  This might need to be set less than 1.0 
@@ -149,8 +168,10 @@ to avoid visible rounding of the pixel corners.}
 This option for the case of unequally spaced grids with x and y being 
 matrices of grid point locations. 
  If FALSE (default) the quadralaterals  will be extended
-to surround the  z locations as midpoints. If TRUE z values will be averaged
-to yield a midpoint value and the original grid points be used to define the
+to surround the  z locations as midpoints. If TRUE z values will be
+averaged
+to yield a midpoint value and the original grid points be used to define
+the
 quadralaterals. (See help on poly.image for details). In most cases
 midpoint should be FALSE to preserve exact values for z and 
 let the grid polygons be modified.}
@@ -160,14 +181,22 @@ Number of color levels used in legend strip
 }
 
 \item{smallplot}{
-Plot coordinates for legend strip.  If not passed these will be determined within
-the function. Be sure to leave room for the axis labels. For example, if the legend is on the
-right side  \code{smallplot= c(.85,.9,0,1) } will leave (.1 in plot coordinates) for the
-axis labels to the right of the color strip. This argument is useful for drawing a 
+Plot coordinates for legend strip.  If not passed these will be
+determined within
+the function. Be sure to leave room for the axis labels. For example, if
+the legend is on the
+right side  \code{smallplot= c(.85,.9,0,1) } will leave (.1 in plot
+coordinates) for the
+axis labels to the right of the color strip. This argument is useful 
+for drawing a 
 plot with the legend that is the same size as the plots without legends.
 }
+
 \item{verbose}{If TRUE prints intermediate information about setting up plots (for debugging). }
+
+\item{zlim}{For \code{addLegend}, the range of color scale. Default is to use range set by most recent call to \code{color.scale}}
 }
+
 \section{Side Effects}{
 After exiting, the
 plotting region may be changed to make it possible to add more features to
@@ -275,8 +304,13 @@ Note that to add just the legend strip all the numerical information one
 needs is the \code{zlim} argument and the color table! See examples for tricks in positioning.
 
 \strong{About color tables:}
-We like \code{tim.colors}
-as a default color scale and so if this what you use this can be omitted. Unfortunately this is not the default for the \code{image} function. Another important color scale is \code{ viridis() } from the viridis package. It seems that by and large everyone seems to react postively to viridis -- guess that is the point!
+We like \code{tim.colors} 
+as a default color scale and so if this what you use this can be omitted.
+Unfortunately this is not the default for the \code{image} function. Another
+important color scale is \code{ viridis() } from the viridis package.
+It seems that by
+and large everyone seems to react postively to viridis -- guess that is the
+point!
 
 The
 topographic color scale (\code{topo.colors}) is
@@ -284,10 +318,12 @@ also a close second showing our geophysical bias.
 Users may find \code{larry.colors} useful for coding distinct regions
 in the style of a cloropleith map.   See also
 \code{terrain.colors} for a subset of the topo ones and \code{designer.colors} to "roll
-your own" color table. One nice option in this last function is to fix color transitions at
+your own" color table. One nice option in this last function is to fix
+color transitions at
 particular quantiles of the data rather than at equally spaced
 intervals. For color choices see how the \code{nlevels} argument figures
-into the legend and main plot number of colors. Also see the \code{colors} function
+into the legend and main plot number of colors. Also see the \code{colors}
+function
 for a listing of all the colors that come with the R base environment. 
 
 \strong{The details of placing the legend and 
@@ -317,7 +353,39 @@ is that one can no longer add additional graphics elements to the
 image 
 plot. Note that filled.contour always resets the graphics but provides 
 another mechanism to pass through plotting commands. Apparently 
-\code{filled.contour}, while very pretty, does not work for multiple plots. 
+\code{filled.contour}, while very pretty, does not work for multiple plots.
+
+\strong{About setup and add legend functions} These came about to create a
+scatterplot in Base R Graphics where the points are colored with a color scale
+and the scale can be plotted as part of the figure
+See \code{ \link{bubblePlot} } for a version of this kind of figure.  The
+function \code{setupLegend} should be used first to create enough space
+to add a color scale later. After plotting then \code{addLegend} will add the
+color scale. Note that if the color scale has been created by the \code{color.scale} function the last call to this function will use the color scale and limits created in \code{color.scale}.
+
+In summary here is an example of using these functions with the colors in mind:
+
+\preformatted{
+  info<- setupLegend()
+  colTab<- rainbow(10)
+  plot( 1:10, 201:210, col=colTab, pch=16)
+  addLegend(info, col=colTab, zlim = c(1,10))
+}
+
+Here is one where four colors are mapped to specific values (ala image).
+
+\preformatted{
+  info<-setupLegend()
+  colTab= color.scale(201:210, rainbow(4))
+  plot( 1:10, 201:210, col=colTab, pch=16 )
+  addLegend(info, col=colTab, zlim = c(201,210) )
+}
+
+More complete graphics languages, such as that in  ggplot,  do not need such
+functions because the
+entire graphics segment is parsed to create the complete figure. In this way
+room for a color scale can be created automatically. The functions proposed here
+are a simple work around to create these figures using base R graphics. 
 
 \strong{Other packages}
 \code{levelplot} that is part of the lattice package has a very 
@@ -507,12 +575,22 @@ image.plot( zlim=c(0,25), nlevel=64,legend.only=TRUE, horizontal=TRUE,
 col=topo.colors(64))
 }
 #
-# 
+
+# adding a legend by  automatically making room. 
+# and coloring points
+  info<- setupLegend()
+  colTab<- rainbow(10)
+  plot( 201:210, 201:210, col=colTab, pch=16)
+  addLegend(info, col=colTab, zlim = c(201,210))
+#
+
 #######################################################
 ##### Comparison to ggplot
 #######################################################
 # the following example was created as way avoid doing more important
-# things
+# things 
+# Note how close base graphics can get to reproducing the ggplot style.
+
 \dontrun{
 library( viridis)
 library(ggplot2)

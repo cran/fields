@@ -29,12 +29,12 @@
 Functional form of covariance function assuming the argument is a
 distance between locations.  As they are defined here, they are in 
 fact correlation functions.  To set the marginal variance (sill) 
-parameter, use the \code{rho} argument in \code{mKrig} or \code{Krig}.  
-To set the nugget variance, use te \code{sigma2} argument in 
+parameter, use the \code{sigma} argument in \code{mKrig} or \code{Krig}.  
+To set the nugget variance, use te \code{tau2} argument in 
 \code{mKrig} or \code{Krig}.
 }
 \usage{
-Exponential(d, range = 1, alpha = 1/range, phi=1.0)
+Exponential(d, range = 1, alpha = 1/range, phi=1.0,theta = NULL)
 Matern(d , range = 1,alpha=1/range, smoothness = 0.5, 
        nu= smoothness, phi=1.0) 
 Matern.cor.to.range(d, nu, cor.target=.5, guess=NULL,...)
@@ -47,16 +47,17 @@ RadialBasis(d,M,dimension, derivative = 0)
   \item{d}{ Vector of distances or for \code{Matern.cor.to.range} just a single distance. }
 
   \item{range}{ Range parameter default is one. Note 
-       that the scale can also be specified  through the "theta" 
+       that the scale can also be specified  through the "aRange" 
            scaling argument  used in fields covariance functions) }
 
   \item{alpha}{1/range }
+  \item{theta}{Same as alpha}
   
   \item{phi}{This parameter option is added to be compatible with older
   versions of fields and refers to the marginal variance of the process.
-  e.g. \code{phi* exp( -d/theta)} is the exponential covariance for points
-  separated by distance and range theta. Throughout fields this parameter
-  is equivalent to rho and it recommended that rho be used. If one is
+  e.g. \code{phi* exp( -d/aRange)} is the exponential covariance for points
+  separated by distance and range aRange. Throughout fields this parameter
+  is equivalent to sigma and it recommended that sigma be used. If one is
   simulating random fields. See the help on \code{\link{sim.rf}} for
   more details. } 
 
@@ -95,10 +96,10 @@ Matern.cor.to.range:
     This function is useful to find  Matern covariance parameters that are 
 comparable for different smoothness parameters. Given a distance \code{d}, 
 smoothness \code{nu},  target correlation \code{cor.target} and
-range \code{theta}, this function determines numerically the value of 
-theta so that
+range \code{aRange}, this function determines numerically the value of 
+aRange so that
 
-\code{Matern( d, range=theta, nu=nu) == cor.target}
+\code{Matern( d, range=aRange, nu=nu) == cor.target}
 
 See the example for how this might be used.
 
