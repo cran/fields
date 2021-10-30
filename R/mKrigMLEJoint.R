@@ -1,9 +1,9 @@
+#
 # fields  is a package for analysis of spatial data written for
-# the R software environment .
-# Copyright (C) 2018
-# University Corporation for Atmospheric Research (UCAR)
-# Contact: Douglas Nychka, nychka@ucar.edu,
-# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+# the R software environment.
+# Copyright (C) 2021 Colorado School of Mines
+# 1500 Illinois St., Golden, CO 80401
+# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-# or see http://www.r-project.org/Licenses/GPL-2   
-
+# or see http://www.r-project.org/Licenses/GPL-2
+##END HEADER
 mKrigMLEJoint<- function(x, y, weights = rep(1, nrow(x)),  Z = NULL,
                             mKrig.args = NULL,
                                  na.rm = TRUE,
@@ -31,7 +31,7 @@ mKrigMLEJoint<- function(x, y, weights = rep(1, nrow(x)),  Z = NULL,
                                   REML = FALSE, 
                                   GCV  = FALSE,
                                hessian = FALSE, 
-                                iseed  =  233,
+                                iseed  =  303,
                                verbose = FALSE) {
   # overwrite basic data to remove NAs this has be done in case distance 
   # matrices are precomputed (see below)
@@ -70,7 +70,7 @@ mKrigMLEJoint<- function(x, y, weights = rep(1, nrow(x)),  Z = NULL,
 # if lambda is  then it has been added to mKrig.args 
 # if lambda.start then it is part of the parameter names and will 
 # added in the cov.args list 
-  mKrig.args <- c(list(x = x, y = y, weights = weights, Z = Z),
+  mKrig.args <- c(list(x = x, y = y, weights = weights, Z = Z ),
                    mKrig.args,
                   list(cov.function=cov.function) 
                   )
@@ -144,7 +144,9 @@ mKrigMLEJoint<- function(x, y, weights = rep(1, nrow(x)),  Z = NULL,
   }
 # and now the heavy lifting ...
 # optimize over (some) covariance parameters and possibly lambda
-  optimResults <- do.call(optim, c(list(par=init.start),
+# wrapping in try allows for error catching
+  optimResults <-try(
+                  do.call(optim, c(list(par=init.start),
                             list(mKrigJointTemp.fn),
                                          optim.args,
                            list(  parNames = parNames,
@@ -156,7 +158,18 @@ mKrigMLEJoint<- function(x, y, weights = rep(1, nrow(x)),  Z = NULL,
                                       GCV  = GCV,
                                    verbose = verbose)
                            )
+                    )
                   )
+# catch error in optim and return  
+  if( class(optimResults )=="try-error"){
+    cat("Error in call to optim", fill=TRUE) 
+    out =list( summary = NA,
+               lnLikeEvaluations = capture.evaluations[-1,],
+               init.start= init.start, 
+               optim.args= optim.args
+               )
+    return( out)
+  }
   # reformat the  optim results
   lnLikeEvaluations <- capture.evaluations[-1,] # first row is just NAs
   if( verbose){
@@ -193,7 +206,7 @@ else{
 ### at final parameters and also find the trace and GCV 
 #########################################################
   cov.args.final<- c( cov.args, cov.params.final)
-# mKrig.args$find.trA <- TRUE
+  
   fastObject   <- do.call("mKrig",
                           c(mKrig.args, iseed= iseed,
                           cov.args.final) )$summary

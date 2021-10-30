@@ -1,9 +1,9 @@
+%#
 %# fields  is a package for analysis of spatial data written for
-%# the R software environment .
-%# Copyright (C) 2018
-%# University Corporation for Atmospheric Research (UCAR)
-%# Contact: Douglas Nychka, nychka@mines.edu,
-%# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+%# the R software environment.
+%# Copyright (C) 2021 Colorado School of Mines
+%# 1500 Illinois St., Golden, CO 80401
+%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -14,6 +14,11 @@
 %# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 %# GNU General Public License for more details.
 %#
+%# You should have received a copy of the GNU General Public License
+%# along with the R software environment if not, write to the Free Software
+%# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+%# or see http://www.r-project.org/Licenses/GPL-2
+%##END HEADER
 \name{registeringCode}
 \alias{addToDiagC}
 \alias{ExponentialUpperC}
@@ -98,8 +103,8 @@ documentation while other routines have not.
 }
 \references{
 For background on registering C, C++ and Fortran functions see 5.4 of
-Writing R Extensions. 
-See \url{https://r.789695.n4.nabble.com/Registration-of-native-routines-td4728874.html} for additional dicsussion of code registration. 
+Writing R Extensions. For this package refer to the C code in
+\code{ src/intit.c} as an example. 
 }
 \examples{
 print(addToDiagC)

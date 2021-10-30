@@ -1,9 +1,9 @@
+#
 # fields  is a package for analysis of spatial data written for
-# the R software environment .
-# Copyright (C) 2018
-# University Corporation for Atmospheric Research (UCAR)
-# Contact: Douglas Nychka, nychka@ucar.edu,
-# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+# the R software environment.
+# Copyright (C) 2021 Colorado School of Mines
+# 1500 Illinois St., Golden, CO 80401
+# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2
+##END HEADER
 
 mKrigMLEGrid <- function(x, y, weights = rep(1, nrow(x)), Z = NULL,
                        mKrig.args = NULL,
@@ -30,7 +31,8 @@ mKrigMLEGrid <- function(x, y, weights = rep(1, nrow(x)), Z = NULL,
                              GCV  = FALSE,
                        optim.args = NULL,
                  cov.params.start = NULL,
-                          verbose = FALSE) {
+                          verbose = FALSE,
+                            iseed = NA) {
   if( na.rm){
     obj<- mKrigCheckXY(x, y, weights, Z, na.rm)
     x<- obj$x
@@ -95,7 +97,12 @@ mKrigMLEGrid <- function(x, y, weights = rep(1, nrow(x)), Z = NULL,
                                      GCV  = GCV,
                                    reltol = reltol,
                          cov.params.start = cov.params.start,
-                                  verbose = verbose)
+                                  verbose = verbose,
+                                    iseed = iseed)
+    if( is.na(MLEfit0$summary[1])){
+      cat("mKrigMLEGrid: Problems in optim", fill=TRUE)
+      return(MLEfit0)
+    }
      summary <- rbind( summary, MLEfit0$summary)
   }
   summary<- cbind( summary, par.grid)

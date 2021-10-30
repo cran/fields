@@ -1,9 +1,9 @@
+#
 # fields  is a package for analysis of spatial data written for
-# the R software environment .
-# Copyright (C) 2018
-# University Corporation for Atmospheric Research (UCAR)
-# Contact: Douglas Nychka, nychka@ucar.edu,
-# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+# the R software environment.
+# Copyright (C) 2021 Colorado School of Mines
+# 1500 Illinois St., Golden, CO 80401
+# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,11 +17,12 @@
 # You should have received a copy of the GNU General Public License
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-# or see http://www.r-project.org/Licenses/GPL-2    
+# or see http://www.r-project.org/Licenses/GPL-2
+##END HEADER
 "quilt.plot" <- function(x, y, z, nx = 64, ny = 64, 
      grid = NULL, add.legend = TRUE, add = FALSE, nlevel=64, 
     col = tim.colors(nlevel), nrow = NULL, ncol = NULL, FUN=NULL,
-    plot=TRUE, na.rm=FALSE, ...) {
+    plot=TRUE, na.rm=FALSE, boundary.grid = FALSE,  ...) {
     #
     # note that nrow and ncol refer to the resulting 'image format' for plotting.
     # here the x values are the rows and the y values are the columns
@@ -45,7 +46,7 @@
     #  z is a vector or one column matrix of the z values.
     #discretize data
     out.p <- as.image(z, x = x, nx = nx, ny = ny, 
-        grid = grid, FUN=FUN, na.rm=na.rm)
+        grid = grid, FUN=FUN, na.rm=na.rm, boundary.grid = boundary.grid)
     # besides the image information this list has the indices that 
     # map each z value to a grid box
     #    

@@ -1,9 +1,9 @@
+#
 # fields  is a package for analysis of spatial data written for
-# the R software environment .
-# Copyright (C) 2018
-# University Corporation for Atmospheric Research (UCAR)
-# Contact: Douglas Nychka, nychka@ucar.edu,
-# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+# the R software environment.
+# Copyright (C) 2021 Colorado School of Mines
+# 1500 Illinois St., Golden, CO 80401
+# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-# or see http://www.r-project.org/Licenses/GPL-2    
+# or see http://www.r-project.org/Licenses/GPL-2
+##END HEADER
 "surface.Krig" <- function(object, grid.list = NULL, 
     extrap = FALSE, graphics.reset = NULL, xlab = NULL, ylab = NULL, 
     main = NULL, zlab = NULL, zlim = NULL, levels = NULL, type = "C", 
@@ -52,7 +53,7 @@
 "surface.mKrig" <- function(object, grid.list = NULL, 
     extrap = FALSE, graphics.reset = NULL, xlab = NULL, ylab = NULL, 
     main = NULL, zlab = NULL, zlim = NULL, levels = NULL, type = "C", 
-    nx = 80, ny = 80, ...) {
+    nx = 80, ny = 80, col=viridis(256),...) {
     ## modified so that you can give main, and ylab as arguments
     ## in ... and have them passed correctly
     out.p <- predictSurface(object, grid.list = grid.list, extrap = extrap, 
@@ -68,7 +69,7 @@
     ##    else
     ##      out.p$main <- NULL
     plot.surface(out.p, type = type, graphics.reset = graphics.reset, 
-        levels = levels, zlim = zlim, ...)
+        levels = levels, zlim = zlim, col=col, ...)
     invisible()
 }
 

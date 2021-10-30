@@ -1,9 +1,9 @@
+%#
 %# fields  is a package for analysis of spatial data written for
-%# the R software environment .
-%# Copyright (C) 2018
-%# University Corporation for Atmospheric Research (UCAR)
-%# Contact: Douglas Nychka, nychka@mines.edu,
-%# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+%# the R software environment.
+%# Copyright (C) 2021 Colorado School of Mines
+%# 1500 Illinois St., Golden, CO 80401
+%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -17,7 +17,8 @@
 %# You should have received a copy of the GNU General Public License
 %# along with the R software environment if not, write to the Free Software
 %# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-%# or see http://www.r-project.org/Licenses/GPL-2    
+%# or see http://www.r-project.org/Licenses/GPL-2
+%##END HEADER
 \name{QTps}
 \alias{QSreg}
 \alias{QTps}
@@ -52,7 +53,7 @@ Observations
 \item{lambda}{Value of the smoothing parameter. If NA found by an approximate corss-validation criterion.}
 
   \item{\dots}{
-Any other arguments to pass to the Tps function.
+Any other arguments to pass to the Tps function, which are then passed to the Krig function. \code{ give.warnings =FALSE} can be used to turn off pesky warnings when not important (see example below).
 }
   \item{C}{Scaling for huber robust weighting function. (See below.) Usually it is better to leave this at 1 and 
 just modify the scale  \code{psi.scale} according to the size of the residuals. }
@@ -183,9 +184,11 @@ y<- ozone2$y[16,]
     y.outlier<- y
 # add in a huge outlier.
     y.outlier[58]<- 1e5
-    look.outlier1<- QTps( x,y.outlier, psi.scale= 15, df= 50)
+    look.outlier1<- QTps( x,y.outlier, psi.scale= 15, df= 50,
+                           give.warnings= FALSE)
 # least squares spline.
-    look.outlier2<- QTps( x,y.outlier, psi.scale=100 , df= 50)
+    look.outlier2<- QTps( x,y.outlier, psi.scale=100 , df= 50,
+                           give.warnings= FALSE)
 #
     set.panel(2,2)
     surface( look1)
@@ -201,7 +204,7 @@ y<- ozone2$y[16,]
     set.panel()
 }
 # some quantiles
-look50 <- QTps( x,y, psi.scale=.5)
+look50 <- QTps( x,y, psi.scale=.5,)
 look75 <- QTps( x,y,f.start= look50$fitted.values, alpha=.75)
 
 
@@ -221,7 +224,7 @@ look75 <- QTps( x,y,f.start= look50$fitted.values, df=15, alpha=.75)
 
 \dontrun{
 # this example tests the quantile estimate by Monte Carlo
-# by creating many replicate point to increase the sample size. 
+# by creating many replicate points to increase the sample size. 
 # Replicate points are used because the computations for the 
 # spline are dominated by the number of unique locations not the 
 # total number of points. 
@@ -258,7 +261,9 @@ lines( xg, predict( look75, x=xg), col="green")
   fhat.old<- NULL
   for ( k in M:1){
      temp.obj<- QTps(rat.diet$t,rat.diet$con, f.start=fhat.old,  psi.scale=.5, tolerance=1e-6,
-     verbose=FALSE, df= df[k])
+     verbose=FALSE, df= df[k],
+     give.warnings=FALSE) 
+     # avoids warnings from Krig search on lambda
      cat(k, " ")
      CV[k] <- temp.obj$Qinfo$CV.psuedo
      fhat.old<- temp.obj$fitted.values

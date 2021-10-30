@@ -1,9 +1,9 @@
+#
 # fields  is a package for analysis of spatial data written for
-# the R software environment .
-# Copyright (C) 2018
-# University Corporation for Atmospheric Research (UCAR)
-# Contact: Douglas Nychka, nychka@ucar.edu,
-# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+# the R software environment.
+# Copyright (C) 2021 Colorado School of Mines
+# 1500 Illinois St., Golden, CO 80401
+# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,12 +17,13 @@
 # You should have received a copy of the GNU General Public License
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-# or see http://www.r-project.org/Licenses/GPL-2    
+# or see http://www.r-project.org/Licenses/GPL-2
+##END HEADER
 mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
                   cov.function="stationary.cov", 
-                  cov.args = NULL, lambda = 0, m = 2, 
+                  cov.args = NULL, lambda = NA, m = 2, 
                   chol.args = NULL, find.trA = TRUE, NtrA = 20, 
-                  iseed = NA, llambda = NULL, na.rm=FALSE, 
+                  iseed = NA, na.rm=FALSE, 
                   collapseFixedEffect = TRUE, 
                   tau=NA, sigma2=NA, ...) {
   # pull extra covariance arguments from ...  and overwrite
@@ -33,26 +34,43 @@ mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
   #If cov.args$find.trA is true, set onlyUpper to FALSE (onlyUpper doesn't
   #play nice with predict.mKrig, called by mKrig.trace)
   #
+  # next function also omits NAs from x,y,weights, and Z  if na.rm=TRUE.
+  object<- mKrigCheckXY( x, y, weights, Z, na.rm = na.rm)
+  # as the computation progresses additional components are 
+  # added to the object list and by the end this is the returned 
+  # object of class mKrig.
+  
   if(find.trA == TRUE && supportsArg(cov.function, "onlyUpper"))
     cov.args$onlyUpper= FALSE
   if(find.trA == TRUE && supportsArg(cov.function, "distMat"))
     cov.args$distMat= NA
+ 
   
-  if (!is.null(llambda)) {
-    lambda <- exp(llambda)
+  if( !is.na(tau)|!is.na(sigma2)){
+    fixedParameters<- TRUE
+# work through the 3 cases for sigma2 and tau  
+# note that for 2 of these als need lambda
+    if( !is.na(tau)&!is.na(sigma2)){
+    lambda<- tau^2/sigma2}
+    if( is.na(tau)){
+      tau <- sqrt( lambda*sigma2)
+    }
+    if( is.na(sigma2)){
+      sigma2 <- tau^2/lambda
+    }
   }
-  if( !is.na(tau)&!is.na(sigma2)){
-    lambda<- tau^2/sigma2
+  else{
+    fixedParameters<- FALSE
   }
-  # see comments in Krig.engine.fixed for algorithmic commentary
-  #
+  
+  object$fixedParameters<- fixedParameters
+  
   # check for duplicate x's.
   # stop if there are any
   if (any(duplicated(cat.matrix(x)))) {
     stop("locations are not unique see help(mKrig) ")
   }
-  # next function also omits NAs from x,y,weights, and Z  if na.rm=TRUE.
-  object<- mKrigCheckXY( x, y, weights, Z, na.rm = na.rm)
+ 
   # create fixed part of model as m-1 order polynomial
   # NOTE: if m==0 then fields.mkpoly returns a NULL to 
   # indicate no polynomial part.
@@ -79,7 +97,8 @@ mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
   # covariance matrix at observation locations
   # NOTE: if cov.function is a sparse constuct then Mc will be sparse.
   # see e.g. wendland.cov
-  Mc <- do.call(cov.function, c(cov.args, list(x1 = object$knots, x2 = object$knots)))
+  Mc <- do.call(cov.function, c(cov.args, 
+                                list(x1 = object$knots, x2 = object$knots)))
   #
   # decide how to handle the pivoting.
   # one wants to do pivoting if the matrix is sparse.
@@ -175,15 +194,30 @@ mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
   }
   # and now find c.
   #  the coefficents for the spatial part.
-  # if linear fixed part included resid as the residuals from the 
+  # if there is also a linear fixed part  resid are the residuals from the 
   # GLS regression.
   c.coef <- as.matrix(forwardsolve(Mc, transpose = TRUE,
                                    resid, upper.tri = TRUE))
   # save intermediate result this is   t(y- T beta)( M^{-1}) ( y- T beta)
   quad.form <- c(colSums(as.matrix(c.coef^2)))
+  
+  # compute full likelihood if 2 out three covariance parameters are given
+  if(fixedParameters){
+    lnLike<- lnProfileLike <- (-quad.form/(2*sigma2) - log(2 * pi) * (np/2) - (np/2) * 
+                                  log(sigma2) - (1/2) * lnDetCov )
+    lnLikeREML<- lnLike + (1/2) * lnDetOmega
+    lnLike.FULL<- sum( lnLike)
+    lnLikeREML.FULL<- sum(lnLikeREML)
+  }
+  else{
+    lnLike<-NA
+    lnLike.FULL<-NA
+    lnLikeREML<-NA
+    lnLikeREML.FULL<-NA
+  }
+  
   # find c coefficients
   c.coef <- as.matrix(backsolve(Mc, c.coef))
-  
   # find the residuals directly from solution
   # to avoid a call to predict
   object$residuals <- lambda * c.coef/object$weights
@@ -194,7 +228,7 @@ mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
   sigma2.MLE <- (quad.form/np)
   #sigma2hat <- c(colSums(as.matrix(c.coef * object$y)))/np
   tau.MLE <- sqrt(lambda * sigma2.MLE)
-  # the  log profile likehood with  sigmahat  and  dhat substituted
+  # the  log profile likehood with  sigma2.MLE  and  dhat substituted
   # leaving a profile for just lambda.
   # NOTE if y is a matrix then this is a vector of log profile
   # likelihood values.
@@ -204,8 +238,8 @@ mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
   # for this amazing shortcut to get the REML version 
   lnProfileREML <-  lnProfileLike + (1/2) * lnDetOmega
   # following FULL means combine the estimates across all replicate fields 
-  # mean is justified as it is assumed locations and weights the same across 
-  # replciates. 
+  # mean for MLE is justified as it is assumed locations and weights the same across 
+  # replicates. 
   sigma2.MLE.FULL <- mean(sigma2.MLE)
   tau.MLE.FULL <- sqrt(lambda * sigma2.MLE.FULL)
   # if y is a matrix then compute the combined likelihood
@@ -238,6 +272,8 @@ mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
   replicateInfo = list(
     lnProfileLike = lnProfileLike,
     lnProfileREML =  lnProfileREML,
+    lnLike= lnLike,
+    lnLikeREML= lnLikeREML, 
     tau.MLE = tau.MLE, 
     sigma2.MLE = sigma2.MLE,
     quad.form = quad.form
@@ -250,6 +286,8 @@ mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
               args = cov.args, m = m, chol.args = chol.args, call = match.call(), 
               nonzero.entries = nzero, 
               replicateInfo = replicateInfo,
+              lnLike.FULL = lnLike.FULL,
+              lnLikeREML.FULL = lnLikeREML.FULL,
               lnDetCov = lnDetCov, lnDetOmega = lnDetOmega,
                Omega = Omega, lnDetOmega=lnDetOmega,
               qr.VT = qr.VT, 
@@ -284,14 +322,26 @@ mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
   }
   
   ################### compile summary vector of parameters
-  summaryPars<- rep(NA,8)
+  summaryPars<- rep(NA,10)
   names( summaryPars) <- c( "lnProfileLike.FULL","lnProfileREML.FULL",
+                            "lnLike.FULL","lnREML.FULL",
                             "lambda" ,
                             "tau","sigma2","aRange","eff.df","GCV")
   summaryPars["lnProfileLike.FULL"]<- lnProfileLike.FULL
   summaryPars["lnProfileREML.FULL"]<- lnProfileREML.FULL
-  summaryPars["tau"]  <- tau.MLE.FULL
-  summaryPars["sigma2"]<- sigma2.MLE.FULL
+  summaryPars["lnLike.FULL"]<- lnLike.FULL
+  summaryPars["lnREML.FULL"]<- lnLikeREML.FULL
+  
+  
+  if( fixedParameters){
+    summaryPars["tau"]  <- tau
+    summaryPars["sigma2"]<- sigma2
+    }
+  else{  
+    summaryPars["tau"]  <- tau.MLE.FULL
+    summaryPars["sigma2"]<- sigma2.MLE.FULL
+  }
+  
   summaryPars["lambda"]<- lambda
   summaryPars["aRange"] <-ifelse( !is.null(cov.args$aRange), 
                                      cov.args$aRange, NA)
@@ -303,6 +353,7 @@ mKrig <- function(x, y, weights=rep(1, nrow(x)), Z = NULL,
   ### add in some depreciated components so that LatticeKrig 8.4
   ### passes its tests.
   ########################
+  
   object$rho.MLE<- sigma2.MLE
   object$rho.MLE.FULL<- sigma2.MLE.FULL
   object$lnProfileLike<- lnProfileLike

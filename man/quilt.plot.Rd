@@ -1,9 +1,9 @@
+%#
 %# fields  is a package for analysis of spatial data written for
-%# the R software environment .
-%# Copyright (C) 2018
-%# University Corporation for Atmospheric Research (UCAR)
-%# Contact: Douglas Nychka, nychka@mines.edu,
-%# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+%# the R software environment.
+%# Copyright (C) 2021 Colorado School of Mines
+%# 1500 Illinois St., Golden, CO 80401
+%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -17,7 +17,8 @@
 %# You should have received a copy of the GNU General Public License
 %# along with the R software environment if not, write to the Free Software
 %# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-%# or see http://www.r-project.org/Licenses/GPL-2    
+%# or see http://www.r-project.org/Licenses/GPL-2
+%##END HEADER
 
 \name{quilt.plot}
 \alias{quilt.plot}
@@ -34,9 +35,11 @@ quilt.plot(x, y, z, nx = 64, ny = 64,  grid = NULL,
            add.legend=TRUE,add=FALSE, nlevel=64, 
            col = tim.colors(nlevel),
            nrow=NULL, ncol=NULL,FUN =
-                 NULL, plot=TRUE, na.rm=FALSE, ...)
+                 NULL, plot=TRUE, na.rm=FALSE, 
+                 boundary.grid = FALSE, ...)
                  
-bubblePlot(x, y, z, col = tim.colors, horizontal = FALSE,
+bubblePlot(x, y, z, col = viridis::viridis(256), 
+       zlim=NULL, horizontal = FALSE,
                  legend.cex = 1, legend.lab = NULL, legend.line = 2,
                  legend.shrink = 0.9, legend.width = 1.2, legend.mar =
                  ifelse(horizontal, 3.1, 5.1), axis.args = NULL,
@@ -63,12 +66,16 @@ in x the z vector  }
   \item{col}{Color function or the color scale for the image, the   default is the tim.colors  function --
     a pleasing spectrum for quilt.plot and the  modern and versitle
      viridis for bubblePlot }
+  \item{boundary.grid}{If FALSE the passed grid is considered to be the  midpoints of the grid cells. 
+  If TRUE then these are assumed to define corners and the number of boxes is one less in each dimension.}
+     
     \item{plot}{If FALSE just returns the image object instead of plotting it.}
     \item{FUN}{The function to apply to values that are common to a grid
     box. The default is to find the mean. (see \code{as.image}).}
     \item{na.rm}{If FALSE NAs are not removed from zand so a grid box
     even one of these values may be an NA. (See details below.)}
   \item{size}{Size of bubble dots in cex units. Can be a vector to procduce different size points in the scatterplot.}
+  \item{zlim}{Numerical range to determine the colorscale. If omitted the range of z is used. }
   \item{\dots}{ for quilt.plot  arguments to be passed to the \code{image.plot}
   function. For bubblePlot arguments to be passed to the \code{plot}
   function if \code{add=FALSE}, the default and to the \code{points}
@@ -166,7 +173,7 @@ to add the color bar legend are already available from the image.plot functio.
 }
 
 \author{D.Nychka}
-\seealso{ as.image, image.plot, lattice, persp, drape.plot,  } 
+\seealso{ as.image, discretize.image, image.plot, lattice, persp, drape.plot,  } 
 \examples{
 
 data( ozone2)
@@ -184,12 +191,6 @@ labels=c("low","bckgrd","med", "high"))
 table( O3Levels)
 bubblePlot( ozone2$lon.lat, O3Levels )
 US( add=TRUE, col="magenta", lwd=2)
-
-
-
-
-
-
 
 ### adding a common legend strip "by hand"
 ## to a panel of plots 
@@ -209,6 +210,21 @@ US( add=TRUE)
 par( oma=c(0,0,0,1))
 image.plot(zlim=zr,legend.only=TRUE, col=coltab)
 # may have to adjust number of spaces in oma to make this work.
-  }
-  
+#  adding some grid lines  and using the boundary.grid option
+# note that in this case grid boxes drawn to match lon/lats
+data( ozone2)
+lon<- ozone2$lon.lat[,1]
+lat<- ozone2$lon.lat[,2]
+z<- ozone2$y[16,]
+
+gridList<- list( x=-94 :-81, 
+                 y= 36:45 ) 
+
+quilt.plot( lon, lat, z, grid= gridList, boundary.grid = TRUE,
+             col=viridis(256) )
+# add some gird lines
+xline( gridList$x , col="grey", lwd=1, lty=1)
+yline( gridList$y, col="grey", lwd=1, lty=2)
+}
+
 \keyword{hplot}% at least one, from doc/KEYWORDS

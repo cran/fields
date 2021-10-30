@@ -1,9 +1,9 @@
+%#
 %# fields  is a package for analysis of spatial data written for
-%# the R software environment .
-%# Copyright (C) 2018
-%# University Corporation for Atmospheric Research (UCAR)
-%# Contact: Douglas Nychka, nychka@mines.edu,
-%# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+%# the R software environment.
+%# Copyright (C) 2021 Colorado School of Mines
+%# 1500 Illinois St., Golden, CO 80401
+%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -17,7 +17,8 @@
 %# You should have received a copy of the GNU General Public License
 %# along with the R software environment if not, write to the Free Software
 %# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-%# or see http://www.r-project.org/Licenses/GPL-2    
+%# or see http://www.r-project.org/Licenses/GPL-2
+%##END HEADER
 \name{spatialProcess}
 \alias{spatialProcess}
 \alias{spatialProcessSetDefaults}
@@ -56,6 +57,7 @@ spatialProcess(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
                   gridARange = NULL,
                   gridLambda = NULL,
                  CILevel= .95,
+                  iseed = 303,
                            ...)
 \method{summary}{spatialProcess}(object,  ...)
 \method{print}{spatialProcess}(x, digits = 4, ...)
@@ -163,6 +165,8 @@ extra time and is not necessary so the default is FALSE. }
  \item{REML}{ If TRUE the parameters are found by restricted maximum likelihood.}
  
  \item{verbose}{If TRUE print out intermediate information for debugging.}
+ 
+ \item{iseed}{A seed to fix the random number stream used to compute the effective degrees of freedom using the random trace method. Setting this seed will not affect any random numnber generation outside this function. }
 
   \item{\dots}{
   	Any other arguments that will be passed to the \code{mKrig} function and interpreted
@@ -535,7 +539,6 @@ points( x, col="magenta")
 title("Matern sm= .5")
 set.panel(1,1)
 }
-
 
 \dontrun{
 ### comparison with GeoR

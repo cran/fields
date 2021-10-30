@@ -1,9 +1,9 @@
+%#
 %# fields  is a package for analysis of spatial data written for
-%# the R software environment .
-%# Copyright (C) 2018
-%# University Corporation for Atmospheric Research (UCAR)
-%# Contact: Douglas Nychka, nychka@mines.edu,
-%# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+%# the R software environment.
+%# Copyright (C) 2021 Colorado School of Mines
+%# 1500 Illinois St., Golden, CO 80401
+%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -17,7 +17,8 @@
 %# You should have received a copy of the GNU General Public License
 %# along with the R software environment if not, write to the Free Software
 %# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-%# or see http://www.r-project.org/Licenses/GPL-2    
+%# or see http://www.r-project.org/Licenses/GPL-2
+%##END HEADER
 \name{mKrig}
 \alias{mKrig}
 \alias{predict.mKrig}
@@ -40,8 +41,8 @@ covariance paramters.
 \usage{
 mKrig(x, y, weights = rep(1, nrow(x)), Z = NULL,
                  cov.function = "stationary.cov", cov.args = NULL,
-                 lambda = 0, m = 2, chol.args = NULL, find.trA = TRUE,
-                 NtrA = 20, iseed = NA, llambda = NULL, na.rm = FALSE,
+                 lambda = NA, m = 2, chol.args = NULL, find.trA = TRUE,
+                 NtrA = 20, iseed = NA,  na.rm = FALSE,
                  collapseFixedEffect = TRUE, tau = NA, sigma2 = NA,
                  ...)
 \method{predict}{mKrig}( object, xnew=NULL,ynew=NULL, grid.list = NULL,
@@ -106,8 +107,6 @@ If TRUE will estimate the effective degrees of freedom using
   
 \item{lambda}{ Smoothing parameter or equivalently the ratio between 
   the nugget and process varainces.}
-
-\item{llambda}{If not \code{NULL} then \code{lambda = exp( llambda)}}
 
 \item{m}{ The degree of the polynomial used in the fixed part.
 This is follows the thin plate spline convention that the degree is m-1. 
@@ -474,7 +473,7 @@ options( spam.nearestdistnnz=c(416052,400))
 }
 }
 \references{
-\url{https://github.com/NCAR/Fields}
+\url{https://github.com/dnychka/fieldsRPackage}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -1,9 +1,9 @@
+%#
 %# fields  is a package for analysis of spatial data written for
-%# the R software environment .
-%# Copyright (C) 2018
-%# University Corporation for Atmospheric Research (UCAR)
-%# Contact: Douglas Nychka, nychka@mines.edu,
-%# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+%# the R software environment.
+%# Copyright (C) 2021 Colorado School of Mines
+%# 1500 Illinois St., Golden, CO 80401
+%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -17,7 +17,8 @@
 %# You should have received a copy of the GNU General Public License
 %# along with the R software environment if not, write to the Free Software
 %# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-%# or see http://www.r-project.org/Licenses/GPL-2    
+%# or see http://www.r-project.org/Licenses/GPL-2
+%##END HEADER
 \name{NorthAmericanRainfall}
 \alias{NorthAmericanRainfall}
 \docType{data}
@@ -59,7 +60,7 @@ Use \code{NorthAmericanRainfall$orientation} to access the stereographic project
 The monthly data used to construct this summary was generously provided by Xuebin Zhang, however,
 the orignal source is freely available as the Global Historical Climate Network Version 2 Precipitation
 quality controlled, curated and served by the US National Center for Environmental Information. 
-The adjusted data from this archive has been modified from its raw form to make the record more homogenous. Heterogenities can come from a variety of sources such as a moving the station a short distance or changes in instruments. See \url{https://www.ncdc.noaa.gov} and goto data-access and then GHCN. 
+The adjusted data from this archive has been modified from its raw form to make the record more homogenous. Heterogenities can come from a variety of sources such as a moving the station a short distance or changes in instruments. See the  National Centers for Envrionmental Information then Access Data  and then GHCN. 
 }
 \examples{
 data(NorthAmericanRainfall)

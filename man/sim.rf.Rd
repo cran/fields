@@ -1,9 +1,9 @@
+%#
 %# fields  is a package for analysis of spatial data written for
-%# the R software environment .
-%# Copyright (C) 2018
-%# University Corporation for Atmospheric Research (UCAR)
-%# Contact: Douglas Nychka, nychka@mines.edu,
-%# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+%# the R software environment.
+%# Copyright (C) 2021 Colorado School of Mines
+%# 1500 Illinois St., Golden, CO 80401
+%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -17,7 +17,8 @@
 %# You should have received a copy of the GNU General Public License
 %# along with the R software environment if not, write to the Free Software
 %# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-%# or see http://www.r-project.org/Licenses/GPL-2    
+%# or see http://www.r-project.org/Licenses/GPL-2
+%##END HEADER
 
 \name{circulantEmbedding}
 \alias{sim.rf}
@@ -35,7 +36,8 @@ circulant embedding.
 sim.rf(obj)
 circulantEmbedding(obj)
 circulantEmbeddingSetup( 
-     grid, M = NULL, cov.function="stationary.cov", cov.args=NULL, ...)
+     grid, M = NULL, cov.function="stationary.cov", cov.args=NULL,delta=NULL,
+        ...)
 
 }
 \arguments{
@@ -58,7 +60,7 @@ in finding distances.}
 
 \item{cov.args}{A list of arguments to include with the covariance function, Eg. aRange and 
 smoothness for the Matern.}
-
+\item{delta}{If NULL the spatial domain is artifically doubled in size in all dimensions to account for the periodic wrapping of the fft. If  passed this is the amount to extend the domain and can be less than double if a compact covariance function is used. }
 \item{\dots}{For convenience any other arguments to pass to the covariance function. }
 }
 

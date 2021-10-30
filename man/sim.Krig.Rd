@@ -1,9 +1,9 @@
+%#
 %# fields  is a package for analysis of spatial data written for
-%# the R software environment .
-%# Copyright (C) 2018
-%# University Corporation for Atmospheric Research (UCAR)
-%# Contact: Douglas Nychka, nychka@mines.edu,
-%# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+%# the R software environment.
+%# Copyright (C) 2021 Colorado School of Mines
+%# 1500 Illinois St., Golden, CO 80401
+%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -17,7 +17,8 @@
 %# You should have received a copy of the GNU General Public License
 %# along with the R software environment if not, write to the Free Software
 %# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-%# or see http://www.r-project.org/Licenses/GPL-2    
+%# or see http://www.r-project.org/Licenses/GPL-2
+%##END HEADER
 
 \name{sim.spatialProcess}
 \alias{sim.Krig}
@@ -25,7 +26,7 @@
 \alias{sim.spatialProcess}
 \alias{sim.Krig.approx}
 \alias{sim.mKrig.approx}
-
+\alias{simLocal.mKrig}
 
 \title{Conditional simulation of a spatial process}
 \description{
@@ -41,17 +42,29 @@ to stationary correlation functions.
 sim.spatialProcess(object, xp,  M = 1, verbose = FALSE, ...)
 simSpatialData(object,  M = 1, verbose = FALSE)
 
-sim.Krig(object, xp, M = 1, verbose = FALSE, ...)
-
-sim.Krig.approx(object, grid.list = NULL, M = 1, nx = 40, ny = 40,
-                 verbose = FALSE, extrap = FALSE,...)
-
+simLocal.mKrig(mKrigObject,  
+    predictionGridList = NULL,
+    simulationGridList = NULL, 
+        gridRefinement = 1, 
+                    np = 2, 
+                     M = 1,
+                    nx = 80,
+                    ny = 80, 
+               verbose = FALSE,
+               delta = NULL, giveWarnings = TRUE,
+                          ...)
 sim.mKrig.approx(mKrigObject, predictionPoints = NULL,
                  predictionPointsList = NULL, simulationGridList =
                  NULL, gridRefinement = 5, gridExpansion = 1 + 1e-07, M
                  = 1, nx = 40, ny = 40, nxSimulation = NULL,
                  nySimulation = NULL, delta = NULL, verbose = FALSE,...)
  
+sim.Krig(object, xp, M = 1, verbose = FALSE, ...)
+
+sim.Krig.approx(object, grid.list = NULL, M = 1, nx = 40, ny = 40,
+                 verbose = FALSE, extrap = FALSE,...)
+
+
                               
 
 } 
@@ -76,19 +89,23 @@ circulant covariance function.  }
 grid. This is used to increase the simulation domain so that the
 circulant embedding algorithm works.}
 
-  \item{mKrigObject}{An mKrig Object}
+\item{giveWarnings}{If true will warn when more than one observation is in a grid box. This is instead of giving an error and stopping.}
+
+  \item{mKrigObject}{An mKrig Object (or spatialProcess object)}
 
  
   \item{M}{Number of draws from conditional distribution.}
-
+   \item{np}{Degree of nearest neighbors to use. Default \code{np=2} uses 16
+   points in a 4X4 grid for prediction of the off grid point. }
   \item{nx}{ Number of grid points in prediction locations for x coordinate.}
   \item{ny}{ Number of grid points in  prediction locations for x coordinate.}
+  
 
   \item{nxSimulation}{ Number of grid points in the circulant embedding simulation x coordinate.}
   \item{nySimulation}{ Number of grid points in the circulant embedding simulation x coordinate.}
 
   \item{object}{A Krig object.}
-
+\item{predictionGridList}{A grid list specifying the grid locations for the conditional samples. }
   \item{predictionPoints}{A matrix of locations defining the 
           points for evaluating the predictions.}
 
@@ -115,18 +132,18 @@ or from the range and and \code{nxSimulation}, \code{nySimulation}.}
 \details{
 
 These functions generate samples from an unconditional or conditional multivariate (spatial) 
-distribution, or an approximate one. The  \strong{unconditiona} simulation function,
+distribution, or an approximate one. The  \strong{unconditional} simulation function,
 \code{simSpatialData},
 is a handy way to generate synthetic observations from a fitted model.
 Typically one would use these for a parametric bootstrap.
-The functions that simulate \strong{conditional} distributions arre much more invovled
+The functions that simulate \strong{conditional} distributions are much more involved
 in their coding. They are useful
 for describing the uncertainty in predictions using the estimated spatial 
 process under Gaussian assumptions. An important assumption throughout 
 these functions is that all covariance parameters are fixed at their 
 estimated or prescribed values from the passed object. Although these functions might
 be coded up easily by the users these
-versions have the advantage hat theytake the \code{mKrig}, \code{spatialProcess} or
+versions have the advantage that they take the \code{mKrig}, \code{spatialProcess} or
 \code{Krig} objects as a way to specify the
 model in an unambiguous way. 
 
@@ -157,9 +174,7 @@ The outline of the algorithm is
  the actual data. Call this h.hat(x) and this is the conditional mean. 
 
 1) Generate an unconditional spatial process and from this process
-simluate synthetic observations.  At this point the approximation is
-introduced where the field at the observation locations is
-approximated using interpolation from the nearest grid points.
+simluate synthetic observations. 
 
 2) Use the spatial prediction model ( using the true covariance) to
 estimate the spatial process at unobserved locations.
@@ -168,6 +183,10 @@ estimate the spatial process at unobserved locations.
 prediction based on synthetic observations. Call this e(x).
 
 4) h.hat(x) + e(x) is a draw from [h(x) | Y ].
+
+The approximations come int step 1).
+Here the field at the observation locations is
+approximated using interpolation from the nearest grid points.
 
 
 \code{sim.spatialProcess} Follows this algorithm exactly. For the case of an
@@ -183,6 +202,8 @@ The naming is through convenience.
 drop.Z=TRUE or FALSE will determine whether the conditional simulation 
 includes the covariates Z or not. (See example below.) 
 
+
+\code{simNN.mKrig}
 
 \code{sim.Krig.approx} and \code{sim.mKrig.approx} evaluate the
 conditional surface on grid and simulates the values of h(x) off the
@@ -231,20 +252,67 @@ e.g. if \code{simOut} is the output object then to plot the 3rd draw:
 \author{Doug Nychka}
 \seealso{ sim.rf, Krig, spatialProcess}
 \examples{
+## 10 member ensemble for the O3 data
+
+\dontrun{
+data( "ozone2")
+mKrigObject<- spatialProcess( ozone2$lon.lat, ozone2$y[16,],
+                              smoothness=.5)
+
+nx<- 65
+ny<- 65
+
+xGridList<- fields.x.to.grid( mKrigObject$x, nx=nx, ny=ny)
+xGrid<- make.surface.grid( xGridList)
+
+allTime0<- system.time(
+ look0<- sim.spatialProcess(mKrigObject, xp= xGrid, M=10)
+)
+print( allTime0)
+
+## Local simulation with extra refinement of the grid for embedding
+## and same grid size for prediction 
+## this runs much faster compared to exact method above 
+## as nx, ny are increased  e.g. nx= 128, ny=128 is dramatic difference 
+
+allTime<- system.time(
+  look<- simLocal.mKrig(mKrigObject, M=10,nx=nx, ny=ny,
+                     gridRefinement = 3,
+                     np=3)
+) 
+print( allTime)
+print( look$timing)
+}
+
 \dontrun{
 ## A simple example for setting up a bootstrap 
 ## M below should be
-## set to much larger sample size ( e.g. M <- 1000) for better
+## set to much larger sample size ( e.g. M <- 200) for better
 ## statistics
 
 data( ozone2)
 obj<- spatialProcess( ozone2$lon.lat,ozone2$y[16,] )
 aHat<- obj$summary["aRange"]
 lambdaHat<- obj$summary["lambda"]
+
 ######### boot strap 
-set.seed(123)
+# create M independent copies of the observation vector
+# here we just grab the model information from the 
+# spatialProcess object above.
+#  
+# However, one could just create the list 
+#  obj<- list( x= ozone2$lon.lat,
+#       cov.function.name="stationary.cov",
+#     summary= c( tau= 9.47, sigma2= 499.79, aRange= .700),
+#    cov.args= list( Covariance="Matern", smoothness=1.0),
+#     weights= rep( 1, nrow(ozone2$lon.lat) )
+# )
+# Here summary component  has the parameters
+# tau, sigma2 and aRange
+# and cov.args component has the remaining ones.
+
+set.seed(223)
 M<- 25
-# create M indepedent copies of the observation vector
 ySynthetic<- simSpatialData( obj, M)
 
 bootSummary<- NULL
@@ -293,7 +361,7 @@ cat( fill= TRUE)
  # Rocky Mountain elevation fields data set.   
    data( RMelevation)
    COElevGrid<- interp.surface( RMelevation, COGridPoints )
-# NOTE call to sim.Krig treats the grid points as just a matrix
+# NOTE call to sim.spatialProcess treats the grid points as just a matrix
 # of locations the plot has to "reshape" these into a grid 
 # to use with image.plot 
    SEout<- sim.spatialProcess( fit1E, xp=COGridPoints,  Z= COElevGrid, M= 30)

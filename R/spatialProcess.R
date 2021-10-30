@@ -1,9 +1,9 @@
+#
 # fields  is a package for analysis of spatial data written for
-# the R software environment .
-# Copyright (C) 2018
-# University Corporation for Atmospheric Research (UCAR)
-# Contact: Douglas Nychka, nychka@ucar.edu,
-# National Center for Atmospheric Research, PO Box 3000, Boulder, CO 80307-3000
+# the R software environment.
+# Copyright (C) 2021 Colorado School of Mines
+# 1500 Illinois St., Golden, CO 80401
+# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-# or see http://www.r-project.org/Licenses/GPL-2    
+# or see http://www.r-project.org/Licenses/GPL-2
+##END HEADER
 spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
                   mKrig.args = NULL,
                 cov.function = NULL, 
@@ -34,7 +35,8 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
                profileGridN  = 15, 
                   gridARange = NULL,
                   gridLambda = NULL,
-                 CILevel= .95,
+                     CILevel = .95,
+                       iseed = 303, 
                            ...) {
  
 #  THE RULES: 
@@ -118,6 +120,15 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
                                  GCV = GCV,
                     cov.params.start = cov.params.start)
   # use grid search to set starting values
+    if( all(is.na(InitialGridSearch$summary) )) {
+      cat("spatialProcess: Problems with optim in grid search", fill=TRUE)
+      cat("returned object includes the likelihood evaluations up to the 
+         error", fill=TRUE)
+      InitialGridSearch$optimSuccess<- FALSE
+      InitialGridSearch$call<- match.call()
+      return(InitialGridSearch)
+    }
+    
     if( verbose){
       print(InitialGridSearch$indMax )
     }
@@ -153,7 +164,27 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
                              REML = REML,
                              GCV = GCV,
                              hessian = TRUE,
-                             verbose = verbose) 
+                             verbose = verbose,
+                             iseed = iseed)
+       
+     
+   
+   if( is.na(MLEInfo$summary[1])){
+     cat("spatialProcess: Problems with optim in mKrigMLEJoint ", 
+         fill=TRUE)
+     cat("returned object includes the likelihood evaluations up to the 
+         error", fill=TRUE)
+     MLEInfo$optimSuccess<- FALSE
+     MLEInfo$call<- match.call()
+     return(MLEInfo)
+   }
+     
+  HessianResults<- diag( -1*solve(MLEInfo$optimResults$hessian))
+   if( any( HessianResults < 0) ) {
+       warning("Numerical hessian from optim indicates
+                   MLE is not a maximum")
+     }
+      
    }
    
 ################################################################################
@@ -167,7 +198,6 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
 # if all parameters are fixed -- don't mess with cov.args   
    if( obj$CASE == 0){
      obj$cov.argsFull <-  obj$cov.args
-     
    }
    else{
       dupParameters<- match( names(MLEInfo$pars.MLE ), names(cov.args) )
@@ -203,7 +233,6 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
     obj$MLESummary <- mKrigObj$summary
     obj$InitialGridSearch<- NULL
     obj$parameterCovariance<- NULL
-    
   }
   
   if( obj$CASE==1){
@@ -214,6 +243,9 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
 #  Fill in all info related to finding MLE
 ####################################################################
   if( obj$CASE!=0){
+    # logical to distinguish from optim failure
+    obj$optimSuccess<-TRUE
+    #
     obj$InitialGridSearch<- InitialGridSearch
     obj$MLEInfo<- MLEInfo
     obj$MLESummary <- MLEInfo$summary
@@ -223,8 +255,10 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
 ####################################################################
 # Approximate large sample confidence intervals on the transformed scale following by
 #	then transform back to original scale (see MLEInfo$par.transform)
+# These are filled with NAs when numerical Hessian is not
+# positive definite
 ####################################################################	
-      obj$CITable<- confidenceIntervalMLE(obj, CILevel)
+    obj$CITable<- confidenceIntervalMLE(obj, CILevel)
   }
   
   # combine everything into the output list, mKrig components first. 
