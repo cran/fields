@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2
 ##END HEADER
-"simLocal.mKrig" <- function(mKrigObject,  
+"simLocal.spatialProcess" <- function(mKrigObject,  
     predictionGridList = NULL,
     simulationGridList = NULL, 
         gridRefinement = 1, 
@@ -29,6 +29,8 @@
                     ny = 80, 
                verbose = FALSE,
                  delta = NULL, giveWarnings=TRUE,
+                 fast = FALSE, 
+                 NNSize = 5, 
                  
                           ...)
     {
@@ -67,11 +69,11 @@
    
 # check that predictionGrid is equally spaced
     testX<- sd(diff(predictionGridList$x))/ mean(diff(predictionGridList$x) )
-    if(  testX > 1e-9  ){
+    if(  testX > 1e-8  ){
       stop( "predictionGridList$x must be equally spaced")
      }
     testY<- sd(diff(predictionGridList$x))/ mean(diff(predictionGridList$x) )
-    if(  testY > 1e-9  ){
+    if(  testY > 1e-8  ){
       stop( "predictionGridList$y must be equally spaced")
     }
     #
@@ -90,14 +92,14 @@
                                              dy/gridRefinement )
          )
 # round off the grids so that they match
-         predictionGridList$x<- signif(predictionGridList$x, 9)
-         predictionGridList$y<- signif(predictionGridList$y, 9)
-         simulationGridList$x<- signif(simulationGridList$x, 9)
-         simulationGridList$y<- signif(simulationGridList$y, 9)
+         predictionGridList$x<- signif(predictionGridList$x, 8)
+         predictionGridList$y<- signif(predictionGridList$y, 8)
+         simulationGridList$x<- signif(simulationGridList$x, 8)
+         simulationGridList$y<- signif(simulationGridList$y, 8)
         
-         indexSubset<-  list( x=  match(predictionGridList$x,
+         indexSubset<-  list( x=match(predictionGridList$x,
                                         simulationGridList$x),
-                              y = match(predictionGridList$y,
+                              y=match(predictionGridList$y,
                                         simulationGridList$y)
                               )
          
@@ -142,13 +144,16 @@
                                     simulationGridList,
                                     mKrigObject,
                                     np=np,
-                                    giveWarnings= giveWarnings,
+                                    giveWarnings= giveWarnings
                                     )
      )[3]
     #
     # find conditional mean field from initial fit
+    
       hHat <- predictSurface(mKrigObject,
-                           grid.list = predictionGridList,
+                           gridList = predictionGridList,
+                           fast=fast, 
+                           NNSize= NNSize,
                             ...)$z
     # setup output array to hold ensemble
     out <- array(NA, c( nx, ny, M))
@@ -163,8 +168,7 @@
      for (k in 1:M) {
         cat(k, " ")
         # simulate full field
-      
-       
+    
         t1[k]<- system.time(
         hTrue<- sqrt(sigma2) * circulantEmbedding(CEObject)
         )[3]
@@ -188,17 +192,25 @@
         #
         
         t3[k]<-system.time(
-        spatialError <- predictSurface(
-                               mKrigObject,  
-                   grid.list = predictionGridList, 
-                        ynew = ySynthetic, 
-                               ...)$z
+          
+          spatialError <- predictSurface.mKrig(mKrigObject,
+                                 gridList = predictionGridList,
+                                 ynew = ySynthetic,
+                                 fast=fast, 
+                                 NNSize= NNSize,
+                                 giveWarnings = FALSE,
+                                 ...)$z
+         
         )[3]
-        spatialError <- spatialError - hTrue[ indexSubset$x,indexSubset$y] 
+ 
+        
+        spatialError <- spatialError - hTrue[indexSubset$x, indexSubset$y] 
         # add the error to the actual estimate  (conditional mean)
         out[,, k] <- hHat + spatialError
         
      }
+    
+    cat(" ", fill=TRUE)
     
     return(list(x = predictionGridList$x,
                 y = predictionGridList$y,

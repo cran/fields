@@ -412,7 +412,7 @@ data(COmonthlyMet)
   set.panel(1,2)
   
 # plots of the fitted surface and surface of prediction standard errors   
-  out.p<-predictSurface( fit1E, grid.list=CO.Grid,
+  out.p<-predictSurface( fit1E,CO.Grid,
                              ZGrid= CO.elevGrid, extrap=TRUE)
 
   imagePlot( out.p, col=larry.colors())
@@ -420,7 +420,7 @@ data(COmonthlyMet)
   contour( CO.elevGrid, add=TRUE, levels=seq(1000,3000,,5), col="black")
   title("Average Spring daily min. temp in CO")
 
-  out.p2<-predictSurfaceSE( fit1E, grid.list=CO.Grid,
+  out.p2<-predictSurfaceSE( fit1E,CO.Grid,
                          ZGrid= CO.elevGrid,
                          extrap=TRUE, verbose=FALSE) 
 
@@ -540,29 +540,7 @@ title("Matern sm= .5")
 set.panel(1,1)
 }
 
-\dontrun{
-### comparison with GeoR
-data(ozone2)
-    x<- ozone2$lon.lat
-    y<- ozone2$y[16,]
-    good<-!is.na(y)
-    x1<- x[good,]
-    y1<- y[good]
-    
-# spatialProcess takes longer because of grid search on aRange.    
-    obj<- spatialProcess( x1, y1,
-                          mKrig.args = list(m=1),
-  			                  smoothness = .5)
-    library( geoR)
-    ml.n <- likfit(coords= x1, data=y1, ini = c(570, 3), nug = 50)
-    # compare to 
-    stuffFields<- obj$MLESummary[c("lnProfileLike.FULL",
-                                   "aRange","tau","sigma2")]
-    stuffGeoR<- c( ml.n$loglik, ml.n$phi, sqrt(ml.n$nugget),
-                   ml.n$sigmasq) 
-    test.for.zero(  max(stuffFields/stuffGeoR), 1, tol=.004)
-   
-}
+
 }
 \keyword{ spatial}
 % __ONLY ONE__ keyword per line
