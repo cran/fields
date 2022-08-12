@@ -1,6 +1,6 @@
 Package: fields
-Version: 14.0
-Date: 2022-07-03
+Version: 14.1
+Date: 2022-08-11
 Title: Tools for Spatial Data
 Authors@R: c( person("Douglas", "Nychka", role = c("aut", "cre"),
                email = "douglasnychka@gmail.com"),
@@ -48,7 +48,7 @@ Depends: R (>= 3.5.0), methods, spam, viridis
 Imports: maps
 NeedsCompilation: yes
 Repository: CRAN
-Packaged: 2022-07-05 20:35:37 UTC; nychka
+Packaged: 2022-08-11 22:07:31 UTC; nychka
 Author: Douglas Nychka [aut, cre],
   Reinhard Furrer [aut],
   John Paige [aut],
@@ -56,4 +56,4 @@ Author: Douglas Nychka [aut, cre],
   Florian Gerber [aut],
   Matthew Iverson [aut],
   University Corporation for Atmospheric Research [cph]
-Date/Publication: 2022-07-05 21:40:02 UTC
+Date/Publication: 2022-08-12 06:50:06 UTC

@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2021 Colorado School of Mines
+# Copyright (C) 2022 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 #
@@ -29,148 +29,150 @@
                     ny = 80, 
                verbose = FALSE,
                  delta = NULL, giveWarnings=TRUE,
-                 fast = FALSE, 
-                 NNSize = 5, 
-                 
+                  fast = FALSE, 
+                NNSize = 5, 
                           ...)
+#
+# NOTE throughout $x is first dimension of the grid in a gridList but also 
+# $x in mKrig object is the _matrix_ of locations
+# 
     {
-   if (ncol(mKrigObject$x) != 2) {
-        stop("conditional simulation only implemented for 2 dimensions")
-    }
-    nObs<- nrow( mKrigObject$x)
-    # create prediction set of points based on what is passed
-    if (is.null(predictionGridList)) {
-        # these adjustments insure there are enough grid
-        # points beyond the range of the locations. 
-        # Put xr[1] in the middle of the  npth grid box
-        # and xr[2] in to the  nx - np
-        xr<- range(mKrigObject$x[,1] )
-        yr<- range(mKrigObject$x[,2] )
-        dx<- (xr[2]-xr[1])/(nx - 2*np)
-        dy<- (yr[2]-yr[1])/(ny - 2*np)
-        #xg<- seq( xr[1] - dx*(np-1), xr[2] + dx*(np),
-        #           length.out=nx)  - dx/2
-        xg <- 0:(nx-1)*dx +  (xr[1] - dx*(np-1/2) )
-        #yg<- seq( yr[1] - dy*(np-1), yr[2] + dy*(np),
-        #           length.out=ny)  - dy/2
-        yg <- 0:(ny-1)*dy +  (yr[1] - dy*(np-1/2) )
-        predictionGridList<- list( x = xg, y=yg)
-        if( verbose){
-          cat("predictionGridList", fill=TRUE)
-          print( predictionGridList)
-        }
-    }
-    else{
-
-        nx<- length( predictionGridList$x)
-        ny<- length( predictionGridList$y)
-    }
-    
+  
+   nObs<- nrow( mKrigObject$x)
+   sDimension<- ncol(mKrigObject$x)
+   if ( sDimension > 2) {
+        stop("conditional simulation only implemented for 1 and 2 dimensions")
+   }
    
+   if( sDimension == 1 & fast ){
+     stop("fast prediction not implemented in 1 D")
+   }
+   
+    # create prediction set of points based on what is passed
+    # and if the grid is not specified 
+   if (is.null(predictionGridList)) {
+     # these adjustments insure there are enough grid
+     # points beyond the range of the locations.
+     # Put xr[1] in the middle of the  npth grid box
+     # and xr[2] in to the  nx - np
+     predictionGridList<- makePredictionGridList(
+       mKrigObject=mKrigObject, 
+       nx=nx, 
+       ny=ny, 
+       np=np
+     )
+   }
+   
+   nx <- length(predictionGridList$x)
+   ny <- ifelse(sDimension>=2, length(predictionGridList$y) ,1 )
+   
+# 
 # check that predictionGrid is equally spaced
-    testX<- sd(diff(predictionGridList$x))/ mean(diff(predictionGridList$x) )
-    if(  testX > 1e-8  ){
-      stop( "predictionGridList$x must be equally spaced")
-     }
-    testY<- sd(diff(predictionGridList$x))/ mean(diff(predictionGridList$x) )
-    if(  testY > 1e-8  ){
-      stop( "predictionGridList$y must be equally spaced")
-    }
-    #
-    #
-    dx<- predictionGridList$x[2] - predictionGridList$x[1]
-    dy<- predictionGridList$y[2] - predictionGridList$y[1]
-    
-     if (is.null(simulationGridList)) {
-         
-         simulationGridList<- list( x= seq( min(predictionGridList$x), 
-                                            max(predictionGridList$x),
-                                            dx/gridRefinement)
-                                              ,
-                                    y= seq( min(predictionGridList$y), 
-                                            max(predictionGridList$y),
-                                             dy/gridRefinement )
-         )
-# round off the grids so that they match
+# this is needed because of the fast simulation algorithm
+    checkPredictGrid( predictionGridList) 
+#
+#
+   if (is.null(simulationGridList)) {
+     simulationGridList<- makeSimulationGrid(
+       predictionGridList,
+       gridRefinement)
+   }
+#
+# #
+# # round off the grids so that they match to 8 digits
+# # that way prediction grid is  precisely a subset of
+# # simulation grid
          predictionGridList$x<- signif(predictionGridList$x, 8)
-         predictionGridList$y<- signif(predictionGridList$y, 8)
          simulationGridList$x<- signif(simulationGridList$x, 8)
+         if( sDimension ==2){
+         predictionGridList$y<- signif(predictionGridList$y, 8)
          simulationGridList$y<- signif(simulationGridList$y, 8)
-        
-         indexSubset<-  list( x=match(predictionGridList$x,
-                                        simulationGridList$x),
-                              y=match(predictionGridList$y,
-                                        simulationGridList$y)
-                              )
-         
-         if( any( is.na( indexSubset))){
-             stop("prediction grid is not a subset 
-                  of the simulation grid")
          }
-     }
- # core covariance parameters from spatial model   
+         indexSubset<-  list( x=match(predictionGridList$x,
+                                      simulationGridList$x))
+         # # shortcut to avoid if statement for predicted in for
+         # # loop
+         # indexSubset$y = rep(1, length( indexSubset$x) )
+         if( sDimension ==2){
+         indexSubset$y=match(predictionGridList$y,
+                                      simulationGridList$y)
+         }
+         else{
+           indexSubset$y=1
+         }
+         
+#  
+# core covariance parameters from spatial model   
     tau <-    mKrigObject$summary["tau"]
     sigma2 <- mKrigObject$summary["sigma2"]
     aRange<-  mKrigObject$summary["aRange"]
     Covariance <- mKrigObject$args$Covariance
-    # wipe out some extraneous components that are not used by the Covariance
-    # function.
+# wipe out some extraneous components that are not used by the Covariance
+# function.
     covArgs0 <- mKrigObject$args
-    covArgs0$Covariance<- NULL
+    covArgs0$Covariance<- NULL 
     covArgs0$distMat <- NULL
     covArgs0$onlyUpper<- NULL
     covArgs0$aRange<- NULL
     
-    
-    #
-    # set up various sizes of arrays
+#
+# set up various arrays for reuse during the simulation
     nObs <- nrow(mKrigObject$x)
-    if (verbose) {       
-        cat("nObs, tau, sigma2", nObs, tau, sigma2, fill = TRUE)
-    }
+#  
+    
     timeCESetup<- system.time(
     # set up object for simulating on a grid using circulant embedding
     CEObject<- circulantEmbeddingSetup(simulationGridList,
                                    cov.function = mKrigObject$cov.function,
                                        cov.args = mKrigObject$args,
-                                        delta=delta )
+                                          delta = delta )
     )[3]
+    
+    #
     if (verbose) {
         cat("dim of full circulant matrix ", CEObject$M, 
             fill = TRUE)
     }
-    timeOffGridSetup<- system.time(
-     offGridObject<- offGridWeights( mKrigObject$x,
-                                    simulationGridList,
-                                    mKrigObject,
-                                    np=np,
-                                    giveWarnings= giveWarnings
-                                    )
-     )[3]
+#
+# weights crucial to fast off grid simulation
+#
+      timeOffGridSetup <- system.time(
+        offGridObject <- offGridWeights(
+          mKrigObject$x,
+          simulationGridList,
+          mKrigObject,
+          np = np,
+          giveWarnings = giveWarnings
+        )
+      )[3]
+   
     #
     # find conditional mean field from initial fit
-    
       hHat <- predictSurface(mKrigObject,
                            gridList = predictionGridList,
                            fast=fast, 
                            NNSize= NNSize,
                             ...)$z
-    # setup output array to hold ensemble
+      
+      sdNugget<- tau* sqrt(1/mKrigObject$weights)
+#      
+# setup output array to hold ensemble
+#  in 1D case ny=1 
+#    
     out <- array(NA, c( nx, ny, M))
-    # empty image object to hold simulated fields
-    
-    ##########################################################################################
-    ### begin the big loop
-    ##########################################################################################
-    sdNugget<- tau* sqrt(1/mKrigObject$weights)
-    sdPredictionError<- sqrt(offGridObject$predictionVariance)
     t1<-t2<- t3<- rep( NA, M)
-     for (k in 1:M) {
-        cat(k, " ")
-        # simulate full field
     
+##########################################################################################
+### begin the big loop
+##########################################################################################
+    
+     for (k in 1:M) {
+       if( k%%10 ==0 ){
+        cat(k, " ")
+       }
+        # simulate full field
         t1[k]<- system.time(
-        hTrue<- sqrt(sigma2) * circulantEmbedding(CEObject)
+        hTrue<- as.matrix(sqrt(sigma2) * circulantEmbedding(CEObject))
         )[3]
         
         # NOTE: fixed part of model (null space) does not need to be simulated
@@ -183,17 +185,12 @@
                     (offGridObject$SE)%*%rnorm(nObs) 
               )[3]
         ySynthetic <- hData + sdNugget*rnorm(nObs)
-        if (verbose) {
-            cat("stats for synthetic values", fill = TRUE)
-            print(t(stats(ySynthetic)))
-        }
+        #
         # predict at grid using these data
         # and subtract from synthetic 'true' value
         #
-        
         t3[k]<-system.time(
-          
-          spatialError <- predictSurface.mKrig(mKrigObject,
+            spatialError <- predictSurface.mKrig(mKrigObject,
                                  gridList = predictionGridList,
                                  ynew = ySynthetic,
                                  fast=fast, 
@@ -201,13 +198,16 @@
                                  giveWarnings = FALSE,
                                  ...)$z
          
-        )[3]
+             )[3]
  
         
-        spatialError <- spatialError - hTrue[indexSubset$x, indexSubset$y] 
         # add the error to the actual estimate  (conditional mean)
-        out[,, k] <- hHat + spatialError
-        
+        # subset  hTrue to the prediction grid
+        # note for 1D $y is 1. 
+       
+        out[,, k] <- hHat + (spatialError -  
+                               hTrue[indexSubset$x,indexSubset$y])
+       
      }
     
     cat(" ", fill=TRUE)
@@ -215,15 +215,18 @@
     return(list(x = predictionGridList$x,
                 y = predictionGridList$y,
                 z = out, 
+                hHat= hHat,
                 timing=c( CESetup=timeCESetup,
                           OffSetup=timeOffGridSetup,
                                   CE = median(t1), 
                              OffGrid = median(t2),
                                 mKrig = median(t3)
                           ),
+                gridRefinement=gridRefinement,
                 M= CEObject$M,
-                simulationGridList= simulationGridList,
+                #simulationGridList= simulationGridList,
                 timingFull = cbind( t1, t2,t3),
-             call = match.call()))
+             call = match.call())
+           )
 }
 

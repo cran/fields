@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2021 Colorado School of Mines
+# Copyright (C) 2022 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 #
@@ -95,7 +95,7 @@ sim.spatialProcess<- function(object, xp,  M = 1,
     Schol <- do.call("chol", c(list(x = Sigma), object$chol.args))
     #
     # output matrix to hold results
-    out <- matrix(NA, ncol = m, nrow = M)
+    out <- matrix(NA, ncol = M, nrow = m)
     #
     # find conditional mean field from initial fit
     # (these are added at the predict step).
@@ -124,7 +124,7 @@ sim.spatialProcess<- function(object, xp,  M = 1,
         temp.error <- predict(object, xnew=xp, ynew = y.synthetic, 
                                          ...) - h.true
         # add the error to the actual estimate  (conditional mean)
-        out[k, ] <- h.hat + temp.error 
+        out[,k ] <- h.hat + temp.error 
     }
     out
 }

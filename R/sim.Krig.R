@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2021 Colorado School of Mines
+# Copyright (C) 2022 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 #
@@ -90,7 +90,7 @@
     #
     # output matrix to hold results
     N.full <- nrow(x)
-    out <- matrix(NA, ncol = m, nrow = M)
+    out <- matrix(NA, nrow = m, ncol = M)
     #
     # find conditional mean field from initial fit
     # don't multiply by sd or add mean if this is
@@ -134,7 +134,7 @@
             h.true
         # add the error to the actual estimate  (conditional mean)
         # and adjust by marginal standard deviation
-        out[k, ] <- h.hat + temp.error * temp.sd
+        out[,k ] <- h.hat + temp.error * temp.sd
     }
     out
 }

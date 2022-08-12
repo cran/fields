@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2021 Colorado School of Mines
+# Copyright (C) 2022 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.edu,
 #
@@ -30,10 +30,12 @@
     # and carries along the names of the grid.list variables.
     # along the information as to how it was created.
     # see as.surface
+    # NOTE: for compatibility this works for a 1D grid
+    #
     temp <- as.matrix(expand.grid(grid.list))
     # wipe out row names
     dimnames(temp) <- list(NULL, names(grid.list))
     # set attribute
     attr(temp, "grid.list") <- grid.list
-    temp
+    return(temp)
 }
