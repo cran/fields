@@ -1,6 +1,6 @@
 Package: fields
-Version: 15.2
-Date: 2023-08-17
+Version: 16.2
+Date: 2024-06-27
 Title: Tools for Spatial Data
 Authors@R: c( person("Douglas", "Nychka", role = c("aut", "cre"),
                email = "douglasnychka@gmail.com"),
@@ -13,9 +13,9 @@ Authors@R: c( person("Douglas", "Nychka", role = c("aut", "cre"),
 	     person("Florian", "Gerber", role = "aut",
                email = "flora.fauna.gerber@gmail.com"),
 	     person("Matthew", "Iverson", role = "aut",
-               email = "miverson@mymail.mines.edu"),
-	       person("University Corporation for Atmospheric Research",
-	       role="cph", email="nychka@ucar.edu")
+               email = "miverson@mines.edu"),
+	     person("Rider", "Johnson", role = "aut",
+               email = "riderjohnson.mines.edu")
 	       ) 
 Maintainer: Douglas Nychka <douglasnychka@gmail.com>
 Description: For curve, surface and function fitting with an emphasis
@@ -48,12 +48,12 @@ Depends: R (>= 3.5.0), methods, spam, viridisLite
 Imports: maps
 NeedsCompilation: yes
 Repository: CRAN
-Packaged: 2023-08-17 14:57:28 UTC; nychka
+Packaged: 2024-06-27 20:13:47 UTC; nychka
 Author: Douglas Nychka [aut, cre],
   Reinhard Furrer [aut],
   John Paige [aut],
   Stephan Sain [aut],
   Florian Gerber [aut],
   Matthew Iverson [aut],
-  University Corporation for Atmospheric Research [cph]
-Date/Publication: 2023-08-17 21:02:31 UTC
+  Rider Johnson [aut]
+Date/Publication: 2024-06-27 21:10:02 UTC

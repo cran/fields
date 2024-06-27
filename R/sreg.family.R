@@ -1,9 +1,9 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2022 Colorado School of Mines
+# Copyright (C) 2024 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
-# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -47,8 +47,8 @@
     out <- c(out, out2)
     # number of unique locations
     out$np <- length(out$yM)
-    if( out$np > 5e4){
-        stop("sreg not dimensioned for more than 50000 observations")
+    if( out$np > 8e4){
+        stop("sreg FORTRAN not dimensioned for more than 80000 observations")
         }
     # now set maximum of trace for upper bound of GCV grid search
     if (is.na(trmax)) {

@@ -1,9 +1,9 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2022 Colorado School of Mines
+# Copyright (C) 2024 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
-# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -108,6 +108,9 @@ sim.spatialProcess<- function(object, xp,  M = 1,
     # is still estimated as part of the predict step below
     # create synthetic data
     for (k in 1:M) {
+       if( k%%10==1){
+         cat( k," ")
+       }
         # simulate full field
         h <- t(Schol) %*% rnorm(N.full)
         # value of simulated field at observations

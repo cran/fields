@@ -1,9 +1,9 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2022 Colorado School of Mines
+# Copyright (C) 2024 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
-# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ spatialProcessSetDefaults<- function( x, cov.function,
 {
   
   ## convenient defaults for GP fitting.
-  ## and also sort what starting parameter values are provided
+  ## and also sort out what starting parameter values are provided
   # this code runs on  by perhaps it is useful to see all the defualts and 
   # logic in one place.
   # Note the stranger device below where mKrig.args is created and amended
@@ -51,7 +51,8 @@ spatialProcessSetDefaults<- function( x, cov.function,
     if( is.null(cov.args) ){
       cov.args<- list()
     }
-    if( is.null(cov.args$Covariance )){
+    
+    if( is.null(cov.args$Covariance )&is.null(extraArgs$Covariance )){
       cov.args$Covariance<- "Matern"
       if( is.null(cov.args$smoothness ) 
            & is.null(cov.params.start$smoothness ) 
@@ -68,12 +69,16 @@ spatialProcessSetDefaults<- function( x, cov.function,
   # determine cardinal points if not included in
   # cov.args
     dimX<- ncol( x)
+    mMin<- max(c(2, ceiling(dimX/2 + 0.1)))
   if( is.null( mKrig.args$m)){
     # m should satisfy  2*m-dimX >0
-    mMin<- max(c(2, ceiling(dimX/2 + 0.1))) 
-   
     mKrig.args<- list( mKrig.args, m=mMin )
   }
+
+     if( mKrig.args$m < mMin){
+   stop("m component specified in the mKrig.args list 
+        needs to satisfy 2*m-dimX >0 for the spline to be valid")
+ }
     
 #  
   if( is.null(cov.args)){
@@ -198,12 +203,18 @@ spatialProcessSetDefaults<- function( x, cov.function,
 # Determine linear fixed model if not specified and add in how to find fixed part.
 # collapseFixedEffect is important enough where it is handled at this level.
 #
+  
+  
   if( is.null(mKrig.args)){
+    
     mKrig.args<- list( m=2, collapseFixedEffect=collapseFixedEffect)
+   
   }
   else{
-    if( is.null(mKrig.args$collapseFixedEffect)){
-      mKrig.args$collapseFixedEffect <- collapseFixedEffect
+    if( all(names( mKrig.args)!= "collapseFixedEffect")){
+      
+      mKrig.args<- c( mKrig.args, 
+                      list(collapseFixedEffect= collapseFixedEffect))
     }
   }
   

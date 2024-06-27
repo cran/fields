@@ -1,9 +1,9 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2022 Colorado School of Mines
+# Copyright (C) 2024 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
-# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -58,8 +58,8 @@
     if (length(x) != length(y)) 
         stop("Lengths of x and y must match")
     n <- length(x)
-    if( n > 5e4){
-        stop("splint not dimensioned for more than 50000 observations")
+    if( n > 8e4){
+        stop("splint not dimensioned for more than 80000 observations")
         } 
     # find lambda from eff degrees of freedom if it is passed
     if (!is.na(df)) {
