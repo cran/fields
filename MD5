@@ -1,4 +1,4 @@
-2b3c162d861904d1ec178aacfb2d21b3 *DESCRIPTION
+bde6b3bf89e5ef8ee04d7842122e5dae *DESCRIPTION
 3b1b7ce654d028cbe16127df91148c8b *LICENSE.note
 531c98e8ce21095346bde935580d23a1 *NAMESPACE
 c1996c33b17a2091025d8eb91ddf2a50 *R/BD.R
@@ -29,7 +29,7 @@ c0442c06049ea41c1629510b6e8161cb *R/addLegend.R
 7c286f6c71897dd36b77951134ffd4d4 *R/as.surface.R
 11f75093ed367eaf0435151d580bd5f6 *R/bisection.search.R
 a9ef7e3361bff7113188dc0687f18801 *R/bplot.family.R
-caf93ff66ff70220226f47136aad574e *R/bubblePlot.R
+73b2252f1f760659e2f5ed0c0069c8e6 *R/bubblePlot.R
 3e6f06b842e65cdfe4c1930eef2cdfb3 *R/cat.matrix.R
 a033be2da55354c482dc06590e9d5638 *R/cat.to.list.R
 15f2215a06d11f5d9c6807479ddd3884 *R/ceiling2.R
@@ -43,7 +43,7 @@ df9e6de3c9fc4dbcdfb90a1f7c0c7754 *R/compactToMat.R
 0c58fa476286b264d98a5c9a80f3e264 *R/confidenceIntervalMLE.R
 08919466c5c4812f990b1cda1fc16a9c *R/cover.design.R
 4389ebbb7ccb600e19d64bd536e65497 *R/cubic.cov.R
-c7d404e08dc07ac5feedb9e5dbb0520b *R/describe.R
+8dd1d9320ee58731a5eda704b69966a5 *R/describe.R
 c7d6aa2be6692aa06c6d4200ad3d5644 *R/discretize.image.R
 6e957e4b6d0ae1d4b647f3b5800437fb *R/double.exp.R
 cb78cb756bdeda50e9506bb6262bd8bb *R/drape.color.R
@@ -278,14 +278,14 @@ ece8eba4a57ef96fc1279799c39acd04 *man/poly.image.Rd
 0c96bca989df753e8444aee910eb4989 *man/print.Krig.Rd
 955778c8c72f9d2e99a42e17325f2a7d *man/pushpin.Rd
 0c3a114ba00cacdf2f661a94e3192833 *man/qsreg.Rd
-a506b4fe485b156c82576a8335e77319 *man/quilt.plot.Rd
+cbcff1cd9ec5749dc3ff41b5cada4106 *man/quilt.plot.Rd
 fcaa3f68e1ff7d6b88ba43e6db63cec7 *man/rat.diet.Rd
 9239701de5d1fe697ebbd95c3434992f *man/rdist.Rd
 6f68a6517b54bcbabdc0522031b07277 *man/rdist.earth.Rd
 23a563ade89b2454808fa5f840980cea *man/registeredC.Rd
 732065230d310f168aee033942783e1b *man/ribbon.plot.Rd
 c7440c8135721c21c8d8d99d3a9ccddc *man/set.panel.Rd
-55dc2f58f91edfb8ddfede7ab0ca3e89 *man/sim.Krig.Rd
+1f0b6e0aaad1eb6ea87ee4abe611222d *man/sim.Krig.Rd
 bc2a1769a6e18eb35b340c01aa180651 *man/sim.rf.Rd
 bde530bdeb2227f5f83370ac8ed7f746 *man/smooth.2d.Rd
 1266570bc054d42eab4166974d64bc03 *man/spam2lz.Rd
@@ -303,7 +303,7 @@ df383a861fecf4ce00cdbdd7517582a1 *man/tim.colors.Rd
 150c0f35752032b0bf5a0ae63606a484 *man/vgram.Rd
 c46568a90968215e449c0c39e950df16 *man/vgram.matrix.Rd
 7d8a077ea70c873bbe9b9c02cf261153 *man/world.Rd
-20675c22d5dcc92d632615ec7faa0b8e *man/xline.Rd
+09ab233a39cb7f8ca0d296a4de8d3d36 *man/xline.Rd
 54759109d8ac32a1723b91365c2d4ec5 *man/yline.Rd
 d6621f72345f8b583ba2fc844e436ce1 *src/ExponentialUpperC.c
 8a4db0a4a45d07aaa6b52eef529e8557 *src/RdistEarth.c
