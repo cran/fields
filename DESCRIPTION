@@ -1,5 +1,5 @@
 Package: fields
-Version: 16.3
+Version: 16.3.1
 Date: 2024-09-30
 Title: Tools for Spatial Data
 Authors@R: c( person("Douglas", "Nychka", role = c("aut", "cre"),
@@ -46,9 +46,10 @@ License: GPL (>= 2)
 URL: https://github.com/dnychka/fieldsRPackage
 Depends: R (>= 3.5.0), methods, spam, viridisLite
 Imports: maps
+Suggests: mapproj
 NeedsCompilation: yes
 Repository: CRAN
-Packaged: 2024-09-30 16:37:34 UTC; nychka
+Packaged: 2025-03-08 07:03:31 UTC; hornik
 Author: Douglas Nychka [aut, cre],
   Reinhard Furrer [aut],
   John Paige [aut],
@@ -56,4 +57,4 @@ Author: Douglas Nychka [aut, cre],
   Florian Gerber [aut],
   Matthew Iverson [aut],
   Rider Johnson [aut]
-Date/Publication: 2024-09-30 22:30:05 UTC
+Date/Publication: 2025-03-08 08:58:41 UTC
