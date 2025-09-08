@@ -19,14 +19,16 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2
 ##END HEADER\
-offGridWeights2D<-function(s, gridList, np=2,
+offGridWeights2D<-function(s, gridList, NNSize=2,
                          mKrigObject=NULL, 
                          Covariance=NULL, covArgs=NULL,
                          aRange=NULL, sigma2=NULL, 
                          giveWarnings=TRUE,
                          debug=FALSE,
-                         findCov=TRUE
+                         findCov=TRUE,
+                         verbose=TRUE
                    ){
+  
   #
   # function assumes the grid is 
   # integer locations and 1:m by 1:n
@@ -37,6 +39,7 @@ offGridWeights2D<-function(s, gridList, np=2,
   # 2 and m-3 and 2 and n-3
   #
   # setup the grid info from which to interpolate
+  np<- NNSize
   m<- length( gridList$x)
   n<- length( gridList$y)
   
@@ -74,7 +77,8 @@ offGridWeights2D<-function(s, gridList, np=2,
   #
   covArgs$aRange<- NULL
   
- 
+ ### trim out locations with missing values
+
   M<- nrow( s)
   # lower left corner of grid box containing the points
   s0<-  cbind( 
@@ -111,11 +115,9 @@ offGridWeights2D<-function(s, gridList, np=2,
   sY<- s0[,2] + matrix( rep( yshift,M),
                         nrow=M, ncol=(2*np)^2, byrow=TRUE)
   
-  if( any( (sX < 1)| (sX>m)) ) {
-    stop( "sX outside range for grid")
-  }
-  if( any( (sY < 1)| (sY>n)) ) {
-    stop( "sY outside range for grid")
+  if( (min(sX) < 1)| (max(sX)>m) | (min(sY) < 1)| (max(sY)>n)  ) {
+    cat(" grid must extend at least", NNSize + 1,
+        "grid points beyond the observation locations", fill=TRUE)
   }
   # indices of all nearest neighbors for unrolled vector.
   # this is an M by (2*np)^2 matrix where indices go from 1 to m*n
@@ -135,7 +137,7 @@ offGridWeights2D<-function(s, gridList, np=2,
   # pairwise distance among nearest neighbors. 
   dNN<- rdist(nnXYCoords, nnXYCoords )
   # cross covariances
-  print( sigma2)
+  #print( sigma2)
   Sigma21Star<- sigma2* do.call(Covariance,
                                 c(list(d = dAll/aRange), 
                                          covArgs)) 
@@ -143,8 +145,28 @@ offGridWeights2D<-function(s, gridList, np=2,
   Sigma11 <-  sigma2* do.call(Covariance,
                               c(list(d = dNN/aRange), 
                                 covArgs))
+  # OLD code
+  #  Sigma11Inv <- solve( Sigma11)
+  # replaced with reduced rank interpolation. 
   
-  Sigma11Inv <- solve( Sigma11)
+  eigenSigma<- eigen( Sigma11, symmetric=TRUE)
+  U<- eigenSigma$vectors
+  dV<- eigenSigma$values
+  
+ 
+  dVInv<- ifelse(dV/max(dV) >= 1e-10, 1/dV,0)  # note this will exclude negative values
+  
+  if( verbose){
+    cat("conditional number of Sigma11", fill=TRUE)
+    cat(max(dV)/ min(dV), fill=TRUE)
+    if( any(dVInv==0 )){
+      cat(sum( dVInv==0), " eigenvalues set to zero out of ", 
+          length( dVInv), " Sigma11", fill=TRUE)
+    }
+  }
+  
+  Sigma11Inv <- U%*% diag( dVInv)%*%t(U)
+  
   # each row of B are the weights used to predict off grid point
   B <- Sigma21Star%*%Sigma11Inv
   # create spind sparse matrix
@@ -250,7 +272,9 @@ offGridWeights2D<-function(s, gridList, np=2,
     return(
       list( B = BigB, 
             SE = BigSE,
-            predictionVariance = predictionVariance )
+            predictionVariance = predictionVariance,
+            gridList= gridList
+            )
     )
   }
   }

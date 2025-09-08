@@ -18,13 +18,15 @@
 # along with the R software environment if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2
-##END HEADER\
-offGridWeights<-function(s, gridList, np=2,
+##END HEADER
+offGridWeights<-function(s, gridList, NNSize=2,
                          mKrigObject=NULL, 
-                         Covariance=NULL, covArgs=NULL,
+                         Covariance=NULL, 
+                         covArgs=NULL,
                          aRange=NULL, sigma2=NULL, 
                          giveWarnings=TRUE,
-                         debug=FALSE
+                         debug=FALSE,
+                         verbose=FALSE
                    )
   #
   #  This is a wrapper function to distinguish between the 
@@ -35,22 +37,43 @@ offGridWeights<-function(s, gridList, np=2,
   # observations
   # 
   {
-  callList<- list( s=s, gridList=gridList, np=np,
-                   mKrigObject=mKrigObject, 
-                   Covariance=Covariance,
-                   covArgs=covArgs,
-                   aRange=aRange, 
-                   sigma2=sigma2, 
-                   giveWarnings=giveWarnings,
-                   debug=debug )
-  
-  if( length( gridList)==1){
-    # always find prediction variances  for 1D.
-     return( do.call("offGridWeights1D", callList) )
-   }
-  
+   if( length( gridList)==1){
+     out<- offGridWeights1D( s=s, gridList=gridList, NNSize=NNSize,
+                      mKrigObject=mKrigObject, 
+                      Covariance=Covariance,
+                      covArgs=covArgs,
+                      aRange=aRange, 
+                      sigma2=sigma2, 
+                      giveWarnings=giveWarnings,
+                      debug=debug,
+                      verbose=verbose)
+     out$gridList<- gridList
+  return( out)
+    }
+  # 
   if( length( gridList)==2){
-    return( do.call("offGridWeights2D", callList) )
+     marginInfo<- augmentPredictionGrid( gridList,s, 
+                                         NNSize=NNSize)
+    
+    if(marginInfo$expandGrid){
+     
+    warning("gridList expanded to include enough 
+            nearest neighbors")
+      gridList<- marginInfo$gridList
+      }
+  
+    out<- offGridWeights2D( s=s, 
+                    gridList=gridList, NNSize=NNSize,
+                     mKrigObject=mKrigObject, 
+                     Covariance=Covariance,
+                     covArgs=covArgs,
+                     aRange=aRange, 
+                     sigma2=sigma2, 
+                     giveWarnings=giveWarnings,
+                     debug=debug,
+                     verbose=verbose)
+    
+    return( out )
   }
   
    stop("GridList should be either 1 or 2 components")

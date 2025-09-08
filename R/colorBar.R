@@ -19,18 +19,19 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2
 ##END HEADER
-colorBar<- function(breaks,
+colorBar<- function(breaks=NULL,
                     smallplot,
-                    colorTable,
+                    colorTable=tim.colors(),
                     horizontal = FALSE,
-                    lab.breaks,
-                    axis.args,
-                    legend.lab,
+                    lab.breaks=NULL,
+                    axis.args=NULL,
+                    legend.lab=NULL,
                    legend.line = 2,
-                    legend.args,
+                    legend.args=NULL,
                     legend.cex = 1,
                     lowerTriangle = FALSE,
-                    upperTriangle = NULL
+                    upperTriangle = FALSE,
+                    zlim=NULL
                     ){
   
   # Following code draws the legend using the image function
@@ -43,6 +44,18 @@ colorBar<- function(breaks,
   ix <- 1:2
   # if triangles for end points  upper or lower limits in breaks should 
   # be omitted and the colorTable also amended. 
+  #  Now set up the breaks
+  if( is.null(breaks)){
+    nlevel<- length(colorTable )
+    if(is.null(zlim)){
+      stop("Need to specify zlim if breaks are not given")
+    }
+    midpoints<- seq( zlim[1], zlim[2],,nlevel)
+    delta<- (midpoints[2]- midpoints[1])/2
+    # nlevel +1 breaks with the min and max as midpoints 
+    # of the first and last bins.
+    breaks <- c( midpoints[1]- delta, midpoints + delta)
+  }
   lowerColor<- NULL
   upperColor<- NULL
   if( lowerTriangle){

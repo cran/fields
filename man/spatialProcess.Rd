@@ -60,6 +60,7 @@ spatialProcess(x, y,  weights = rep(1, nrow(x)),   Z = NULL, ZCommon=NULL,
                      CILevel = .95,
                        iseed = 303,
 	 collapseFixedEffect = TRUE,
+	  simpleKriging = FALSE,
                            ...)
 \method{summary}{spatialProcess}(object,  ...)
 \method{print}{spatialProcess}(x, digits = 4, ...)
@@ -69,7 +70,10 @@ spatialProcess(x, y,  weights = rep(1, nrow(x)),   Z = NULL, ZCommon=NULL,
                            
 spatialProcessSetDefaults(x, cov.function, cov.args, cov.params.start, parGrid,
                  mKrig.args, extraArgs = NULL, gridN = 5,
-                 collapseFixedEffect = TRUE, verbose = FALSE)
+                 collapseFixedEffect = TRUE, simpleKriging = FALSE,
+                 verbose = FALSE)
+
+
     
 confidenceIntervalMLE( obj, CILevel, verbose=FALSE)
 
@@ -173,6 +177,11 @@ extra time and is not necessary so the default is FALSE. }
  \item{reltol}{ Relative tolerance used in optim for convergence.}
  
  \item{REML}{ If TRUE the parameters are found by restricted maximum likelihood.}
+ 
+ \item{simpleKriging}{ If TRUE then no fixed part of 
+ the spatial model is included. When FALSE, the default is to 
+ include a linear function in the spatial coordinates. A higher 
+ degree polynomial can be choosen using the \code{mKrig.args} argument }
  
  \item{verbose}{If TRUE print out intermediate information for debugging.}
  
@@ -393,7 +402,7 @@ title("Predicted ozone (in PPB)  June 18, 1987 ")
 # and then plot surface
 look<- predictSurfaceSE( obj)
 surface( look, xlab="longitude", ylab="latitude")
-points( x, col="magenta")
+points( x, col="magenta", pch=16, cex=.8)
 title("prediction standard errors (PPB)")
 
 # here  is a sanity check -- call spatialProcess with the MLEs found
@@ -407,7 +416,7 @@ objTest<- spatialProcess( x, y,
 test.for.zero(objTest$fitted.values, obj$fitted.values, 
             tag="sanity check" )
 
-# swtiching to an exponential function 
+# switching to an exponential function 
 # See Exponential for the definition. 
 #
 objExponential <- spatialProcess( x, y, 
@@ -415,6 +424,20 @@ objExponential <- spatialProcess( x, y,
               
 objExponential$summary
 
+####### simple Kriging
+# this is a approximate spatial analysis to show how the 
+# simpleKriging=TRUE might be used -- but not recommended! 
+# the exact estimator can be found through backfitting ...
+# 
+# first linear fit in spatial coordiantes 
+yFit<- lm( y~x)
+good<- !is.na(y)
+# spatial fit to residuals 
+objTest2<- spatialProcess( x[good,], yFit$residuals, simpleKriging=TRUE)
+# how close is it to the text book estimator?
+stats( objTest2$residuals-obj$residuals )
+plot(objTest2$residuals,obj$residuals )
+abline( 0,1, col="red")
 
 \dontrun{
 ##################################
@@ -456,7 +479,7 @@ data(COmonthlyMet)
 ###################################
 # conditional simulation 
 ###################################
-#  first a small application  at missing data
+#  first a small application  for fill in  missing data
   notThere<- is.na(CO.tmin.MAM.climate )
   xp <- CO.loc[notThere,]
   Zp <- CO.elev[notThere]
@@ -481,10 +504,11 @@ data(COmonthlyMet)
                         gridARange= seq(.25, 2.0, length.out=10)
                        )
 # note larger range parameter
-# create 2500 grid points using a handy fields function
+# create 2500=50X50  grid points using a handy fields function
   gridList <- fields.x.to.grid( fit2$x, nx=50,ny=50)
   xGrid<- make.surface.grid( gridList)
   ensemble<- sim.spatialProcess( fit2, xp=xGrid, M = 6)
+  
 # this is an "n^3" computation so increasing the grid size 
 # can slow things down for computation 
 # The 6 ensemble members 

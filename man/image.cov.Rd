@@ -23,6 +23,7 @@
 
 \name{image.cov}
 \alias{stationary.image.cov}
+\alias{stationaryImageCov}
 \alias{Exp.image.cov}
 \alias{Rad.image.cov}
 \alias{wendland.image.cov}
@@ -38,6 +39,10 @@ can also be used for fast simulation of the processes on a grid using the circul
 embedding technique. 
 }
 \usage{
+stationaryImageCov(ind1 = NULL, ind2 = NULL, Y, covObject = NULL, gridList = NULL, 
+    mKrigObject = NULL, setup = FALSE, M = NULL, cov.function = "stationary.cov", 
+    delta = NULL, cov.args = NULL, ...) 
+    
 stationary.image.cov(ind1, ind2, Y, cov.obj = NULL, setup = FALSE, 
 grid, M=NULL,N=NULL,cov.function="stationary.cov", delta = NULL, cov.args = NULL, ...) 
 
@@ -72,6 +77,9 @@ A list with the information needed to do the multiplication by
 convolutions. This is usually found by using the returned list when
 setup=T.
 }
+
+\item{covObject}{ Same as cov.obj above.}
+
 \item{cov.function}{Name of the (stationary) covariance function.}
 \item{setup}{
 If true do not do the multiplication but just return the covariance object
@@ -83,17 +91,30 @@ For example this is the aRange parameter in the Wendland covariance.}
 A grid list giving the X and Y grids for the image. (See example below.)
 This is only required if setup is true. 
 }
+
+\item{gridList}{Same as grid above.}
+
 \item{M}{
+For \code{stationaryImageCov} a vector of two integers that are the desired size for the larger grid to 
+to facilitate the computation. If NULL then this is chosen to be at least twice the grid size and 
+powers of 2 and 3. 
+
+For \code{stationary.image.cov}
 Size of x-grid used to compute multiplication (see notes on image.smooth 
 for details) by the FFT. If NULL, the default for M is the largest power 
 of 2 
 greater than or equal to 2*m where m is the length of the x component of the grid.
 
-This  will give an exact 
+In either case this  will give an exact 
 result but  smaller values of M will yield an approximate, faster result. 
 }
 
-\item{N}{Size of y-grid used to compute multiplication by the FFT.}
+\item{mKrigObject}{ The fit object from \code{spatialProcess} or 
+\code{mKrig}. 
+This is in place of specifying the covariance parameters individually.}
+
+\item{N}{Size of y-grid used to compute multiplication by the FFT for \code{stationary.image.cov} }
+
 \item{aRange}{Scale parameter for Matern.}
 \item{theta}{Same as aRange.}
 \item{smoothness}{Smoothness parameter for Matern (.5=Exponential)}
@@ -110,8 +131,7 @@ the vector Y.
 }
 \details{
 This function was provided to do fast computations for large numbers of
-spatial locations and supports the conjugate gradient solution in
-krig.image. In doing so the observations can be irregular spaced
+spatial locations. In doing so the observations can be irregular spaced
 but their coordinates must be 2-dimensional and be restricted to grid
 points.
 (The function as.image will take irregular, continuous coordinates and
@@ -146,9 +166,13 @@ grid efficiently by a 2-d FFT. The irregular pattern in Y is handled by
 padding with zeroes and once that multiplication is done only the
 appropriate subset is returned. 
 
+\strong{NOTE:}
+\code{stationary.imageCov} is the current version and should be used in stead of the older 
+\code{stationary.image.cov}
+
 As an example assume that the grid is 100X100 let big.Sigma denote the big
 covariance matrix among all grid points ( If the parent grid is 100x100
-then big.Sigma is 10K by 10K !) Here are the computing steps:
+then big.Sigma is 10K by 10K !) Here are the algorithmic steps:
 
 temp<- matrix( 0, 100,100)
 
@@ -158,9 +182,9 @@ temp2<- big.Sigma\%*\% temp
 
 temp2[ind1]
 
-Notice how much we pad with zeroes or at the end throw away!
-Here the matrix multiplication is effected through convolution/FFT tricks
-to avoid creating and multiplying big.Sigma explicitly. It is often faster
+Here the matrix multiplication is effected through  fast convolution/FFT 
+exploiting stationarity 
+and avoids creating and multiplying big.Sigma explicitly. It is often faster
 to multiply the regular grid and throw away the parts we do not need then
 to deal directly with the irregular set of locations.
 
@@ -171,30 +195,36 @@ this distinction.
   
 }
 \seealso{
-  smooth.2d, as.image, krig.image, stationary.cov 
+  \link{as.image},\link{stationary.cov}, \link{circulantEmbeddingSetup}, \link{mKrigFastPredict}
 }
 \examples{
 # multiply 2-d isotropic exponential with aRange=4 by a random vector 
 
-junk<- matrix(rnorm(100*100), 100,100)
+junk<- matrix(rnorm(50*100), 50,100)
+gridList<- list( x= seq(0,1,length.out=50),
+     y= seq(-1,1,length.out=100) )
+     
+covObject<- stationaryImageCov( setup=TRUE, 
+Covariance="Matern",
+smoothness=1.0,
+aRange=.08,
+             gridList=gridList) 
+             
+result<-  stationaryImageCov(Y=junk, covObject=covObject)
 
-cov.obj<- stationary.image.cov( setup=TRUE, 
-             grid=list(x=1:100,y=1:100),aRange=8) 
-result<-  stationary.image.cov(Y=junk,cov.obj=cov.obj)
-
-image( matrix( result, 100,100)) # NOTE that is also a smoother!
+imagePlot(gridList$x,gridList$y, result ) # NOTE that is also a smoother!
 
 # to do it again, no setup is needed 
 #  e.g. 
 #  junk2<- matrix(rnorm(100**2, 100,100))
-#  result2<-  stationary.image.cov(Y=junk2, cov.obj=cov.obj)
+#  result2<-  stationaryImageCov(Y=junk2, cov.obj=cov.obj)
 
 # generate a grid and set of indices based on discretizing the locations
 # in the precip dataset
 
  out<-as.image( RMprecip$y, x= RMprecip$x)
  ind1<- out$ind
- grid<- list( x= out$x, y=out$y)
+ gridList<- list( x= out$x, y=out$y)
 
 #
 # discretized x locations  to use for comparison
@@ -202,11 +232,11 @@ image( matrix( result, 100,100)) # NOTE that is also a smoother!
 
 # setup to create cov.obj for exponential covariance with range= 1.25
 
- cov.obj<- stationary.image.cov( setup=TRUE, grid=grid, aRange=1.25) 
+ covObject<- stationaryImageCov( setup=TRUE, gridList=gridList, aRange=1.25) 
 
 # multiply covariance matrix by an arbitrary vector
  junk<-  rnorm(nrow( ind1))
- result<- stationary.image.cov( ind1, ind1, Y= junk,cov.obj=cov.obj)
+ result<- stationaryImageCov( ind1, ind1, Y= junk,covObject=covObject)
 
 # The brute force way would be  
 #   result<- stationary.cov( xd, xd, aRange=1.25, C=junk)
@@ -216,32 +246,15 @@ image( matrix( result, 100,100)) # NOTE that is also a smoother!
 
 
 # evaluate the covariance between all grid points and the center grid point
- Y<- matrix(0,cov.obj$m, cov.obj$n)
+mGrid<- covObject$m
+ Y<- matrix(0,mGrid[1], mGrid[2])
  Y[32,32]<- 1
- result<- stationary.image.cov( Y= Y,cov.obj=cov.obj)
+ result<- stationaryImageCov( Y= Y,covObject=covObject)
 # covariance surface with respect to the grid point at (32,32)
 # 
 # reshape "vector" as an image
- temp<-  matrix( result, cov.obj$m,cov.obj$n)
- image.plot(cov.obj$grid$x,cov.obj$grid$y, temp)
-# or persp( cov.obj$grid$x,cov.obj$grid$y, temp) 
-
-# check out the Matern
- grid<- list( x= seq(-105,-99,,64), y= seq( 40,45,,64)) 
- cov.obj<- matern.image.cov( 
-             setup=TRUE, grid=grid, aRange=.55, smoothness=1.0)
- Y<- matrix(0,64,64)
- Y[16,16]<- 1
-
- result<- matern.image.cov( Y= Y,cov.obj=cov.obj)
-  temp<-  matrix( result, cov.obj$m,cov.obj$n)
- image.plot( cov.obj$grid$x,cov.obj$grid$y, temp)
-
-# Note we have centered at the location (grid$x[16],grid$y[16]) for this case
-#  using sim.rf to simulate an Matern field
-  look<- sim.rf( cov.obj)
-  image.plot( grid$x, grid$y, look)
-
+ temp<-  matrix( result, mGrid[1],mGrid[2])
+ imagePlot( temp)
 
 }
 

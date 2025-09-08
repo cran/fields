@@ -74,7 +74,7 @@ aRange<- 2.0
   tau2<- sigma*lambda
   N<- length( y)
   dd<- rdist( x,x)
-  M<-  sigma* Matern( dd, range= aRange, smoothness=nu) + tau2* diag( 1, N)
+  M<-  sigma* Matern( dd, aRange= aRange, smoothness=nu) + tau2* diag( 1, N)
   X<- fields.mkpoly( x, 2)
   Mi<- solve( M)
   betahat<-  solve(t(X)%*%Mi%*%X)%*% t(X)%*% Mi%*% y

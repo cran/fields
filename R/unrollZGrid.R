@@ -24,7 +24,7 @@ unrollZGrid<- function( grid.list, ZGrid){
     return(ZGrid)
   }
   if( is.list( ZGrid) ){
-     if( any(grid.list[[1]] != ZGrid[[1]]) |any(grid.list[[2]] != ZGrid[[2]]) ){
+     if( any(grid.list[[1]] != ZGrid[[1]]) | any(grid.list[[2]] != ZGrid[[2]]) ){
          stop("grid list does not match grid for covariates")
        }  
 # wipe out the x and y components of ZGrid 
@@ -35,6 +35,7 @@ unrollZGrid<- function( grid.list, ZGrid){
       nx<- length( grid.list[[1]])
       ny<- length( grid.list[[2]])
       if( (Zdim[1] != nx) | (Zdim[2] != ny) ){
+         cat( "Z:", Zdim, "grid", nx, ny, fill=TRUE )
          stop( "Dimension of ZGrid does not match dimensions of location grid list.")
       }
 # reshape as a matrix where rows index locations.

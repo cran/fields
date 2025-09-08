@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2
 ##END HEADER
-"Matern" <- function(d, range = 1, alpha = 1/range, 
+"Matern" <- function(d, aRange=1, range = NULL, alpha = NULL, 
     smoothness = 0.5, nu = smoothness, phi = 1.0) {
     #
     # Matern covariance function transcribed from Stein's book page 31
@@ -30,10 +30,17 @@
     # phi is accepted as the marginal variance of the process (see below)
     # within fields, however, this parameter is sigma^2 and we recommend
     # not using phi.
-    if (any(d < 0)) 
-        stop("distance argument must be nonnegative")
+    if( !is.null(range)){
+      aRange<- range
+    }
+  if( !is.null(alpha)){
+    aRange<- 1/alpha
+  }
+    if (any(d < 0)){
+        stop("all distance arguments must be nonnegative")
+    }
     # rescale distances
-    d <- d * alpha
+    d <- d/aRange
     # call some special cases for half fractions of nu
     if( nu ==.5){
         return( phi*exp( -d) )
@@ -42,7 +49,7 @@
          return( phi*(1+d)*exp( -d) )
      }
      if( nu ==2.5){
-         return( phi*(1+d+d^2/3)*exp( -d) )
+         return( phi*(1+d+(d^2)/3)*exp( -d) )
      }
     # otherwise .....
     # call to  Bessel function from R base package                                  #

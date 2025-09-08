@@ -22,11 +22,13 @@
 %##END HEADER
 \name{offGridWeights}
 \alias{offGridWeights}
-\alias{addMarginsGridList}
+%\alias{addMarginsGridList}
 \alias{mKrigFastPredictSetup}
 \alias{offGridWeights1D}
 \alias{offGridWeights2D}
 \alias{findGridBox}
+\alias{approximateCovariance2D}
+\alias{augmentPredictionGrid}
 
 \title{
 Utilities for fast spatial prediction. 
@@ -40,29 +42,40 @@ spatial datasets asnd also for fast spatial prediction from irregular locations 
 
 }
 \usage{
-offGridWeights(s, gridList, np = 2, mKrigObject = NULL, Covariance = NULL,
+offGridWeights(s, gridList, NNSize = 2, mKrigObject = NULL, Covariance = NULL,
    covArgs = NULL, aRange = NULL, sigma2 = NULL, giveWarnings = TRUE,
-   debug=FALSE)
+   debug=FALSE,verbose = FALSE)
    
-   offGridWeights1D(s, gridList, np = 2, mKrigObject = NULL,
+   offGridWeights1D(s, gridList, NNSize = 2, mKrigObject = NULL,
    Covariance = NULL,
    covArgs = NULL, aRange = NULL, sigma2 = NULL, giveWarnings = TRUE,
-   debug=FALSE )
+   debug=FALSE, verbose = FALSE)
    
-   offGridWeights2D(s, gridList, np = 2, mKrigObject = NULL,
-   Covariance = NULL,
-   covArgs = NULL, aRange = NULL, sigma2 = NULL, giveWarnings = TRUE, 
-  debug = FALSE,findCov = TRUE)
+   offGridWeights2D(s, gridList, NNSize = 2, mKrigObject = NULL,
+                 Covariance = NULL, covArgs = NULL, aRange = NULL,
+                 sigma2 = NULL, giveWarnings = TRUE, debug = FALSE,
+                 findCov = TRUE, verbose = TRUE)
+                 
+  approximateCovariance2D(s, gridList, NNSize = 4, mKrigObject = NULL,
+                 Covariance = "Matern", aRange = NULL, sigma2 = 1,
+                 covArgs = NULL, giveWarnings = TRUE, debug = FALSE,
+                 verbose = FALSE)
+  
+
    
-addMarginsGridList( xObs, gridList, NNSize)
+%addMarginsGridList( xObs, gridList, NNSize)
+
+augmentPredictionGrid(gridList=NULL, s, nx=NULL, ny=NULL, NNSize,
+                                  verbose=FALSE)
 
 findGridBox(s, gridList) 
 
 mKrigFastPredictSetup(mKrigObject,
                           gridList, 
-                          NNSize,
-			  giveWarnings = TRUE)
+                          NNSize=4,
+			  giveWarnings = TRUE, verbose = FALSE)
 }
+
 
 
 
@@ -82,14 +95,15 @@ mKrigFastPredictSetup(mKrigObject,
 \item{findCov}{If TRUE the prediction variances (via the Kriging
   model and assumed covariance function) for the offgrid locations are
   found. If FALSE just the prediction weights are returned. This option is a bit faster. 
- This switch only is implemented for the 2 D case since the extra  computational demands for 1 D are modest.}
+ This switch only is implemented for the 2 D case since the extra 
+ computational demands for 1 D are modest.}
  
  \item{giveWarnings}{If TRUE will warn if two or more observations
  are in the same grid box. See details below.}
  
   \item{gridList}{
   A list as the gridList format ( x and y components) that describes the
-  rectagular grid. The grid must have at least np extra grid points beyond
+  rectagular grid. The grid must have at least \code{NNSize} extra grid points beyond
   the range of the points in \code{s}. See
   \code{\link{grid.list}}. 
 }
@@ -98,18 +112,18 @@ mKrigFastPredictSetup(mKrigObject,
   The output object (Aka a list with some specfic components.) from either mKrig or spatialProcess. This has the information about the covariance function used to do the Kriging. 
   The following items are coded in place of not supplying this object.  See the example below for more details.
 }
+\item{nx}{Number of grid points in X}
+\item{ny}{Number of grid points in Y}
 
-\item{np}{
-  Number of nearest neighbor grid points to use for prediction.  \code{np = 1}
-  will use the 4 grid points that bound the off grid point.  \code{np = 2}
-  will be a 4X4 subgrid with the middle grid box containing the off grid point.
-  In general there will be  \code{(2*np)^2} neighboring points uses. 
+\item{NNSize}{
+  Number of nearest neighbor grid points to use for prediction.  \code{NNSize = 1}
+  will use the 4 grid points that bound the offgrid point.  \code{NNSize = 2}
+  will be a 4X4 subgrid that define a 3X3 set of boxes
+  and the middle grid box containing the offgrid point.
+  In general there will be  \code{(2*NNSize)^2} neighboring points used. 
 
 }
 
- \item{NNSize}{Same as \code{np}. }
- 
- 
   \item{s}{
   Off grid spatial locations
 }
@@ -117,9 +131,11 @@ mKrigFastPredictSetup(mKrigObject,
  \item{sigma2}{
   Marginal variance of the process. 
 }
+ \item{verbose}{If TRUE intermediate output is printed for debugging.}
  
-  \item{xObs}{
-    Off grid spatial locations}
+%  \item{xObs}{
+%    Off grid spatial locations}
+
 }
 
 \details{
@@ -178,9 +194,17 @@ is being computed.
 
 Returned value below pertains to the offGridWeights function. 
 
-\strong{addMarginsGridList} This is a supporting function that adds 
-extra grid points for a gridList so that every irregular point has a
-complete number of nearest neighbors.
+\strong{approximateCovariance2d} This is used to approximate a stationary covariance for fast prediction
+The weights reuired are the same as those used for the local simulation and so this function is
+included here. See \code{ \link{ predictSurface}} with the \code{fast} option for more details. 
+
+\strong{augmentPredictionGrid} This is a supporting functions that adds 
+extra grid points to  a gridList so that every irregular point has a
+complete number of nearest neighbors.Typically the initial grid has as
+its limits the ranges of the observations. 
+This functions adds more grid points at the edges so the there are \code{NNSize}
+neighbors around every data location. 
+
 
 \strong{findGridBox}This is a handy function that finds the indices of
 the lower left grid box that contains the points in \code{s}. If the
@@ -224,19 +248,21 @@ xGrid<- seq( -1, 1, length.out=M)
 gridList<- list( x= xGrid,
                  y= xGrid
                  )
- np<- 3 
+NNSize<- 3 
  n<- 100
-# sample n locations but avoid margins 
+# sample n locations but avoid margins so that every point has a full set of nearest neighbors
+
 set.seed(123)
-s<- matrix(    runif(n*2, xGrid[(np+1)],xGrid[(M-np)]),
+s<- matrix(    runif(n*2, xGrid[(NNSize+1)],xGrid[(M-NNSize)]),
                n, 2 )
 
                   
-obj<- offGridWeights( s, gridList, np=3,
+obj<- offGridWeights( s, gridList, NNSize=3,
                    Covariance="Matern",
                    aRange = .1, sigma2= 1.0,
                    covArgs= list( smoothness=1.0)
                    )
+		   
 # make the predictions  by obj$B%*%c(y)
 # where y is the matrix of values on the grid
  

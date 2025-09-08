@@ -1,4 +1,4 @@
-c****  # fields is a package for analysis of spatial data written for
+c****fields is a package for analysis of spatial data written for
 c****  # the R software environment .
 c****  # Copyright (C) 2018
 c****  # University Corporation for Atmospheric Research (UCAR)
@@ -13,7 +13,9 @@ c****  # This program is distributed in the hope that it will be useful,
 c****  # but WITHOUT ANY WARRANTY; without even the implied warranty of
 c****  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 c**** # GNU General Public License for more details.
-      
+  
+
+    
       subroutine css(h,npoint,x,y,wght,sy,trace,diag,vlam,
      +                 ngrid,xg,yg,job,ideriv,ierr)  
    
@@ -196,13 +198,13 @@ c   handle condition for interpolation
       endif  
 
       
-      call dSETUP(uX,uW,uY,nunq,V,A(1,4),NMAX,itp,ierr)  
+      call dsetup(uX,uW,uY,nunq,V,A(1,4),NMAX,itp,ierr)  
 C****  check for duplicate X's if so exit   
       if(ierr.gt.0) then  
          return  
       endif  
   
-      call dCHOLD(P,V,A(1,4),nunq,A(1,3),A(1,1),NMAX)  
+      call dchold(P,V,A(1,4),nunq,A(1,3),A(1,1),NMAX)  
   
 c compute predicted values   
   
@@ -426,7 +428,7 @@ c Licensed under the GPL -- www.gpl.org/licenses/gpl.html
 
 
 
-      SUBROUTINE dCHOLD(P,V,QTY,NPOINT,U,QU,NMAX)
+      SUBROUTINE dchold(P,V,QTY,NPOINT,U,QU,NMAX)
 c CONSTRUCTS THE UPPER THREE DIAGONALS IN V(I,J),I=2,
 C   NPOINT-1,J=1,3 OF THE MATRIX 6*(1-P)*Q-TRANSP*
 C   (D**2)*Q + P*R . (HERE R IS THE MATRIX PROPORTIONAL
@@ -739,7 +741,7 @@ c Copyright (C) 2017, Institute for Mathematics Applied Geosciences
 c University Corporation for Atmospheric Research
 c Licensed under the GPL -- www.gpl.org/licenses/gpl.html
  
-      SUBROUTINE dSETUP(X,WGHT,Y,NPOINT,V,QTY,NMAX,itp,ierr)
+      SUBROUTINE dsetup(X,WGHT,Y,NPOINT,V,QTY,NMAX,itp,ierr)
 C   PUT DELX=X(.+1)-X(.) INTO V(.,4)
 C   PUT THE THREE BANDS OF THE MATRIX Q-TRANSP*D INTO
 C     V(.,1-3)

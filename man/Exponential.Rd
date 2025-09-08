@@ -37,8 +37,8 @@ To set the nugget variance, use the \code{tau2} argument in
 }
 \usage{
 Exponential(d, aRange = 1, phi = 1, theta = NULL, range = NULL)
-Matern(d , range = 1,alpha=1/range, smoothness = 0.5, 
-       nu= smoothness, phi=1.0) 
+Matern(d, aRange = 1, range = NULL, alpha = NULL, smoothness
+                 = 0.5, nu = smoothness, phi = 1)
 Matern.cor.to.range(d, nu, cor.target=.5, guess=NULL,...)
 RadialBasis(d,M,dimension, derivative = 0)
 
@@ -48,9 +48,9 @@ RadialBasis(d,M,dimension, derivative = 0)
   
   \item{d}{ Vector of distances or for \code{Matern.cor.to.range} just a single distance. }
 
-  \item{range}{ Range parameter default is one. Note 
+  \item{range}{ Range parameter. It is preferred that
        that the scale can also be specified  through the "aRange" 
-           scaling argument  used in fields covariance functions) }
+           scaling argument  used in fields covariance functions. }
 
   \item{alpha}{1/range }
   \item{theta}{Same as alpha}
@@ -117,7 +117,7 @@ between points. See \code{radbas.constant} for the computation of the constant.
 }
 \value{
 
-For the covariance functions: a vector of covariances.
+For the covariance functions: a vector or matrix of covariances. (Inherits from \code{d}).
 
 For Matern.cor.to.range: the value of the range parameter.  
 

@@ -36,9 +36,13 @@ circulant embedding.
 \usage{
 sim.rf(obj)
 circulantEmbedding(obj)
-circulantEmbeddingSetup(grid, M = NULL, mKrigObject = NULL,
-cov.function = "stationary.cov", cov.args = NULL, delta = NULL, ...)
 
+circulantEmbeddingSetup(
+grid, M = NULL, mKrigObject = NULL, cov.function =
+                 "stationary.cov", cov.args = NULL, delta = NULL,
+                  giveWarnings = TRUE,...)
+
+               
 }
 \arguments{
 
@@ -48,12 +52,18 @@ setup call to Exp.image.cov, stationary.image.cov, matern.image.cov or
 other related covariance functions for \code{sim.rf} (See details below.)
 or to \code{circulantEmbeddingSetup} for \code{circulantEmbedding} }
 
+\item{giveWarnings}{If TRUE will warn that the FFT of the circulant embedding has
+negative values - i.e. the proposed circulant covariance matrix is not 
+positive definite.}
+
 \item{grid}{A list describing the regular grid. \code{length(grid)} is the dimension of the field
 (1D 2D etc) and each component are the regular locations in that dimension. }
 
 \item{M}{A vector of dimensions to embed the field. Simulation will be exact if each \code{M[i]} is
 larger than \code{2*length(grid)}. The default is to choose a power of 2 larger than this
 minima bound.}
+
+\item{mKrigObject}{Object from fitting surface using the mKrig or spatialProcess functions.}
 
 \item{cov.function}{A text string with the name of the stationary covariance function to use.
 Default is \code{stationary.cov} and general function that takes advantage of some efficiency
@@ -64,10 +74,19 @@ smoothness for the Matern.}
 
 \item{delta}{If NULL the spatial domain is artifically doubled in size in all dimensions to account for the periodic wrapping of the fft. If  passed this is the amount to extend the domain and can be less than double if a compact covariance function is used. }
 
-\item{mKrigObject}{Object from fitting surface using the mKrig or spatialProcess functions.}
+%\item{truncate}{If the real part of the circulate matrix is negative set these values to zero.
+%if \code{truncate = "default"} then all values are set zero to zero if their absolute value 
+%is less than  
+%or equal to the absolute value of the most negative value. If \code{truncate} is numeric then all values are set to zero 
+%where the ratio of the  absolute value of the real part divided by the maximu value is less than or equal to
+%\code{truncate}.See Details  
+%}
+%\item{ignoreError}{ If TRUE then the wght function is returned even if it has some negative value. 
+%This is mainly used to examine the weight function when the embedding fails.}
 
-\item{\dots}{For convenience any other arguments to pass to the covariance function. }
-
+\item{\dots}{For convenience, any other arguments for  the covariance function. 
+Although it is clearer to 
+use either the \code{mKrig/spatialProcess} fit or the \code{cov.args} list. }
 }
 
 \value{
@@ -86,39 +105,58 @@ With the information needed to simulate the field.
 \details{
 The functions \code{circulantEmbedding} and \code{circulantEmbeddingSetup} are more recent \code{fields}
 functions, more easy to read, and recommended over \code{sim.rf}. \code{sim.rf} is limited to 2D fields
-while \code{circulantEmbedding} can handle any number of dimensions and has some shortcuts to be efficient for the 2D case. 
+while \code{circulantEmbedding} can handle any number of 
+dimensions and has some shortcuts to be efficient for the 2D case. 
+
+
+
+\code{circulantEmbeddingSetup} is also the same setup function used
+to create \code{covObject} for fast multiplication of
+a stationary covariance function with values on a regular, 2D grid 
+(e.g. see \code{\link{stationaryImageCov}} )
+
+One complication in this code is to take any grid size and enlarge it so that 
+the grid sizes are powers of 2 and 3 (highly composite). This make the FFT more 
+efficient. (In fact without any adjustment  grid sizes that are prime numbers will 
+make the FFT quite slow.) 
 
 The simulated field has the marginal variance that is determined by
-the covariance function for zero distance. Within fields the
-exponential and matern set this equal to one ( e.g. Matern(0) ==1) so
+the covariance function for zero distance. Within the fields package the
+exponential and Matern functions set this equal to one ( e.g. Matern(0) ==1) so
 that one simulates a random field with a marginal variance of one. For
-stationary.cov the marginal variance is whatever \code{Covariance(0)}  evaluates to and we
+stationary.cov the marginal variance is whatever \code{Covariance(0)} 
+evaluates to and we
 recommend that alternative covariance functions also be normalized so
 that this is one.
 
 Of course if one requires a Gaussian field with different marginal
-variance one can simply scale the result of this function. See the
-third example below. 
+variances one can simply scale the result of this function but the process standard deviations. 
+See the third example below. 
 
 Both \code{sim.rf} and \code{circulantEmbedding}
 take an object that includes some preliminary
 calculations and so is more efficient for simulating more than one
 field from the same covariance. 
 
+\strong{Adjusting for negative weights}
+
 The algorithm using an FFT
 known as circulant embedding, may not always work if the correlation
-range is large. Specifically the weight function obtained from the FFT of the covariance field will have some negative values. 
+range is large. Specifically the weight function obtained from the FFT of 
+the covariance field will have some negative values. Currently a lengthy error message 
+is printed if this is the case.
 A simple fix is to increase the size of the domain 
 so that the correlation scale becomes smaller relative to the extent
 of the domain. Increasing the size can be computationally expensive,
 however, and so this method has some limitations. But when it works it is
-an exact simulation of the random field. 
+an exact simulation of the random field.
 
-For a stationary model the covariance object ( or list) for \code{circulantEmbedding} should have minmally, the components:
+For a stationary model the covariance object ( or list)
+for \code{circulantEmbedding} should have minimally, the components:
 That is 
 \code{names( obj)}
 should give
-\code{ "m" "grid"    "M"    "wght" }
+\code{ "m", "grid", "M", "wght" }
 
 where \code{m} is the number of grid points in each dimension, \code{grid} is a list
 with components giving the grid points in each coordinate.  
@@ -150,7 +188,8 @@ algortihms and theory.
 
 }
 \seealso{
- \link{stationary.cov},  \link{stationary.image.cov}
+ \link{stationary.cov},  \link{stationary.image.cov},
+ \link{simLocal.spatialProcess} 
 }
 \examples{
 

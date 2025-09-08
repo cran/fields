@@ -25,7 +25,7 @@
 # test of sreg and related functions
 
 suppressMessages(library(fields))
-#options(echo=FALSE)
+options(echo=FALSE)
 
 test.for.zero.flag<- 1
 
@@ -50,7 +50,7 @@ M<- 15
 dx<- 1
 dy<- 1
 sigma2<-2.0 
-np<-3 
+NNSize<-3 
 
 
 # first a case where all obs in same grid box.
@@ -67,14 +67,16 @@ s0<- rbind(
 test0<-  offGridWeights( s0, list( x= (1:m)*dx, y=(1:n)*dx),
                                               aRange=10*dx, sigma2=sigma2, 
                                               Covariance="Exponential", 
-                                              np=2, 
-                                              debug=TRUE) 
+                                              NNSize=2, 
+                                              debug=TRUE,
+                                      giveWarnings = FALSE) 
 # explicit nearest neighbors in this case
 sTmp<- cbind( rep(4:7,4), rep(5:8,each=4) )
 sGrid<- sTmp*dx
 
 # check that same grid being used by function
-test.for.zero(sGrid, cbind(test0$gridX[,1], test0$gridY[,1]) )
+test.for.zero(sGrid, cbind(test0$gridX[,1], test0$gridY[,1]),
+              tag="checking grid index")
 
 S21  <- 2.0* exp( -rdist( s0, sGrid)/(10*dx))
 S11  <- 2.0* exp( -rdist( sGrid , sGrid)/(10*dx) )
@@ -85,12 +87,12 @@ Btest<- S21%*% solve( S11)
 sIndex<- sTmp[,1] + (sTmp[,2]-1)*m
 # Kriging weights
 Bfull<-  spam2full(test0$B[,sIndex])
-test.for.zero( Bfull, Btest)
+test.for.zero( Bfull, Btest, tag=" dense B matrix ")
 # standard error matrix 
 # note that transpsoe also taken so SEtest%*%t( SEtest) = cov matrix
 SEtest<-  t(chol(S22 - S21%*% solve( S11)%*%t(S21) ))
 SEfull <- spam2full(test0$SE)
-test.for.zero( SEfull, SEtest)
+test.for.zero( SEfull, SEtest, tag="SEs")
 
 
 # now test several observation locations
@@ -116,37 +118,49 @@ ind1<- c(1,3,5)
  S11<- 2.0* exp( -rdist( sGrid , sGrid)/(10*dx) )
  S22<- 2.0* exp( -rdist( s[ind1,], s[ind1,])/(10*dx) )
  
- sparseObj<-  offGridWeights( s, list( x= (1:m)*dx, y=(1:n)*dx),
+ gridList<- list( x= (1:m)*dx, y=(1:n)*dx)
+ 
+ # Not sure why this was here.
+ # gridInfo<-augmentPredictionGrid(s=s, gridList=gridList, NNSize=2)
+  
+ sparseObj<-  offGridWeights( s, gridList,
                                  aRange=(10*dx), sigma2=sigma2, 
                                  Covariance="Exponential", 
-                                 np=2, 
-                                 debug=TRUE)
+                                 NNSize=2, 
+                                 debug=TRUE,
+                              giveWarnings = FALSE)
  
-test.for.zero( sparseObj$Sigma21Star[ind1,], S21 )
-test.for.zero( sparseObj$Sigma11Inv, solve(S11) )
+test.for.zero( sparseObj$Sigma21Star[ind1,], S21, 
+               tag="compare covariances" )
+test.for.zero( sparseObj$Sigma11Inv, solve(S11),
+               tag="compare S11 inverse")
 
 Btest<- S21%*% solve( S11)
 look2<- spam2full( sparseObj$B)
-test.for.zero( Btest,look2[ind1, sIndex] )
+test.for.zero( Btest,look2[ind1, sIndex], 
+               tag="B by hand and from function")
 
 
 SEfull<- spam2full( sparseObj$SE)
 SE2full<- (SEfull)%*%t(SEfull)
-test.for.zero(diag( SE2full), sparseObj$predictionVariance )
+test.for.zero(diag( SE2full), sparseObj$predictionVariance,
+              tag="prediction Variances")
 
 SEtest<- t(chol(S22 - S21%*%solve( S11)%*%t( S21) ))
-test.for.zero(SEtest, SEfull[ind1, ind1] )
+test.for.zero(SEtest, SEfull[ind1, ind1],"SE by hand" )
 
 # check that debug FALSE also works
 
 sparseObj1<-  offGridWeights( s, list( x= (1:m)*dx, y=(1:n)*dx),
                                 aRange=(10*dx), sigma2=sigma2, 
                                 Covariance="Exponential", 
-                                np=2, 
-                                debug=FALSE)
+                                NNSize=2, 
+                                debug=FALSE,
+                              giveWarnings = FALSE)
 
-test.for.zero( sparseObj$B, sparseObj1$B)
-test.for.zero( sparseObj$SE, sparseObj1$SE)
+test.for.zero( sparseObj$B, sparseObj1$B, tag="B w/o debug")
+test.for.zero( sparseObj$SE, sparseObj1$SE,
+               tag="SE w/o debug")
 
 cat("all done with off grid weight tests part 2", fill=TRUE)
 

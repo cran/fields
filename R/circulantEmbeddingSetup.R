@@ -22,8 +22,11 @@
 circulantEmbeddingSetup <- function( 
      grid, M = NULL, 
      mKrigObject=NULL, 
-     cov.function="stationary.cov", cov.args=NULL,
-     delta=NULL, ...) {
+     cov.function="stationary.cov",
+     cov.args=NULL,
+     delta=NULL,
+     giveWarnings=TRUE,
+      ...) {
     #
     #
     if( !is.null(mKrigObject)){
@@ -44,16 +47,17 @@ circulantEmbeddingSetup <- function(
         }
        
 # M is the larger grid size for the circulant covariance that includes m 
-# should be at least 2*m for embedding to be exact.
-# It can be made larger to enforce positive definiteness
-#
+# and should be at least 2*m for the embedding to be exact.
+# It can  also be made larger to enforce positive definiteness
+# by an extra delta.
+        
         if( !is.null(delta)){
             M<- rep( NA, L)
             for( i in 1:L){
                 M[i]<- m[i] + ceiling( delta/ dx[i])
             }  
         }
-# choose a good composite M is not specified        
+# choose a good composite if M is not specified        
         if( is.null(M)){
 # table of composite M with factors of 2 and 3
             p23<-expand.grid( 0:15, 0:15)
@@ -89,31 +93,33 @@ circulantEmbeddingSetup <- function(
         out<- array( c(out),M)
         #
         # a simple way to normalize. This could be avoided by
-        # translating image from the center ...
-        # add to the middle point in the array -- matches the center from above
+        # translating image from the center  putting at the image corner and 
+        # using periodic wrapping to place the rest of the image in the other corners. 
+        # the choice was made to pay for code simplicity using an extra fft ...
+        # fft of "delta function" that is  the middle point in the array
+        # -- matches the center of covariance from above
          temp <- array( 0, M)
          temp[rbind( MCenter)] <- 1
          wght <- fft(out)/(fft(temp) * prod(M))
-         if( any( Re(wght) < 0 ) ){
-           cat("summary of real part of weights", fill=TRUE)
-           print( t(stats( c(Re(wght))) ) )
-           stop(" 
-                Some weights are less than zero indicating
-                a circulant embedding that is not postive definite. 
-                This can be due to the correlation range being too 
-                large for the grid.
-                
-                Try increasing the spatial domain or decreasing 
-                the number of grid points.
-                ")
+        # 
+         if( giveWarnings){
+           if( any( Re( wght) < 0)){
+             warning( "Some spectral weights are negative")
+           }
          }
+           
+        covObject <- list(
+               m = m, 
+            grid = grid, 
+              dx = dx, 
+               M = M, 
+           delta = delta, 
+            wght = wght,  
+            call = match.call(),
+        bigGrid= bigGrid,
+        covTemplate= out
         
-        #
-        # wght is the discrete FFT for the covariance suitable for fast
-        # multiplication by convolution.
-        #
-        covObject <- list(m = m, grid = grid, dx=dx, M = M, delta=delta, 
-            wght = wght,  call = match.call())
+            )
         return( covObject)
        
 }

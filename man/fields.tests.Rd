@@ -39,7 +39,10 @@ comparing the tests in a meaninful and documented way.
 }
 
 \usage{
-test.for.zero( xtest, xtrue,  tol= 1.0e-8, relative=TRUE, tag=NULL)
+test.for.zero(
+xtest, xtrue, tol = 1e-08, relative = TRUE, RMSE =
+                 FALSE, tag = NULL)
+                 
 }
 
 \arguments{
@@ -52,6 +55,8 @@ test.for.zero( xtest, xtrue,  tol= 1.0e-8, relative=TRUE, tag=NULL)
 
 \item{relative}{If true a relative error comparison is used. (See
  details below.)}
+ 
+ \item{RMSE}{If TRUE computes the root meansqaured error between \code{xtest} and \code{xtrue}}
 
 \item{tag}{ A text string to be printed out with the test results as a
    reference}

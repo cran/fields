@@ -25,20 +25,31 @@
        extrap = FALSE, chull.mask = NA,
        nx = 80, ny = 80,
        xy = c(1,2),  verbose = FALSE,
-       ZGrid=NULL, drop.Z= FALSE, just.fixed=FALSE, 
-       fast=FALSE, NNSize=4, giveWarnings=FALSE,
+       ZGrid=NULL, 
+       drop.Z= FALSE, just.fixed=FALSE, 
+       fast=FALSE, NNSize=4,
+       setupObject=NULL, 
+       giveWarnings=FALSE,
        derivative=0, ...) {
 #
       if( is.null(ZGrid) & !drop.Z & (!is.null(object$Z)) ) {
       stop("Need to specify covariate (Z) values or set drop.Z==TRUE")
       }
-  
+      if( !is.null(setupObject)& !fast){
+        stop("Setup Object only makes sense when fast = TRUE
+             (nearest neighbor rapid prediction)")
+      }
+    
 # grid.list is old syntax for fields gridList preferred 
   if (!is.null(grid.list)){ gridList<-  grid.list}
   
-# create a default grid if it is not passed    
+  # Try to grab grid from setupObject 
+   if (is.null(gridList)& !is.null(setupObject)) {
+     gridList<- setupObject$marginInfo$gridList
+   }
+  
+  # create a default grid if it is not passed  
     if (is.null(gridList)) {
-      
     # default is 80X80 grid on first  variables in 1D
     # first two in 2D or greater for > 2D 
     # rest are set to median value of the x's
@@ -52,7 +63,7 @@
 # rows index grid locations and columns  are the covariates
 # (as Z in predict).
 # if ZGrid is NULL just returns NULL back  ...
-    Z<- unrollZGrid( gridList, ZGrid) 
+    
     xg <- make.surface.grid(gridList)
 # NOTE: the predict function called will need to do some internal checks
 # whether the evaluation of a large number of grid points (xg)  makes sense.
@@ -60,8 +71,8 @@
     print( dim( xg))
     print( nrow( xg))
     print( drop.Z)
-    cat("dim of Z", fill=TRUE)
-    print( dim( Z))
+    cat("summary of ZGrid", fill=TRUE)
+    print( summary( ZGrid))
   }
     if( nrow(xg) > 5e5){
       warning("number of grid points is large for exact prediction
@@ -91,35 +102,39 @@
     
     if(!fast){
 # here is the heavy lifting 
+# need to handle the Z image covariates separately for fast and not fast. 
+    Z<- unrollZGrid( gridList, ZGrid) 
     out[indexGood] <-  predict.mKrig(object, xnew=xg[indexGood,], ynew=ynew,
                                Z=Z[indexGood,], drop.Z= drop.Z, 
                                collapseFixedEffect = object$collapseFixedEffect,
                                just.fixed=just.fixed, ...)
   }
   else{
-  # fast approximate method 
-  # will always predict  to full grid.
-    
-  out<- mKrigFastPredict( object,
+  # rapid approximate method 
+  # will always predict  to full grid, note pass through of setup object to avoid redoing
+  #
+   
+    out<- mKrigFastPredict( object,
                           gridList= gridList, 
                           ynew = ynew,
                           derivative = derivative,
-                          Z = Z, drop.Z = drop.Z,
+                          ZGrid = ZGrid, drop.Z = drop.Z,
                           NNSize=NNSize, 
+                          setupObject= setupObject, 
                           giveWarnings=giveWarnings,
-                          
                           ...
-                           )
-  # wipe out predictions outside convex hull of observations. 
+                         )
+#
+# wipe out predictions outside convex hull of observations. 
+#
   if(!extrap){
     out[ !indexGood]<- NA
   }
     
   }
-# reshape as list with x, y and z components  
-   
-    out <-  as.surface( xg, out )
-    #
-    #
-    return(out)
+#    
+# reshape as list with x, y and z components 
+#
+  out <-  as.surface( xg, out )
+  return(out)
 }

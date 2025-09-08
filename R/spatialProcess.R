@@ -38,6 +38,7 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
                      CILevel = .95,
                        iseed = 303, 
          collapseFixedEffect = TRUE,
+               simpleKriging = FALSE,
                            ...) {
  
 # Through out this code:  obj is the output list and will be added to throughout the computation
@@ -66,6 +67,10 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
 #
   
   extraArgs<- list(...)
+  if( verbose){
+    cat("extra arguments passed", fill=TRUE)
+    print( names(extraArgs))
+  }
   
    if( REML&GCV){
      stop("Cannot optimize for both REML and GCV!")
@@ -86,6 +91,7 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
                                  parGrid = parGrid,
                                    gridN = gridN,
                      collapseFixedEffect =  collapseFixedEffect,
+                           simpleKriging = simpleKriging,
                                  verbose = verbose)
    #
    # obj$CASE 
@@ -236,7 +242,9 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
      }
    }
    
-  
+  if( verbose){
+    cat("Final call to mKrig for output object", fill=TRUE)
+  }
   
   mKrigObj <- do.call( "mKrig", 
 	                c( list(x=x,
@@ -247,7 +255,8 @@ spatialProcess <- function(x, y,  weights = rep(1, nrow(x)),   Z = NULL,
 	                  obj$mKrig.args,
 	             list( na.rm=na.rm),
 	             list(cov.function = obj$cov.function),
-	                  obj$cov.argsFull 
+	                  obj$cov.argsFull,
+	             verbose=verbose
 	            	)
              	)
 

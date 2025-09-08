@@ -5,17 +5,20 @@ interp.surface.FFT<-function( obj, M){
 z<- obj$z
 m1<- nrow( z)
 m2<- ncol( z)
-#Require that  m1 and m2 are odd
-if( (m1%%2 != 1) | (m2%%2 != 1)){
-  cat( m1, m2, fill=TRUE)
-  stop("Need an odd number of grid points for FFT interp method")
-}
+
+#Require that  m1 and m2 are odd  -- pad if grid dims are even.
+
+ if( (m1%%2 != 1) | (m2%%2 != 1)){
+   cat( m1, m2, fill=TRUE)
+   stop("Need an odd number of grid points for FFT interp method")
+  }
 
 zf<- fft( z)
 # refined grid sizes
 N1<- M*m1
 N2<- M*m2
 temp<- matrix( 0, N1,N2)
+# insert zf into a larger spectral matrix
 # this stuffing is touchy and that is why the odd
 # number of grid values is needed. 
 n1<- (m1-1)/2

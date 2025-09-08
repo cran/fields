@@ -20,13 +20,18 @@
 # or see http://www.r-project.org/Licenses/GPL-2
 ##END HEADER
 test.for.zero <- function(xtest, xtrue, tol = 1e-08, 
-    relative = TRUE, tag = NULL) {
+    relative = TRUE, RMSE=FALSE,  tag = NULL) {
+  if( !RMSE){
     denom <- ifelse(relative, mean(abs(c(xtrue))), 1)
     test.value <- sum(abs(c(xtest) - c(xtrue)))/denom
+  }
+  else{ test.value<- sqrt( mean((c(xtest) - c(xtrue))^2))
+    
+  }
     if (!is.null(tag)) {
       cat("Testing: ", tag, fill = TRUE)
     }
-    if (test.value < tol) {
+    if (test.value <= tol) {
             cat("PASSED test at tolerance ", tol, fill = TRUE)
     }
     else {

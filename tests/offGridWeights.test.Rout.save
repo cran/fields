@@ -1,6 +1,6 @@
 
-R version 4.4.0 (2024-04-24) -- "Puppy Cup"
-Copyright (C) 2024 The R Foundation for Statistical Computing
+R version 4.5.1 (2025-06-13) -- "Great Square Root"
+Copyright (C) 2025 The R Foundation for Statistical Computing
 Platform: aarch64-apple-darwin20
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -39,17 +39,24 @@ Type 'q()' to quit R.
 > ##END HEADER
 > 
 > #                  
->  suppressMessages(library(fields))
+> suppressMessages(library(fields))
 > options(echo=FALSE)
-[1] 2
+Warning message:
+In offGridWeights(s, list(x = 1:m, y = 1:n), aRange = aRange, sigma2 = sigma2,  :
+  gridList expanded to include enough 
+            nearest neighbors
 PASSED test at tolerance  1e-08
 PASSED test at tolerance  1e-08
-sigma2 
-     2 
+Warning message:
+In offGridWeights(s, list(x = 1:m, y = 1:n), mKrigObject = mKrigObj,  :
+  gridList expanded to include enough 
+            nearest neighbors
 PASSED test at tolerance  1e-08
 PASSED test at tolerance  1e-08
-sigma2 
-     2 
+Warning message:
+In offGridWeights(s * 2.5, list(x = (1:m) * 2.5, y = (1:n) * 2.5),  :
+  gridList expanded to include enough 
+            nearest neighbors
 Testing:  sparse vs mKrig
 PASSED test at tolerance  1e-08
 Testing:  prediction Variance sparse vs mKrig
@@ -57,4 +64,4 @@ PASSED test at tolerance  1e-08
 all done with off grid weight tests part 1
 > proc.time()
    user  system elapsed 
-  0.300   0.024   0.329 
+  0.450   0.036   0.482 
