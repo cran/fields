@@ -32,8 +32,8 @@ test.for.zero.flag<-1
 long.test.flag<- FALSE
 
 data( ozone2)
-as.image(ozone2$y[16,], x= ozone2$lon.lat, ny=24, nx=20, 
-          na.rm=TRUE)-> dtemp
+dtemp <- as.image(ozone2$y[16,], x= ozone2$lon.lat, ny=24, nx=20, 
+          na.rm=TRUE)
 #
 # A useful discretized version of ozone2 data
  
@@ -41,8 +41,8 @@ x<- cbind(dtemp$x[dtemp$ind[,1]], dtemp$y[dtemp$ind[,2]])
 y<- dtemp$z[ dtemp$ind]
 weights<- dtemp$weights[ dtemp$ind]
 
-Krig( x, y, Covariance="Matern", 
-   aRange=1.0, smoothness=1.0, weights=weights) -> out
+out <- Krig( x, y, Covariance="Matern", 
+   aRange=1.0, smoothness=1.0, weights=weights)
 
 
 if(long.test.flag){
@@ -52,9 +52,9 @@ if(long.test.flag){
 glist<- list( x= dtemp$x, y=dtemp$y)
 
 set.seed( 233)
-sim.Krig.approx( out, grid= glist, M=200, extrap=TRUE)-> look
+look <- sim.Krig.approx( out, grid= glist, M=200, extrap=TRUE)
 
-predict.surface.se( out, grid=glist, extrap=TRUE)-> test
+test <- predict.surface.se( out, grid=glist, extrap=TRUE)
 
 look2<- matrix( NA, 20,24)
 
@@ -79,7 +79,7 @@ look2<- matrix( NA, 200,20)
 for(  k in 1:20){
 look2[,k] <- look$z[ ind0[k,1], ind0[k,2],]}
 
-predict.se( out, x0, cov=TRUE)-> test2
+test2 <- predict.se( out, x0, cov=TRUE)
 ds<- 1/sqrt(diag(test2))
 test3<-  diag(ds)%*% test2 %*% diag(ds)
 

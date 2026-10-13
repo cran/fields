@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -101,7 +101,7 @@
     temp.sd <- 1
     #
     #
-    # this is not 1 if Krig  object is a corelation model.
+    # this is not 1 if Krig  object is a correlation model.
     if (object$correlation.model) {
         if (!is.na(object$sd.obj[1])) {
             temp.sd <- predict(object$sd.obj, x)

@@ -1,0 +1,47 @@
+#
+# fields  is a package for analysis of spatial data written for
+# the R software environment.
+# Copyright (C) 2026 Colorado School of Mines
+# 1500 Illinois St., Golden, CO 80401
+# Contact: Douglas Nychka,  douglasnychka@gmail.com,
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with the R software environment if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# or see http://www.r-project.org/Licenses/GPL-2
+##END HEADER
+addColorBar<- function(
+               zlim,
+               col= turbo(256),
+               ...
+         
+           ){
+  
+  oldPar<- addLegend()
+  # par( mar = c(0, 0, 0, 0),
+  #      oma=c(0,0,0,0),
+  #      fig=c(0,1,0,1), 
+  #      new = TRUE, # not sure what this does
+  #      usr=c(0,1,0,1))
+  # 
+  do.call( "imagePlot",
+  c(
+    list( col=col, zlim=zlim, 
+          legend.only=TRUE, add=TRUE),
+    graphics.reset=FALSE,
+    #resets for plotting on original figure
+              list(...)
+  )
+  )
+par( oldPar) 
+            
+}

@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -71,7 +71,7 @@
             title(main)
     }
     if (type == "I") {
-        image.plot(obj$x, obj$y, obj$z, xlab = xlab, ylab = ylab, 
+        imagePlot(obj$x, obj$y, obj$z, xlab = xlab, ylab = ylab, 
             zlim = zlim, ...)
         if ((!is.null(main)) & type != "b") 
             title(main)

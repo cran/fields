@@ -1,9 +1,9 @@
 %#
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment.
-%# Copyright (C) 2024 Colorado School of Mines
+%# Copyright (C) 2026 Colorado School of Mines
 %# 1500 Illinois St., Golden, CO 80401
-%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+%# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -33,9 +33,15 @@ Region and some gridded 4km elevation data sets (m).
 \code{RMprecip} is a useful spatial data set of moderate size consisting of 806
 locations. 
 \code{PRISMelevation} and \code{RMelevation} are gridded elevations for the 
-continental US and Rocky Mountain region at 4km resolution. 
+continental US and a subset of the Rocky Mountain region at 4km resolution. 
 Note that the gridded elevations from the PRISM data product are
-different than the exact station elevations. (See example below.)
+different from the exact station elevations. (See example below.)
+}
+
+\usage{ 
+data(RMprecip)
+data(RMelevation)
+data(PRISMelevation)
 }
 
 \format{
@@ -43,7 +49,7 @@ The data set  \code{RMprecip} is a list containing the following components:
 
 \describe{
 \item{x}{
-Longitude-latitude position of monitoring stations. Rows names are station id codes consistent
+Longitude-latitude position of monitoring stations. Row names are station id codes consistent
 with the US Cooperative observer network.
 The ranges for these coordinates are  [-111, -99] for longitude and [35,45] for latitude.
 }
@@ -51,15 +57,15 @@ The ranges for these coordinates are  [-111, -99] for longitude and [35,45] for 
 Station elevation in meters. 
 }
 \item{y}{
-Monthly total precipitation in millimeters.
-for August, 1997
+Monthly total precipitation in millimeters
+for August 1997
 }
 }
 
 The data sets 
  \code{PRISMelevation} and  
  \code{RMelevation} are lists 
-in the usual R grid format for images and contouring
+in the usual R grid format for images and contouring.
 
 They have  the following components:
 \describe{
@@ -73,16 +79,22 @@ Average  elevation for grid cell in meters
 
 }
 
+This data set was created  the 
+ historical data  taken from 
+ Observed monthly precipitation, min and max temperatures for the coterminous US 
+ 1895-1997
+
 These elevations and the companion grid formed the basis for the
 103-Year High-Resolution Precipitation Climate Data Set for the
 Conterminous United States
-( see \url{https://prism.oregonstate.edu/documents/PRISM_downloads_FTP.pdf}
+(see \url{https://prism.oregonstate.edu/documents/PRISM_downloads_FTP.pdf}
 and also archived at the National
-Climate Data Center. This work is authored by Chris Daly
-\url{https://prism.oregonstate.edu} and his PRISM group but had some
-contribution from the Geophysical Statistics Project at NCAR  
+Climate Data Center). This work is authored by Chris Daly
+\url{https://prism.oregonstate.edu} and his PRISM group but has some
+contribution from the Geophysical Statistics Project at NCAR
 and is an interpolation of the observational data to a 4km grid that
 takes into account topography such as elevation and aspect.
+
 
 }
 \details{
@@ -90,7 +102,7 @@ Contact Doug Nychka for the binary file \code{RData.USmonthlyMet.bin}
 and  information on its source. 
 
 \preformatted{
-# explicit source code to create the RMprecip data
+#  source code to create the RMprecip data
 dir <- "" # include path to data file 
 load(paste(dir, "RData.USmonthlyMet.bin", sep="/")
 #year.id<-  1963- 1895
@@ -115,16 +127,16 @@ test.for.zero( ydata, RMprecip$y, "values")
 }
 }
 \examples{
-# this data set was created  the 
-# historical data  taken from 
-# Observed monthly precipitation, min and max temperatures for the coterminous US 
-# 1895-1997
-# NCAR_pinfill 
-# see the Geophysical Statistics Project datasets page for the supporting functions 
-# and details. 
+ 
+data(RMprecip)
+# plot it!
 
-# plot 
+# gridded
 quilt.plot(RMprecip$x, RMprecip$y)
+US( add=TRUE, col=2, lty=2)
+
+# or as points
+bubblePlot(RMprecip$x, RMprecip$y )
 US( add=TRUE, col=2, lty=2)
 
 # comparison of station elevations with PRISM gridded values

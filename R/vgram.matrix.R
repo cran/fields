@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -71,7 +71,7 @@ if( is.list( dat)){
     m <- min( c(round(R/dx),M) )
     n <- min( c(round(R/dy),N) )
     #
-    # all relavent combinations:  note that negative increments are
+    # all relevant combinations:  note that negative increments are
     # needed as well as  positive ones
     ind <- rbind(as.matrix(expand.grid(0, 1:n)), as.matrix(expand.grid(1:m, 
         0)), as.matrix(expand.grid(c(-(m:1), 1:m), 1:n)))
@@ -106,7 +106,7 @@ if( is.list( dat)){
     }
     # finish robust estimate Cressie (1993) formula 2.4.12
     holdRVG <- 0.5 * (holdRVG^4)/(0.457 + 0.494 * holdN)
-    # collapsed variogram to common distances this what one would look
+    # collapsed variogram to common distances this is what one would look
     # at under the stationary case.
     top <- tapply(holdVG * holdN, d, FUN = "sum")
     bottom <- tapply(holdN, d, FUN = "sum")

@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -104,8 +104,8 @@
         y.pseudo <- (sc) * qsreg.psi(residuals[, k], alpha = alpha, 
             C = sc) + y - residuals[, k]
         #
-        # call the robust spline but set the cutoff for the huber weight so big
-        # it is essentially a LS spline this helps to match the lambda for robust spline
+        # call the robust spline but set the cutoff for the Huber weight so big
+        # it is essentially a LS spline; this helps to match the lambda for robust spline
         # with a lambda for the LS one.
         #
         b <- .Fortran("rcss", PACKAGE="fields",

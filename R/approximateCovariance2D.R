@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -60,7 +60,7 @@ approximateCovariance2D<-function(s, gridList, NNSize=4,
   if( !is.null( covArgs$aRange)){
     aRange<- covArgs$aRange
   }
-  # some R arcania -- strip out all arguments used by say stationary.cov
+  # some R arcana -- strip out all arguments used by say stationary.cov
   # but not used by the Covariance function 
   # Do not want to call the covariance function with these extra args. 
   if( !is.null( covArgs) ){
@@ -142,6 +142,9 @@ approximateCovariance2D<-function(s, gridList, NNSize=4,
   # these work for the unrolled 2D array 
   # 
   sIndex<-  sX + (sY-1)*m
+  ##############################################################################
+  ##### begin stationary block 
+  #
   # differences between nearest neighbor grid points 
   # and the off grid locations
   # for both coordinates
@@ -151,9 +154,8 @@ approximateCovariance2D<-function(s, gridList, NNSize=4,
   # print(  cbind( t( (sX-1)*dx + gridList$x[1])[,1],  
   #         t( (sY-1)*dy + gridList$y[1])[,1]))
   # all pairwise distances between each off grid and 
-  # (2*np)^2  ( np=2 has 16) nearest neighbors 
+  # (2*np)^2   nearest neighbors (e.g. np=2 has 16)
   dAll<- sqrt(differenceX^2 + differenceY^2)
-  #print( dAll)
   # cross covariances
   Sigma21Star<- sigma2* do.call(Covariance,
                                 c(list(d = dAll/aRange), 
@@ -162,6 +164,9 @@ approximateCovariance2D<-function(s, gridList, NNSize=4,
   cat(" Sigma 21", fill=TRUE)
   print(Sigma21Star )
   }
+  #
+  ##### end stationary block 
+  ##############################################################################
   
   # pairwise distance among nearest neighbors. 
   dNN<- rdist(nnXYCoords, nnXYCoords )
@@ -193,7 +198,7 @@ approximateCovariance2D<-function(s, gridList, NNSize=4,
   
   Sigma11Inv <- U%*% diag( dVInv)%*%t(U)
   
-  # each row of B are the weights used to predict off grid point
+  # each row of B is the weights used to predict off grid point
   B <- Sigma21Star%*%Sigma11Inv
   # create spind sparse matrix
   # note need to use unrolled indices to refer to grid points
@@ -203,8 +208,6 @@ approximateCovariance2D<-function(s, gridList, NNSize=4,
   BigB<-  list(ind=ind, ra=ra, da=da )
   # now convert to the more efficient spam format
   BigB<- spind2spam( BigB)
-  
-  
   
  if( debug){ 
     return(

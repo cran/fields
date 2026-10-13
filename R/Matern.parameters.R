@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -26,7 +26,7 @@ Matern.cor.to.range <- function(d, nu, cor.target = 0.5,
     ftemp <- function(aRange, f.extra) {
         Matern(f.extra$d/aRange, nu = f.extra$nu) - f.extra$cor.target
     }
-    # inital guess is exponential
+    # initial guess is exponential
     if (is.null(guess)) {
         guess[1] <- guess[2] <- -d/log(cor.target)
     }

@@ -1,9 +1,9 @@
 %#
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment.
-%# Copyright (C) 2024 Colorado School of Mines
+%# Copyright (C) 2026 Colorado School of Mines
 %# 1500 Illinois St., Golden, CO 80401
-%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+%# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 \alias{supportsArg}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Tests if function supports a given argument
+Tests if a function supports a given argument
 }
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
@@ -39,7 +39,7 @@ supportsArg(fun=stationary.cov, arg)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{fun}{
-The function tested for support for whether it supports the argument 
+The function to test for whether it supports the argument 
   \code{arg} as input
 }
   \item{arg}{
@@ -47,7 +47,7 @@ The argument to check if \code{fun} supports using as input
 }
 }
 \details{
-Currently only \code{stationary.cov}  and \code{Exp.cov} support 
+Currently, only \code{stationary.cov} and \code{Exp.cov} support 
   evaluation of the covariance matrix over the upper triangle 
   (and diagonal) only via the onlyUpper argument and distance 
   matrix precomputation via the distMat argument.

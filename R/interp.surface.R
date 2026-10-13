@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -22,7 +22,7 @@
 "interp.surface" <- function(obj, loc) {
     
     # obj is a surface or image  object like the list for contour, persp or image.
-    # loc a matrix of 2 d locations -- new points to evaluate the surface.
+    # loc a matrix of 2-d locations -- new points to evaluate the surface.
     x <- obj$x
     y <- obj$y
     z <- obj$z
@@ -44,7 +44,7 @@
     lx1[lx1 == nx] <- nx - 1
     ly1[ly1 == ny] <- ny - 1
     # bilinear interpolation finds simple weights based on the
-    # the four corners of the grid box containing the new
+    # four corners of the grid box containing the new
     # points.
     return(z[cbind(lx1, ly1)] * (1 - ex) * (1 - ey) + z[cbind(lx1 + 
         1, ly1)] * ex * (1 - ey) + z[cbind(lx1, ly1 + 1)] * (1 - 

@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -68,7 +68,7 @@
         }
         lam <- sreg.df.to.lambda(df, x, wt)
     }
-    # use lambda is it is passed
+    # use lambda if it is passed
     if (!is.null(lambda)) {
         lam <- lambda
     }

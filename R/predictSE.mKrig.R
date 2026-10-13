@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -68,7 +68,7 @@ predictSE.mKrig<- function(object, xnew = NULL,
   # to be done separately for each column of k0
   hold <- mKrig.coef(object, y = k0, collapseFixedEffect=FALSE)
   #print( hold$beta)
-  # temp0 are marginal variances -- trival in the stationary case!
+  # temp0 are marginal variances -- trivial in the stationary case!
   temp0<- sigma2 * do.call(call.name,
                             c(object$args, 
                               list(x1 = xnew, marginal = TRUE))) 

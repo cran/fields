@@ -1,16 +1,22 @@
+AudiA4
+BD
+ChicagoO3
 CO2: CO2 CO2.true
 COmonthlyMet: CO.Grid CO.elev CO.elevGrid CO.id CO.loc CO.names CO.ppt CO.ppt.MAM CO.ppt.MAM.climate CO.tmax CO.tmax.MAM CO.tmax.MAM.climate CO.tmean.MAM.climate CO.tmin CO.tmin.MAM CO.tmin.MAM.climate CO.years
+flame
+glacier
+lennon
 LENSExample
+Mines.colors: blasterBlue coloradoRed darkBlue darkGray earthBlue energyYellow envrGreen goldenTech lightBlue lightGray mutedBlue paleBlue redFlannel silver
+minitri
 NorthAmericanRainfall
 NorthAmericanRainfall2
+ozone2
 PRISMelevation
+rat.diet
 RCMexample
 RMelevation
+RMprecip
 US.dat
-WorldBankCO2
-lennon
-ozone2
-rat.diet
 world.dat
-glacier
-Mines.colors: blasterBlue coloradoRed darkBlue darkGray earthBlue energyYellow envrGreen goldenTech lightBlue lightGray mutedBlue paleBlue redFlannel silver
+WorldBankCO2

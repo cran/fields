@@ -1,9 +1,9 @@
 %#
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment.
-%# Copyright (C) 2024 Colorado School of Mines
+%# Copyright (C) 2026 Colorado School of Mines
 %# 1500 Illinois St., Golden, CO 80401
-%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+%# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 \alias{world.land}
 \title{Plot of the world}
 \description{
-Plots quickly, medium resolution outlines of large land masses. This
+Quickly plots medium-resolution outlines of large land masses. This
 is a simple wrapper for the map function from the maps package. 
 }
 \usage{
@@ -45,7 +45,7 @@ maps package.}
 \details{
 See the longstanding \code{maps} package for documentation on this
 function.  The functions world.land, world.color and in.land.grid have
-been depreciated but can be recovered from versions of fields 6.7.1 or
+been deprecated but can be recovered from versions of fields 6.7.1 or
 older.
  }
 \seealso{US, in.poly, in.poly.grid}

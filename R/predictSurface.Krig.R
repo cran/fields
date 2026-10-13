@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -56,7 +56,7 @@
 # if XMatGrid is NULL just returns that back 
     XMat<- unrollXMatGrid( grid.list, XMatGrid) 
     xg <- make.surface.grid(grid.list)
-# NOTE: the predict function called will need to do some internal  the checks
+# NOTE: the predict function called will need to do some internal checks
 # whether the evaluation of a large number of grid points (xg)  makes sense.
   if( verbose){
     print( dim( xg))

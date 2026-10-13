@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -19,28 +19,19 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2
 ##END HEADER
-setupLegend<- function( horizontal = FALSE,
-                        legend.shrink = 0.9, 
-                        legend.width = 1.2, 
-                        legend.mar = ifelse(horizontal, 3.1, 5.1)
-){
-  # save current graphics settings
-   
-  temp <- imageplot.setup(add = FALSE, 
-                          legend.shrink = legend.shrink, 
-                          legend.width = legend.width ,
-                          legend.mar= legend.mar, 
-                          horizontal = horizontal,
-                          bigplot = NULL,
-                          smallplot = NULL)
-  Info<- list(    smallplot = temp$smallplot, 
-              legend.shrink = legend.shrink, 
-                legend.mar  = legend.mar, 
-               legend.width = legend.width ,
-                 horizontal = horizontal)
-#oldPar =  par(no.readonly = TRUE) )
-  par(plt = temp$bigplot)
-  
-  return( Info)
+ensembleEnvelope<- function(object=NULL,ensemble= NULL, alpha.level =.95,
+                            ...){
+  if( is.null( ensemble)){
+  ensemble<- sim.spatialProcess(object,
+                           ...)
+  }
+ dimEnsemble<-  c( 1)
+  muHat<- apply( ensemble,dimEnsemble,mean, na.rm = TRUE)
+  SE<- apply( ensemble,dimEnsemble, sd, na.rm = TRUE)
+  Zscore<- (ensemble - muHat)/SE
+  ZMax<- apply( abs(Zscore), 1, max)
+  bound<- quantile( ZMax, 1-alpha.level, na.rm = TRUE)
+  return(
+  cbind( muHat - SE*bound, muHat + SE*bound )
+  )
 }
-

@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -46,8 +46,8 @@ profileMLE<- function (obj, parName, parGrid=NULL, gridN=15,
     cov.params.startTmp<-cov.params.start
   }
   
-# just evaluate other parameters at MLEs and don't optimze. 
-# E.g. just use  MLE lambda hat for all choice in in parGrid. 
+# just evaluate other parameters at MLEs and don't optimize. 
+# E.g. just use  MLE lambda hat for all choices in parGrid. 
 # if( fast){
 #    cov.params.startTmp<-NULL
 #    

@@ -47,15 +47,15 @@ x0<- cbind( c(.1,.2,.6,.65,.8), c(.05,.5,.73,.9,.95))
 temp.wght<- function(x, alpha=.3){
   Exp.cov( x, aRange=.1) }
 
-Krig( x,y, cov.function=Exp.cov,weights=weights,
-     wght.function= "temp.wght")-> out
-Krig( x,y, cov.function=Exp.cov,weights=weights,W= out$W)-> out2
+out <- Krig( x,y, cov.function=Exp.cov,weights=weights,
+     wght.function= "temp.wght")
+out2 <- Krig( x,y, cov.function=Exp.cov,weights=weights,W= out$W)
 
 
 # direct calculation test for A matrix
 #
 
-Krig.Amatrix( out, x=x0)-> A
+A <- Krig.Amatrix( out, x=x0)
 test.for.zero( A%*%y, predict( out, x0),tag="Amatrix vs. predict")
 
 # now find se.

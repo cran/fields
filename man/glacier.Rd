@@ -1,9 +1,9 @@
 %#
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment.
-%# Copyright (C) 2024 Colorado School of Mines
+%# Copyright (C) 2026 Colorado School of Mines
 %# 1500 Illinois St., Golden, CO 80401
-%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+%# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -28,7 +28,9 @@
 \description{
 A moderate size (about 8400 locations) spatial dataset that is well-known in the applied mathematics approximation literature for testing interpolation methods.
 }
+
 \usage{data(glacier)}
+
 \format{
   The format of \code{glacier} is a list with two components:
 \describe{
@@ -42,14 +44,14 @@ scattered  data and serves as an interesting bridge to the examples
 in applied math that develop radial basis function surface fitting.
 The data was originally used by R. Franke. 
 
-Unfortunately at this time we can not find any background on where
+Unfortunately, at this time, we cannot find any background on where
 these data were collected or indeed even the location of this glacier.
 However, it is an interesting data set in that it appears that
-the elevations are reported along lnes of equal elevation, i.e. 
+the elevations are reported along lines of equal elevation, i.e.,
 contours, perhaps from a digitization of a
 topographic map or survey. It is important to estimate the
 surface in a way that the artifacts from discretization are not
-present. In the example below the compactly supported kernel
+present. In the example below, the compactly supported kernel
 interpolation still has some artifacts. 
 
 The glacier data set is available at this website
@@ -59,13 +61,13 @@ The examples below are useful for comparing different
 approximations
 to a Gaussian spatial process estimate for the elevation surface.
 Of
-course in using a stationary covariance ( e.g. the Matern or
-Wendland)
+course, in using a stationary covariance (e.g., the Matern or
+Wendland),
 these are also radial basis smoothing or interpolation of the
 data. 
 }
 \examples{
-data( glacier )
+data(glacier)
 # EDA for raw obs:
 
 bubblePlot( glacier$loc, glacier$y, highlight=FALSE, size=.5)
@@ -75,15 +77,13 @@ bubblePlot( glacier$loc, glacier$y, highlight=FALSE, size=.5)
 
 table( glacier$y)
 
-
-
 # find sigma and rho by maximum likelihood 
 # for a fixed range
 #  the default is the Wendland covariance with k=2
 # See help(Wendland)
 
-# this takes about 5 minutes
-# macbook pro Quad-Core Intel Core i5 8 GB
+# this takes < 2  minutes
+# macbook pro  Apple M4 chip 16GB memory
 
 #options(spam.nearestdistnnz=c(5e7,1e3))
 #system.time( 
@@ -98,7 +98,7 @@ table( glacier$y)
 # set.panel()
 
 # just evaluate at MLE
-# reset default matrix size that the spam pacakge will use.
+# reset default matrix size that the spam package will use.
 
 \dontrun{
 
@@ -147,7 +147,7 @@ for( k in 1:3){
 imagePlot(out$x, out$y, out$z[,,k], zlim=zlim)
 }
 
-% test out fast predict algorithm verses exact 
+% test out fast predict algorithm versus exact
 % note speedup of about 15 times 
 system.time(
 look2<- predictSurface.mKrig( obj2, nx=150, ny=150,

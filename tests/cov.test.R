@@ -112,9 +112,9 @@ test.for.zero( look1, as.matrix(look2))
 # some tests of great circle distance
 
 
-stationary.taper.cov( x[1:3,],x[1:10,] , aRange=200, Taper.args= 
+temp <- stationary.taper.cov( x[1:3,],x[1:10,] , aRange=200, Taper.args= 
        list(k=2,aRange=300, dimension=2),
-       Dist.args=list( method="greatcircle") )-> temp
+       Dist.args=list( method="greatcircle") )
 
 # temp is now a tapered 3X10 cross covariance matrix in sparse format. 
 # should be identical to
@@ -129,8 +129,8 @@ test.for.zero(  as.matrix(temp), temp2, tol=2e-6, tag="taper with great circle")
 # Note that default covariance is exponential and default taper is 
 # Wendland (k=2).
 
-stationary.taper.cov( x[1:3,],x[1:10,] , aRange=1.5, Taper.args= 
-      list(k=2,aRange=2.0, dimension=2) )-> temp
+temp <- stationary.taper.cov( x[1:3,],x[1:10,] , aRange=1.5, Taper.args= 
+      list(k=2,aRange=2.0, dimension=2) )
 # temp is now a tapered 5X10 cross covariance matrix in sparse format. 
 # should be identical to
 # the direct matrix product
@@ -141,9 +141,9 @@ temp2<- Exp.cov( x[1:3,],x[1:10,], aRange=1.5) *
 
 test.for.zero(  as.matrix(temp), temp2, tag= "high level test of taper cov")
 
-stationary.taper.cov( x[1:3,],x[1:10,] , range=1.5,
+temp <- stationary.taper.cov( x[1:3,],x[1:10,] , range=1.5,
         Taper.args= list(k=2,aRange=2.0,
-                       dimension=2) )-> temp
+                       dimension=2) )
 
 test.for.zero(  as.matrix(temp), temp2, tag= "high level test of taper cov")
 

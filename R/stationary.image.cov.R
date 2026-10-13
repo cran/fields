@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -36,9 +36,9 @@ stationary.image.cov <- function(ind1, ind2, Y, cov.obj = NULL,
         n <- length(grid$y)
         #
         # determine size of padding
-        # default is twice domain and will then yeild exact results
+        # default is twice domain and will then yield exact results
         # delta indicates that covariance is zero beyond a distance delta
-        # so using a smaller grid than twice domain will stil give exact results.
+        # so using a smaller grid than twice domain will still give exact results.
         if(!is.null(delta)){
            M<- ceiling(m + 2*delta/dx)
            N<- ceiling(n + 2*delta/dy)

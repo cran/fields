@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -26,7 +26,7 @@
     # in d dimensions
     # usually called with p = 2m-d
     #  Because this is
-    #  a generalized covariance the marginal variance is not really
+    #  a generalized covariance, the marginal variance is not really
     #  defined.
     #  Thus, marginal is a dummy argument to be consistent with
     #  other covariance functions

@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -63,11 +63,11 @@
         cat(dim(R), fill = TRUE)
     }
     #
-    # do nruns with initial desing drawn at random
+    # do nruns with initial design drawn at random
     #
     # in this code Dset are the indices of the design
     # Cset are the complement set of indices indicating the candidate points
-    # no used in the design
+    # not used in the design
     #
     for (RUNS in 1:nruns) {
         if (is.null(start)) {
@@ -127,7 +127,7 @@
                     fill = TRUE)
                 }
                 crit.old <- crit.i
-                # check if the best swap is really better thatn what you already have.
+                # check if the best swap is really better than what you already have.
                 if (best < crit.i) {
                   if (verbose) {
                     cat(i, "best swapped ", fill = TRUE)

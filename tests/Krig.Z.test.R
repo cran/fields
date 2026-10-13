@@ -32,6 +32,8 @@ options( echo=FALSE)
 
 test.for.zero.flag<-1
 
+data(ChicagoO3)
+
 #cat("A very nasty case with knots and weights",fill=TRUE)
 
 set.seed(123)
@@ -42,7 +44,7 @@ y<- rnorm( 15)*.01 + 5*(x[,1]**3 +  (x[,2]-.5)**2) +  (XMat[,1] +XMat[,2])*.001
 
 # first without knots compare default to fixed
 
-out.new<-  Krig( x,y,XMat=XMat, cov.function=Exp.cov, give.warnings=FALSE)-> out.new
+out.new <- Krig( x,y,XMat=XMat, cov.function=Exp.cov, give.warnings=FALSE)
 
 out.new2<- Krig( x,y,XMat=XMat, cov.function=Exp.cov,
                  lambda=1)
@@ -127,24 +129,24 @@ tps.fit<-Tps( x,y, scale.type="unscaled", XMat= XMatcov)
 
 ## new tests
 
-   predictSurfaceSE( tps.fit, gridList, extrap=TRUE,
-               drop.XMat=TRUE)$z-> curv.var1
+   curv.var1 <- predictSurfaceSE( tps.fit, gridList, extrap=TRUE,
+               drop.XMat=TRUE)$z
 
-   predictSE( tps.fit, xg, drop.XMat=TRUE)-> curv.var2
+   curv.var2 <- predictSE( tps.fit, xg, drop.XMat=TRUE)
      test.for.zero( curv.var1, curv.var2)
 
 # SE with covariates included
-   predictSE( tps.fit, xg, XMat=XMatcov.grid, drop.XMat=FALSE)**2-> curv.var1
-#   as.surface( gridlist, curv.var1)$z-> curv.var1
+   curv.var1 <- predictSE( tps.fit, xg, XMat=XMatcov.grid, drop.XMat=FALSE)**2
+#   curv.var1 <- as.surface( gridlist, curv.var1)$z
 
 # SE for just the spline part
-   predictSE( tps.fit, xg, drop.XMat=TRUE)**2-> curv.var2
-#   as.surface( gridlist, curv.var2)$z-> curv.var2
+   curv.var2 <- predictSE( tps.fit, xg, drop.XMat=TRUE)**2
+#   curv.var2 <- as.surface( gridlist, curv.var2)$z
 
 # SE for just the fixed part
- predictSE( tps.fit, xg,XMat=XMatcov.grid, drop.XMat=FALSE,
-                            just.fixed=TRUE )**2-> curv.var3
-# as.surface( gridlist, curv.var3)$z-> curv.var3
+ curv.var3 <- predictSE( tps.fit, xg,XMat=XMatcov.grid, drop.XMat=FALSE,
+                            just.fixed=TRUE )**2
+# curv.var3 <- as.surface( gridlist, curv.var3)$z
 
 
 # calculating from more basic functions

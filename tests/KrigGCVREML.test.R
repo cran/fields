@@ -99,8 +99,8 @@ test.for.zero( test,test2,tag="GCV model")
 data( ozone2)
 x<- ozone2$lon.lat
 y<- ozone2$y[16,]
-Tps( x,y)-> out
-KrigFindLambda( out, tol=1e-10)-> out2
+out <- Tps( x,y)
+out2 <- KrigFindLambda( out, tol=1e-10)
 
 test.for.zero(out$lambda.est[1,-6], 
        out2$lambda.est[1,-6],tol=5e-4, tag="Tps/gcv for ozone2")
@@ -108,7 +108,7 @@ test.for.zero(out$lambda.est[1,-6],
 # try with "new" data (linear transform should give identical 
 # results for GCV eff df
 
-KrigFindLambda( out, y=(11*out$y + 5), tol=1e-10 )-> out3
+out3 <- KrigFindLambda( out, y=(11*out$y + 5), tol=1e-10 )
 
 test.for.zero(out2$lambda.est[1,2], 
        out3$lambda.est[1,2],tol=1e-6, tag="Tps/gcv for ozone2 new data")

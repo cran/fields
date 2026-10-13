@@ -33,25 +33,26 @@ set.seed(123)
 # Tps has been tested from scratch using basic linear algebra
 # so test sreg against this
 
+data(rat.diet)
 x<- rat.diet$t
 y<- rat.diet$trt
 
-sreg( x,y, lambda= 10)-> out
-Tps( x,y, scale="unscaled", lambda=10*length(y))-> out2
+out <- sreg( x,y, lambda= 10)
+out2 <- Tps( x,y, scale="unscaled", lambda=10*length(y))
 
 test.for.zero( out$fitted.values, out2$fitted.values, tag="predict at lambda sreg/Tps")
 
 
 #### GCV test
 
-sreg( x,y, tol=1e-12)-> out
-gcv.sreg( out, tol=1e-12)$lambda.est -> look0
+out <- sreg( x,y, tol=1e-12)
+look0 <- gcv.sreg( out, tol=1e-12)$lambda.est
 
 test.for.zero( out$lambda.est[1,2], look0[1,2], tol=5e-4)
 
-Tps( x,y)-> out2
-KrigFindLambda( out2, tol=1e-6)$lambda.est[1,2]-> look2
-gcv.sreg( out, tol=1e-12)$lambda.est[1,2] -> look
+out2 <- Tps( x,y)
+look2 <- KrigFindLambda( out2, tol=1e-6)$lambda.est[1,2]
+look <- gcv.sreg( out, tol=1e-12)$lambda.est[1,2]
 
 test.for.zero( look, look2, tol=2e-3, tag="GCV sreg/Tps")
 
@@ -60,11 +61,11 @@ set.seed( 123)
 x<-  rep(rat.diet$t,3)
 y<- rep( rat.diet$trt,3) + rnorm(39*3)*5
 
-sreg( x,y)-> out
-gcv.sreg( out, tol=1e-8)$lambda.est -> look
+out <- sreg( x,y)
+look <- gcv.sreg( out, tol=1e-8)$lambda.est
 
-Tps( x,y, scale="unscaled")-> out2
-KrigFindLambda( out2, tol=1e-5)$lambda.est-> look2
+out2 <- Tps( x,y, scale="unscaled")
+look2 <- KrigFindLambda( out2, tol=1e-5)$lambda.est
 look2[,1]<- look2[,1]/length( out$xM)
 
 test.for.zero( look[1:3,3], look2[1:3,3],  

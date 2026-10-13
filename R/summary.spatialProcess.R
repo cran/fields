@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -133,7 +133,7 @@ summary.spatialProcess <- function(object, ...) {
       
     }
     else{
-      # if more that one realization just summarize the coefficients
+      # if more than one realization just summarize the coefficients
       outObject$fixedEffectsTable <- stats(t(object$beta))
     }
   }

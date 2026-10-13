@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -81,7 +81,7 @@
 # set up various arrays for reuse during the simulation
 #  
 ####### NOTE there are two and possibly (if fast ==TRUE ) three SETUP steps  to 
-# make conditional  simulation loops efficients by reusing some objects. 
+# make conditional  simulation loops efficient by reusing some objects. 
 #  
 # SETUP weights for  fast, local off grid simulation
 # grid is expanded to include nearest neighbors.

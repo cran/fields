@@ -85,7 +85,7 @@ aRange<- 2.0
   test.for.zero( ccoef, out$c.coef, tag="check ccoef")
 
 # find full log likelihood
-  chol(M)-> cM
+  cM <- chol(M)
   lLike<-  -(N/2)*log(2*pi) - (1/2)* (2*sum( log( diag(cM)))) - (1/2)* t(res)%*% Mi %*% res
   test.for.zero( lLike, out$summary["lnProfileLike.FULL"], tag="llike profile from mKrig")
   

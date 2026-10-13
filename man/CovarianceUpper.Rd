@@ -1,9 +1,9 @@
 %#
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment.
-%# Copyright (C) 2024 Colorado School of Mines
+%# Copyright (C) 2026 Colorado School of Mines
 %# 1500 Illinois St., Golden, CO 80401
-%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+%# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -26,9 +26,9 @@
 Evaluate covariance over upper triangle of distance matrix
 }
 \description{
-Evaluates the covariance over the upper triangle of a distance matrix 
-  rather than over the entire matrix to reduce computation time.  Note 
-  that the \code{chol} function only requires the upper triangle of 
+Evaluates the covariance over the upper triangle of a distance matrix
+  rather than over the entire matrix to reduce computation time.  Note
+  that the \code{chol} function only requires the upper triangle of
   the covariance matrix to perform the Cholesky decomposition.
 }
 \usage{
@@ -39,14 +39,14 @@ ExponentialUpper(distMat, range = 1, alpha = 1/range, theta = NULL)
 The distance matrix to evaluate the covariance over.
 }
   \item{range}{
-Range parameter default is one. Note that the scale can also
-  be specified through the "aRange" scaling argument used in
-  fields covariance functions)
+Range parameter; the default is one. Note that the scale can also
+  be specified through the "aRange" scaling argument (used in
+  fields covariance functions).
 }
 
 \item{alpha}{
 1/range}
-  
+
 \item{theta}{
 Also the range parameter.}
 
@@ -63,7 +63,7 @@ John Paige
 \examples{
 set.seed(123)
 
-#a  distance matrix 
+#a  distance matrix
 coords = matrix(runif(10), ncol=2)
 distMat = rdist(coords)
 

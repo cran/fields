@@ -44,9 +44,9 @@ weights<- runif(15)*10
 # double check that just diagonals work. 
 
 lambda.test<- .6
-Krig( x,y,cov.function=Exp.cov,weights=weights)-> out
-Krig( x,y,cov.function=Exp.cov,weights=weights, lambda=lambda.test)-> out2
-Krig.coef( out, lambda=lambda.test)-> test
+out <- Krig( x,y,cov.function=Exp.cov,weights=weights)
+out2 <- Krig( x,y,cov.function=Exp.cov,weights=weights, lambda=lambda.test)
+test <- Krig.coef( out, lambda=lambda.test)
 
 W<- diag( weights)
 W2<- diag( sqrt(weights))
@@ -83,7 +83,7 @@ W<- out.new$W
 
 test.for.zero( c( W2%*%W2), c( W), tag=" sqrt of W")
 
-Krig( x,y, cov.function=Exp.cov,weights=weights, W= out.new$W)-> temp
+temp <- Krig( x,y, cov.function=Exp.cov,weights=weights, W= out.new$W)
 
 test.for.zero( predict(temp, y= y), predict(out.new,y=y), 
 tag=" Test of passing W explicitly")
@@ -95,7 +95,7 @@ M<- (lambda.test*solve(W)  + K);T<- fields.mkpoly(x, 2)
 temp.d<- c(solve( t(T) %*% solve( M)%*%T) %*% t(T)%*% solve( M) %*%y)
 temp.c<- solve( M)%*% (y - T%*% temp.d)
 # 
-Krig.coef( out.new,lambda=lambda.test )-> out2
+out2 <- Krig.coef( out.new,lambda=lambda.test )
 
 test.for.zero( temp.d, out2$d, tag=" d coef full W")
 # test for c coefficents
@@ -107,7 +107,7 @@ test.for.zero( temp.c, out2$c, tag="c coef full W" )
 
 lambda<- out.new$lambda
 
-Krig.Amatrix( out.new, lambda=lambda)-> Alam
+Alam <- Krig.Amatrix( out.new, lambda=lambda)
 
 test.for.zero( Alam%*%y , predict(out.new), tag="A matrix")
 
@@ -118,7 +118,7 @@ test2<- out.new$eff.df
 
 test.for.zero( test,test2, tag=" check trace of A")
 
-Krig.fgcv.one( lam=lambda, out.new)-> test
+test <- Krig.fgcv.one( lam=lambda, out.new)
 # compare to
 test2<- (1/N)*sum(  
                (out.new$W2%*%(y - c(Alam%*% y) ))**2 

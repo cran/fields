@@ -1,7 +1,7 @@
 
-R version 4.5.1 (2025-06-13) -- "Great Square Root"
-Copyright (C) 2025 The R Foundation for Statistical Computing
-Platform: aarch64-apple-darwin20
+R version 4.6.1 (2026-06-24) -- "Happy Hop"
+Copyright (C) 2026 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin23
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -219,7 +219,7 @@ PASSED test at tolerance  1e-08
 > lam<- .2
 > Sigma<- Exp.cov( x,x,aRange=4)
 > M<- Sigma + lam * diag( 1, nrow(x))
-> chol( M)-> Mc
+> Mc <- chol( M)
 > look2<- sum( log(diag( Mc)))*2
 > 
 > out<-mKrig( x,y,cov.function =Exp.cov, aRange=4, lambda=lam)
@@ -235,7 +235,7 @@ PASSED test at tolerance  1e-08
 > set.seed( 123)
 > weights<- runif(nrow( x))
 > M<- Sigma +  diag(lam/ weights)
-> chol( M)-> Mc
+> Mc <- chol( M)
 > look2<- sum( log(diag( Mc)))*2
 > 
 > out<-mKrig( x,y,weights=weights, cov.function =Exp.cov, aRange=4, lambda=lam)
@@ -254,8 +254,8 @@ PASSED test at tolerance  1e-08
 > N<- nrow( x)
 > Sigma<- Exp.cov( x,x,aRange=4)
 > M<- Sigma + lam.true * diag( 1, nrow(x))
-> chol( M)-> Mc
-> t(Mc)%*%Mc -> test
+> Mc <- chol( M)
+> test <- t(Mc)%*%Mc
 > 
 > 
 > 
@@ -302,4 +302,4 @@ PASSED test at tolerance  1e-08
 > 
 > proc.time()
    user  system elapsed 
-  0.458   0.067   0.527 
+  1.027   0.138   1.163 

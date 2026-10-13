@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -31,7 +31,7 @@ mKrig.trace <- function(object, iseed, NtrA) {
     if( !is.na(iseed)){
       set.seed(iseed)
     }
-    # if more MonteCarlo samples > number of data points just
+    # if more Monte Carlo samples > number of data points just
     # find A exactly using  np  calls to predict.
     np<- object$np
     if (NtrA >= object$np) {
@@ -45,7 +45,7 @@ mKrig.trace <- function(object, iseed, NtrA) {
     else {
         # if fewer tests then use random trace method
         # find fitted.values  for iid N(0,1) 'data' to calculate the
-        # the Monte Carlo estimate of tr A(lambda)
+        # Monte Carlo estimate of tr A(lambda)
         # basically repeat the steps above but take some
         # short cuts because we only need fitted.values
         # create random normal 'data'
@@ -83,7 +83,7 @@ mKrig.trace <- function(object, iseed, NtrA) {
 
 mKrig.coef <- function(object, y, collapseFixedEffect=TRUE) {
     # given new data y and the matrix decompositions in the
-    # mKrig object find coficients beta  and c.
+    # mKrig object find coefficients beta  and c.
     # beta are the coefficients for the fixed part
     # in this case hard coded for a low order polynomial
     # c are coefficients for the basis functions derived from the

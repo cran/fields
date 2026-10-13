@@ -33,7 +33,7 @@ set.seed(123)
 x1<- matrix( runif(2*20), ncol=2)
 x2<- matrix( runif(2*10), ncol=2)
 
-fields.rdist.near( x1,x2, delta=.75)-> look
+look <- fields.rdist.near( x1,x2, delta=.75)
 temp<- matrix( NA, nrow(x1),nrow(x2))
 temp[ look$ind] <- look$ra
 temp2<- rdist( x1, x2)
@@ -56,19 +56,19 @@ test.for.zero( temp, temp2)
 
 
 
-stationary.taper.cov( x1,x2, Taper="Wendland2.2", 
-           Taper.args= list( aRange=.8), spam.format=FALSE )-> look
+look <- stationary.taper.cov( x1,x2, Taper="Wendland2.2", 
+           Taper.args= list( aRange=.8), spam.format=FALSE )
 temp0<- look
 
-stationary.taper.cov( x1,x2, Taper="Wendland2.2",
-           Taper.args= list( aRange=.8), spam.format=TRUE )-> look
+look <- stationary.taper.cov( x1,x2, Taper="Wendland2.2",
+           Taper.args= list( aRange=.8), spam.format=TRUE )
 temp1<-  spam2full( look)
 
 test.for.zero( temp1, temp0)
 
-stationary.taper.cov( x1,x2, Taper="Wendland",
+look <- stationary.taper.cov( x1,x2, Taper="Wendland",
            Taper.args= list( aRange=.8, k=2, dimension=2),
-                     spam.format=TRUE )-> look
+                     spam.format=TRUE )
 temp1b<-  spam2full( look)
 
 
@@ -90,10 +90,10 @@ set.seed( 256)
 rv<- runif( nrow(x2))
 
 # test of multiply 
-stationary.taper.cov( x1, x2,  C= rv)-> look
+look <- stationary.taper.cov( x1, x2,  C= rv)
 temp2<-stationary.taper.cov( x1,x2)
 
-spam2full(temp2)%*%(rv)-> look2
+look2 <- spam2full(temp2)%*%(rv)
 test.for.zero( look, look2)
 
 #
@@ -102,10 +102,10 @@ set.seed( 123)
 temp<- matrix( 1:48, ncol=6, nrow=8)
 temp[ sample( 1:48, 20)] <- 0
 
-as.spam( temp)-> temp2
+temp2 <- as.spam( temp)
 test.for.zero( spam2full(temp2), temp )
 
-spam2spind( temp2)-> temp3
+temp3 <- spam2spind( temp2)
 
 test.for.zero( spind2full( temp3), temp)
 
@@ -129,7 +129,7 @@ set.seed( 234)
 
 CC<- matrix( rnorm( 64), 8,8)
 A<- ( CC)%*% t(CC)
-as.spam( A)-> As
+As <- as.spam( A)
 
 test.for.zero( solve( As), solve( A))
 
@@ -138,7 +138,7 @@ CC<- diag( 1, 8)
 CC[4,1:8] <- rnorm(8)
 CC[7,1:8] <- rnorm(8)
 A<- ( CC)%*% t(CC)
-as.spam( A)-> As
+As <- as.spam( A)
 
 test.for.zero( solve( As), solve( A))
 
@@ -148,15 +148,15 @@ x<- ozone2$lon.lat
 y<- ozone2$y[16,]
 
 
-Krig(x,y, cov.function = "stationary.taper.cov", aRange=1.5,
+out1 <- Krig(x,y, cov.function = "stationary.taper.cov", aRange=1.5,
       give.warnings=FALSE, 
       cov.args= list( spam.format=FALSE, 
-           Taper.args= list( dimension=2, aRange=2.0,k=3) )    ) -> out1
+           Taper.args= list( dimension=2, aRange=2.0,k=3) )    )
 
-Krig(x,y, cov.function = "stationary.taper.cov", lambda=2.0, aRange=1.5,
+out2 <- Krig(x,y, cov.function = "stationary.taper.cov", lambda=2.0, aRange=1.5,
       cov.args= list( spam.format=TRUE,
         Taper.args= list( aRange=2.0,k=3, dimension=2)  )
-           ) -> out2
+           )
 
 temp1<- predict( out1,lambda=2.0)
 temp2<- predict( out2)

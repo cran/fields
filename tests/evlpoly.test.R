@@ -45,9 +45,9 @@ test.for.zero( temp, temp2)
 set.seed( 124)
 x<-  matrix( runif(12), ncol=3)
 
-fields.mkpoly(x, m=3)-> out
+out <- fields.mkpoly(x, m=3)
 
-attr( out, "ptab")-> ptab
+ptab <- attr( out, "ptab")
 
 J<- nrow( ptab)
 
@@ -58,10 +58,10 @@ temp2<-out%*% coef
 
 test.for.zero( temp,temp2)
 
-fields.derivative.poly( x, m=3, coef)-> temp
+temp <- fields.derivative.poly( x, m=3, coef)
 
-fields.mkpoly( cbind( x[,1:2], x[,3]+1e-6), m=3)%*% coef-> temp2
-fields.mkpoly( cbind( x[,1:2], x[,3]-1e-6), m=3)%*% coef-> temp3
+temp2 <- fields.mkpoly( cbind( x[,1:2], x[,3]+1e-6), m=3)%*% coef
+temp3 <- fields.mkpoly( cbind( x[,1:2], x[,3]-1e-6), m=3)%*% coef
 temp2<- (temp2- temp3)/ 2e-6
 
 test.for.zero( temp[,3], temp2)

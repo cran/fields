@@ -1,9 +1,9 @@
 %#
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment.
-%# Copyright (C) 2024 Colorado School of Mines
+%# Copyright (C) 2026 Colorado School of Mines
 %# 1500 Illinois St., Golden, CO 80401
-%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+%# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 \name{fields.grid}
 \alias{mKrig.grid}
 \title{
-Using MKrig for predicting on a grid.
+Using mKrig for predicting on a grid.
 }
 
 \description{
@@ -34,10 +34,11 @@ methods in mKrig to evaluate a Kriging estimate on a large grid.
 
 \details{
 \code{mKrig} is a flexible function for surface fitting  using 
-a spatial process model. It can also exploit sparse matrix methods forlarge data sets by using a compactly supported covariance. 
-The example below shows how ot evaluate a solution on a big grid. (Thanks to Jan Klennin for  this example.)
+a spatial process model. It can also exploit sparse matrix methods for large data sets by using a compactly supported covariance.
+The example below shows how to evaluate a solution on a big grid. (Thanks to Jan Klennin for  this example.)
 }
 \examples{
+data(RMprecip)
 x<- RMprecip$x
 y<- RMprecip$y
 
@@ -66,7 +67,7 @@ glist<- fields.x.to.grid(x, nx=80, ny=80) # this is a cute way to get a default 
      V<- diag(c( 2.5*(glist$lon[2]-glist$lon[1]), 
                  2.5*(glist$lat[2]-glist$lat[1])))
 \dontrun{
-# this is an interplotation of the values using a compact 
+# this is an interpolation of the values using a compact 
 # but thin plate spline like covariance. 
     mKrig( Bigx,Bigy, cov.function="wendland.cov",k=4, V=V, 
                  lambda=0)->out2 

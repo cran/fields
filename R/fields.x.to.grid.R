@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -31,7 +31,7 @@
   }
   else{
     grid.list <- as.list(1:M)
-    # add columns names
+    # add column names
     names(grid.list) <- dimnames(x)[[2]]
     #     cruise through x dimensions and find medians.
     for (k in 1:M) {

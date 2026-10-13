@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -91,7 +91,7 @@
     # in transformed scale.
     #  i.e.   knots <- scale( object$knots, xc, xs)
     #
-    # figure out if the coefficients for the surface needto be recomputed.
+    # figure out if the coefficients for the surface need to be recomputed.
     find.coef<- (!is.null(y) | !is.null(yM) | !is.na(lambda) | 
         !is.na(df) | !is.na(model[1]))
     if (verbose) {

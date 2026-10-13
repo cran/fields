@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -32,7 +32,7 @@ offGridWeights<-function(s, gridList, NNSize=2,
   #  This is a wrapper function to distinguish between the 
   # 1D and 2D cases. The 1D is useful to follow the algorithm 
   # details but typically not needed in practice. The 2D is 
-  # the workhorse for fast approximation simulation of a stationary
+  # the workhorse for fast approximate simulation of a stationary
   # spatial process on a regular grid combined with irregular 
   # observations
   # 

@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -80,11 +80,11 @@ QTps <- function(x, Y, ..., f.start = NULL, psi.scale = NULL,
     Y.psuedo <- f.hat + C * psi.scale * qsreg.psi((Y - f.hat)/psi.scale, 
         C = C, alpha = alpha)
     obj <- Tps(x, Y.psuedo, ...)
-    # CV residuals based on psuedo-data)
+    # CV residuals based on pseudo-data)
     # Use the linear approximation  Y_k - f.cv_k = (Y_k- f_k)/( 1- A_kk)
     #  f.cv_k = f_k/( 1- A_kk) - ( A_kk)Y_k/( 1- A_kk)
     #
-    # Note: we find f.cv based on psuedo data but then consider its deviation
+    # Note: we find f.cv based on pseudo data but then consider its deviation
     # from the actual data
     #
     diag.A <- diag(Krig.Amatrix(obj))

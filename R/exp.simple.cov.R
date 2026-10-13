@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -28,11 +28,11 @@ Exp.simple.cov <- function(x1, x2=NULL, aRange = 1, C = NA,
     # this function can return three different results
     # depending on the values of C and marginal.
     # The three cases:
-    # 1) cross covaraince matrix
+    # 1) cross covariance matrix
     # 2) cross covariance matrix times a vector (C)
     # 3) the diagonal elements of covariance matrix at locations x1.
     #
-    # theta argument has been depreciated.
+    # theta argument has been deprecated.
     if( !is.null( theta)){
         aRange<- theta
     }
@@ -60,7 +60,7 @@ Exp.simple.cov <- function(x1, x2=NULL, aRange = 1, C = NA,
         #
     }
     #  CASE 3
-    # return marginal variance (in this case it is trivial a constant vector
+    # return marginal variance (in this case it is trivially a constant vector
     # with 1.0)
     if (marginal) {
         return(rep(1, nrow(x1)))

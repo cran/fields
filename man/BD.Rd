@@ -1,9 +1,9 @@
 %#
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment.
-%# Copyright (C) 2024 Colorado School of Mines
+%# Copyright (C) 2026 Colorado School of Mines
 %# 1500 Illinois St., Golden, CO 80401
-%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+%# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -24,54 +24,55 @@
 \name{BD}
 \alias{BD}
 \title{
-  Data frame of the effect of buffer compositions on DNA strand displacement 
-amplification. A 4-d regression data set with 
-with replication. This is a useful test data set for exercising function
-fitting methods. 
+ Effect of buffer compositions on DNA strand displacement
+amplification. 
 }
 \description{
-The \code{BD} data frame has 89 rows and 5 columns. There are 89 runs with  
-four buffer components (KCL, MgCl2, KP04, dnTP) systematically varied in 
-a space-filliing design. The response is the DNA amplification rate.  
+A 4-d regression data set
+with replication. This is a useful test data set for function
+fitting methods.
+\code{BD} as a data frame has 89 rows and 5 columns. There are 89 runs with
+four buffer components (KCl, MgCl2, KPO4, dNTP) systematically varied in
+a space-filling design. The response is the DNA amplification rate.
 }
-
+\usage{ data(BD) }
 \format{
-This data frame contains the following columns: 
+This data frame contains the following columns:
 
 \describe{
 \item{KCl}{
-Buffer component. 
+Buffer component.
 }
 \item{MgCl2}{
-Buffer component. 
+Buffer component.
 }
 \item{KPO4}{
-Buffer component. 
+Buffer component.
 }
 \item{dNTP}{
-Buffer component, deoxyribonucleotides. 
+Buffer component, deoxyribonucleotides.
 }
 \item{lnya}{
-Exponential amplification rate on a log scale, i.e. the actual amplification 
-rate. 
+Exponential amplification rate on a log scale, i.e. the actual amplification
+rate.
 }
 }
 }
 
 \source{
-Thanks to Perry Haaland and Michael OConnell.
-
-Becton Dickinson Research Center 
-Research Triangle Park, NC 
+Thanks to Perry Haaland and Michael O'Connell for these data.
+at Becton Dickinson Research Center,
+Research Triangle Park, NC
 }
 \seealso{
-Tps  
+Tps, spatialProcess 
 }
 \examples{
-# fitting a DNA strand 
-# displacement amplification  surface to various buffer compositions 
-fit<- Tps(BD[,1:4],BD$lnya,scale.type="range") 
-surface(fit)  # plots fitted surface and contours 
+# fitting a DNA strand
+# displacement amplification  surface to various buffer compositions
+data(BD)
+fit<- Tps(BD[,1:4],BD$lnya,scale.type="range")
+surface(fit)  # plots fitted surface and contours
 }
 \keyword{datasets}
 % docclass is function

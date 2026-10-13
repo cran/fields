@@ -32,18 +32,18 @@ data( ozone2)
 y<- ozone2$y[16,]
 x<- ozone2$lon.lat
 
-vgram( x, y, lon.lat=TRUE)-> out
+out <- vgram( x, y, lon.lat=TRUE)
 
 # compute "by hand"
 
-outer( y, y ,"-")-> hold
+hold <- outer( y, y ,"-")
 hold<- .5*hold^2 
-rdist.earth( x,x)-> hold2
-col( hold2)> row( hold2)-> upper
+hold2 <- rdist.earth( x,x)
+upper <- col( hold2)> row( hold2)
 
 hold<- hold[upper]
 hold2<- hold2[upper]
- order( hold2)-> od
+ od <- order( hold2)
 hold2<- hold2[od]
 hold<- hold[od]
 ind<- is.na(hold)
@@ -70,13 +70,13 @@ hold<- .5*hold^2
 hold<- rowMeans( hold, na.rm=TRUE)
 hold<- matrix( hold, N,N)
 
-rdist.earth( x,x)-> hold2
+hold2 <- rdist.earth( x,x)
 
-col( hold2)> row( hold2)-> upper
+upper <- col( hold2)> row( hold2)
 hold<- hold[upper]
 hold2<- hold2[upper]
 
-order( hold2)-> od
+od <- order( hold2)
 hold2<- hold2[od]
 hold<- hold[od]
 

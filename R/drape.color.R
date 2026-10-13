@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -60,9 +60,9 @@
     }
     # the magic of R ...
     icolor <- cut(c(z), breaks)@.Data
-    # returned values is a vector of character hex strings encoding the colors.
+    # returned value is a vector of character hex strings encoding the colors.
     hold <- ifelse(is.na(icolor), transparent.color, col[icolor])
     # points not assigned a bin from breaks get an NA
-    # NA are converted to transparent color
+    # NAs are converted to transparent color
     list(color.index = matrix(hold, nrow = M, ncol = N), breaks = breaks)
 }

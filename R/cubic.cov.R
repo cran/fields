@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -23,7 +23,7 @@ cubic.cov <- function(x1, x2=NULL, aRange = 1, C = NA, marginal = FALSE,
                       theta=NULL) {
     # comments in Exp.simple.cov for more details about the
     # required parts of this covariance
-    # theta argument has been deopreciated.
+    # theta argument has been deprecated.
     if( !is.null( theta)){
         aRange<- theta
     }

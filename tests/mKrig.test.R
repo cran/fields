@@ -39,15 +39,15 @@ twoI3 = I3*2
 test.for.zero(twoI3, I3, tag="addToDiag")
 
 # turning spam on and off
-Krig(x,y, cov.function = "stationary.taper.cov", aRange=1.5,
+out1 <- Krig(x,y, cov.function = "stationary.taper.cov", aRange=1.5,
      cov.args= list( spam.format=FALSE,
                      Taper.args= list( aRange=2.0,k=2, dimension=2) )
-) -> out1
+)
 
-Krig(x,y, cov.function = "stationary.taper.cov", lambda=2.0, aRange=1.5,
+out2 <- Krig(x,y, cov.function = "stationary.taper.cov", lambda=2.0, aRange=1.5,
      cov.args= list( spam.format=TRUE,
                      Taper.args= list( aRange=2.0,k=2, dimension=2) )
-) -> out2
+)
 
 temp1<- predict( out1,lambda=2.0)
 temp2<- predict( out2)
@@ -60,10 +60,10 @@ x<- x[good,]
 y<- y[good]
 
 # now look at mKrig w/o sparse matrix 
-mKrig( x,y, cov.function="stationary.cov", aRange=10, lambda=.3,
-       chol.args=list( pivot=FALSE))-> look
+look <- mKrig( x,y, cov.function="stationary.cov", aRange=10, lambda=.3,
+       chol.args=list( pivot=FALSE))
 
-Krig( x,y, cov.function="stationary.cov", aRange=10, lambda=.3) -> look2
+look2 <- Krig( x,y, cov.function="stationary.cov", aRange=10, lambda=.3)
 
 test.for.zero( look$d, look2$d, tag="Krig mKrig d coef")
 test.for.zero( look$c, look2$c, tag="Krig mKrig c coef")
@@ -86,8 +86,8 @@ temp3<-  predict( lookY, xnew, collapse=FALSE)[,4]
 
 test.for.zero( temp, temp3, tag="test of matrix Y predicts" )
 
-predictSurface( look)-> temp
-predictSurface( look2)-> temp2
+temp <- predictSurface( look)
+temp2 <- predictSurface( look2)
 
 good<- !is.na( temp2$z)
 test.for.zero( temp$z[good], temp2$z[good])
@@ -96,29 +96,29 @@ test.for.zero( temp$z[good], temp2$z[good])
 # and also surface prediction
 
 N<- length( y)
-mKrig( x,y, cov.function="stationary.taper.cov", aRange=2, 
-       spam.format=FALSE, lambda=.35 )-> look
+look <- mKrig( x,y, cov.function="stationary.taper.cov", aRange=2, 
+       spam.format=FALSE, lambda=.35 )
 
-Krig( x,y, cov.function="stationary.taper.cov", aRange=2, 
-      spam.format=FALSE, lambda=.35)-> look2
+look2 <- Krig( x,y, cov.function="stationary.taper.cov", aRange=2, 
+      spam.format=FALSE, lambda=.35)
 
-predictSurface( look, nx=50, ny=45)-> temp
-predictSurface( look2, nx=50, ny=45)-> temp2
+temp <- predictSurface( look, nx=50, ny=45)
+temp2 <- predictSurface( look2, nx=50, ny=45)
 
 good<- !is.na( temp2$z)
 test.for.zero( temp$z[good], temp2$z[good], tag="predictSurface with mKrig")
 
 # 
 # Use Wendland with sparse off and on.
-Krig( x,y, cov.function="wendland.cov", 
+look <- Krig( x,y, cov.function="wendland.cov", 
       cov.args=list( k=2, aRange=2.8), 
-      lambda=.3, spam.format=FALSE)-> look
+      lambda=.3, spam.format=FALSE)
 
-mKrig( x,y, cov.function="wendland.cov",k=2, aRange=2.8,
-       spam.format=FALSE, lambda=.3)-> look2
+look2 <- mKrig( x,y, cov.function="wendland.cov",k=2, aRange=2.8,
+       spam.format=FALSE, lambda=.3)
 
-mKrig( x,y, cov.function="wendland.cov",k=2, aRange=2.8,
-       spam.format=TRUE, lambda=.3)-> look3
+look3 <- mKrig( x,y, cov.function="wendland.cov",k=2, aRange=2.8,
+       spam.format=TRUE, lambda=.3)
 
 # final tests for  predict.
 set.seed(223)
@@ -131,13 +131,13 @@ test.for.zero( temp2, temp3, tag="Wendland/spam")
 
 
 ### testing coefficients for new data 
-mKrig.coef( look2, cbind(y+1,y+2), collapse=FALSE)-> newc
+newc <- mKrig.coef( look2, cbind(y+1,y+2), collapse=FALSE)
 test.for.zero( look2$c, newc$c[,2], tag="new coef c no spam")
 
 test.for.zero( look2$beta,
                c(newc$beta[1,2] -2, newc$beta[2:3,2]), tag="new beta coef no spam")
 
-mKrig.coef( look3, cbind(y+1,y+2), collapse=FALSE)-> newc
+newc <- mKrig.coef( look3, cbind(y+1,y+2), collapse=FALSE)
 test.for.zero( look3$c.coef, newc$c.coef[,2], tag="new coef c spam")
 
 test.for.zero( look3$beta,
@@ -155,8 +155,8 @@ y<- rnorm( N)
 nzero <- length( wendland.cov(x,x, k=2,aRange=.1)@entries)
 
 
-mKrig( x,y, cov.function="wendland.cov",k=2,
-       aRange=.1, lambda=.3)-> look2
+look2 <- mKrig( x,y, cov.function="wendland.cov",k=2,
+       aRange=.1, lambda=.3)
 
 
 test.for.zero( look2$non.zero.entires, nzero, tag="nzero in call to mKrig")
@@ -172,10 +172,10 @@ x<- ozone2$lon.lat[good,]
 
 # interpolate using defaults (Exponential)
 # stationary covariance
-mKrig( x,y, aRange = 1.5, lambda=.2)-> out
+out <- mKrig( x,y, aRange = 1.5, lambda=.2)
 #
 # NOTE this should be identical to 
-Krig( x,y, aRange=1.5, lambda=.2) -> out2
+out2 <- Krig( x,y, aRange=1.5, lambda=.2)
 temp<- predict( out)
 temp2<- predict( out2)
 
@@ -189,16 +189,16 @@ x<- matrix( 2*(runif(2*N)-.5),ncol=2)
 y<- sin( 3*pi*x[,1])*sin( 3.5*pi*x[,2]) + rnorm( N)*.01
 
 
-Krig( x,y, Covariance="Wendland",
+out <- Krig( x,y, Covariance="Wendland",
       cov.args= list(k=2, aRange=.8, dimension=2),                   , 
       give.warnings=FALSE,
-      lambda=1e2) -> out
+      lambda=1e2)
 
-mKrig( x,y, 
+out2 <- mKrig( x,y, 
        cov.function="wendland.cov",k=2, aRange=.8, 
        lambda=1e2, 
        chol.args=list( memory=list( nnzR=1e5)), 
-)-> out2
+)
 
 temp<- predict( out)
 temp2<- predict( out2)
@@ -251,17 +251,17 @@ distMat = rdist(x)
 ##### test using distance matrix
 print("testing using distance matrix")
 
-mKrig(x,y, cov.function = "stationary.cov", lambda=2.0, aRange=1.5) -> out1
+out1 <- mKrig(x,y, cov.function = "stationary.cov", lambda=2.0, aRange=1.5)
 
-mKrig(x,y, cov.args= list(Covariance="Exponential", Distance="rdist", Dist.args=list(compact=TRUE)), 
-      lambda=2.0, aRange=1.5) -> out2
+out2 <- mKrig(x,y, cov.args= list(Covariance="Exponential", Distance="rdist", Dist.args=list(compact=TRUE)), 
+      lambda=2.0, aRange=1.5)
 
 #NOTE: compact distance matrix should not be used by user for fields compatibility reasons
-mKrig(x,y, cov.args= list(Covariance="Exponential", Dist.args=list(compact=TRUE)), 
-      lambda=2.0, aRange=1.5, distMat=compactDistMat) -> out3
+out3 <- mKrig(x,y, cov.args= list(Covariance="Exponential", Dist.args=list(compact=TRUE)), 
+      lambda=2.0, aRange=1.5, distMat=compactDistMat)
 
-mKrig(x,y, cov.args= list(Covariance="Exponential"), 
-      lambda=2.0, aRange=1.5, distMat=distMat) -> out4
+out4 <- mKrig(x,y, cov.args= list(Covariance="Exponential"), 
+      lambda=2.0, aRange=1.5, distMat=distMat)
 
 temp1<- predict( out1)
 temp2<- predict( out2)

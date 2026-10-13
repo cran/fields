@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -58,7 +58,7 @@ color.scale <- function(z, col = tim.colors, NC=256,
                     length.out= NC + 1)
     # the magic of R ...
     icolor <- cut(c(z), breaks)@.Data
-    # returned values is a vector of character hex strings encoding the colors.
+    # returned value is a vector of character hex strings encoding the colors.
      colorMap<- ifelse(is.na(icolor),
                          transparent.color, col[icolor])
 # add zlim and col table as attributes so one can add

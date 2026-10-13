@@ -169,7 +169,7 @@ test.for.zero( look, out2$sigma.MLE, tag="sigma2 hat from likelihood compared to
 lam<- .2
 Sigma<- Exp.cov( x,x,aRange=4)
 M<- Sigma + lam * diag( 1, nrow(x))
-chol( M)-> Mc
+Mc <- chol( M)
 look2<- sum( log(diag( Mc)))*2
 
 out<-mKrig( x,y,cov.function =Exp.cov, aRange=4, lambda=lam)
@@ -183,7 +183,7 @@ Sigma<- Exp.cov( x,x,aRange=4)
 set.seed( 123)
 weights<- runif(nrow( x))
 M<- Sigma +  diag(lam/ weights)
-chol( M)-> Mc
+Mc <- chol( M)
 look2<- sum( log(diag( Mc)))*2
 
 out<-mKrig( x,y,weights=weights, cov.function =Exp.cov, aRange=4, lambda=lam)
@@ -199,8 +199,8 @@ lam.true<- .2
 N<- nrow( x)
 Sigma<- Exp.cov( x,x,aRange=4)
 M<- Sigma + lam.true * diag( 1, nrow(x))
-chol( M)-> Mc
-t(Mc)%*%Mc -> test
+Mc <- chol( M)
+test <- t(Mc)%*%Mc
 
 
 

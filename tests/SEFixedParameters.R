@@ -28,6 +28,9 @@ suppressMessages(library(fields))
 options( echo=FALSE)
 
 test.for.zero.flag<- TRUE
+
+data(ChicagoO3)
+
 X<- ChicagoO3$x
 n<- nrow( X)
 tau2<- .1

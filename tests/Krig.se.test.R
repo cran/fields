@@ -29,7 +29,7 @@ suppressMessages(library(fields))
 
 #options( echo=FALSE)
 
-
+data(ChicagoO3)
 
 x0<- expand.grid( c(-8,-4,0,20,30), c(10,8,4,0))
 
@@ -38,7 +38,7 @@ out<- Krig( ChicagoO3$x, ChicagoO3$y, cov.function = "Exp.cov", aRange=50)
 
 
 # direct calculation
-Krig.Amatrix( out, x=x0)-> A
+A <- Krig.Amatrix( out, x=x0)
 test.for.zero( A%*%ChicagoO3$y, predict( out, x0),tag="Amatrix vs. predict")
 
 Sigma<- out$sigmahat*Exp.cov( ChicagoO3$x, ChicagoO3$x, aRange=50)
@@ -72,26 +72,26 @@ test.for.zero( look, test,tag="Full covariance predictSE")
 
 set.seed( 333)
 
-sim.Krig( out, x0,M=4e3)-> test
+test <- sim.Krig( out, x0,M=4e3)
  # columns are the realizations rows are locations
 
-var(t(test))-> look
+look <- var(t(test))
 
-predictSE( out, x=x0)-> test2
-mean( diag( look)/ test2**2)-> look2
+test2 <- predictSE( out, x=x0)
+look2 <- mean( diag( look)/ test2**2)
 test.for.zero(look2, 1.0, tol=1.5e-2, tag="Marginal standard Cond. Sim.")
 
-predictSE( out, x=x0, cov=TRUE)-> test2
+test2 <- predictSE( out, x=x0, cov=TRUE)
 
 # multiply simulated values by inverse square root of covariance
 # to make them white
 
-eigen( test2, symmetric=TRUE)-> hold
-hold$vectors%*% diag( 1/sqrt( hold$values))%*% t( hold$vectors)-> hold
-cor(t(test)%*% hold)-> hold2
+hold <- eigen( test2, symmetric=TRUE)
+hold <- hold$vectors%*% diag( 1/sqrt( hold$values))%*% t( hold$vectors)
+hold2 <- cor(t(test)%*% hold)
 # off diagonal elements of correlations -- expected values are zero. 
 
-abs(hold2[ col(hold2)> row( hold2)])-> hold3
+hold3 <- abs(hold2[ col(hold2)> row( hold2)])
 
 test.for.zero(   mean(hold3), 0, relative=FALSE, tol=.02,
           tag="Full covariance standard Cond. Sim.")
@@ -103,8 +103,8 @@ test.for.zero(   mean(hold3), 0, relative=FALSE, tol=.02,
 
 
 data( ozone2)
-as.image(ozone2$y[16,], x= ozone2$lon.lat, ny=24, nx=20, 
-          na.rm=TRUE)-> dtemp
+dtemp <- as.image(ozone2$y[16,], x= ozone2$lon.lat, ny=24, nx=20, 
+          na.rm=TRUE)
 #
 # A useful disctrtized version of ozone2 data
  
@@ -112,8 +112,8 @@ x<- dtemp$xd
 y<- dtemp$z[ dtemp$ind]
 weights<- dtemp$weights[ dtemp$ind]
 
-Krig( x, y, Covariance="Matern", 
-   aRange=1.0, smoothness=1.0, weights=weights) -> out
+out <- Krig( x, y, Covariance="Matern", 
+   aRange=1.0, smoothness=1.0, weights=weights)
 
 
 
@@ -126,7 +126,7 @@ Krig( x, y, Covariance="Matern",
 
 # direct calculation as backup ( also checks weighted case)
 
-Krig.Amatrix( out, x=x0)-> A
+A <- Krig.Amatrix( out, x=x0)
 test.for.zero( A%*%out$yM, predict( out, x0),tag="Amatrix vs. predict")
 
 Sigma<- out$sigmahat*stationary.cov( 

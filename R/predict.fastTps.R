@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -46,7 +46,7 @@ predict.fastTps <- function(object, xnew = NULL, grid.list=NULL,
     c.coef <- object$c.coef
     beta <- object$beta
   }
-  # fixed part of the model this a polynomial of degree m-1
+  # fixed part of the model this is a polynomial of degree m-1
   # Tmatrix <- fields.mkpoly(xnew, m=object$m)
   #
   if (derivative == 0){

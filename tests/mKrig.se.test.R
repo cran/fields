@@ -31,13 +31,15 @@ options( echo=FALSE)
 
 test.for.zero.flag<- TRUE
 
+data("ChicagoO3")
+
 x0<- cbind( 0,4)
 
-Krig( ChicagoO3$x, ChicagoO3$y, cov.function = "Exp.cov", aRange=50,
-      lambda=.06, GCV=FALSE)-> out
+out <- Krig( ChicagoO3$x, ChicagoO3$y, cov.function = "Exp.cov", aRange=50,
+      lambda=.06, GCV=FALSE)
 
 # direct calculation
-Krig.Amatrix( out, x=x0)-> A
+A <- Krig.Amatrix( out, x=x0)
 test.for.zero( A%*%ChicagoO3$y, predict( out, x0),tag="Amatrix vs. predict")
 
 Sigma0<- out$sigmahat*Exp.cov( ChicagoO3$x, ChicagoO3$x, aRange=50)
@@ -72,7 +74,7 @@ Tmatrix <- do.call(out$null.function.name, c(out$null.args,
 Omega<-  solve( t(Tmatrix)%*% solve( Sigma)%*% Tmatrix)
 Id<- diag( 1, nrow( Tmatrix))
 
- qr.R( out$matrices$qr.VT) -> Rmat
+ Rmat <- qr.R( out$matrices$qr.VT)
 
 Omega.test<- solve(t(Rmat)%*% (Rmat))
 
@@ -127,9 +129,9 @@ test.for.zero(SE0, sqrt( MSE4), tag="test of formula with explicit d and c")
 
 # test of new function
 
-Krig( ChicagoO3$x, ChicagoO3$y, cov.function = "Exp.cov", aRange=50,lambda=.06)-> out0
+out0 <- Krig( ChicagoO3$x, ChicagoO3$y, cov.function = "Exp.cov", aRange=50,lambda=.06)
 SE0<- predictSE.Krig( out0, x=x0)
-mKrig( ChicagoO3$x, ChicagoO3$y, cov.function = "Exp.cov", aRange=50, lambda=.06)-> out2
+out2 <- mKrig( ChicagoO3$x, ChicagoO3$y, cov.function = "Exp.cov", aRange=50, lambda=.06)
 SE3<- predictSE.mKrig( out2, xnew=x0)
 
 test.for.zero(SE0, sqrt( MSE), tag="Krig function and direct formula")

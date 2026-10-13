@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -19,9 +19,20 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # or see http://www.r-project.org/Licenses/GPL-2
 ##END HEADER
-envelopePlot <- function(x1, y1, x2 = x1, y2,
+envelopePlot <- function(x1, y1, x2 = x1, y2=NULL,
                          col ="thistle1" , lineCol = "thistle3",
                          lwd=3, ...) {
+if( is.matrix(y1)){
+  if( dim(y1)[2]==2){
+    y2<-y1[,2]
+    y1<- y1[,1]
+  }
+}
+  
+if( is.null(y2)){
+  stop("need y2 for envelope")
+}
+  
 #  sort the curves -- just in case they are passed out of order
     ind<- order( x1)
     x1<- x1[ind]

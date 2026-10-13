@@ -1,7 +1,7 @@
 #
 # fields  is a package for analysis of spatial data written for
 # the R software environment.
-# Copyright (C) 2024 Colorado School of Mines
+# Copyright (C) 2026 Colorado School of Mines
 # 1500 Illinois St., Golden, CO 80401
 # Contact: Douglas Nychka,  douglasnychka@gmail.com,
 #
@@ -64,7 +64,7 @@ predict.mKrig <- function(object, xnew = NULL, ynew = NULL, grid.list=NULL,
     c.coef <- object$c.coef
     beta <- object$beta
   }
-  # fixed part of the model this a polynomial of degree m-1
+  # fixed part of the model this is a polynomial of degree m-1
   # Tmatrix <- fields.mkpoly(xnew, m=object$m)
   # only do this if nt>0, i.e. there is a fixed part.
   #
@@ -106,7 +106,7 @@ predict.mKrig <- function(object, xnew = NULL, ynew = NULL, grid.list=NULL,
   # that have been passed as their name.
   if (derivative == 0) {
     # argument list are the parameters and other options from mKrig
-    #  locations anbetaficients,
+    #  locations and coefficients,
     temp2 <- do.call(object$cov.function.name, c(object$args, 
                                                  list(x1 = xnew, x2 = object$knots, C = c.coef), cov.args))
   }

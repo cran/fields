@@ -32,7 +32,7 @@ set.seed(123)
 x1<- matrix( runif(2*20), ncol=2)
 x2<- matrix( runif(2*10), ncol=2)
 
-fields.rdist.near( x1,x2, delta=.75)-> look
+look <- fields.rdist.near( x1,x2, delta=.75)
 
 temp<- matrix( NA, nrow(x1),nrow(x2))
 temp[ look$ind] <- look$ra
@@ -58,19 +58,19 @@ test.for.zero( temp, temp2)
 
 
 
-stationary.taper.cov( x1,x2, Taper="Wendland2.2", 
-           Taper.args= list( aRange=.8), spam.format=FALSE )-> look
+look <- stationary.taper.cov( x1,x2, Taper="Wendland2.2", 
+           Taper.args= list( aRange=.8), spam.format=FALSE )
 temp0<- look
 
-stationary.taper.cov( x1,x2, Taper="Wendland2.2",
-           Taper.args= list( aRange=.8), spam.format=TRUE )-> look
+look <- stationary.taper.cov( x1,x2, Taper="Wendland2.2",
+           Taper.args= list( aRange=.8), spam.format=TRUE )
 temp1<-  spam2full( look)
 
 test.for.zero( temp1, temp0)
 
-stationary.taper.cov( x1,x2, Taper="Wendland",
+look <- stationary.taper.cov( x1,x2, Taper="Wendland",
            Taper.args= list( aRange=.8, k=2, dimension=2),
-                     spam.format=TRUE )-> look
+                     spam.format=TRUE )
 temp1b<-  spam2full( look)
 
 temp2<-  Wendland2.2(DD, aRange=.8) * Exponential(DD)
@@ -89,13 +89,13 @@ set.seed( 256)
 rv<- runif( nrow(x2))
 
 # test of multiply 
-stationary.taper.cov( x1, x2,  C= rv)-> look
+look <- stationary.taper.cov( x1, x2,  C= rv)
 temp2<-stationary.taper.cov( x1,x2)
 
-(as.matrix(temp2))%*%(rv)-> look2
+look2 <- (as.matrix(temp2))%*%(rv)
 test.for.zero( look, look2)
 
-temp2%*%(rv)-> look2
+look2 <- temp2%*%(rv)
 test.for.zero( look, look2)
 
 

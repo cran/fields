@@ -1,9 +1,9 @@
 %#
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment.
-%# Copyright (C) 2024 Colorado School of Mines
+%# Copyright (C) 2026 Colorado School of Mines
 %# 1500 Illinois St., Golden, CO 80401
-%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+%# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -29,10 +29,10 @@
 
 \title{Conversion of formats for sparse matrices}
 \description{
-Some supporting functions that are internal to fields top level
-methods. These are used to convert between the efficient but 
-opaque format used by spam and more easily checked format based directly
-on the row and column indices of non zero elements.
+Some supporting functions that are internal to fields top-level
+methods. These are used to convert between the efficient but
+opaque format used by spam and a more easily checked format based directly
+on the row and column indices of nonzero elements.
 }
 \usage{
 spind2full(obj)
@@ -49,13 +49,13 @@ spam2spind(obj)
 \arguments{
 \item{obj}{
 Either a list with the sparse index components (spind) or an 
-obj of class spam.}
-\item{add.zero.rows}{If TRUE an entire row is zero add a hard zero value to the element in the first  column for each zero row. The spam format requires at least one element in each row to have an explicit value. It is OK if this value is zero but one must be specified. }
+object of class spam.}
+\item{add.zero.rows}{If TRUE and an entire row is zero, add a hard zero value to the element in the first  column for each zero row. The spam format requires at least one element in each row to have an explicit value. It is OK if this value is zero, but one must be specified. }
 }
 
 
 \details{
-The differencee in formats is best illustarted by an example:
+The difference in formats is best illustrated by an example:
 
 A 4X5 sparse matrix:
 \preformatted{
@@ -66,8 +66,9 @@ A 4X5 sparse matrix:
 [4,]    0   12   20    0   36
 }
 
-spind format is a list with components "ind", "ra" and "da"
-here is how the matrix above would be encoded:
+spind format is a list with components "ind", "ra" and "da".
+Here is how
+ the matrix above would be encoded:
 
 \preformatted{
 ind
@@ -111,11 +112,11 @@ dimension
 
  [1] 4 5
 
-The row pointers are the position in the array of entries where the next row
-starts. 
+The row pointers are the positions in the array of entries where the next row
+starts.
 
 NOTE: It is possible for the spind format to have a missing row of all
-zeroes but this not allowed in spam format and produces an error message. 
+zeroes, but this is not allowed in spam format and produces an error message.
 
 
 }

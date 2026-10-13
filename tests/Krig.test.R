@@ -31,6 +31,7 @@ suppressMessages(library(fields))
 options( echo=FALSE)
 test.for.zero.flag<-1
 
+data(ChicagoO3)
 fit<- Krig( ChicagoO3$x, ChicagoO3$y, aRange=50)
 
 x<- ChicagoO3$x
@@ -56,11 +57,11 @@ test.for.zero( test.c, fit2$c,tag="Compare c coef fixed lambda" )
 
 # test of Krig.coef
 
-Krig.coef( fit)->test
+test <- Krig.coef( fit)
 test.for.zero( test.d, test$d, tag="d coef Krig.coef" )
 test.for.zero( test.c, test$c, tag= "c coef Krig.coef" )
 
-Krig.coef( fit2)->test
+test <- Krig.coef( fit2)
 test.for.zero( test.d, test$d,tag="d coef Krig.coef fixed" )
 test.for.zero( test.c, test$c, tag="c coef Krig.coef fixed" )
 # checking A matrix in the case of noreps
@@ -92,12 +93,12 @@ test.for.zero( test.d, test$d, tag= "d coef new y" )
 test.for.zero( test.c, test$c, tag="c coef new y" )
 
 
-Krig.coef( fit2, y= ynew)->test
+test <- Krig.coef( fit2, y= ynew)
 test.for.zero( test.d, test$d, tag= "d coef new y fixed" )
 test.for.zero( test.c, test$c, tag=" c coef new y fixed"  )
 
 # test for multiple new y's
-Krig.coef( fit2, y= cbind( ynew+ rnorm(fit2$N), ynew))->test2
+test2 <- Krig.coef( fit2, y= cbind( ynew+ rnorm(fit2$N), ynew))
 test.for.zero( test.d, test2$d[,2], tag= "d coef several new y fixed" )
 test.for.zero( test.c, test2$c[,2], tag=" c coef several new y fixed"  )
 
@@ -134,9 +135,9 @@ y<- rnorm( 15)*.01 + x[,1]**2 +  x[,2]**2
 weights<- runif(15)*10
 
 # compare to 
-Krig( x,y, cov.function=Exp.cov, weights=weights)-> out.new
-Krig( x,y, cov.function=Exp.cov, weights=weights, 
-          lambda=1)-> out.new2
+out.new <- Krig( x,y, cov.function=Exp.cov, weights=weights)
+out.new2 <- Krig( x,y, cov.function=Exp.cov, weights=weights, 
+          lambda=1)
 
 # compute test using linear algebra
 K<- Exp.cov( x, x)
@@ -146,7 +147,7 @@ X<- cbind( fields.mkpoly( x, 2), Exp.cov( x, x))
 lambda<-1
 
 
-c(   solve(t(X)%*%(weights*X) + lambda*H)%*% t(X)%*% (weights*y) )-> temp
+temp <- c(   solve(t(X)%*%(weights*X) + lambda*H)%*% t(X)%*% (weights*y) )
 temp.c<- temp[4:18]
 temp.d<- temp[1:3]
 

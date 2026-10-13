@@ -1,9 +1,9 @@
 %#
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment.
-%# Copyright (C) 2024 Colorado School of Mines
+%# Copyright (C) 2026 Colorado School of Mines
 %# 1500 Illinois St., Golden, CO 80401
-%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+%# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -36,14 +36,14 @@
 C and FORTRAN functions.
 }
 \description{
-These are objects of class \code{CallRoutine} or \code{FortranRoutine} and also \code{\link{NativeSymbolInfo}}
-They provide information for compiledfunctions called with \code{.Call},
+These are objects of class \code{CallRoutine} or \code{FortranRoutine} and also \code{\link{NativeSymbolInfo}}.
+They provide information for compiled functions called with \code{.Call},
 or \code{.Fortran}.
-Ordinarily one would not need to consult these and they are used to make
-the search among dynamically loaded libraries ( in particular the fields library) have less ambiguity and
-also be faster. These are created when the package/library is loaded 
-are have their definitions from the compliation of  \code{init.c} in the
-package source (src) directory. 
+Ordinarily, one would not need to consult these, and they are used to make
+the search among dynamically loaded libraries (in particular the fields library) have less ambiguity and
+also be faster. These are created when the package/library is loaded
+and have their definitions from the compilation of \code{init.c} in the
+package source (src) directory.
 }
 %ExponentialUpperC.Rd	compactToMatC.Rd	multebC.Rd
 %RdistC.Rd		mltdrb.Rd		multwendlandg.Rd
@@ -74,17 +74,17 @@ package source (src) directory.
   }
 \details{
  \describe{
-\item{addToDiagC}{ adds diagonal elements to a matrix. See \code{mKrig}.}
+\item{addToDiagC}{ Adds diagonal elements to a matrix. See \code{mKrig}.}
 
 \item{ExponentialUpperC}{Fills in upper triangle of a matrix with the exponential covariance function. See \code{ExponentialUpper}}
 
 \item{compactToMatC}{ Converts compact format to full matrix format. See \code{compactToMat}.}
 
-\item{multebC}{Mulitplies a vector/matrix with an exponential covariance function. See \code{exp.cov}} 
+\item{multebC}{Multiplies a vector/matrix with an exponential covariance function. See \code{exp.cov}}
 
 \item{multwendlandg}{This has been mysteriously included but it is not a function! }
 
-\item{mltdrb}{Evaluates the derivatives of thin plate sline radial basis functions. See \code{rad.cov}. }
+\item{mltdrb}{Evaluates the derivatives of thin plate spline radial basis functions. See \code{rad.cov}. }
 
 \item{RdistC}{ Euclidean distance function between sets of coordinates.
 See \code{rdist}.}
@@ -103,9 +103,9 @@ documentation while other routines have not.
 
 }
 \references{
-For background on registering C, C++ and Fortran functions see 5.4 of
+For background on registering C, C++ and Fortran functions, see Section 5.4 of
 Writing R Extensions. For this package refer to the C code in
-\code{ src/intit.c} as an example. 
+\code{src/init.c} as an example. 
 }
 \examples{
 print(addToDiagC)

@@ -1,9 +1,9 @@
 %#
 %# fields  is a package for analysis of spatial data written for
 %# the R software environment.
-%# Copyright (C) 2024 Colorado School of Mines
+%# Copyright (C) 2026 Colorado School of Mines
 %# 1500 Illinois St., Golden, CO 80401
-%# Contact: Douglas Nychka,  douglasnychka@gmail.edu,
+%# Contact: Douglas Nychka,  douglasnychka@gmail.com,
 %#
 %# This program is free software; you can redistribute it and/or modify
 %# it under the terms of the GNU General Public License as published by
@@ -28,18 +28,20 @@
   Data set of ozone measurements at 20 Chicago monitoring stations. 
 }
 \description{
-This data set used be named  \code{ozone} but was 
+This data set used to be named  \code{ozone} but was 
 changed to avoid conflict with other packages.
-The \code{ChicagoO3} data is a list of 
-components, x and y.  x 
+The \code{ChicagoO3} data is a list with
+components x and y. The x
 component is longitude and latitude position of each of the 20 
-Chicago monitoring stations, y is the average 
+Chicago monitoring stations; y is the average 
 daily ozone values over the time period 6/3/87-8/30/87.
 These data are used extensively for the test scripts and 
-simple examples. The lasting scientific value is probably 
-minimal. 
+simple examples. The scientific value is probably epsilon! 
+See  \code{\link{ozone2}} for a data set that is more meaningful.
 
 }
+
+\usage{ data(ChicagoO3)}
 
 \format{
 This data set is a list containing the following components: 
@@ -53,12 +55,13 @@ locations. }
  }
 }
 \source{
-AIRS, the EPA air quality data base. 
+AIRS, the EPA air quality database. 
 }
 \seealso{
 Tps, Krig  
 }
 \examples{
+data(ChicagoO3)
 fit<- Tps(ChicagoO3$x, ChicagoO3$y) 
 # fitting a surface to ozone measurements. 
 surface( fit, type="I")
